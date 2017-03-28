@@ -12,7 +12,7 @@ Además de lo anteriormente detallado, se necesitará un directorio extra que co
 ---
 Lo imediato a realizar será detallada en la próxima lista
 
-###*TODO:*
+### **TODO:**
 
 	1. Generar los directorios necesarios, mencionados anteriormente
 	2. Subir todos los códigos traducidos desde el Framework del kit de Cypress
