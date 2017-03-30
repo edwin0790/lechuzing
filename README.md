@@ -14,9 +14,7 @@ Lo imediato a realizar será detallada en la próxima lista
 
 ### **TODO:**
 
-	1. Generar los directorios necesarios, mencionados anteriormente
-	2. Subir todos los códigos traducidos desde el Framework del kit de Cypress
-	3. Generar una nueva rama y subir los archivos de ejemplo para su testeo
-	4. Testear ejemplos con bulkloops, de forma tal que se pueda configurar de forma completa la interfaz puente-PC
-	4. Consultar sobre el hardware
+	1. Generar una nueva rama y subir los archivos de ejemplo para su testeo
+	2. Testear ejemplos con bulkloops, de forma tal que se pueda configurar de forma completa la interfaz puente-PC
+	3. Consultar sobre el hardware
 	
