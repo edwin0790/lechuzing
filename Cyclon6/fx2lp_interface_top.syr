@@ -1,0 +1,377 @@
+Release 14.7 - xst P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.05 secs
+ 
+--> 
+Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.05 secs
+ 
+--> 
+Reading design: fx2lp_interface_top.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "fx2lp_interface_top.prj"
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "fx2lp_interface_top"
+Output Format                      : NGC
+Target Device                      : xc6slx9-2-tqg144
+
+---- Source Options
+Top Module Name                    : fx2lp_interface_top
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Shift Register Extraction          : YES
+ROM Style                          : Auto
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Shift Register Minimum Size        : 2
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Auto
+Reduce Control Sets                : Auto
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 16
+Register Duplication               : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/ipcore_dir/clk_wiz_v3_6.vhd" into library work
+Parsing entity <clk_wiz_v3_6>.
+Parsing architecture <xilinx> of entity <clk_wiz_v3_6>.
+Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" into library work
+Parsing entity <fx2lp_interface_top>.
+Parsing architecture <fx2lp_interface_arq> of entity <fx2lp_interface_top>.
+WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 107: Actual for formal port c1 is neither a static name nor a globally static expression
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <fx2lp_interface_top> (architecture <fx2lp_interface_arq>) with generics from library <work>.
+
+Elaborating entity <clk_wiz_v3_6> (architecture <xilinx>) from library <work>.
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 140: Assignment to write_empty_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 141: Assignment to read_full_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 164: Assignment to fdata_in ignored, since the identifier is never used
+WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 174: write_req should be on the sensitivity list of the process
+INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 222. Case statement is complete. others clause is never selected
+WARNING:HDLCompiler:634 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 79: Net <sys_clk> does not have a driver.
+WARNING:HDLCompiler:634 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 84: Net <fdata_out[15]> does not have a driver.
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <fx2lp_interface_top>.
+    Related source file is "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd".
+        in_ep_addr = "00"
+        out_ep_addr = "11"
+        port_width = 15
+WARNING:Xst:647 - Input <flagb> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <flagc> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <clk_src> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT1> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT2> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT4> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <LOCKED> of the instance <pll> is unconnected or connected to loadless signal.
+WARNING:Xst:653 - Signal <fdata_out> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <sys_clk> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+    Found 4-bit register for signal <curr_state>.
+    Found finite state machine <FSM_0> for signal <curr_state>.
+    -----------------------------------------------------------------------
+    | States             | 9                                              |
+    | Transitions        | 18                                             |
+    | Inputs             | 3                                              |
+    | Outputs            | 5                                              |
+    | Clock              | sys_clk (rising_edge)                          |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | idle                                           |
+    | Power Up State     | idle                                           |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 1-bit tristate buffer for signal <faddr_int<1>> created at line 148
+    Found 1-bit tristate buffer for signal <faddr_int<0>> created at line 148
+    Found 1-bit tristate buffer for signal <fdata<15>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<14>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<13>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<12>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<11>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<10>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<9>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<8>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<7>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<6>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<5>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<4>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<3>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<2>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<1>> created at line 162
+    Found 1-bit tristate buffer for signal <fdata<0>> created at line 162
+    Summary:
+	inferred  18 Tristate(s).
+	inferred   1 Finite State Machine(s).
+Unit <fx2lp_interface_top> synthesized.
+
+Synthesizing Unit <clk_wiz_v3_6>.
+    Related source file is "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/ipcore_dir/clk_wiz_v3_6.vhd".
+    Summary:
+	no macro.
+Unit <clk_wiz_v3_6> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Tristates                                            : 18
+ 1-bit tristate buffer                                 : 18
+# FSMs                                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# FSMs                                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <FSM_0> on signal <curr_state[1:4]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ idle            | 0000
+ read_addr       | 0011
+ read_wait_empty | 0010
+ read_read       | 0110
+ read_end        | 0111
+ write_addr      | 0001
+ write_no_full   | 0101
+ write_write     | 0100
+ write_end       | 1100
+-----------------------------
+WARNING:Xst:1293 - FF/Latch <curr_state_FSM_FFd4> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd1> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd3> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd2> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:1901 - Instance pll/pll_base_inst in unit pll/pll_base_inst of type PLL_BASE has been replaced by PLL_ADV
+
+Optimizing unit <fx2lp_interface_top> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block fx2lp_interface_top, actual ratio is 0.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Found no macro
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : fx2lp_interface_top.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 3
+#      GND                         : 1
+#      INV                         : 1
+#      VCC                         : 1
+# FlipFlops/Latches                : 1
+#      ODDR2                       : 1
+# Clock Buffers                    : 5
+#      BUFG                        : 5
+# IO Buffers                       : 24
+#      IBUFG                       : 1
+#      OBUF                        : 5
+#      OBUFT                       : 18
+# Others                           : 1
+#      PLL_ADV                     : 1
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx9tqg144-2 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:               1  out of  11440     0%  
+ Number of Slice LUTs:                    1  out of   5720     0%  
+    Number used as Logic:                 1  out of   5720     0%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:      2
+   Number with an unused Flip Flop:       1  out of      2    50%  
+   Number with an unused LUT:             1  out of      2    50%  
+   Number of fully used LUT-FF pairs:     0  out of      2     0%  
+   Number of unique control sets:         0
+
+IO Utilization: 
+ Number of IOs:                          32
+ Number of bonded IOBs:                  24  out of    102    23%  
+
+Specific Feature Utilization:
+ Number of BUFG/BUFGCTRLs:                5  out of     16    31%  
+ Number of PLL_ADVs:                      1  out of      2    50%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+pll/pll_base_inst/CLKOUT2          | BUFG                   | 2     |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -2
+
+   Minimum period: No path found
+   Minimum input arrival time before clock: No path found
+   Maximum output required time after clock: No path found
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 12.00 secs
+Total CPU time to Xst completion: 9.01 secs
+ 
+--> 
+
+
+Total memory usage is 405964 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   16 (   0 filtered)
+Number of infos    :    5 (   0 filtered)
+

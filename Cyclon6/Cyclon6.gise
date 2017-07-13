@@ -21,8 +21,113 @@
 
   <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="Cyclon6.xise"/>
 
-  <files xmlns="http://www.xilinx.com/XMLSchema"/>
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/map.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="fx2lp_interface_top.bld"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="fx2lp_interface_top.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="fx2lp_interface_top.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="fx2lp_interface_top.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="fx2lp_interface_top.ngd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="fx2lp_interface_top.ngr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="fx2lp_interface_top.prj"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="fx2lp_interface_top.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="fx2lp_interface_top.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="fx2lp_interface_top.xst"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="fx2lp_interface_top_envsettings.html"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="fx2lp_interface_top_map.map" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="fx2lp_interface_top_map.mrp" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGM" xil_pn:name="fx2lp_interface_top_map.ngm" xil_pn:subbranch="Map"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="fx2lp_interface_top_map.xrpt"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="fx2lp_interface_top_ngdbuild.xrpt"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="fx2lp_interface_top_summary.html"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="fx2lp_interface_top_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
+  </files>
 
-  <transforms xmlns="http://www.xilinx.com/XMLSchema"/>
+  <transforms xmlns="http://www.xilinx.com/XMLSchema">
+    <transform xil_pn:end_ts="1499715430" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1499715430">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1499715430" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-4804148015735554191" xil_pn:start_ts="1499715430">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973669" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="2072044022302696711" xil_pn:start_ts="1499973669">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+    </transform>
+    <transform xil_pn:end_ts="1499715430" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1499715430">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1499715430" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="3904006631583789555" xil_pn:start_ts="1499715430">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973669" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="-1970394750299821092" xil_pn:start_ts="1499973669">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973669" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="784542313710621841" xil_pn:start_ts="1499973669">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973683" xil_pn:in_ck="8484145005015422541" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-939079512399516320" xil_pn:start_ts="1499973669">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
+      <outfile xil_pn:name="fx2lp_interface_top.lso"/>
+      <outfile xil_pn:name="fx2lp_interface_top.ngc"/>
+      <outfile xil_pn:name="fx2lp_interface_top.ngr"/>
+      <outfile xil_pn:name="fx2lp_interface_top.prj"/>
+      <outfile xil_pn:name="fx2lp_interface_top.stx"/>
+      <outfile xil_pn:name="fx2lp_interface_top.syr"/>
+      <outfile xil_pn:name="fx2lp_interface_top.xst"/>
+      <outfile xil_pn:name="fx2lp_interface_top_xst.xrpt"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+      <outfile xil_pn:name="xst"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973688" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="2859395723736499912" xil_pn:start_ts="1499973688">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973696" xil_pn:in_ck="2409227517223853396" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="7491204852587990194" xil_pn:start_ts="1499973688">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="fx2lp_interface_top.bld"/>
+      <outfile xil_pn:name="fx2lp_interface_top.ngd"/>
+      <outfile xil_pn:name="fx2lp_interface_top_ngdbuild.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1499973704" xil_pn:in_ck="2409227517223853397" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="325589658960453222" xil_pn:start_ts="1499973696">
+      <status xil_pn:value="FailedRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+      <outfile xil_pn:name="fx2lp_interface_top_map.map"/>
+      <outfile xil_pn:name="fx2lp_interface_top_map.mrp"/>
+      <outfile xil_pn:name="fx2lp_interface_top_map.ngm"/>
+      <outfile xil_pn:name="fx2lp_interface_top_map.xrpt"/>
+    </transform>
+  </transforms>
 
 </generated_project>

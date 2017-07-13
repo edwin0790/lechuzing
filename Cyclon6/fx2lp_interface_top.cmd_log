@@ -1,0 +1,32 @@
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx25-ftg256-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx25-ftg256-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+xst -intstyle ise -ifn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.xst" -ofn "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 "fx2lp_interface_top.ngc" fx2lp_interface_top.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o fx2lp_interface_top_map.ncd fx2lp_interface_top.ngd fx2lp_interface_top.pcf 
+par -w -intstyle ise -ol high -mt off fx2lp_interface_top_map.ncd fx2lp_interface_top.ncd fx2lp_interface_top.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml fx2lp_interface_top.twx fx2lp_interface_top.ncd -o fx2lp_interface_top.twr fx2lp_interface_top.pcf 
