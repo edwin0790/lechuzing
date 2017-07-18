@@ -66,17 +66,32 @@ entity fx2lp_interface_top is
 end fx2lp_interface_top;
 
 architecture fx2lp_interface_arq of fx2lp_interface_top is
+
   component clk_wiz_v3_6
   port(
-    CLK_IN1           : in     std_logic;
-    CLK_OUT1          : out    std_logic;
-    CLK_OUT2          : out    std_logic;
-    CLK_OUT3          : out    std_logic;
-    CLK_OUT4          : out    std_logic;
-    RESET             : in     std_logic;
-    LOCKED            : out    std_logic
+    CLK_IN1 : in  std_logic;
+    CLK_OUT1: out std_logic;
+    CLK_OUT2: out std_logic;
+    CLK_OUT3: out std_logic;
+    CLK_OUT4: out std_logic;
+    RESET   : in  std_logic;
+    LOCKED  : out std_logic
    );
- end component;
+  end component;
+
+  component fifo_512x8
+  port(
+    din:        in  std_logic_vector(15 downto 0);
+    write_busy: in  std_logic;
+    fifo_full:  out std_logic;
+    dout:       out std_logic_vector(15 downto 0);
+    read_busy:  in  std_logic;
+    fifo_empty: out std_logic;
+    fifo_clk:   in  std_logic;
+    reset_al:   in  std_logic;
+    fifo_flush: in  std_logic
+ 	);
+  end component;
 
   signal sys_clk                                :   std_logic;
   signal pll_0, pll_90, pll_180, pll_270        :   std_logic;
@@ -87,6 +102,8 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
   signal read_empty_flag, read_full_flag        :   std_logic;
   signal write_empty_flag, write_full_flag      :   std_logic;
   signal write_req                              :   std_logic;
+
+  signal fifo_flush                             :   std_logic;
 
   -- Maquinas de Estados: xc6slx9-2tqg144
       --Maquina global
@@ -119,9 +136,22 @@ begin
     CLK_OUT2  => pll_90,
     CLK_OUT3  => pll_180,
     CLK_OUT4  => pll_270,
-    RESET     => '0',
+    RESET     => reset,
     LOCKED    => locked
   );
+
+  fifo: fifo_512x8
+  port map(
+    din         => fifo_data_out,
+    write_busy  =>
+    fifo_full   =>
+    dout        => fifo_data_in,
+    read_busy   =>
+    fifo_empty  =>
+    fifo_clk    => sys_clk,
+    reset_al    => reset,
+    fifo_flush  => fifo_flush
+  )
 
   --selección de reloj
   -- sys_clk <=  --clk_in  when clk_src = '0' else --esto se debe seleccionar al compilar. No se puede hacer por hardware
