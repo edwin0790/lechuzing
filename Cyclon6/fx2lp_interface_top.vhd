@@ -59,7 +59,9 @@ entity fx2lp_interface_top is
 
     -- señales que se comunican desde y hacia el sistema
     reset   : in    std_logic;                              -- fundamentalmente para sincronización
-    send_req: in    std_logic                               -- pedido de envío de datos
+    send_req: in    std_logic;                              -- pedido de envío de datos
+    data_out: out   std_logic_vector(port_width downto 0);
+    data_in : in    std_logic_vector(port_width downto 0)
   );
 end fx2lp_interface_top;
 
@@ -142,6 +144,9 @@ begin
   read_empty_flag  <= flagd;
 
   write_req <= send_req;
+
+  data_in <= fdata_out;
+  fdata_out <= data_in;
 
   -- control signaling
   with curr_state select
