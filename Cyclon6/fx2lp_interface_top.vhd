@@ -104,6 +104,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
   signal write_req                              :   std_logic;
 
   signal fifo_flush                             :   std_logic;
+  signal fifo_push, fifo_pop, fifo_full, fifo_empty : std_logic;
 
   -- Maquinas de Estados: xc6slx9-2tqg144
       --Maquina global
@@ -142,16 +143,16 @@ begin
 
   fifo: fifo_512x8
   port map(
-    din         => fifo_data_out,
-    write_busy  =>
-    fifo_full   =>
-    dout        => fifo_data_in,
-    read_busy   =>
-    fifo_empty  =>
+    din         => fdata_in,
+    write_busy  => fifo_push,
+    fifo_full   => fifo_full,
+    dout        => fdata_out,
+    read_busy   => fifo_pop,
+    fifo_empty  => fifo_empty,
     fifo_clk    => sys_clk,
     reset_al    => reset,
     fifo_flush  => fifo_flush
-  )
+  );
 
   --selección de reloj
   -- sys_clk <=  --clk_in  when clk_src = '0' else --esto se debe seleccionar al compilar. No se puede hacer por hardware
@@ -175,8 +176,6 @@ begin
 
   write_req <= send_req;
 
-  data_in <= fdata_out;
-  fdata_out <= data_in;
 
   -- control signaling
   with curr_state select
@@ -199,6 +198,12 @@ begin
   fdata_in <= fdata when curr_state = read_read else (others => 'Z');
 --              (others => '0');
 
+-- control de la memoria
+  fifo_push <= ((not slrd_int) and (not fifo_full));
+  fifo_pop  <= ((not slwr_int) and (not fifo_empty));
+
+  fifo_flush <= '1' when curr_state = read_addr else '0';
+  
   -- Implementacion de las maquinas de estado
   fsm: process(curr_state, write_full_flag, read_empty_flag)
     begin

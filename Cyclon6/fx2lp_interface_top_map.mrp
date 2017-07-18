@@ -11,7 +11,7 @@ Target Device  : xc6slx9
 Target Package : tqg144
 Target Speed   : -2
 Mapper Version : spartan6 -- $Revision: 1.55 $
-Mapped Date    : Thu Jul 13 16:25:13 2017
+Mapped Date    : Tue Jul 18 16:55:45 2017
 
 Design Summary
 --------------
@@ -27,7 +27,7 @@ Slice Logic Distribution:
   Number of LUT Flip Flop pairs used:            0
 
 IO Utilization:
-  Number of bonded IOBs:                         6 out of     102    5%
+  Number of bonded IOBs:                         7 out of     102    6%
     IOB Flip Flops:                              1
 
 Specific Feature Utilization:
@@ -64,8 +64,8 @@ Specific Feature Utilization:
 Average Fanout of Non-Clock Nets:                1.00
 
 Peak Memory Usage:  693 MB
-Total REAL time to MAP completion:  10 secs 
-Total CPU time to MAP completion:   7 secs 
+Total REAL time to MAP completion:  7 secs 
+Total CPU time to MAP completion:   4 secs 
 
 Table of Contents
 -----------------
@@ -127,14 +127,14 @@ WARNING:MapLib:701 - Signal faddr<0> connected to top level port faddr<0> has
 
 Section 3 - Informational
 -------------------------
-INFO:LIT:243 - Logical network flaga has no load.
-INFO:LIT:395 - The above info message is repeated 7 more times for the following
-   (max. 5 shown):
-   flagb,
-   flagc,
-   flagd,
-   clk_src,
-   reset
+INFO:LIT:243 - Logical network data_in<15> has no load.
+INFO:LIT:395 - The above info message is repeated 38 more times for the
+   following (max. 5 shown):
+   data_in<14>,
+   data_in<13>,
+   data_in<12>,
+   data_in<11>,
+   data_in<10>
    To see the details of these info messages, please use the -detail switch.
 INFO:MapLib:562 - No environment variables are currently set.
 INFO:LIT:244 - All of the single ended outputs in this design are using slew
@@ -150,9 +150,9 @@ INFO:Pack:1650 - Map created a placed design.
 
 Section 4 - Removed Logic Summary
 ---------------------------------
-  39 block(s) removed
+  40 block(s) removed
    2 block(s) optimized away
-  21 signal(s) removed
+  37 signal(s) removed
 
 Section 5 - Removed Logic
 -------------------------
@@ -179,6 +179,22 @@ The trimmed logic reported below is either:
    2. part of disabled logic
    3. a side-effect of other trimmed logic
 
+The signal "fdata_out<15>" is unused and has been removed.
+The signal "fdata_out<14>" is unused and has been removed.
+The signal "fdata_out<13>" is unused and has been removed.
+The signal "fdata_out<12>" is unused and has been removed.
+The signal "fdata_out<11>" is unused and has been removed.
+The signal "fdata_out<10>" is unused and has been removed.
+The signal "fdata_out<9>" is unused and has been removed.
+The signal "fdata_out<8>" is unused and has been removed.
+The signal "fdata_out<7>" is unused and has been removed.
+The signal "fdata_out<6>" is unused and has been removed.
+The signal "fdata_out<5>" is unused and has been removed.
+The signal "fdata_out<4>" is unused and has been removed.
+The signal "fdata_out<3>" is unused and has been removed.
+The signal "fdata_out<2>" is unused and has been removed.
+The signal "fdata_out<1>" is unused and has been removed.
+The signal "fdata_out<0>" is unused and has been removed.
 The signal "fdata<15>" is unused and has been removed.
  Unused block "fdata_15_OBUFT" (TRI) removed.
 The signal "fdata<14>" is unused and has been removed.
@@ -233,6 +249,7 @@ Unused block "fdata<6>" (PAD) removed.
 Unused block "fdata<7>" (PAD) removed.
 Unused block "fdata<8>" (PAD) removed.
 Unused block "fdata<9>" (PAD) removed.
+Unused block "fifo/Mram_data_array" (RAMB8BWER) removed.
 
 Optimized Block(s):
 TYPE 		BLOCK
@@ -252,6 +269,7 @@ Section 6 - IOB Properties
 | clk_in                             | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
 | clk_out                            | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | ODDR         |          |          |
 | pktend                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| reset                              | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
 | sloe                               | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | slrd                               | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
 | slwr                               | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |

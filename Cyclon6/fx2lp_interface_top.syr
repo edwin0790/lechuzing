@@ -111,10 +111,13 @@ Slice Utilization Ratio Delta      : 5
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/ipcore_dir/clk_wiz_v3_6.vhd" into library work
 Parsing entity <clk_wiz_v3_6>.
 Parsing architecture <xilinx> of entity <clk_wiz_v3_6>.
+Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" into library work
+Parsing entity <fifo_512x8>.
+Parsing architecture <fifo_arch> of entity <fifo_512x8>.
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" into library work
 Parsing entity <fx2lp_interface_top>.
 Parsing architecture <fx2lp_interface_arq> of entity <fx2lp_interface_top>.
-WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 107: Actual for formal port c1 is neither a static name nor a globally static expression
+WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 127: Actual for formal port c1 is neither a static name nor a globally static expression
 
 =========================================================================
 *                            HDL Elaboration                            *
@@ -123,13 +126,15 @@ WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclo
 Elaborating entity <fx2lp_interface_top> (architecture <fx2lp_interface_arq>) with generics from library <work>.
 
 Elaborating entity <clk_wiz_v3_6> (architecture <xilinx>) from library <work>.
-WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 140: Assignment to write_empty_flag ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 141: Assignment to read_full_flag ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 164: Assignment to fdata_in ignored, since the identifier is never used
-WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 174: write_req should be on the sensitivity list of the process
-INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 222. Case statement is complete. others clause is never selected
-WARNING:HDLCompiler:634 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 79: Net <sys_clk> does not have a driver.
-WARNING:HDLCompiler:634 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 84: Net <fdata_out[15]> does not have a driver.
+
+Elaborating entity <fifo_512x8> (architecture <fifo_arch>) from library <work>.
+INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" Line 147. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" Line 161. Case statement is complete. others clause is never selected
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 173: Assignment to write_empty_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 174: Assignment to read_full_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 214: write_req should be on the sensitivity list of the process
+INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 262. Case statement is complete. others clause is never selected
+WARNING:HDLCompiler:634 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 96: Net <sys_clk> does not have a driver.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -140,14 +145,14 @@ Synthesizing Unit <fx2lp_interface_top>.
         in_ep_addr = "00"
         out_ep_addr = "11"
         port_width = 15
+WARNING:Xst:647 - Input <data_in> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <flagb> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <flagc> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <clk_src> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT1> of the instance <pll> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT2> of the instance <pll> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <CLK_OUT4> of the instance <pll> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 113: Output port <LOCKED> of the instance <pll> is unconnected or connected to loadless signal.
-WARNING:Xst:653 - Signal <fdata_out> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 133: Output port <CLK_OUT1> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 133: Output port <CLK_OUT2> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 133: Output port <CLK_OUT4> of the instance <pll> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 133: Output port <LOCKED> of the instance <pll> is unconnected or connected to loadless signal.
 WARNING:Xst:653 - Signal <sys_clk> is used but never assigned. This sourceless signal will be automatically connected to value GND.
     Found 4-bit register for signal <curr_state>.
     Found finite state machine <FSM_0> for signal <curr_state>.
@@ -155,7 +160,7 @@ WARNING:Xst:653 - Signal <sys_clk> is used but never assigned. This sourceless s
     | States             | 9                                              |
     | Transitions        | 18                                             |
     | Inputs             | 3                                              |
-    | Outputs            | 5                                              |
+    | Outputs            | 6                                              |
     | Clock              | sys_clk (rising_edge)                          |
     | Reset              | reset (positive)                               |
     | Reset type         | asynchronous                                   |
@@ -164,26 +169,42 @@ WARNING:Xst:653 - Signal <sys_clk> is used but never assigned. This sourceless s
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 1-bit tristate buffer for signal <faddr_int<1>> created at line 148
-    Found 1-bit tristate buffer for signal <faddr_int<0>> created at line 148
-    Found 1-bit tristate buffer for signal <fdata<15>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<14>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<13>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<12>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<11>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<10>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<9>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<8>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<7>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<6>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<5>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<4>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<3>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<2>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<1>> created at line 162
-    Found 1-bit tristate buffer for signal <fdata<0>> created at line 162
+    Found 1-bit tristate buffer for signal <faddr_int<1>> created at line 182
+    Found 1-bit tristate buffer for signal <faddr_int<0>> created at line 182
+    Found 1-bit tristate buffer for signal <fdata<15>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<14>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<13>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<12>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<11>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<10>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<9>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<8>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<7>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<6>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<5>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<4>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<3>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<2>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<1>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata<0>> created at line 196
+    Found 1-bit tristate buffer for signal <fdata_in<15>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<14>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<13>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<12>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<11>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<10>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<9>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<8>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<7>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<6>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<5>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<4>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<3>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<2>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<1>> created at line 198
+    Found 1-bit tristate buffer for signal <fdata_in<0>> created at line 198
     Summary:
-	inferred  18 Tristate(s).
+	inferred  34 Tristate(s).
 	inferred   1 Finite State Machine(s).
 Unit <fx2lp_interface_top> synthesized.
 
@@ -193,25 +214,165 @@ Synthesizing Unit <clk_wiz_v3_6>.
 	no macro.
 Unit <clk_wiz_v3_6> synthesized.
 
+Synthesizing Unit <fifo_512x8>.
+    Related source file is "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd".
+    Found 512x16-bit dual-port RAM <Mram_data_array> for signal <data_array>.
+    Found 1-bit register for signal <fifo_empty_s>.
+    Found 9-bit register for signal <read_ptr>.
+    Found 9-bit register for signal <write_ptr>.
+    Found 10-bit register for signal <write_occupancy>.
+    Found 10-bit register for signal <read_occupancy>.
+    Found 1-bit register for signal <write_busy_d>.
+    Found 1-bit register for signal <fifo_full_s>.
+    Found 16-bit register for signal <dout>.
+    Found 9-bit adder for signal <write_ptr[8]_GND_12_o_add_1_OUT> created at line 59.
+    Found 9-bit adder for signal <read_ptr[8]_GND_12_o_add_4_OUT> created at line 78.
+    Found 10-bit adder for signal <read_occupancy[9]_GND_12_o_add_15_OUT> created at line 145.
+    Found 10-bit adder for signal <write_occupancy[9]_GND_12_o_add_19_OUT> created at line 159.
+    Found 10-bit subtractor for signal <GND_12_o_GND_12_o_sub_15_OUT<9:0>> created at line 144.
+    Found 10-bit subtractor for signal <GND_12_o_GND_12_o_sub_19_OUT<9:0>> created at line 158.
+    Found 10-bit 4-to-1 multiplexer for signal <read_occ_case_sel[1]_read_occupancy[9]_wide_mux_16_OUT> created at line 142.
+    Found 10-bit 4-to-1 multiplexer for signal <write_occ_case_sel[1]_write_occupancy[9]_wide_mux_20_OUT> created at line 156.
+    Summary:
+	inferred   1 RAM(s).
+	inferred   4 Adder/Subtractor(s).
+	inferred  57 D-type flip-flop(s).
+	inferred  11 Multiplexer(s).
+Unit <fifo_512x8> synthesized.
+
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# Tristates                                            : 18
- 1-bit tristate buffer                                 : 18
+# RAMs                                                 : 1
+ 512x16-bit dual-port RAM                              : 1
+# Adders/Subtractors                                   : 4
+ 10-bit addsub                                         : 2
+ 9-bit adder                                           : 2
+# Registers                                            : 8
+ 1-bit register                                        : 3
+ 10-bit register                                       : 2
+ 16-bit register                                       : 1
+ 9-bit register                                        : 2
+# Multiplexers                                         : 11
+ 10-bit 2-to-1 multiplexer                             : 8
+ 9-bit 2-to-1 multiplexer                              : 3
+# Tristates                                            : 34
+ 1-bit tristate buffer                                 : 34
 # FSMs                                                 : 1
 
 =========================================================================
+INFO:Xst:1767 - HDL ADVISOR - Resource sharing has identified that some arithmetic operations in this design can share the same physical resources for reduced device utilization. For improved clock frequency you may try to disable resource sharing.
 
 =========================================================================
 *                       Advanced HDL Synthesis                          *
 =========================================================================
 
+WARNING:Xst:1710 - FF/Latch <read_ptr_7> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_8> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_0> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_1> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_2> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_3> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_4> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_5> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_6> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_7> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_8> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_occupancy_9> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_0> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_1> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_2> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_3> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_4> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_5> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_6> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_7> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_8> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_9> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_10> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_11> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_12> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_13> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_14> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <dout_15> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_busy_d> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo_empty_s> (without init value) has a constant value of 1 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo_full_s> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_0> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_1> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_2> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_3> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_4> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_5> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_6> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_7> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_8> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_occupancy_9> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_0> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_1> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_2> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_3> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_4> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_5> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_6> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_7> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <write_ptr_8> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_0> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_1> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_2> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_3> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_4> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_5> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <read_ptr_6> (without init value) has a constant value of 0 in block <fifo>. This FF/Latch will be trimmed during the optimization process.
+
+Synthesizing (advanced) Unit <fifo_512x8>.
+The following registers are absorbed into accumulator <write_occupancy>: 1 register on signal <write_occupancy>.
+The following registers are absorbed into accumulator <read_occupancy>: 1 register on signal <read_occupancy>.
+The following registers are absorbed into accumulator <read_ptr>: 1 register on signal <read_ptr>.
+The following registers are absorbed into accumulator <write_ptr>: 1 register on signal <write_ptr>.
+INFO:Xst:3226 - The RAM <Mram_data_array> will be implemented as a BLOCK RAM, absorbing the following register(s): <dout>
+    -----------------------------------------------------------------------
+    | ram_type           | Block                               |          |
+    -----------------------------------------------------------------------
+    | Port A                                                              |
+    |     aspect ratio   | 512-word x 16-bit                   |          |
+    |     mode           | read-first                          |          |
+    |     clkA           | connected to internal node          | rise     |
+    |     weA            | connected to signal <write_busy>    | high     |
+    |     addrA          | connected to signal <write_ptr>     |          |
+    |     diA            | connected to signal <din>           |          |
+    -----------------------------------------------------------------------
+    | optimization       | speed                               |          |
+    -----------------------------------------------------------------------
+    | Port B                                                              |
+    |     aspect ratio   | 512-word x 16-bit                   |          |
+    |     mode           | write-first                         |          |
+    |     clkB           | connected to internal node          | rise     |
+    |     addrB          | connected to signal <("0",read_index)> |          |
+    |     doB            | connected to signal <dout>          |          |
+    -----------------------------------------------------------------------
+    | optimization       | speed                               |          |
+    -----------------------------------------------------------------------
+Unit <fifo_512x8> synthesized (advanced).
 
 =========================================================================
 Advanced HDL Synthesis Report
 
 Macro Statistics
+# RAMs                                                 : 1
+ 512x16-bit dual-port block RAM                        : 1
+# Adders/Subtractors                                   : 3
+ 10-bit addsub                                         : 2
+ 9-bit adder                                           : 1
+# Accumulators                                         : 4
+ 10-bit updown loadable accumulator                    : 2
+ 9-bit up loadable accumulator                         : 2
+# Registers                                            : 3
+ Flip-Flops                                            : 3
+# Multiplexers                                         : 10
+ 10-bit 2-to-1 multiplexer                             : 8
+ 9-bit 2-to-1 multiplexer                              : 2
 # FSMs                                                 : 1
 
 =========================================================================
@@ -219,6 +380,9 @@ Macro Statistics
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
+WARNING:Xst:1710 - FF/Latch <fifo_empty_s> (without init value) has a constant value of 1 in block <fifo_512x8>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo_full_s> (without init value) has a constant value of 0 in block <fifo_512x8>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <write_busy_d> (without init value) has a constant value of 0 in block <fifo_512x8>. This FF/Latch will be trimmed during the optimization process.
 Analyzing FSM <MFsm> for best encoding.
 Optimizing FSM <FSM_0> on signal <curr_state[1:4]> with gray encoding.
 -----------------------------
@@ -234,10 +398,28 @@ Optimizing FSM <FSM_0> on signal <curr_state[1:4]> with gray encoding.
  write_write     | 0100
  write_end       | 1100
 -----------------------------
-WARNING:Xst:1293 - FF/Latch <curr_state_FSM_FFd4> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_7> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_6> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_5> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_4> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_3> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_2> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_1> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/read_ptr_0> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_8> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_7> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_6> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_5> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_4> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_3> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_2> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_1> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <fifo/write_ptr_0> (without init value) has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd1> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd3> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd2> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd4> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <curr_state_FSM_FFd3> has a constant value of 0 in block <fx2lp_interface_top>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <fifo/read_ptr_8> of sequential type is unconnected in block <fx2lp_interface_top>.
 INFO:Xst:1901 - Instance pll/pll_base_inst in unit pll/pll_base_inst of type PLL_BASE has been replaced by PLL_ADV
 
 Optimizing unit <fx2lp_interface_top> ...
@@ -279,9 +461,12 @@ Primitive and Black Box Usage:
 #      VCC                         : 1
 # FlipFlops/Latches                : 1
 #      ODDR2                       : 1
+# RAMS                             : 1
+#      RAMB8BWER                   : 1
 # Clock Buffers                    : 5
 #      BUFG                        : 5
-# IO Buffers                       : 24
+# IO Buffers                       : 25
+#      IBUF                        : 1
 #      IBUFG                       : 1
 #      OBUF                        : 5
 #      OBUFT                       : 18
@@ -307,10 +492,12 @@ Slice Logic Distribution:
    Number of unique control sets:         0
 
 IO Utilization: 
- Number of IOs:                          32
- Number of bonded IOBs:                  24  out of    102    23%  
+ Number of IOs:                          64
+ Number of bonded IOBs:                  25  out of    102    24%  
 
 Specific Feature Utilization:
+ Number of Block RAM/FIFO:                1  out of     32     3%  
+    Number using Block RAM only:          1
  Number of BUFG/BUFGCTRLs:                5  out of     16    31%  
  Number of PLL_ADVs:                      1  out of      2    50%  
 
@@ -332,11 +519,13 @@ NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
 
 Clock Information:
 ------------------
------------------------------------+------------------------+-------+
-Clock Signal                       | Clock buffer(FF name)  | Load  |
------------------------------------+------------------------+-------+
-pll/pll_base_inst/CLKOUT2          | BUFG                   | 2     |
------------------------------------+------------------------+-------+
+-----------------------------------+---------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)     | Load  |
+-----------------------------------+---------------------------+-------+
+curr_state_FSM_FFd1                | NONE(fifo/Mram_data_array)| 1     |
+pll/pll_base_inst/CLKOUT2          | BUFG                      | 2     |
+-----------------------------------+---------------------------+-------+
+INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
 
 Asynchronous Control Signals Information:
 ----------------------------------------
@@ -348,12 +537,31 @@ Speed Grade: -2
 
    Minimum period: No path found
    Minimum input arrival time before clock: No path found
-   Maximum output required time after clock: No path found
+   Maximum output required time after clock: 5.693ns
    Maximum combinational path delay: No path found
 
 Timing Details:
 ---------------
 All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'curr_state_FSM_FFd1'
+  Total number of paths / destination ports: 16 / 16
+-------------------------------------------------------------------------
+Offset:              5.693ns (Levels of Logic = 1)
+  Source:            fifo/Mram_data_array (RAM)
+  Destination:       fdata<15> (PAD)
+  Source Clock:      curr_state_FSM_FFd1 rising
+
+  Data Path: fifo/Mram_data_array to fdata<15>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     RAMB8BWER:CLKBRDCLK->DOBDO15    1   2.100   0.681  fifo/Mram_data_array (fdata_out<15>)
+     OBUFT:I->O                2.912          fdata_15_OBUFT (fdata<15>)
+    ----------------------------------------
+    Total                      5.693ns (5.012ns logic, 0.681ns route)
+                                       (88.0% logic, 12.0% route)
 
 =========================================================================
 
@@ -363,15 +571,15 @@ Cross Clock Domains Report:
 =========================================================================
 
 
-Total REAL time to Xst completion: 12.00 secs
-Total CPU time to Xst completion: 9.01 secs
+Total REAL time to Xst completion: 6.00 secs
+Total CPU time to Xst completion: 6.03 secs
  
 --> 
 
 
-Total memory usage is 405964 kilobytes
+Total memory usage is 406680 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   16 (   0 filtered)
-Number of infos    :    5 (   0 filtered)
+Number of warnings :   92 (   0 filtered)
+Number of infos    :    8 (   0 filtered)
 
