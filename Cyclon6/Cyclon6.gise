@@ -96,12 +96,12 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1500407550" xil_pn:in_ck="8484145005015422541" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-6658582869466540199" xil_pn:start_ts="1500407536">
+    <transform xil_pn:end_ts="1500407737" xil_pn:in_ck="1008584480899972126" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-6658582869466540199" xil_pn:start_ts="1500407727">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForInputs"/>
-      <status xil_pn:value="InputAdded"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="fx2lp_interface_top.lso"/>
       <outfile xil_pn:name="fx2lp_interface_top.ngc"/>
@@ -118,21 +118,19 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1500407556" xil_pn:in_ck="2409227517223853396" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="-8576086096737069685" xil_pn:start_ts="1500407550">
-      <status xil_pn:value="FailedRun"/>
+    <transform xil_pn:end_ts="1500407743" xil_pn:in_ck="2409227517223853396" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="-8576086096737069685" xil_pn:start_ts="1500407737">
+      <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="_ngo"/>
       <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
       <outfile xil_pn:name="fx2lp_interface_top.bld"/>
       <outfile xil_pn:name="fx2lp_interface_top.ngd"/>
       <outfile xil_pn:name="fx2lp_interface_top_ngdbuild.xrpt"/>
     </transform>
-    <transform xil_pn:end_ts="1499973925" xil_pn:in_ck="2409227517223853397" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1448924893915930207" xil_pn:start_ts="1499973909">
+    <transform xil_pn:end_ts="1500407754" xil_pn:in_ck="2409227517223853397" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1448924893915930207" xil_pn:start_ts="1500407743">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
       <outfile xil_pn:name="fx2lp_interface_top.pcf"/>
       <outfile xil_pn:name="fx2lp_interface_top_map.map"/>
@@ -143,10 +141,9 @@
       <outfile xil_pn:name="fx2lp_interface_top_summary.xml"/>
       <outfile xil_pn:name="fx2lp_interface_top_usage.xml"/>
     </transform>
-    <transform xil_pn:end_ts="1499973943" xil_pn:in_ck="-7342888935083290898" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="93661965788626211" xil_pn:start_ts="1499973925">
+    <transform xil_pn:end_ts="1500407765" xil_pn:in_ck="-7342888935083290898" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="93661965788626211" xil_pn:start_ts="1500407754">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
       <outfile xil_pn:name="fx2lp_interface_top.ncd"/>
       <outfile xil_pn:name="fx2lp_interface_top.pad"/>
@@ -158,10 +155,9 @@
       <outfile xil_pn:name="fx2lp_interface_top_pad.txt"/>
       <outfile xil_pn:name="fx2lp_interface_top_par.xrpt"/>
     </transform>
-    <transform xil_pn:end_ts="1499973943" xil_pn:in_ck="2409227517223853265" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416184" xil_pn:start_ts="1499973937">
+    <transform xil_pn:end_ts="1500407765" xil_pn:in_ck="2409227517223853265" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416184" xil_pn:start_ts="1500407761">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
       <outfile xil_pn:name="fx2lp_interface_top.twr"/>
       <outfile xil_pn:name="fx2lp_interface_top.twx"/>
