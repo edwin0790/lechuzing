@@ -75,7 +75,7 @@ void TD_Init(void)             // Called once at startup
    SYNCDELAY;
 
    // set the slave FIFO interface to 48MHz
-   IFCONFIG |= 0x40;
+   IFCONFIG = 0xE3; // Internal cloclk, 48MHz, external out clock, 
    SYNCDELAY;
 
     // Default interface uses endpoint 2, zero the valid bit on all others
@@ -103,7 +103,7 @@ void TD_Init(void)             // Called once at startup
 
    // We want to get SOF interrupts
    USBIE |= bmSOF;
-   
+
   // Prepare data
       for (j=0;j<1024;j++)
       {
@@ -120,10 +120,10 @@ void TD_Init(void)             // Called once at startup
 }
 
 void TD_Poll(void)             // Called repeatedly while the device is idle
-{  
+{
 	BYTE dum;
 	if( EZUSB_HIGHSPEED( ) )
-	{ 
+	{
 		// Send data on EP2
 		while(!(EP2468STAT & bmEP2FULL))
 		{
@@ -144,7 +144,7 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 	}
 	else	// Full Speed
 	{
-	    // Perform USB activity based upon the Alt. Interface selected 
+	    // Perform USB activity based upon the Alt. Interface selected
 			// Send data on EP2
 		while(!(EP2468STAT & bmEP2FULL))
 		{
@@ -155,7 +155,7 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 			EP2BCL = 0x00;
 
 		}
-	
+
 		while(!(EP2468STAT & bmEP8EMPTY))
 			EP8BCL = 0x80;          // re(arm) EP8OUT
 	}
@@ -207,13 +207,13 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 
 	// ...FX2 in high speed mode
 	if( EZUSB_HIGHSPEED( ) )
-	{ 
-	    // Change configuration based upon the Alt. Interface selected 
+	{
+	    // Change configuration based upon the Alt. Interface selected
 	            // Using endpoint 1, 2 and 8, zero the valid bit on all others
 	            // Using endpoint 1, 2 and 8, zero the valid bit on all others
 	            EP2CFG = 0xDB;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=1024, BUF=3x
 	            SYNCDELAY;
-	
+
 	            EP1OUTCFG = (EP1OUTCFG & 0x7F);
 	        	SYNCDELAY;
 	        	EP1INCFG = (EP1INCFG & 0x7F);
@@ -227,7 +227,7 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 
 	            EP2ISOINPKTS = 0x03;
 
-	
+
 	            // Clear out any committed packets
 	            FIFORESET = 0x80;
 	            SYNCDELAY;
@@ -235,11 +235,11 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 	            SYNCDELAY;
 	            FIFORESET = 0x00;
 	            SYNCDELAY;
-	
+
 	            // Reset data toggle to 0
 	            TOGCTL = 0x12;  // EP2 IN
 	            TOGCTL = 0x32;  // EP2 IN Reset
-	            
+
 	            TOGCTL = 0x08;
 	            TOGCTL = 0x28;
 
@@ -250,12 +250,12 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 	}
     else
     {
-	    // Change configuration based upon the Alt. Interface selected 
+	    // Change configuration based upon the Alt. Interface selected
 	            // Using endpoint 1, 2 and 8, zero the valid bit on all others
 	            // Just using endpoint 1, 2 and 8, zero the valid bit on all others
 	            EP2CFG = 0xDB;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=1023, BUF=3x
 	            SYNCDELAY;
-	
+
 	            EP1OUTCFG = (EP1OUTCFG & 0x7F);
 	        	SYNCDELAY;
 	        	EP1INCFG = (EP1INCFG & 0x7F);
@@ -267,7 +267,7 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 	        	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
 	        	SYNCDELAY;
 
-	
+
 	            // Clear out any committed packets
 	            FIFORESET = 0x80;
 	            SYNCDELAY;
@@ -275,11 +275,11 @@ BOOL DR_SetInterface(void)       // Called when a Set Interface command is recei
 	            SYNCDELAY;
 	            FIFORESET = 0x00;
 	            SYNCDELAY;
-	
+
 	            // Reset data toggle to 0
 	            TOGCTL = 0x12;  // EP2 IN
 	            TOGCTL = 0x32;  // EP2 IN Reset
-	
+
 	            TOGCTL = 0x08;
 	            TOGCTL = 0x28;
 
@@ -371,7 +371,7 @@ void ISR_Ures(void) __interrupt 0
     ((CONFIGDSCR __xdata *) pConfigDscr)->type = CONFIG_DSCR;
     pOtherConfigDscr = pHighSpeedConfigDscr;
     ((CONFIGDSCR __xdata *) pOtherConfigDscr)->type = OTHERSPEED_DSCR;
-   
+
    EZUSB_IRQ_CLEAR();
    USBIRQ = bmURES;         // Clear URES IRQ
    dum = D2OFF;				// Turn off high-speed LED
@@ -434,7 +434,7 @@ void ISR_Ep1out(void) __interrupt 0
 // We don't do anything with the data.  We just indicate we are done with the buffer.
 void ISR_Ep2inout(void) __interrupt 0
 {
-    // Perform USB activity based upon the Alt. Interface selected 
+    // Perform USB activity based upon the Alt. Interface selected
            // check EP8 EMPTY(busy) bit in EP2468STAT (SFR), core set's this bit when FIFO is empty
 	if(!(EP2468STAT & bmEP8EMPTY))
 		EP8BCL = 0x80;          // re(arm) EP2OUT

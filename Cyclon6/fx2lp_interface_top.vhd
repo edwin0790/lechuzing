@@ -44,7 +44,7 @@ entity fx2lp_interface_top is
     pktend  : out   std_logic;
     done    : out   std_logic;
     -- reloj
-      -- se desconoce si se utiliza un reloj externo al de la placa ya que
+      -- se utiliza el reloj que provee el EZ-USB-FX2LP
       -- podría usarse el reloj global usado para mover el sistema que se pretende
       -- comunicar, uno interno generado por esta interfaz, o el reloj propio del
       -- FX2LP, por lo que se provee entrada y salida de reloj y un pin de
@@ -55,7 +55,6 @@ entity fx2lp_interface_top is
       -- clk_src '0' => timing dado por reloj externo
     clk_in  : in    std_logic;                              -- entrada de reloj
     clk_out : out   std_logic;                              -- salido de reloj
-    clk_src : in    std_logic;                              -- seleccion de modo de reloj.
 
     -- señales que se comunican desde y hacia el sistema
     reset   : in    std_logic;                              -- fundamentalmente para sincronización
@@ -154,13 +153,6 @@ begin
     fifo_flush  => fifo_flush
   );
 
-  --selección de reloj
-  -- sys_clk <=  --clk_in  when clk_src = '0' else --esto se debe seleccionar al compilar. No se puede hacer por hardware
-  --             pll_180;
-
-  -- clk_out <=  --clk_in  when  clk_src = '0' else --idem arriba
-  --             pll_0;
-
   --conexiones de señales internas hacia el exterior
   slwr   <= slwr_int;
   slrd   <= slrd_int;
@@ -203,7 +195,7 @@ begin
   fifo_pop  <= ((not slwr_int) and (not fifo_empty));
 
   fifo_flush <= '1' when curr_state = read_addr else '0';
-  
+
   -- Implementacion de las maquinas de estado
   fsm: process(curr_state, write_full_flag, read_empty_flag)
     begin
@@ -252,7 +244,7 @@ begin
         when write_write =>
           next_state <= write_end;
 
-        when write_end =>
+        when write_end =>T
           if((write_full_flag = '1') and (read_empty_flag = '1'))then
             next_state <= write_write;
           else
