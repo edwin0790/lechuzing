@@ -19,10 +19,7 @@ use unisim.vcomponents.all;
 
 entity fx2lp_interface_top is
   generic(
-  -- address are:
-  --  * EP2 = "00"
-  --  * EP4 = "01"
-  --  * EP6 = "10"
+  -- address are:|
   --  * EP8 = "11"
   constant in_ep_addr:	std_logic_vector(1 downto 0) := "00";
   constant out_ep_addr:	std_logic_vector(1 downto 0) := "11";
@@ -35,8 +32,10 @@ entity fx2lp_interface_top is
     slrd    : out   std_logic;                              -- señal de lectura
     slwr    : out   std_logic;                              -- señal de escritura
 
+                                                            -- EP2 streaming in (to pc)
     flaga   : in    std_logic;                              -- EP2_full
     flagb   : in    std_logic;                              -- EP2_empty
+                                                            -- EP8 bulk out (from pc)
     flagc   : in    std_logic;                              -- EP8_full
     flagd   : in    std_logic;                              -- EP8_empty
     sloe    : out   std_logic;                              -- señal de habilitación de salida
@@ -45,14 +44,6 @@ entity fx2lp_interface_top is
     done    : out   std_logic;
     -- reloj
       -- se utiliza el reloj que provee el EZ-USB-FX2LP
-      -- podría usarse el reloj global usado para mover el sistema que se pretende
-      -- comunicar, uno interno generado por esta interfaz, o el reloj propio del
-      -- FX2LP, por lo que se provee entrada y salida de reloj y un pin de
-      -- seleccion, clk_src.
-      -- En caso de reloj interno, el reloj externo será el de la Mojo, es decir
-      -- de 50 MHz, para que el pll pueda obtener una señal de 48 MHz
-      -- clk_src '1' => reloj interno se emite por clk_out.
-      -- clk_src '0' => timing dado por reloj externo
     clk_in  : in    std_logic;                              -- entrada de reloj
     clk_out : out   std_logic;                              -- salido de reloj
 
@@ -153,6 +144,9 @@ begin
     fifo_flush  => fifo_flush
   );
 
+  -- reloj
+  sys_clk <= pll_90;
+
   --conexiones de señales internas hacia el exterior
   slwr   <= slwr_int;
   slrd   <= slrd_int;
@@ -182,7 +176,7 @@ begin
               '1';
 
   with curr_state select
-    sloe_int <= '0' when read_addr | read_wait_empty | read_read | read_end,
+    sloe_int <= '0' when read_wait_empty | read_read | read_end,
                 '1' when others;
 
   fdata <= fdata_out when curr_state = write_write else (others => 'Z');
@@ -233,9 +227,9 @@ begin
           next_state <= write_no_full;
 
         when write_no_full =>
-          if(read_empty_flag = '0')then
+          if(read_empty_flag = '1')then
             next_state <= idle;
-          elsif(write_full_flag = '1')then
+          elsif(write_full_flag = '0')then
             next_state <= write_write;
           else
             next_state <= write_no_full;
@@ -244,7 +238,7 @@ begin
         when write_write =>
           next_state <= write_end;
 
-        when write_end =>T
+        when write_end =>
           if((write_full_flag = '1') and (read_empty_flag = '1'))then
             next_state <= write_write;
           else

@@ -1,0 +1,3 @@
+work	"fifo_512x8.vhd"
+work	"fx2lp_interface_top.vhd"
+work	"ipcore_dir/clk_wiz_v3_6.vhd"

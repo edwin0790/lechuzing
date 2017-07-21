@@ -1,0 +1,4 @@
+vhdl isim_temp "ipcore_dir/clk_wiz_v3_6.vhd"
+vhdl isim_temp "fifo_512x8.vhd"
+vhdl isim_temp "fx2lp_interface_top.vhd"
+vhdl isim_temp "interface_test_bench.vhd"

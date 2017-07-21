@@ -1,0 +1,4 @@
+vhdl work "ipcore_dir/clk_wiz_v3_6.vhd"
+vhdl work "fifo_512x8.vhd"
+vhdl work "fx2lp_interface_top.vhd"
+vhdl work "interface_test_bench.vhd"
