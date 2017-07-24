@@ -155,8 +155,9 @@ BEGIN
       fdata <= x"BEDF";
 
       wait until slrd = '0';
+      wait for 10 ns;
       flagd <= '0';
-      
+
       send_req <= '1';
 
       wait for clk_in_period*10;
