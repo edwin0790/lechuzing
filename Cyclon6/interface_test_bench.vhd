@@ -162,7 +162,7 @@ BEGIN
       send_req <= '1';
 
       wait for clk_in_period*10;
-
+      send_req <= '0';
       -- insert stimulus here
 
       wait;

@@ -2,28 +2,28 @@ Command line:
    fx2lp_interface_top_isim_beh.exe
      -simmode  gui
      -simrunnum  0
-     -socket  51520
+     -socket  43569
 
-Tue Jul 25 15:19:50 2017
+Tue Jul 25 17:17:05 2017
 
 
  Elaboration Time: 0.04 sec
 
- Current Memory Usage: 244.384 Meg
+ Current Memory Usage: 244.388 Meg
 
- Total Signals          : 330
- Total Nets             : 8649
+ Total Signals          : 331
+ Total Nets             : 8650
  Total Signal Drivers   : 203
  Total Blocks           : 25
  Total Primitive Blocks : 21
  Total Processes        : 144
  Total Traceable Variables  : 168
- Total Scalar Nets and Variables : 13498
+ Total Scalar Nets and Variables : 13499
 Total Line Count : 936
 
  Total Simulation Time: 0.05 sec
 
- Current Memory Usage: 319.885 Meg
+ Current Memory Usage: 319.889 Meg
 
-Tue Jul 25 15:20:25 2017
+Tue Jul 25 17:17:31 2017
 

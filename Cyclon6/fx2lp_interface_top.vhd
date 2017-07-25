@@ -141,7 +141,7 @@ begin
     fifo_empty  => fifo_empty,
     fifo_clk    => sys_clk,
     reset_al    => reset,
-    fifo_flush  => reset
+    fifo_flush  => fifo_flush
   );
 
   -- reloj
@@ -186,7 +186,7 @@ begin
 
 -- control de la memoria
   fifo_push <= ((not slrd_int) and (not fifo_full));
-  fifo_pop  <= ((not slwr_int) and ( fifo_empty));
+  fifo_pop  <= ((not slwr_int) and (not fifo_empty));
 
   fifo_flush <= '1' when curr_state = read_addr else '0';
 
@@ -239,7 +239,7 @@ begin
           next_state <= write_end;
 
         when write_end =>
-          if((write_full_flag = '1') and (read_empty_flag = '1'))then
+          if((write_full_flag = '1') and (read_empty_flag = '0') and (write_req = '1'))then
             next_state <= write_write;
           else
             next_state <= idle;

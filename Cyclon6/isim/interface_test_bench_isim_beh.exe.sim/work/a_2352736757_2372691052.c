@@ -360,7 +360,15 @@ LAB21:    goto LAB20;
 
 LAB23:    goto LAB21;
 
-LAB24:    xsi_set_current_line(168, ng0);
+LAB24:    xsi_set_current_line(165, ng0);
+    t2 = (t0 + 6408);
+    t3 = (t2 + 56U);
+    t4 = *((char **)t3);
+    t5 = (t4 + 56U);
+    t6 = *((char **)t5);
+    *((unsigned char *)t6) = (unsigned char)2;
+    xsi_driver_first_trans_fast(t2);
+    xsi_set_current_line(168, ng0);
 
 LAB30:    *((char **)t1) = &&LAB31;
     goto LAB1;
