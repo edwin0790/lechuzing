@@ -1,7 +1,7 @@
 Release 14.7 par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Edwin-Linux::  Fri Jul 21 16:47:00 2017
+Edwin-Linux::  Tue Jul 25 15:26:11 2017
 
 par -w -intstyle ise -ol high -mt off fx2lp_interface_top_map.ncd
 fx2lp_interface_top.ncd fx2lp_interface_top.pcf 
@@ -105,7 +105,7 @@ Starting Router
 
 Phase  1  : 667 unrouted;      REAL time: 3 secs 
 
-Phase  2  : 603 unrouted;      REAL time: 3 secs 
+Phase  2  : 603 unrouted;      REAL time: 4 secs 
 
 Phase  3  : 199 unrouted;      REAL time: 4 secs 
 
@@ -113,17 +113,17 @@ Phase  4  : 199 unrouted; (Par is working to improve performance)     REAL time:
 
 Updating file: fx2lp_interface_top.ncd with current fully routed design.
 
-Phase  5  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  5  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 
-Phase  6  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  6  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 
-Phase  7  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  7  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 
-Phase  8  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  8  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 
-Phase  9  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase  9  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 
-Phase 10  : 0 unrouted; (Par is working to improve performance)     REAL time: 4 secs 
+Phase 10  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 Total REAL time to Router completion: 5 secs 
 Total CPU time to Router completion: 4 secs 
 

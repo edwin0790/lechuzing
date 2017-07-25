@@ -11,7 +11,7 @@ Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/inter
 Starting static elaboration
 Completed static elaboration
 Fuse Memory Usage: 117556 KB
-Fuse CPU Usage: 1400 ms
+Fuse CPU Usage: 1320 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package std_logic_arith
@@ -35,9 +35,9 @@ Compiling architecture fifo_arch of entity fifo_512x8 [fifo_512x8_default]
 Compiling architecture fx2lp_interface_arq of entity fx2lp_interface_top [\fx2lp_interface_top(('0','0'),(...]
 Compiling architecture behavior of entity interface_test_bench
 Time Resolution for simulation is 1ps.
-Waiting for 6 sub-compilation(s) to finish...
+Waiting for 3 sub-compilation(s) to finish...
 Compiled 33 VHDL Units
 Built simulation executable /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_isim_beh.exe
 Fuse Memory Usage: 707800 KB
-Fuse CPU Usage: 1740 ms
-GCC CPU Usage: 1810 ms
+Fuse CPU Usage: 1670 ms
+GCC CPU Usage: 1980 ms

@@ -151,6 +151,7 @@ BEGIN
       flagd <= '1';
 
       wait until slrd = '0';
+      wait for 10 ns;
 
       fdata <= x"BEDF";
 
