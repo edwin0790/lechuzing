@@ -19,11 +19,11 @@ use unisim.vcomponents.all;
 
 entity fx2lp_interface_top is
   generic(
-  -- address are:|
-  --  * EP8 = "11"
-  constant in_ep_addr:	std_logic_vector(1 downto 0) := "00";
-  constant out_ep_addr:	std_logic_vector(1 downto 0) := "11";
-  constant port_width: integer := 15
+    -- address are:|
+    --  * EP8 = "11"
+    in_ep_addr  :	std_logic_vector(1 downto 0) := "00";
+    out_ep_addr :	std_logic_vector(1 downto 0) := "11";
+    port_width  : integer := 15
   );
   port(
     -- señales que van y vienen desde y hacia el FX2LP
@@ -51,36 +51,24 @@ entity fx2lp_interface_top is
     reset   : in    std_logic;                              -- fundamentalmente para sincronización
     send_req: in    std_logic;                              -- pedido de envío de datos
     data_out: out   std_logic_vector(port_width downto 0);
-    data_in : in    std_logic_vector(port_width downto 0)
+    data_in : in    std_logic_vector(port_width downto 0);
+    push    : out   std_logic;
+    pop     : out   std_logic
   );
 end fx2lp_interface_top;
 
 architecture fx2lp_interface_arq of fx2lp_interface_top is
 
   component clk_wiz_v3_6
-  port(
-    CLK_IN1 : in  std_logic;
-    CLK_OUT1: out std_logic;
-    CLK_OUT2: out std_logic;
-    CLK_OUT3: out std_logic;
-    CLK_OUT4: out std_logic;
-    RESET   : in  std_logic;
-    LOCKED  : out std_logic
+    port(
+      CLK_IN1 : in  std_logic;
+      CLK_OUT1: out std_logic;
+      CLK_OUT2: out std_logic;
+      CLK_OUT3: out std_logic;
+      CLK_OUT4: out std_logic;
+      RESET   : in  std_logic;
+      LOCKED  : out std_logic
    );
-  end component;
-
-  component fifo_512x8
-  port(
-    din:        in  std_logic_vector(15 downto 0);
-    write_busy: in  std_logic;
-    fifo_full:  out std_logic;
-    dout:       out std_logic_vector(15 downto 0);
-    read_busy:  in  std_logic;
-    fifo_empty: out std_logic;
-    fifo_clk:   in  std_logic;
-    reset_al:   in  std_logic;
-    fifo_flush: in  std_logic
- 	);
   end component;
 
   signal sys_clk                                :   std_logic;
@@ -93,18 +81,16 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
   signal write_empty_flag, write_full_flag      :   std_logic;
   signal write_req                              :   std_logic;
 
-  signal fifo_flush                             :   std_logic;
-  signal fifo_push, fifo_pop, fifo_full, fifo_empty : std_logic;
-
   -- Maquinas de Estados: xc6slx9-2tqg144
       --Maquina global
-      type global_states is
-      (
-        idle,
-        read_addr, read_wait_empty, read_read, read_end,
-        write_addr, write_no_full, write_write, write_end
-      );
-      signal curr_state, next_state : global_states := idle;
+  type global_states is
+    (
+      idle,
+      read_addr, read_wait_empty, read_read, read_end,
+      write_addr, write_no_full, write_write, write_end
+    );
+  signal curr_state, next_state : global_states := idle;
+
 begin
 
   oddr_y : ODDR2 	                                           -- clk out buffer
@@ -129,19 +115,6 @@ begin
     CLK_OUT4  => pll_270,
     RESET     => '0',
     LOCKED    => locked
-  );
-
-  fifo: fifo_512x8
-  port map(
-    din         => fdata_in,
-    write_busy  => fifo_push,
-    fifo_full   => fifo_full,
-    dout        => fdata_out,
-    read_busy   => fifo_pop,
-    fifo_empty  => fifo_empty,
-    fifo_clk    => sys_clk,
-    reset_al    => (not reset),
-    fifo_flush  => fifo_flush
   );
 
   -- reloj
@@ -185,14 +158,16 @@ begin
 
   with curr_state select
     fdata_in <= fdata     when read_wait_empty | read_read | read_end,
-                fdata_in  when others;
+                fdata_in   when others;
 --              (others => '0');
 
--- control de la memoria
-  fifo_push <= ((not slrd_int) and (not fifo_full));
-  fifo_pop  <= ((not slwr_int) and (not fifo_empty));
+  data_out <= fdata_in;
 
-  fifo_flush <= '1' when curr_state = read_addr else '0';
+  fdata_out <= data_in when write_req = '1';
+
+-- control de la memoria
+  push <= ((not slrd_int));
+  pop  <= ((not slwr_int));
 
   -- Implementacion de las maquinas de estado
   fsm: process(curr_state, write_full_flag, read_empty_flag)
