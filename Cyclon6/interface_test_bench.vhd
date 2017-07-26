@@ -151,15 +151,18 @@ BEGIN
       flagd <= '1';
 
       wait until slrd = '0';
+      wait until slrd = '1';
       wait for 10 ns;
 
       fdata <= x"BEDF";
 
       wait until slrd = '0';
+      wait until slrd = '1';
       wait for 10 ns;
       flagd <= '0';
 
       send_req <= '1';
+      fdata <= (others => 'Z');
 
       wait for clk_in_period*10;
       send_req <= '0';

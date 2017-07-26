@@ -140,7 +140,7 @@ begin
     read_busy   => fifo_pop,
     fifo_empty  => fifo_empty,
     fifo_clk    => sys_clk,
-    reset_al    => reset,
+    reset_al    => (not reset),
     fifo_flush  => fifo_flush
   );
 
@@ -179,9 +179,13 @@ begin
     sloe_int <= '0' when read_wait_empty | read_read | read_end,
                 '1' when others;
 
-  fdata <= fdata_out when curr_state = write_write else (others => 'Z');
+  with curr_state select
+    fdata <=  fdata_out        when write_no_full | write_write | write_end,
+              (others => 'Z')  when others;
 
-  fdata_in <= fdata when curr_state = read_read else (others => 'Z');
+  with curr_state select
+    fdata_in <= fdata     when read_wait_empty | read_read | read_end,
+                fdata_in  when others;
 --              (others => '0');
 
 -- control de la memoria

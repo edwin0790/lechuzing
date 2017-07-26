@@ -1,4 +1,4 @@
-Running: /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_isim_beh.exe -prj /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_beh.prj work.interface_test_bench 
+Running: /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/fuse -relaunch -intstyle "ise" -incremental -lib "secureip" -o "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_isim_beh.exe" -prj "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_beh.prj" "work.interface_test_bench" 
 ISim P.20131013 (signature 0xfbc00daa)
 Number of CPUs detected in this system: 4
 Turning on mult-threading, number of parallel sub-compilation jobs: 8 
@@ -7,11 +7,12 @@ Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/ipcor
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" into library work
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" into library work
 WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 117: Actual for formal port c1 is neither a static name nor a globally static expression
+WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 143: Actual for formal port reset_al is neither a static name nor a globally static expression
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 117556 KB
-Fuse CPU Usage: 1290 ms
+Fuse Memory Usage: 117560 KB
+Fuse CPU Usage: 1420 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package std_logic_arith
@@ -35,9 +36,9 @@ Compiling architecture fifo_arch of entity fifo_512x8 [fifo_512x8_default]
 Compiling architecture fx2lp_interface_arq of entity fx2lp_interface_top [\fx2lp_interface_top(('0','0'),(...]
 Compiling architecture behavior of entity interface_test_bench
 Time Resolution for simulation is 1ps.
-Waiting for 3 sub-compilation(s) to finish...
+Waiting for 1 sub-compilation(s) to finish...
 Compiled 33 VHDL Units
 Built simulation executable /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_isim_beh.exe
-Fuse Memory Usage: 707800 KB
-Fuse CPU Usage: 1650 ms
-GCC CPU Usage: 1890 ms
+Fuse Memory Usage: 708048 KB
+Fuse CPU Usage: 1740 ms
+GCC CPU Usage: 240 ms
