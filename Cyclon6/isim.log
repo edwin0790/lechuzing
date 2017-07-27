@@ -121,3 +121,4 @@ at 0 ps, Instance /interface_test_bench/uut/fifo/ : Warning: CONV_INTEGER: There
 Finished circuit initialization process.
 at 0 ps, Instance /interface_test_bench/uut/fifo/ : Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
 at 0 ps, Instance /interface_test_bench/uut/fifo/ : Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+# exit 0

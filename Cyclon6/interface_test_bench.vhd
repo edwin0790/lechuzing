@@ -44,8 +44,13 @@ ARCHITECTURE behavior OF interface_test_bench IS
     -- Component Declaration for the Unit Under Test (UUT)
 
     COMPONENT fx2lp_interface_top
+    generic(
+        in_ep_addr  :	std_logic_vector(1 downto 0) := "00";
+        out_ep_addr :	std_logic_vector(1 downto 0) := "11";
+        port_width  : integer := 15
+        );
     PORT(
-         fdata : INOUT  std_logic_vector(15 downto 0);
+         fdata : INOUT  std_logic_vector(port_width downto 0);
          faddr : OUT  std_logic_vector(1 downto 0);
          slrd : OUT  std_logic;
          slwr : OUT  std_logic;
@@ -60,19 +65,35 @@ ARCHITECTURE behavior OF interface_test_bench IS
          clk_out : OUT  std_logic;
          reset : IN  std_logic;
          send_req : IN  std_logic;
-         data_out : OUT  std_logic_vector(15 downto 0);
-         data_in : IN  std_logic_vector(15 downto 0)
+         data_out : OUT  std_logic_vector(port_width downto 0);
+         data_in : IN  std_logic_vector(port_width downto 0)
         );
     END COMPONENT;
 
+    component fi_ram_memory
+    generic
+    (
+      port_width: integer := 15;
+      mem_depth:  integer := 9    -- en bits
+    );
+    port
+    (
+      address:  in    std_logic_vector((mem_depth-1) downto 0);
+      data_in:  in    std_logic_vector(port_width downto 0);
+      data_out: out   std_logic_vector(port_width downto 0);
+      push:     in    std_logic;
+      pop:      in    std_logic;
+      reset:    in    std_logic
+      );
+    end component;
 
    --Inputs
-   signal flaga : std_logic := '0';
+   signal flaga : std_logic := '1';
    signal flagb : std_logic := '0';
-   signal flagc : std_logic := '0';
+   signal flagc : std_logic := '1';
    signal flagd : std_logic := '0';
    signal clk_in : std_logic := '0';
-   signal reset : std_logic := '0';
+   signal reset : std_logic := '1';
    signal send_req : std_logic := '0';
    signal data_in : std_logic_vector(15 downto 0) := (others => '0');
 
@@ -93,10 +114,17 @@ ARCHITECTURE behavior OF interface_test_bench IS
    constant clk_in_period : time := 21 ns;
    constant clk_out_period : time := 21 ns;
 
+   constant port_width: integer := 15;
+   constant mem_depth: integer := 3;
+
 BEGIN
 
 	-- Instantiate the Unit Under Test (UUT)
-   uut: fx2lp_interface_top PORT MAP (
+   uut: fx2lp_interface_top
+   generic map(
+          port_width => port_width
+        )
+   PORT MAP (
           fdata => fdata,
           faddr => faddr,
           slrd => slrd,
@@ -115,6 +143,20 @@ BEGIN
           data_out => data_out,
           data_in => data_in
         );
+
+  memoria: fi_ram_memory
+  generic map(
+      port_width => port_width,
+      mem_depth => mem_depth
+    )
+  port map(
+      address => address,
+      data_in => data_out,
+      data_out=> data_in,
+      push => push,
+      pop => pop,
+      reset => reset
+    );
 
    -- Clock process definitions
    clk_in_process :process

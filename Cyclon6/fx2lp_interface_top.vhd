@@ -125,7 +125,6 @@ begin
   slrd   <= slrd_int;
   sloe   <= sloe_int;
   faddr  <= faddr_int;
-  pktend <= '1';
   -- done   <= done_int; --for debug
 
   write_full_flag  <= flaga;
@@ -165,9 +164,19 @@ begin
 
   fdata_out <= data_in when write_req = '1';
 
+  process(write_req)
+  begin
+    if(falling_edge(write_req))then
+      pktend <= '0';
+    else
+      pktend <= '1';
+    end if;
+  end process;
+
 -- control de la memoria
   push <= ((not slrd_int));
   pop  <= ((not slwr_int));
+
 
   -- Implementacion de las maquinas de estado
   fsm: process(curr_state, write_full_flag, read_empty_flag)
