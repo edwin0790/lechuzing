@@ -37,22 +37,31 @@
   La norma USB 2.0 incorpora y modifica términos y conceptos que es conveniente
   conocer antes de una descripción más profunda de los elementos de interés para
   el presente trabajo.
-    \itemize{begin}
-    \item {\bf \host}: Es el dispositivo central de la comunicación USB. Solo
-    puede existir un \host y es la PC, o el dispositivo que contenga el
-    controlador USB. Es quien asigna las direcciones de cada dispositivo y
-    solicita alguna acción a los \devices.
-    \item {\bf \endpoint}: Es la porción direccionable de \device que sea emisor
-    o destino de información respecto al \host.
-    \item {\bf \device}: Es toda unidad lógica o física que realiza una función.
-    \item {\bf \hub}: Es un \device que permite conectar una o varias funciones,
-    aguas abajo
-    \item {\bf \functions}
-    \item {\bf }
-    \itemize{end}
+    \subsection{Dispositivos que intrevienen}
+      \subsubsection{\host}
+      Es el dispositivo central de la comunicación USB. Solo
+      puede existir un \host y es la PC, o el dispositivo que contenga el
+      \host~\controller. Es quien asigna las direcciones de cada dispositivo y
+      solicita alguna acción a los \devices.
+      \subsubsection{\device}
+      Es toda unidad lógica o física que realiza una función.
+      \subsubsection{\hub}
+      Es un \device que permite conectar una o varias funciones,
+      aguas abajo.
+      \subsubsection{\function}Cualquier \device que agregues capacidades al \host.
+      \subsubsection{\ep}Es la porción direccional de \device que sea emisor
+      o destino de información respecto al \host.
+      \subsubsection{\controller}Se refiere a la interfaz USB, compuesta del
+      software y hardware que posibilitan la comunicación.
+
   \section{Topología USB}
-  Cualquier sistema de comunicación USB está distribuido de manera centralizada
-  con respecto al \host%BUSCAR SINONIMO
+  Cualquier sistema de comunicación USB posee una topología en estrella por
+  niveles. Cada centro de los niveles de la estrella es un \hub.
+  En el nivel superiorse encuentra el \host%BUSCAR SINONIMO
+  , el \hub raíz, y luego, por cada \hub adicional, se agrega un nuevo nivel.
+  Debido a las restricciones temporales, no puede haber más de 7 niveles.
+  Cada \device no puede enviar o recibir información sin la solicitud expresa
+  del \host.
 
   % \section{Reseña histórica}
   %
