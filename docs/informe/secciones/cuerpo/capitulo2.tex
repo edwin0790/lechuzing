@@ -39,18 +39,24 @@
   el presente trabajo.
     \subsection{Dispositivos que intrevienen}
       \subsubsection{\host}
-      Es el dispositivo central de la comunicación USB. Solo
-      puede existir un \host y es la PC, o el dispositivo que contenga el
-      \host~\controller. Es quien asigna las direcciones de cada dispositivo y
-      solicita alguna acción a los \devices.
+      Es el dispositivo central de la comunicación USB. Solo puede existir solo
+      un \host y es la PC, o el dispositivo que contenga el \host~\controller.
+      Es quien asigna las direcciones de cada dispositivo y solicita alguna
+      acción a los \devices.
+
       \subsubsection{\device}
       Es toda unidad lógica o física que realiza una función.
+
       \subsubsection{\hub}
-      Es un \device que permite conectar una o varias funciones,
-      aguas abajo.
-      \subsubsection{\function}Cualquier \device que agregues capacidades al \host.
-      \subsubsection{\ep}Es la porción direccional de \device que sea emisor
-      o destino de información respecto al \host.
+      Es un \device que permite conectar una o varias funciones, aguas abajo.
+
+      \subsubsection{\function}
+      Cualquier \device que agregues capacidades al \host.
+
+      \subsubsection{\ep}
+      Es la porción direccional de \device que sea emisor o destino de
+      información respecto al \host.
+
       \subsubsection{\controller}Se refiere a la interfaz USB, compuesta del
       software y hardware que posibilitan la comunicación.
 
