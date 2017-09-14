@@ -1,107 +1,154 @@
 \chapter{USB 2.0}
-  %INTORDUCCION
+  %INTRODUCCION
 
   \section{Introducción}
-  Desde su primera especificación, lanzada en 1996, hasta la fecha la norma USB
-  ha ido adquiriendo importancia y relevancia, debido a la aceptación que tuvo
-  por parte de los fabricantes y los usuarios.
+  El Bus Serie Universal, o USB, (acrónimo del inglés {\it Universal Serial Bus})
+  es uno de los ejes centrales del presente trabajo. Por este motivo, se hace a
+  continuación una revisión de los aspectos más relevantes de la norma.
 
-  USB, acrónimo de Universal Serial Bus (o Bus Serie Universal, en español) es
-  una norma de comunicación pensada originalmente para comunicar periféricos con
-  la computadora. Sin embargo, hoy en día brinda la posibilidad no solo de
-  obtener diferentes dispositivos que se comunican de manera simple, robusta y
-  veloz con cualquier PC, sino que, además permite al usuario obtener una fuente
-  segura y confiable de energía para cualquier aparato electrónico que así lo
-  requiera. Por este motivo, se está transformado en la única de comunicación de
-  cualquier dispositivo de consumo masivo.
+  Para describir un sistema USB, se abordan tres temáticas diferentes, pero
+  relacionadas una con la otra:
 
-  Observando las especificaciones, USB es una comunicación que posee una
-  complejidad mucho mayor que la que presentan los sistemas serie o paralelo
-  tradicionales. Introduce nuevos términos, tales como extremos,
-  isocronismo o enumeración, y le da nuevo significado a palabras ya conocidas,
-  como configuración, interrupción o interfaz. No obstante esto, está muy bien
-  separada por capas que facilitan el trabajo de la implementación del sistema
-  y pueden ser vistas como sistemas aislados.
+  \begin{itemize}
+    \item Interconexión USB
+    \item \host USB
+    \item Dispositivos USB
+  \end{itemize}
 
-  A continuación se describen algunos detalles técnicos de esta norma, que son
-  parte fundamental del trabajo realizado.
+  El objetivo principal de un sistema USB puede resumirse como la correcta
+  comunicación entre el \host USB y los distintos dispositivos USB, a traveś de
+  la interconexión USB.
 
-  \section{La especificación USB 2.0}
-  En el año 2000, el comité conformado por seis de las más grandes compañías de
-  la industria informática del momento, Compaq, Intel, Microsoft, NEC, Lucent,
-  Hewlett-Packard y Philips; lanzó el documento final que describe las
-  especificaciones de la versión USB 2.0. El documento puede ser descargado de
-  forma gratuita desde el sitio: \href{http://www.usb.org}{www.usb.org}.
+  Se describen, entonces, a continuación.
 
-  \section{Conceptos Fundamentales}
-  La norma USB 2.0 incorpora y modifica términos y conceptos que es conveniente
-  conocer antes de una descripción más profunda de los elementos de interés para
-  el presente trabajo.
-    \subsection{Dispositivos que intrevienen}
-      \subsubsection{\host}
-      Es el dispositivo central de la comunicación USB. Solo puede existir solo
-      un \host y es la PC, o el dispositivo que contenga el \host~\controller.
-      Es quien asigna las direcciones de cada dispositivo y solicita alguna
-      acción a los \devices.
+  \section{Interconexion USB}
+  Cuando se habla de interconexión, se hace referencia a la forma en la que los
+  distintos componentes se conectan y cómo se comunican entre ellos. Para ello,
+  se detalla a continuación la topología USB, es decir, el modelo de conexión
+  entre el host y los dispositivos; el flujo de datos, o sea, la manera en la
+  que los datos viajan a través del sistema entre las fuentes de información y
+  los consumidores de ella; la lista de trabajo de cada dispositivo y la
+  relación entre las diferentes capas de cada dispositivo.
 
-      \subsubsection{\device}
-      Es toda unidad lógica o física que realiza una función.
+  Se procede a explicar con más detalle algunas de estas cuestiones.
 
-      \subsubsection{\hub}
-      Es un \device que permite conectar una o varias funciones, aguas abajo.
+    \subsection{Topología USB}
+    El USB es un sistema centrado en el \host. Él es el maestro, el que da las
+    órdenes o los turnos para que cada dispositivos pueda transmitir o recibir
+    información.
 
-      \subsubsection{\function}
-      Cualquier \device que agregues capacidades al \host.
+    La topología es, entonces, en estrella por niveles, dnd el \host USB es el
+    centro y cada dispositivo es una extensión. Los niveles se separa a través
+    de distribuidores, que sirven para ampliar la red y son los centro de cada
+    nuevo nivel.
 
-      \subsubsection{\ep}
-      Es la porción direccional de \device que sea emisor o destino de
-      información respecto al \host.
+    \begin{figure}
+	    \centering
+		\includegraphics[width=0.25\textwidth ]{topologia.png}
+		\caption{Topología USB}
+		\label{}
+    \end{figure}
 
-      \subsubsection{\controller}Se refiere a la interfaz USB, compuesta del
-      software y hardware que posibilitan la comunicación.
-
-  \section{Topología USB}
-  Cualquier sistema de comunicación USB posee una topología en estrella por
-  niveles. Cada centro de los niveles de la estrella es un \hub.
-  En el nivel superiorse encuentra el \host%BUSCAR SINONIMO
-  , el \hub raíz, y luego, por cada \hub adicional, se agrega un nuevo nivel.
-  Debido a las restricciones temporales, no puede haber más de 7 niveles.
-  Cada \device no puede enviar o recibir información sin la solicitud expresa
-  del \host.
-
-  % \section{Reseña histórica}
+  % Desde su primera especificación, lanzada en 1996, hasta la fecha la norma USB
+  % ha ido adquiriendo importancia y relevancia, debido a la aceptación que tuvo
+  % por parte de los fabricantes y los usuarios.
   %
-  % El 11 de Noviembre de 1994, un comité de trabajo compuesto por ingenieros y
-  % desarrolladores de siete de las grandes compañías de la industría electrónica
-  % e informática del momento: Compaq, Hewlett-Packard, Intel, Lucent, Microsoft,
-  % NEC y Philips; lanzó los lineamientos fundamentales de trabajo sobre un nuevo
-  % estándar de interconexión entre computadoras personales y dispositivos
-  % periféricos. El objetivo principal fué definir las especificaciones que se
-  % tendrían en cuenta a fin de realizar una correcta comunicación entre una PC y
-  % el teléfono, que sea facil de usar y que brinde una expansión de los puertos
-  % que permita a los nuevos dispositivos periféricos que iban naciendo ser
-  % conectados sin la necesidad de agrandar en forma infinita el hardware
-  % necesario.\\
+  % USB, acrónimo de Universal Serial Bus (o Bus Serie Universal, en español) es
+  % una norma de comunicación pensada originalmente para comunicar periféricos con
+  % la computadora. Sin embargo, hoy en día brinda la posibilidad no solo de
+  % obtener diferentes dispositivos que se comunican de manera simple, robusta y
+  % veloz con cualquier PC, sino que, además permite al usuario obtener una fuente
+  % segura y confiable de energía para cualquier aparato electrónico que así lo
+  % requiera. Por este motivo, se está transformado en la única de comunicación de
+  % cualquier dispositivo de consumo masivo.
   %
-  % Finalmente, el 15 de Enero de 1996 se publico la version 1.0 de la norma USB.
-  % En su primera versión contemplaba dos modos de operación, low-speed de
-  % \SI{1.5}{\mega\byte/\second} y full-speed, que opera a
-  % \SI{12}{\mega\byte/\second}.\\
+  % Observando las especificaciones, USB es una comunicación que posee una
+  % complejidad mucho mayor que la que presentan los sistemas serie o paralelo
+  % tradicionales. Introduce nuevos términos, tales como extremos,
+  % isocronismo o enumeración, y le da nuevo significado a palabras ya conocidas,
+  % como configuración, interrupción o interfaz. No obstante esto, está muy bien
+  % separada por capas que facilitan el trabajo de la implementación del sistema
+  % y pueden ser vistas como sistemas aislados.
   %
-  % Sin embargo, la gran evolución en el desempeño de las computadoras que se
-  % comercializaban a gran escala, junto con el advenimiento de periféricos cada
-  % vez más sofisticados que posibilitaban aplicaciones de mayor ancho de banda,
-  % como por ejemplo la imagen digital, puso la necesidad de incorporar una mayor
-  % velocidad y eficiencia a la norma USB. De esta forma, el 27 de Abril del 2000,
-  % se lanzó la versión USB 2.0, que agregaba un modo más de comunicación,
-  % high-speed, que posibilita el envío y recepción de hasta
-  % \SI{480}{\mega\byte/\second}
+  % A continuación se describen algunos detalles técnicos de esta norma, que son
+  % parte fundamental del trabajo realizado.
   %
-  % \section{Descripción del sistema}
+  % \section{La especificación USB 2.0}
+  % En el año 2000, el comité conformado por seis de las más grandes compañías de
+  % la industria informática del momento, Compaq, Intel, Microsoft, NEC, Lucent,
+  % Hewlett-Packard y Philips; lanzó el documento final que describe las
+  % especificaciones de la versión USB 2.0. El documento puede ser descargado de
+  % forma gratuita desde el sitio: \href{http://www.usb.org}{www.usb.org}.
   %
-  %   Un sistema USB está compuesta por varios conceptos importantes, como ser la
-  %   conexión fisica, potencia, protocolo, robustez de la comunicación, etc. Sin
-  %   embargo, debido al interés del presente trabajo, se detallarás solo algunos
-  %   aspectos importantes con respecto a las componentes de un sistema USB, su
-  %   topología, el flujo de datos y algunos aspectos de la red, descripta
-  %   mediante el modelo OSI
+  % \section{Conceptos Fundamentales}
+  % La norma USB 2.0 incorpora y modifica términos y conceptos que es conveniente
+  % conocer antes de una descripción más profunda de los elementos de interés para
+  % el presente trabajo.
+  %   \subsection{Dispositivos que intrevienen}
+  %     \subsubsection{\host}
+  %     Es el dispositivo central de la comunicación USB. Solo puede existir solo
+  %     un \host y es la PC, o el dispositivo que contenga el \host~\controller.
+  %     Es quien asigna las direcciones de cada dispositivo y solicita alguna
+  %     acción a los \devices.
+  %
+  %     \subsubsection{\device}
+  %     Es toda unidad lógica o física que realiza una función.
+  %
+  %     \subsubsection{\hub}
+  %     Es un \device que permite conectar una o varias funciones, aguas abajo.
+  %
+  %     \subsubsection{\function}
+  %     Cualquier \device que agregues capacidades al \host.
+  %
+  %     \subsubsection{\ep}
+  %     Es la porción direccional de \device que sea emisor o destino de
+  %     información respecto al \host.
+  %
+  %     \subsubsection{\controller}Se refiere a la interfaz USB, compuesta del
+  %     software y hardware que posibilitan la comunicación.
+  %
+  % \section{Topología USB}
+  % Cualquier sistema de comunicación USB posee una topología en estrella por
+  % niveles. Cada centro de los niveles de la estrella es un \hub.
+  % En el nivel superiorse encuentra el \host%BUSCAR SINONIMO
+  % , el \hub raíz, y luego, por cada \hub adicional, se agrega un nuevo nivel.
+  % Debido a las restricciones temporales, no puede haber más de 7 niveles.
+  % Cada \device no puede enviar o recibir información sin la solicitud expresa
+  % del \host.
+  %
+  % % \section{Reseña histórica}
+  % %
+  % % El 11 de Noviembre de 1994, un comité de trabajo compuesto por ingenieros y
+  % % desarrolladores de siete de las grandes compañías de la industría electrónica
+  % % e informática del momento: Compaq, Hewlett-Packard, Intel, Lucent, Microsoft,
+  % % NEC y Philips; lanzó los lineamientos fundamentales de trabajo sobre un nuevo
+  % % estándar de interconexión entre computadoras personales y dispositivos
+  % % periféricos. El objetivo principal fué definir las especificaciones que se
+  % % tendrían en cuenta a fin de realizar una correcta comunicación entre una PC y
+  % % el teléfono, que sea facil de usar y que brinde una expansión de los puertos
+  % % que permita a los nuevos dispositivos periféricos que iban naciendo ser
+  % % conectados sin la necesidad de agrandar en forma infinita el hardware
+  % % necesario.\\
+  % %
+  % % Finalmente, el 15 de Enero de 1996 se publico la version 1.0 de la norma USB.
+  % % En su primera versión contemplaba dos modos de operación, low-speed de
+  % % \SI{1.5}{\mega\byte/\second} y full-speed, que opera a
+  % % \SI{12}{\mega\byte/\second}.\\
+  % %
+  % % Sin embargo, la gran evolución en el desempeño de las computadoras que se
+  % % comercializaban a gran escala, junto con el advenimiento de periféricos cada
+  % % vez más sofisticados que posibilitaban aplicaciones de mayor ancho de banda,
+  % % como por ejemplo la imagen digital, puso la necesidad de incorporar una mayor
+  % % velocidad y eficiencia a la norma USB. De esta forma, el 27 de Abril del 2000,
+  % % se lanzó la versión USB 2.0, que agregaba un modo más de comunicación,
+  % % high-speed, que posibilita el envío y recepción de hasta
+  % % \SI{480}{\mega\byte/\second}
+  % %
+  % % \section{Descripción del sistema}
+  % %
+  % %   Un sistema USB está compuesta por varios conceptos importantes, como ser la
+  % %   conexión fisica, potencia, protocolo, robustez de la comunicación, etc. Sin
+  % %   embargo, debido al interés del presente trabajo, se detallarás solo algunos
+  % %   aspectos importantes con respecto a las componentes de un sistema USB, su
+  % %   topología, el flujo de datos y algunos aspectos de la red, descripta
+  % %   mediante el modelo OSI
