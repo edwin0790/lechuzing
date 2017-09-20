@@ -6,6 +6,9 @@
   es uno de los ejes centrales del presente trabajo. Por este motivo, se hace a
   continuación una revisión de los aspectos más relevantes de la norma.
 
+  Las norma USB está fundada en la revisión 2.0 de las
+  \href{www.usb.org}{\it Especificaciones USB}, publicadas en Abril del año 2000.
+
   Para describir un sistema USB, se abordan tres temáticas diferentes, pero
   relacionadas una con la otra:
 
@@ -20,6 +23,36 @@
   la interconexión USB.
 
   Se describen, entonces, a continuación.
+
+  \section{Host USB}
+  Todo sistema de comunicación USB posee un compoennete único, escencial,
+  fundamental. Este componente es el \host.
+
+  La palabra {\it Host} viene de la voz inglesa y su traducción tiene muchas
+  acepciones. La traducción más común es la de anfitrión. Sin embargo, también
+  se puede nombrar así a un presentador de televisión o a un portador. Si
+  estamos hablando de redes, un {\it host} es cada uno de los dispositivos que se
+  conectan a ella y de los cuales un servidor puede tomar o brindar información
+  o recursos.
+
+  No obstante, en un sistema USB, ninguna de estas acepciones permite describir
+  del todo lo que significa un \host. Es por eso que quién escribe se ha tomado
+  la libertad de usar la palabra inglesa.
+
+  El \host debe ser capaz de reconocer cuando un dispositivo es conectado,
+  colectar la descripción del mismo, negociar con él la forma de comunicarse,
+  enumerarlo, administrar el flujo de la información, emitir las turnos de uso
+  del bus, reconocer el estado y llevar la estadística de la actividad del bus.
+
+  Todo esto, se lleva a cabo a través del Controlador del Host, que puede estar
+  compuesto por hardware, firmware y/o software, pero que se aloja en el \host.
+
+  \section{Dispositivos USB}
+  Existen dos tipos fundamentales de {\it Dispositivos USB}, tal como los define
+  la norma USB, a saber, los \hubs (textualmente, {\it USB Hubs}) y
+  las funciones.
+
+  Un \hub es un 
 
   \section{Interconexion USB}
   Cuando se habla de interconexión, se hace referencia a la forma en la que los
@@ -48,6 +81,13 @@
 		\caption{Topología USB}
 		\label{}
     \end{figure}
+
+    Debido a las restricciones de tiempo y ancho de banda impuestas por las
+    especificaciones de la norma USB 2.0, no puede existir más que 7 niveles
+    en un sistema USB, incluido el nivel del \host, por lo que no puede existir
+    un distribuidor en el último nivel.
+
+
 
   % Desde su primera especificación, lanzada en 1996, hasta la fecha la norma USB
   % ha ido adquiriendo importancia y relevancia, debido a la aceptación que tuvo
