@@ -20,7 +20,9 @@
 
   El objetivo principal de un sistema USB puede resumirse como la correcta
   comunicación entre el \host USB y los distintos dispositivos USB, a traveś de
-  la interconexión USB.
+  la interconexión USB. El objetivo particular de la revisión 2.0 de la norma es
+  la de brindar un mayor ancho de banda, incorporando a las velocidades baja y
+  completa una opcion de alta velocidad.
 
   Se describen, entonces, a continuación.
 
@@ -63,7 +65,20 @@
   repetidor y un traductor de transacciones. El repetidor es un switch que
   conecta los múltiples puertos de bajada con el de subida. Suele poseer
   hardware adicional que brinda la posibilidad de emitir señales de reset y de
-  suspender/continuar
+  suspender/continuar. El traductor de transacciones se encarga de las
+  comunicaciones con dispositivos rio abajo a baja o media velocidad, y a alta
+  velocidad con el \host, rio arriba. El controlador brinda la capacidad de
+  comunicación con el \host y, a traves de comandos de estado y control
+  específicos, le permite a \host configurar cada \hub.
+
+  \subsection{Funciones}
+  Se denomina función a todo aquel dispositivo que puede recibir o emitir
+  información a través del bus. Por lo general, suelen ser periféricos que se
+  conectan con un cable a un \hub, pero también existen dispositivos combinados
+  que no solo tienen alguna función, sino que además incorpora un \hub y brinda
+  puertos adicionales para otras funciones.
+
+  Una función, a su vez está compuesta de \eps, 
 
   \section{Interconexion USB}
   Cuando se habla de interconexión, se hace referencia a la forma en la que los
