@@ -2,68 +2,90 @@
   \section{Motivación}
 
 %SOBRE_USB
-En el mes de Noviembre de 1994, un comité conformado por seis de los más grandes fabricantes de computadoras
-emitieron los primeros lineamientos de un protocolo de comunicación de arquitectura abierta que permitiese la
-comunicación entre dispositivos de diferentes vendedores.\\
+En el mes de Noviembre de 1994, un comité conformado por seis de los más grandes
+fabricantes de computadoras emitieron los primeros lineamientos de un protocolo
+de comunicación de arquitectura abierta que permitiese la Comunicación entre
+dispositivos de diferentes vendedores.\\
 
-Sobre finales del mes de Abril del 2000, Compaq, Hewlett-Packard, Intel, Lucent, Microsoft, NEC y Philips
-lanzaron las especificaciones del Universal Serial Bus 2.0, ampliamente conocido como USB 2.0 con los objetivos
-específicos de ser una forma de comunicar teléfonos y computadoras personales, fácil de usar, de puerto expansible
-y que tenga la velocidad suficiente para operar los dispositivos disponibles hasta ese año y que bastó durante
-mucho tiempo después.%REFERENCIA {ref usb2.0espec}\\
+Sobre finales del mes de Abril del 2000, Compaq, Hewlett-Packard, Intel, Lucent,
+Microsoft, NEC y Philips lanzaron las especificaciones del {\it Universal Serial
+Bus 2.0}, ampliamente conocido como USB 2.0 con los objetivos específicos de ser
+una forma de comunicar teléfonos y computadoras personales, fácil de usar, de
+puerto expansible y que tenga la velocidad suficiente para operar los
+dispositivos disponibles hasta ese año y que bastó durante mucho tiempo
+después.\\%REFERENCIA {ref usb2.0espec}\\
 
-Esta norma fue ampliamente aceptada por el mercado y con el paso de los años se transformó en la forma de comunicación
-estándar de cualquier producto electrónico de consumo masivo que requiriese interacción con una PC.\\
+El peso de mercado que tuvieron estas compañías, e incluso algunas aún tienen,
+hizo que esta norma sea ampliamente aceptada y con el paso de los años se
+transformó en una forma de comunicación estándar de cualquier producto
+electrónico de consumo masivo que requiriese interacción con una PC.\\
+
 
 %SOBRE_LA_PC
-La evolución de la compútadora personal, así como el desarrollo de lenguajes y software cada vez más
-potentes, la han posicionado como la herramienta fundamental en cualquier área. Hoy poy hoy, es posible encontrar
-sistemas tan diversos y específicos como uno desee, desde programas que realizan operaciones de cálculo
-muy básicas hasta sistemas operativos completos dedicados al control de redes de sensores y datos
-sumamente complejos.\\
+La evolución de la compútadora personal, así como el desarrollo de lenguajes de
+programación más simples, desde el punto de vista del desarrollador; software y
+harware cada vez más potente, la han posicionado como la herramienta fundamental
+en cualquier área. Hoy poy hoy, es posible encontrar sistemas tan diversos y
+específicos como uno desee, desde programas que realizan operaciones de cálculo
+muy básicas hasta sistemas operativos completos dedicados al control de redes de
+sensores y datos sumamente complejos.\\
 
-En este sentido, las posibilidades son casi infinitas, y se encuentran en el mercado miles de herramientas
-de diseño personalizado en la materia que al usuario se le ocurra, ya sea gráfica, audiovisual, mecánica,
-inmobiliaria, de infraestructura y un sinnúmero de etcéteras.\\
+En este sentido, las posibilidades son casi infinitas, y se encuentran en el
+mercado miles de herramientas de diseño personalizado en cualquier área, ya sea
+gráfica, audiovisual, mecánica, inmobiliaria, médica, de infraestructura y un
+sinnúmero de etcéteras.\\
 
 
-De esto no han quedado exenta la industria electrónica en general y actualmente se encuentran desde programas que
-permiten calcular componentes, dibujar circuitos impresos, compilar códigos para memorias, controladores y/o
-procesadores e incluso permiten diseñar circuitos integrados. También se puede encontrar software que realiza
-adquisición de señales, gráfica de variables, simulación de sistemas, entre una gama muy amplia que hacen de la
-informática en general y de la computadora en particular, un equipo indispensable para algún desarrollo específico.\\
+De esto no han quedado exenta la industria electrónica y actualmente es posible
+obtener programas que permiten calcular componentes, dibujar circuitos impresos,
+compilar códigos para memorias, controladores y/o procesadores e incluso
+permiten diseñar circuitos integrados. También es facible hallar software que
+realiza adquisición de señales, gráfica de variables en tiempo real, o no;
+simulación de sistemas, entre una gama muy amplia que hacen de la informática en
+general y de la computadora en particular, un equipo indispensable para
+cualquier desarrollo.\\
 
 %SOBRE_FPGA
-A su vez, el avance tecnológico que ha logrado la industria de los semiconductores sobre el desarrollo de circuitos
-integrados cada vez más potentes, rápidos y eficientes ha logrado que lleguen a manos de cualquier persona con ánimos
-de trabajar circuitos integrados programables de bajo costo que permiten avanzar sobre el desarrollo de sistemas a
-la medida de cualquier cliente que esté disponible. En este sentido, es posible adquirir micro-controladores (\SI{}{\micro C}),
-dispositivos lógicos programables (PLD's), arreglos de compuertas lógicas (GAL's), arreglos de compuertas programables
-en campo (FPGA's), entre otros dispositivos, a bajo costo y que posibilita el desarrollo sistemas de baja o alta complejidad
-a precios competitivos y tiempos de entrega acordes.\\
+A su vez, el avance tecnológico que ha logrado la industria del semiconductor
+sobre el desarrollo de circuitos integrados cada vez más potentes, rápidos y
+eficientes ha logrado que lleguen a manos de cualquier persona, con ánimos de
+trabajar, circuitos integrados programables de bajo costo que permiten avanzar
+sobre el desarrollo de sistemas a la medida de cualquier cliente que esté
+disponible. En este sentido, es posible adquirir micro-controladores
+(\SI{}{\micro C}), dispositivos lógicos programables (PLD's), arreglos de
+compuertas lógicas (GAL's), arreglos de compuertas programables
+en campo (FPGA's), entre otros dispositivos, a bajo costo y que posibilita el
+desarrollo sistemas de baja o alta complejidad a precios competitivos y tiempos
+de entrega acordes.\\
 
-Uno de los más interesantes y desarrollados de estos sistemas programables disponibles en el mercado es, sin dudas, el FPGA,
-dado que brinda la flexibilidad necesaria al desarrollador de diseñar, implementar, probar y depurar sistema digitales a
-medida de alta velocidad y/o elevada complejidad. Sin embargo, este tipo de chips son relativamente caros, si se los compara
-con cualquier otro tipo de circuito programable, y se torna de suma importancia aprovechar al máximo su capacidad.\\
+Uno de los más interesantes y desarrollados de estos sistemas programables
+disponibles en el mercado es, sin dudas, el FPGA, dado que brinda la
+flexibilidad necesaria al desarrollador de diseñar, implementar, probar y
+depurar sistema digitales de alta velocidad y/o elevada complejidad a medida.
+Sin embargo, este tipo de chips son relativamente caros, si se los compara
+con cualquier otro tipo de circuito programable, y se torna de suma importancia
+aprovechar al máximo su capacidad.\\
 
-Debido a la versatilidad del FPGA y su creciente adopción es de suma utilidad realizar una comunicación fluida del sistema en
-desarrollo con un PC a través de un puerto USB. El presente informe da cuenta de lo realizado por el autor de este trabajo
-por lograr esta tarea.\\
+Debido a la versatilidad del FPGA y su creciente adopción es de suma utilidad
+realizar una comunicación fluida del sistema en desarrollo con un PC a través de
+un puerto USB. El presente informe da cuenta de lo realizado por el autor de
+este trabajo por lograr esta tarea.\\
 
   \section{Objetivos}
     \subsection{Objetivo General}
 
-    El objetivo del presente trabajo es realizar una correcta comunicación de datos entre un sistema basado en FPGA y una computadora
-    personal a través de un puerto USB.
+    El objetivo del presente trabajo es realizar una correcta comunicación de
+    datos entre un sistema basado en FPGA y una computadora personal a través de
+    un puerto USB.
 
     \subsection{Objetivos Particulares}
 
-    Para la concreción del Objetivo General descripto anteriormente, se procedió a lograr los siguientes objetivos específicos.
+    Para la concreción del Objetivo General descripto anteriormente, se procedió
+    a lograr los siguientes objetivos específicos.
 
       \begin{itemize}
-        \item Adaptación del framework provisto por Cypress Semiconductors para distribuciones de sistemas operativos Linux
-          basados en Debian.
+        \item Adaptación del framework provisto por Cypress Semiconductors para
+        istribuciones de sistemas operativos Linux basados en Debian.
         \item Configuración del kit de desarrollo CY3684 de Cypress.
         \item Configuración de un FPGA de la familia Spartan de Xilinx.
         \item Interconexion entre las distintas placas de desarrollo y la PC.

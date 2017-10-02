@@ -4,62 +4,69 @@
   \section{Introducción}
   El Bus Serie Universal, o USB, (acrónimo del inglés {\it Universal Serial Bus})
   es uno de los ejes centrales del presente trabajo. Por este motivo, se hace a
-  continuación una revisión de los aspectos más relevantes de la norma.
+  continuación una revisión de los aspectos más relevantes de la norma.\\
 
   Las norma USB está fundada en la revisión 2.0 de las
-  \href{www.usb.org}{\it Especificaciones USB}, publicadas en Abril del año 2000.
+  \href{www.usb.org}{\it Especificaciones USB}, publicadas en Abril del año
+  2000.\\
 
   Para describir un sistema USB, se abordan tres temáticas diferentes, pero
   relacionadas una con la otra:
 
   \begin{itemize}
     \item Interconexión USB
-    \item \host USB
+    \item \host
     \item Dispositivos USB
   \end{itemize}
 
   El objetivo principal de un sistema USB puede resumirse como la correcta
-  comunicación entre el \host USB y los distintos dispositivos USB, a traveś de
+  comunicación entre el \host ~y los distintos dispositivos USB, a traveś de
   la interconexión USB. El objetivo particular de la revisión 2.0 de la norma es
-  la de brindar un mayor ancho de banda, incorporando a las velocidades baja y
-  completa una opcion de alta velocidad.
+  la de brindar un mayor ancho de banda, incorporando a las velocidades baja
+  ({\it low speed}) y completa ({\it full speed}) una opcion de alta velocidad
+  ({\it high speed}). Esto supone agregar a las comunicación de 1.5 Mbps y 12
+  Mbps, una variante que alcanza los 480 Mbps.\\
 
   Se describen, entonces, a continuación.
 
   \section{Host USB}
   Todo sistema de comunicación USB posee un compoennete único, escencial,
-  fundamental. Este componente es el \host.
+  fundamental. Este componente es el \host.\\
 
   La palabra {\it Host} viene de la voz inglesa y su traducción tiene muchas
   acepciones. La traducción más común es la de anfitrión. Sin embargo, también
-  se puede nombrar así a un presentador de televisión o a un portador. Si
-  estamos hablando de redes, un {\it host} es cada uno de los dispositivos que se
+  se puede nombrar así a un presentador de televisión o a un portador.\\
+
+  Si se habla de redes, un {\it host} es cada uno de los dispositivos que se
   conectan a ella y de los cuales un servidor puede tomar o brindar información
-  o recursos.
+  o recursos.\\
 
   No obstante, en un sistema USB, ninguna de estas acepciones permite describir
   del todo lo que significa un \host. Es por eso que quién escribe se ha tomado
-  la libertad de usar la palabra inglesa.
+  la libertad de usar la palabra inglesa.\\
 
   El \host debe ser capaz de reconocer cuando un dispositivo es conectado,
   colectar la descripción del mismo, negociar con él la forma de comunicarse,
   enumerarlo, administrar el flujo de la información, emitir las turnos de uso
-  del bus, reconocer el estado y llevar la estadística de la actividad del bus.
+  del bus, reconocer el estado y llevar la estadística de la actividad del
+  bus.\\
 
   Todo esto, se lleva a cabo a través del Controlador del Host, que puede estar
-  compuesto por hardware, firmware y/o software, pero que se aloja en el \host.
+  compuesto por hardware, firmware y/o software, pero que se aloja en el
+  \host.\\
 
   \section{Dispositivos USB}
   Existen dos tipos fundamentales de {\it Dispositivos USB}, tal como los define
   la norma USB, a saber, los \hubs (textualmente, {\it USB Hubs}) y
-  las funciones.
+  las funciones. También existen dispositivos compuestos, en los que se integran
+  tanto un \hub como funciones.\\
 
   \subsection{\Hub}
   Un \hub es un dispositivo en el que confluyen multiples conexiones, brindando
   la posibilidad al usuario de agregar diversos dispositivos al mismo sistema.
   Los puntos de conexión se denominan puertos. En otras palabras, un hub es
   un multiplicador de puertos, convirtiendo un solo puerto de subida en varios
-  puertos de bajada.
+  puertos de bajada.\\
 
   Especificamente, un \hub 2.0 consiste de tres componentes: un controlador, un
   repetidor y un traductor de transacciones. El repetidor es un switch que
@@ -69,16 +76,27 @@
   comunicaciones con dispositivos rio abajo a baja o media velocidad, y a alta
   velocidad con el \host, rio arriba. El controlador brinda la capacidad de
   comunicación con el \host y, a traves de comandos de estado y control
-  específicos, le permite a \host configurar cada \hub.
+  específicos, le permite a \host configurar cada \hub.\\
 
   \subsection{Funciones}
   Se denomina función a todo aquel dispositivo que puede recibir o emitir
   información a través del bus. Por lo general, suelen ser periféricos que se
   conectan con un cable a un \hub, pero también existen dispositivos combinados
   que no solo tienen alguna función, sino que además incorpora un \hub y brinda
-  puertos adicionales para otras funciones.
+  puertos adicionales para otras funciones.\\
 
-  Una función, a su vez está compuesta de \eps, 
+  Cada función posee información que describe sus capacidades y los
+  requerimientos de sistema que necesita para operar. Antes de comenzar a
+  comunicar, el \host realizar la configuración, que consiste en la selección
+  del ancho de banda con la que el dispositivos debe operar, la dirección del
+  puerto del dispositivo y seleccionar las opciones específicas de cada
+  función.\\
+
+  Una función, a su vez está compuesta de \eps, que es la porción logica mínima
+  que maneja un sistema USB. Un \ep solo puede tener un dirección, es decir, un
+  conjunto númerico único que lo identifica con respecto a cualquier otro
+  dispositivo conectado al bus, y sentido, o sea, de entrada hacia el \host o de
+  salida desde este último.\\
 
   \section{Interconexion USB}
   Cuando se habla de interconexión, se hace referencia a la forma en la que los
@@ -87,32 +105,53 @@
   entre el host y los dispositivos; el flujo de datos, o sea, la manera en la
   que los datos viajan a través del sistema entre las fuentes de información y
   los consumidores de ella; la lista de trabajo de cada dispositivo y la
-  relación entre las diferentes capas de cada dispositivo.
+  relación entre las diferentes capas de cada dispositivo.\\
 
-  Se procede a explicar con más detalle algunas de estas cuestiones.
+  Se procede a explicar con más detalle algunas de estas cuestiones.\\
 
     \subsection{Topología USB}
     El USB es un sistema centrado en el \host. Él es el maestro, el que da las
     órdenes o los turnos para que cada dispositivos pueda transmitir o recibir
-    información.
+    información.\\
 
     La topología es, entonces, en estrella por niveles, dnd el \host USB es el
     centro y cada dispositivo es una extensión. Los niveles se separa a través
     de distribuidores, que sirven para ampliar la red y son los centro de cada
-    nuevo nivel.
+    nuevo nivel.\\
 
     \begin{figure}
-	    \centering
-		\includegraphics[width=0.25\textwidth ]{topologia.png}
-		\caption{Topología USB}
-		\label{}
+      \centering
+      \includegraphics[width=0.25\textwidth ]{topologia.png}
+      \caption{Topología USB}
+      \label{}
     \end{figure}
 
     Debido a las restricciones de tiempo y ancho de banda impuestas por las
     especificaciones de la norma USB 2.0, no puede existir más que 7 niveles
     en un sistema USB, incluido el nivel del \host, por lo que no puede existir
-    un distribuidor en el último nivel.
+    un distribuidor en el último nivel.\\
 
+    \subsection{Flujo de datos}
+      \subsubsection{Dirección de datos}
+      El sistema USB, como se describe anteriormente, posee un modelo centrado
+      en el \host, y este debe ser único. Él es el dspositivo central, que
+      recibe y/o emite información a cada dispositivo Función o \Hub. Es por
+      esto, que toda comunicación se referencia siempre al \host. Es decir, si
+      hablamos de una transferencia de entrada, quiere decir que el periférico
+      o el dispositivo en cuestión esta enviando datos y estos entran al \host.
+      En cambio, una transferencia de salida, es una operación que sale del
+      \host y se dirige hacia el dispositivo que la necesita.
+
+      \subsubsection{Tipos de Transferencia}
+      Las trasnferencias, ya sean de entrada o de salida, pueden ser de cuatro
+      tipos diferentes:
+
+      \begin{itemize}
+         \item Transferencias de control:
+         \item Transferencias por bultos
+         \item Trasnferencias por interrupción
+         \item Trasnferencias isocrónicas
+      \end{itemize}
 
 
   % Desde su primera especificación, lanzada en 1996, hasta la fecha la norma USB
