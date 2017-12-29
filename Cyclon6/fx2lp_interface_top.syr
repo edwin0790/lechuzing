@@ -117,7 +117,7 @@ Parsing architecture <fifo_arch> of entity <fifo_512x8>.
 Parsing VHDL file "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" into library work
 Parsing entity <fx2lp_interface_top>.
 Parsing architecture <fx2lp_interface_arq> of entity <fx2lp_interface_top>.
-WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 117: Actual for formal port c1 is neither a static name nor a globally static expression
+WARNING:HDLCompiler:946 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 143: Actual for formal port c1 is neither a static name nor a globally static expression
 
 =========================================================================
 *                            HDL Elaboration                            *
@@ -130,10 +130,11 @@ Elaborating entity <clk_wiz_v3_6> (architecture <xilinx>) from library <work>.
 Elaborating entity <fifo_512x8> (architecture <fifo_arch>) from library <work>.
 INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" Line 147. Case statement is complete. others clause is never selected
 INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fifo_512x8.vhd" Line 161. Case statement is complete. others clause is never selected
-WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 159: Assignment to write_empty_flag ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 160: Assignment to read_full_flag ignored, since the identifier is never used
-WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 200: write_req should be on the sensitivity list of the process
-INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 248. Case statement is complete. others clause is never selected
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 185: Assignment to write_empty_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 186: Assignment to read_full_flag ignored, since the identifier is never used
+WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 230: write_req should be on the sensitivity list of the process
+WARNING:HDLCompiler:92 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 272: write_req should be on the sensitivity list of the process
+INFO:HDLCompiler:679 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 278. Case statement is complete. others clause is never selected
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -145,62 +146,67 @@ Synthesizing Unit <fx2lp_interface_top>.
         out_ep_addr = "11"
         port_width = 15
 WARNING:Xst:647 - Input <data_in> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <flagb> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <flagc> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 123: Output port <CLK_OUT1> of the instance <pll> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 123: Output port <CLK_OUT4> of the instance <pll> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 123: Output port <LOCKED> of the instance <pll> is unconnected or connected to loadless signal.
+WARNING:Xst:647 - Input <flagd> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <send_req> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+INFO:Xst:3210 - "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" line 149: Output port <CLK_OUT4> of the instance <pll> is unconnected or connected to loadless signal.
     Found 4-bit register for signal <curr_state>.
+    Found 24-bit register for signal <cont>.
+    Found 1-bit register for signal <debug_clk>.
     Found finite state machine <FSM_0> for signal <curr_state>.
     -----------------------------------------------------------------------
     | States             | 9                                              |
-    | Transitions        | 18                                             |
+    | Transitions        | 19                                             |
     | Inputs             | 3                                              |
-    | Outputs            | 6                                              |
+    | Outputs            | 12                                             |
     | Clock              | pll_90 (rising_edge)                           |
-    | Reset              | reset (positive)                               |
+    | Reset              | reset (negative)                               |
     | Reset type         | asynchronous                                   |
     | Reset State        | idle                                           |
     | Power Up State     | idle                                           |
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 1-bit tristate buffer for signal <faddr_int<1>> created at line 168
-    Found 1-bit tristate buffer for signal <faddr_int<0>> created at line 168
-    Found 1-bit tristate buffer for signal <fdata<15>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<14>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<13>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<12>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<11>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<10>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<9>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<8>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<7>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<6>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<5>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<4>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<3>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<2>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<1>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata<0>> created at line 182
-    Found 1-bit tristate buffer for signal <fdata_in<15>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<14>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<13>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<12>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<11>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<10>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<9>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<8>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<7>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<6>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<5>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<4>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<3>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<2>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<1>> created at line 184
-    Found 1-bit tristate buffer for signal <fdata_in<0>> created at line 184
+    Found 24-bit subtractor for signal <GND_7_o_GND_7_o_sub_88_OUT<23:0>> created at line 296.
+    Found 1-bit tristate buffer for signal <faddr_int<1>> created at line 194
+    Found 1-bit tristate buffer for signal <faddr_int<0>> created at line 194
+    Found 1-bit tristate buffer for signal <fdata<15>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<14>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<13>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<12>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<11>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<10>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<9>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<8>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<7>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<6>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<5>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<4>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<3>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<2>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<1>> created at line 209
+    Found 1-bit tristate buffer for signal <fdata<0>> created at line 209
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<14>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<13>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<12>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<11>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<10>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<9>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<8>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<7>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<6>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<5>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<4>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<3>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<2>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<1>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<0>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+WARNING:Xst:737 - Found 1-bit latch for signal <fdata_in<15>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
     Summary:
-	inferred  34 Tristate(s).
+	inferred   1 Adder/Subtractor(s).
+	inferred  25 D-type flip-flop(s).
+	inferred  16 Latch(s).
+	inferred  18 Tristate(s).
 	inferred   1 Finite State Machine(s).
 Unit <fx2lp_interface_top> synthesized.
 
@@ -221,12 +227,12 @@ Synthesizing Unit <fifo_512x8>.
     Found 1-bit register for signal <write_busy_d>.
     Found 1-bit register for signal <fifo_full_s>.
     Found 16-bit register for signal <dout>.
-    Found 9-bit adder for signal <write_ptr[8]_GND_16_o_add_1_OUT> created at line 59.
-    Found 9-bit adder for signal <read_ptr[8]_GND_16_o_add_4_OUT> created at line 78.
-    Found 10-bit adder for signal <read_occupancy[9]_GND_16_o_add_15_OUT> created at line 145.
-    Found 10-bit adder for signal <write_occupancy[9]_GND_16_o_add_19_OUT> created at line 159.
-    Found 10-bit subtractor for signal <GND_16_o_GND_16_o_sub_15_OUT<9:0>> created at line 144.
-    Found 10-bit subtractor for signal <GND_16_o_GND_16_o_sub_19_OUT<9:0>> created at line 158.
+    Found 9-bit adder for signal <write_ptr[8]_GND_17_o_add_1_OUT> created at line 59.
+    Found 9-bit adder for signal <read_ptr[8]_GND_17_o_add_4_OUT> created at line 78.
+    Found 10-bit adder for signal <read_occupancy[9]_GND_17_o_add_15_OUT> created at line 145.
+    Found 10-bit adder for signal <write_occupancy[9]_GND_17_o_add_19_OUT> created at line 159.
+    Found 10-bit subtractor for signal <GND_17_o_GND_17_o_sub_15_OUT<9:0>> created at line 144.
+    Found 10-bit subtractor for signal <GND_17_o_GND_17_o_sub_19_OUT<9:0>> created at line 158.
     Found 10-bit 4-to-1 multiplexer for signal <read_occ_case_sel[1]_read_occupancy[9]_wide_mux_16_OUT> created at line 142.
     Found 10-bit 4-to-1 multiplexer for signal <write_occ_case_sel[1]_write_occupancy[9]_wide_mux_20_OUT> created at line 156.
     Summary:
@@ -242,19 +248,23 @@ HDL Synthesis Report
 Macro Statistics
 # RAMs                                                 : 1
  512x16-bit dual-port RAM                              : 1
-# Adders/Subtractors                                   : 4
+# Adders/Subtractors                                   : 5
  10-bit addsub                                         : 2
+ 24-bit subtractor                                     : 1
  9-bit adder                                           : 2
-# Registers                                            : 8
- 1-bit register                                        : 3
+# Registers                                            : 10
+ 1-bit register                                        : 4
  10-bit register                                       : 2
  16-bit register                                       : 1
+ 24-bit register                                       : 1
  9-bit register                                        : 2
+# Latches                                              : 16
+ 1-bit latch                                           : 16
 # Multiplexers                                         : 11
  10-bit 2-to-1 multiplexer                             : 8
  9-bit 2-to-1 multiplexer                              : 3
-# Tristates                                            : 34
- 1-bit tristate buffer                                 : 34
+# Tristates                                            : 18
+ 1-bit tristate buffer                                 : 18
 # FSMs                                                 : 1
 
 =========================================================================
@@ -295,6 +305,10 @@ INFO:Xst:3226 - The RAM <Mram_data_array> will be implemented as a BLOCK RAM, ab
     -----------------------------------------------------------------------
 Unit <fifo_512x8> synthesized (advanced).
 
+Synthesizing (advanced) Unit <fx2lp_interface_top>.
+The following registers are absorbed into counter <cont>: 1 register on signal <cont>.
+Unit <fx2lp_interface_top> synthesized (advanced).
+
 =========================================================================
 Advanced HDL Synthesis Report
 
@@ -304,11 +318,13 @@ Macro Statistics
 # Adders/Subtractors                                   : 3
  10-bit addsub                                         : 2
  9-bit adder                                           : 1
+# Counters                                             : 1
+ 24-bit down counter                                   : 1
 # Accumulators                                         : 4
  10-bit updown loadable accumulator                    : 2
  9-bit up loadable accumulator                         : 2
-# Registers                                            : 3
- Flip-Flops                                            : 3
+# Registers                                            : 4
+ Flip-Flops                                            : 4
 # Multiplexers                                         : 10
  10-bit 2-to-1 multiplexer                             : 8
  9-bit 2-to-1 multiplexer                              : 2
@@ -320,22 +336,21 @@ Macro Statistics
 *                         Low Level Synthesis                           *
 =========================================================================
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <FSM_0> on signal <curr_state[1:4]> with gray encoding.
------------------------------
+Optimizing FSM <FSM_0> on signal <curr_state[1:9]> with one-hot encoding.
+------------------------------
  State           | Encoding
------------------------------
- idle            | 0000
- read_addr       | 0011
- read_wait_empty | 0010
- read_read       | 0110
- read_end        | 0111
- write_addr      | 0001
- write_no_full   | 0101
- write_write     | 0100
- write_end       | 1100
------------------------------
+------------------------------
+ idle            | 000000001
+ read_addr       | 000000100
+ read_wait_empty | 000001000
+ read_read       | 000010000
+ read_end        | 000100000
+ write_addr      | 000000010
+ write_no_full   | 001000000
+ write_write     | 010000000
+ write_end       | 100000000
+------------------------------
 WARNING:Xst:2677 - Node <read_ptr_8> of sequential type is unconnected in block <fifo_512x8>.
-WARNING:Xst:2042 - Unit fx2lp_interface_top: 16 internal tristates are replaced by logic (pull-up yes): fdata_in<0>, fdata_in<10>, fdata_in<11>, fdata_in<12>, fdata_in<13>, fdata_in<14>, fdata_in<15>, fdata_in<1>, fdata_in<2>, fdata_in<3>, fdata_in<4>, fdata_in<5>, fdata_in<6>, fdata_in<7>, fdata_in<8>, fdata_in<9>.
 
 Optimizing unit <fx2lp_interface_top> ...
 
@@ -343,10 +358,10 @@ Optimizing unit <fifo_512x8> ...
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block fx2lp_interface_top, actual ratio is 2.
-FlipFlop curr_state_FSM_FFd2 has been replicated 3 time(s)
-FlipFlop curr_state_FSM_FFd3 has been replicated 1 time(s)
-FlipFlop curr_state_FSM_FFd4 has been replicated 1 time(s)
+Found area constraint ratio of 100 (+ 5) on block fx2lp_interface_top, actual ratio is 3.
+FlipFlop curr_state_FSM_FFd2 has been replicated 2 time(s)
+FlipFlop curr_state_FSM_FFd7 has been replicated 1 time(s)
+FlipFlop fifo/fifo_empty_s has been replicated 1 time(s)
 
 Final Macro Processing ...
 
@@ -354,8 +369,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 49
- Flip-Flops                                            : 49
+# Registers                                            : 78
+ Flip-Flops                                            : 78
 
 =========================================================================
 
@@ -378,30 +393,33 @@ Top Level Output File Name         : fx2lp_interface_top.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 162
+# BELS                             : 248
 #      GND                         : 1
-#      INV                         : 2
-#      LUT2                        : 3
-#      LUT3                        : 4
-#      LUT4                        : 47
-#      LUT5                        : 34
-#      LUT6                        : 32
-#      MUXCY                       : 18
+#      INV                         : 27
+#      LUT1                        : 1
+#      LUT2                        : 26
+#      LUT3                        : 17
+#      LUT4                        : 20
+#      LUT5                        : 40
+#      LUT6                        : 30
+#      MUXCY                       : 41
 #      VCC                         : 1
-#      XORCY                       : 20
-# FlipFlops/Latches                : 50
-#      FDC                         : 48
-#      FDP                         : 1
+#      XORCY                       : 44
+# FlipFlops/Latches                : 95
+#      FD                          : 25
+#      FDC                         : 50
+#      FDP                         : 3
+#      LD                          : 16
 #      ODDR2                       : 1
 # RAMS                             : 1
 #      RAMB8BWER                   : 1
 # Clock Buffers                    : 4
 #      BUFG                        : 4
-# IO Buffers                       : 28
-#      IBUF                        : 4
+# IO Buffers                       : 35
+#      IBUF                        : 3
 #      IBUFG                       : 1
 #      IOBUF                       : 16
-#      OBUF                        : 5
+#      OBUF                        : 13
 #      OBUFT                       : 2
 # DCMs                             : 1
 #      DCM_SP                      : 1
@@ -413,20 +431,21 @@ Selected Device : 6slx9tqg144-2
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              50  out of  11440     0%  
- Number of Slice LUTs:                  122  out of   5720     2%  
-    Number used as Logic:               122  out of   5720     2%  
+ Number of Slice Registers:              79  out of  11440     0%  
+ Number of Slice LUTs:                  161  out of   5720     2%  
+    Number used as Logic:               161  out of   5720     2%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    128
-   Number with an unused Flip Flop:      78  out of    128    60%  
-   Number with an unused LUT:             6  out of    128     4%  
-   Number of fully used LUT-FF pairs:    44  out of    128    34%  
-   Number of unique control sets:         2
+ Number of LUT Flip Flop pairs used:    166
+   Number with an unused Flip Flop:      87  out of    166    52%  
+   Number with an unused LUT:             5  out of    166     3%  
+   Number of fully used LUT-FF pairs:    74  out of    166    44%  
+   Number of unique control sets:         3
 
 IO Utilization: 
- Number of IOs:                          63
- Number of bonded IOBs:                  28  out of    102    27%  
+ Number of IOs:                          71
+ Number of bonded IOBs:                  35  out of    102    34%  
+    IOB Flip Flops/Latches:              16
 
 Specific Feature Utilization:
  Number of Block RAM/FIFO:                1  out of     32     3%  
@@ -451,12 +470,18 @@ NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
 
 Clock Information:
 ------------------
------------------------------------+------------------------+-------+
-Clock Signal                       | Clock buffer(FF name)  | Load  |
------------------------------------+------------------------+-------+
-clk_in                             | DCM_SP:CLK90           | 50    |
-clk_in                             | DCM_SP:CLK180          | 2     |
------------------------------------+------------------------+-------+
+--------------------------------------------------------+------------------------+-------+
+Clock Signal                                            | Clock buffer(FF name)  | Load  |
+--------------------------------------------------------+------------------------+-------+
+curr_state[3]_GND_38_o_Mux_48_o(curr_state__n0542<8>1:O)| NONE(*)(fdata_in_14)   | 16    |
+clk_in                                                  | DCM_SP:CLK90           | 54    |
+clk_in                                                  | DCM_SP:CLK180          | 2     |
+clk_in                                                  | DCM_SP:CLK0            | 25    |
+--------------------------------------------------------+------------------------+-------+
+(*) This 1 clock signal(s) are generated by combinatorial logic,
+and XST is not able to identify which are the primary clock signals.
+Please use the CLOCK_SIGNAL constraint to specify the clock signal(s) generated by combinatorial logic.
+INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
 
 Asynchronous Control Signals Information:
 ----------------------------------------
@@ -466,10 +491,10 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 4.470ns (Maximum Frequency: 223.714MHz)
-   Minimum input arrival time before clock: 4.702ns
-   Maximum output required time after clock: 7.206ns
-   Maximum combinational path delay: No path found
+   Minimum period: 4.150ns (Maximum Frequency: 240.964MHz)
+   Minimum input arrival time before clock: 4.566ns
+   Maximum output required time after clock: 6.555ns
+   Maximum combinational path delay: 5.183ns
 
 Timing Details:
 ---------------
@@ -477,66 +502,103 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk_in'
-  Clock period: 4.470ns (frequency: 223.714MHz)
-  Total number of paths / destination ports: 1476 / 84
+  Clock period: 4.150ns (frequency: 240.964MHz)
+  Total number of paths / destination ports: 1845 / 97
 -------------------------------------------------------------------------
-Delay:               4.470ns (Levels of Logic = 2)
-  Source:            fifo/read_ptr_3 (FF)
+Delay:               4.150ns (Levels of Logic = 2)
+  Source:            fifo/fifo_empty_s (FF)
   Destination:       fifo/Mram_data_array (RAM)
   Source Clock:      clk_in rising +90
   Destination Clock: clk_in rising +90
 
-  Data Path: fifo/read_ptr_3 to fifo/Mram_data_array
+  Data Path: fifo/fifo_empty_s to fifo/Mram_data_array
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDC:C->Q              5   0.525   1.271  fifo/read_ptr_3 (fifo/read_ptr_3)
-     LUT5:I0->O            6   0.254   1.104  fifo/Result<4>21 (fifo/Result<4>_bdd2)
-     LUT6:I3->O            1   0.235   0.681  fifo/read_index<6>1 (fifo/read_index<6>)
-     RAMB8BWER:ADDRBRDADDR10        0.400          fifo/Mram_data_array
+     FDP:C->Q             21   0.525   1.310  fifo/fifo_empty_s (fifo/fifo_empty_s)
+     LUT6:I5->O            2   0.254   0.726  fifo/Result<3>11 (fifo/Result<3>_bdd0)
+     LUT5:I4->O            1   0.254   0.681  fifo/read_index<3>1 (fifo/read_index<3>)
+     RAMB8BWER:ADDRBRDADDR7        0.400          fifo/Mram_data_array
     ----------------------------------------
-    Total                      4.470ns (1.414ns logic, 3.056ns route)
-                                       (31.6% logic, 68.4% route)
+    Total                      4.150ns (1.433ns logic, 2.717ns route)
+                                       (34.5% logic, 65.5% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'curr_state[3]_GND_38_o_Mux_48_o'
+  Total number of paths / destination ports: 16 / 16
+-------------------------------------------------------------------------
+Offset:              2.045ns (Levels of Logic = 1)
+  Source:            fdata<14> (PAD)
+  Destination:       fdata_in_14 (LATCH)
+  Destination Clock: curr_state[3]_GND_38_o_Mux_48_o falling
+
+  Data Path: fdata<14> to fdata_in_14
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IOBUF:IO->O           1   1.328   0.681  fdata_14_IOBUF (N10)
+     LD:D                      0.036          fdata_in_14
+    ----------------------------------------
+    Total                      2.045ns (1.364ns logic, 0.681ns route)
+                                       (66.7% logic, 33.3% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'clk_in'
-  Total number of paths / destination ports: 81 / 73
+  Total number of paths / destination ports: 69 / 63
 -------------------------------------------------------------------------
-Offset:              4.702ns (Levels of Logic = 2)
+Offset:              4.566ns (Levels of Logic = 2)
   Source:            reset (PAD)
-  Destination:       fifo/read_occupancy_9 (FF)
+  Destination:       curr_state_FSM_FFd8 (FF)
   Destination Clock: clk_in rising +90
 
-  Data Path: reset to fifo/read_occupancy_9
+  Data Path: reset to curr_state_FSM_FFd8
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            10   1.328   1.007  reset_IBUF (reset_IBUF)
-     INV:I->O             40   0.255   1.653  fifo/reset_al_inv1_INV_0 (fifo/reset_al_inv)
+     IBUF:I->O             1   1.328   0.681  reset_IBUF (reset_IBUF)
+     INV:I->O             53   0.255   1.843  reset_inv1_INV_0 (fifo/reset_al_inv)
      FDC:CLR                   0.459          fifo/write_busy_d
     ----------------------------------------
-    Total                      4.702ns (2.042ns logic, 2.660ns route)
-                                       (43.4% logic, 56.6% route)
+    Total                      4.566ns (2.042ns logic, 2.524ns route)
+                                       (44.7% logic, 55.3% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'clk_in'
-  Total number of paths / destination ports: 101 / 21
+  Total number of paths / destination ports: 97 / 27
 -------------------------------------------------------------------------
-Offset:              7.206ns (Levels of Logic = 2)
-  Source:            curr_state_FSM_FFd4 (FF)
-  Destination:       fdata<15> (PAD)
+Offset:              6.555ns (Levels of Logic = 2)
+  Source:            curr_state_FSM_FFd7 (FF)
+  Destination:       faddr<1> (PAD)
   Source Clock:      clk_in rising +90
 
-  Data Path: curr_state_FSM_FFd4 to fdata<15>
+  Data Path: curr_state_FSM_FFd7 to faddr<1>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDC:C->Q             77   0.525   2.307  curr_state_FSM_FFd4 (curr_state_FSM_FFd4)
-     LUT4:I0->O           17   0.254   1.208  GND_6_o_curr_state[3]_equal_10_o_inv11 (GND_6_o_curr_state[3]_equal_10_o_inv1)
-     OBUF:I->O                 2.912          slwr_OBUF (slwr)
+     FDC:C->Q             64   0.525   2.158  curr_state_FSM_FFd7 (curr_state_FSM_FFd7)
+     LUT4:I1->O            2   0.235   0.725  curr_state__n0542<4>1 (faddr_1_OBUFT)
+     OBUFT:I->O                2.912          faddr_1_OBUFT (faddr<1>)
     ----------------------------------------
-    Total                      7.206ns (3.691ns logic, 3.515ns route)
-                                       (51.2% logic, 48.8% route)
+    Total                      6.555ns (3.672ns logic, 2.883ns route)
+                                       (56.0% logic, 44.0% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 1 / 1
+-------------------------------------------------------------------------
+Delay:               5.183ns (Levels of Logic = 2)
+  Source:            flagb (PAD)
+  Destination:       led<1> (PAD)
+
+  Data Path: flagb to led<1>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             8   1.328   0.943  flagb_IBUF (led_1_OBUF)
+     OBUF:I->O                 2.912          led_1_OBUF (led<1>)
+    ----------------------------------------
+    Total                      5.183ns (4.240ns logic, 0.943ns route)
+                                       (81.8% logic, 18.2% route)
 
 =========================================================================
 
@@ -544,25 +606,26 @@ Cross Clock Domains Report:
 --------------------------
 
 Clock to Setup on destination clock clk_in
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-clk_in         |    4.470|         |         |         |
----------------+---------+---------+---------+---------+
+-------------------------------+---------+---------+---------+---------+
+                               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock                   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+-------------------------------+---------+---------+---------+---------+
+clk_in                         |    4.150|         |         |         |
+curr_state[3]_GND_38_o_Mux_48_o|         |    1.562|         |         |
+-------------------------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 12.00 secs
-Total CPU time to Xst completion: 6.55 secs
+Total REAL time to Xst completion: 10.00 secs
+Total CPU time to Xst completion: 6.49 secs
  
 --> 
 
 
-Total memory usage is 406660 kilobytes
+Total memory usage is 407040 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    9 (   0 filtered)
-Number of infos    :    5 (   0 filtered)
+Number of warnings :   26 (   0 filtered)
+Number of infos    :    4 (   0 filtered)
 

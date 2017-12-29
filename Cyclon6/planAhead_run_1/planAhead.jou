@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:24:36 MDT 2013
+# Start of session at: Fri Nov 24 11:06:28 2017
+# Process ID: 10448
+# Log file: /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/planAhead_run_1/planAhead.log
+# Journal file: /home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source {/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/pa.fromNetlist.tcl}

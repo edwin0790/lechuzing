@@ -14,6 +14,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 library unisim;
 use unisim.vcomponents.all;
 
@@ -51,7 +52,9 @@ entity fx2lp_interface_top is
     reset   : in    std_logic;                              -- fundamentalmente para sincronización
     send_req: in    std_logic;                              -- pedido de envío de datos
     data_out: out   std_logic_vector(port_width downto 0);
-    data_in : in    std_logic_vector(port_width downto 0)
+    data_in : in    std_logic_vector(port_width downto 0);
+	
+	led		: out	std_logic_vector(7 downto 0)
   );
 end fx2lp_interface_top;
 
@@ -95,6 +98,11 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 
   signal fifo_flush                             :   std_logic;
   signal fifo_push, fifo_pop, fifo_full, fifo_empty : std_logic;
+  
+  signal debug_clk : std_logic := '0';
+  signal cont: natural range 0 to 16777215 := 10000000;
+  
+--  signal clk_in1, clk_in2 : std_logic;
 
   -- Maquinas de Estados: xc6slx9-2tqg144
       --Maquina global
@@ -105,8 +113,26 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
         write_addr, write_no_full, write_write, write_end
       );
       signal curr_state, next_state : global_states := idle;
+	  signal num_state : std_logic_vector(3 downto 0);
 begin
-
+	
+	with curr_state select
+		num_state <= 	"1111" when idle,
+						"0101" when read_addr,
+						"0110" when read_wait_empty,
+						"0111" when read_read,
+						"0100" when read_end,
+						"0001" when write_addr,
+						"0010" when write_no_full,
+						"0011" when write_write,
+						"0000" when write_end;
+	--debuggin leds
+	led(0) <= fifo_empty;
+	led(1) <= read_empty_flag;
+	led(2) <= locked;
+	led(3) <= debug_clk;
+	led(7 downto 4) <= num_state;
+	
   oddr_y : ODDR2 	                                           -- clk out buffer
   port map
   (
@@ -140,7 +166,7 @@ begin
     read_busy   => fifo_pop,
     fifo_empty  => fifo_empty,
     fifo_clk    => sys_clk,
-    reset_al    => (not reset),
+    reset_al    => reset,
     fifo_flush  => fifo_flush
   );
 
@@ -156,11 +182,11 @@ begin
   -- done   <= done_int; --for debug
 
   write_full_flag  <= flaga;
-  write_empty_flag  <= flagb;
+  write_empty_flag  <= flagd;
   read_full_flag  <= flagc;
-  read_empty_flag  <= flagd;
+  read_empty_flag  <= flagb;
 
-  write_req <= send_req;
+  write_req <= not fifo_empty;
 
 
   -- control signaling
@@ -257,11 +283,23 @@ begin
     -- reloj
     global_fsm_clk: process (sys_clk, reset)
     begin
-      if(reset = '1')then
+      if(reset = '0')then
         curr_state <= idle;
       elsif(rising_edge(sys_clk))then
         curr_state <= next_state;
       end if;
     end process global_fsm_clk;
+	
+	reloj_lento: process(pll_0)
+	begin
+		if(rising_edge(pll_0))then
+			cont <= cont - 1;
+			if cont = 0 then
+				cont <= 10000000;
+				debug_clk <= not debug_clk;
+			end if;
+		end if;
+	end process reloj_lento;
+				
 
 end fx2lp_interface_arq;

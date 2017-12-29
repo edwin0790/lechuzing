@@ -5,10 +5,7 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="HDLCompiler" num="946" delta="unknown" >"/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 117: Actual for formal port <arg fmt="%s" index="1">c1</arg> is neither a static name nor a globally static expression
-</msg>
-
-<msg type="warning" file="HDLCompiler" num="946" delta="unknown" >"/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 143: Actual for formal port <arg fmt="%s" index="1">reset_al</arg> is neither a static name nor a globally static expression
+<msg type="warning" file="HDLCompiler" num="946" delta="unknown" >"/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/fx2lp_interface_top.vhd" Line 143: Actual for formal port <arg fmt="%s" index="1">c1</arg> is neither a static name nor a globally static expression
 </msg>
 
 </messages>

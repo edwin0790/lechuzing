@@ -5,5 +5,20 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
+<msg type="info" file="ConstraintSystem" num="178" delta="old" ><arg fmt="%s" index="1">TNM</arg> &apos;<arg fmt="%s" index="2">clk_in</arg>&apos;, used in period specification &apos;<arg fmt="%s" index="3">TS_clk_in</arg>&apos;, was traced into <arg fmt="%s" index="4">DCM_SP</arg> instance <arg fmt="%s" index="5">pll/dcm_sp_inst</arg>. The following new TNM groups and period specifications were generated at the <arg fmt="%s" index="6">DCM_SP</arg> output(s): 
+<arg fmt="%s" index="7">CLK180</arg>: <arg fmt="%s" index="8">&lt;TIMESPEC TS_pll_clk180 = PERIOD &quot;pll_clk180&quot; TS_clk_in PHASE 10.416666667 ns HIGH 50%&gt;</arg>
+</msg>
+
+<msg type="info" file="ConstraintSystem" num="178" delta="old" ><arg fmt="%s" index="1">TNM</arg> &apos;<arg fmt="%s" index="2">clk_in</arg>&apos;, used in period specification &apos;<arg fmt="%s" index="3">TS_clk_in</arg>&apos;, was traced into <arg fmt="%s" index="4">DCM_SP</arg> instance <arg fmt="%s" index="5">pll/dcm_sp_inst</arg>. The following new TNM groups and period specifications were generated at the <arg fmt="%s" index="6">DCM_SP</arg> output(s): 
+<arg fmt="%s" index="7">CLK0</arg>: <arg fmt="%s" index="8">&lt;TIMESPEC TS_pll_clk0 = PERIOD &quot;pll_clk0&quot; TS_clk_in HIGH 50%&gt;</arg>
+</msg>
+
+<msg type="info" file="ConstraintSystem" num="178" delta="old" ><arg fmt="%s" index="1">TNM</arg> &apos;<arg fmt="%s" index="2">clk_in</arg>&apos;, used in period specification &apos;<arg fmt="%s" index="3">TS_clk_in</arg>&apos;, was traced into <arg fmt="%s" index="4">DCM_SP</arg> instance <arg fmt="%s" index="5">pll/dcm_sp_inst</arg>. The following new TNM groups and period specifications were generated at the <arg fmt="%s" index="6">DCM_SP</arg> output(s): 
+<arg fmt="%s" index="7">CLK90</arg>: <arg fmt="%s" index="8">&lt;TIMESPEC TS_pll_clk90 = PERIOD &quot;pll_clk90&quot; TS_clk_in PHASE 5.208333333 ns HIGH 50%&gt;</arg>
+</msg>
+
+<msg type="warning" file="NgdBuild" num="1212" delta="old" >User specified non-default attribute value (<arg fmt="%s" index="1">20.833</arg>) was detected for the <arg fmt="%s" index="2">CLKIN_PERIOD</arg> attribute on <arg fmt="%s" index="3">DCM</arg> &quot;<arg fmt="%s" index="4">pll/dcm_sp_inst</arg>&quot;.  This does not match the PERIOD constraint value (<arg fmt="%s" index="5">48 MHz.</arg>).  The uncertainty calculation will use the non-default attribute value.  This could result in incorrect uncertainty calculated for <arg fmt="%s" index="6">DCM</arg> output clocks.
+</msg>
+
 </messages>
 

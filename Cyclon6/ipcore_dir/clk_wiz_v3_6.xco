@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Wed Jul 19 14:50:16 2017
+# Date: Mon Dec  4 11:27:27 2017
 #
 ##############################################################
 #
@@ -223,7 +223,7 @@ CSET pll_divclk_divide=2
 CSET pll_notes=None
 CSET pll_ref_jitter=0.010
 CSET power_down_port=POWER_DOWN
-CSET prim_in_freq=48
+CSET prim_in_freq=48.000
 CSET prim_in_jitter=0.010
 CSET prim_source=Single_ended_clock_capable_pin
 CSET primary_port=CLK_IN1
@@ -266,4 +266,4 @@ CSET use_status=false
 MISC pkg_timestamp=2012-05-10T12:44:55Z
 # END Extra information
 GENERATE
-# CRC: 3e5d780e
+# CRC: edf55646

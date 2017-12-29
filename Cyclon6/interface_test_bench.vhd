@@ -161,11 +161,11 @@ BEGIN
       wait for 10 ns;
       flagd <= '0';
 
-      send_req <= '1';
+--      send_req <= '1';
       fdata <= (others => 'Z');
 
       wait for clk_in_period*10;
-      send_req <= '0';
+--      send_req <= '0';
       -- insert stimulus here
 
       wait;
