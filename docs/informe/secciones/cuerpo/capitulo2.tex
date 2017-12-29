@@ -112,9 +112,10 @@
     \subsection{Topología USB}
     El USB es un sistema centrado en el \host. Él es el maestro, el que da las
     órdenes o los turnos para que cada dispositivos pueda transmitir o recibir
-    información.\\
+    información. Cada dispositivo responderá consiguientemente al pedido por
+    por parte del \host.\\
 
-    La topología es, entonces, en estrella por niveles, dnd el \host USB es el
+    La topología es, entonces, en estrella por niveles, donde el \host es el
     centro y cada dispositivo es una extensión. Los niveles se separa a través
     de distribuidores, que sirven para ampliar la red y son los centro de cada
     nuevo nivel.\\
@@ -130,6 +131,9 @@
     especificaciones de la norma USB 2.0, no puede existir más que 7 niveles
     en un sistema USB, incluido el nivel del \host, por lo que no puede existir
     un distribuidor en el último nivel.\\
+
+    \subsection{Protocolo}
+
 
     \subsection{Flujo de datos}
       \subsubsection{Dirección de datos}
@@ -148,9 +152,9 @@
 
       \begin{itemize}
          \item Transferencias de control:
-         \item Transferencias por bultos
-         \item Trasnferencias por interrupción
-         \item Trasnferencias isocrónicas
+         \item Transferencias por bultos:
+         \item Trasnferencias por interrupción:
+         \item Trasnferencias isocrónicas:
       \end{itemize}
 
 
