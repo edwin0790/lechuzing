@@ -1,7 +1,7 @@
 Release 14.7 par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Edwin-Linux::  Fri Dec 29 09:14:23 2017
+Edwin-Linux::  Wed Jan 03 14:14:17 2018
 
 par -w -intstyle ise -ol high -mt off fx2lp_interface_top_map.ncd
 fx2lp_interface_top.ncd fx2lp_interface_top.pcf 
@@ -22,26 +22,26 @@ Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                    78 out of  11,440    1%
-    Number used as Flip Flops:                  78
+  Number of Slice Registers:                    76 out of  11,440    1%
+    Number used as Flip Flops:                  76
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        131 out of   5,720    2%
-    Number used as logic:                      131 out of   5,720    2%
-      Number using O6 output only:              80
+  Number of Slice LUTs:                        127 out of   5,720    2%
+    Number used as logic:                      127 out of   5,720    2%
+      Number using O6 output only:              75
       Number using O5 output only:               1
-      Number using O5 and O6:                   50
+      Number using O5 and O6:                   51
       Number used as ROM:                        0
     Number used as Memory:                       0 out of   1,440    0%
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    45 out of   1,430    3%
+  Number of occupied Slices:                    44 out of   1,430    3%
   Number of MUXCYs used:                        48 out of   2,860    1%
-  Number of LUT Flip Flop pairs used:          132
-    Number with an unused Flip Flop:            58 out of     132   43%
-    Number with an unused LUT:                   1 out of     132    1%
-    Number of fully used LUT-FF pairs:          73 out of     132   55%
+  Number of LUT Flip Flop pairs used:          129
+    Number with an unused Flip Flop:            55 out of     129   42%
+    Number with an unused LUT:                   2 out of     129    1%
+    Number of fully used LUT-FF pairs:          72 out of     129   55%
     Number of slice register sites lost
       to control set restrictions:               0 out of  11,440    0%
 
@@ -104,13 +104,13 @@ WARNING:Par:288 - The signal flagd_IBUF has no load.  PAR will not attempt to ro
 Starting Router
 
 
-Phase  1  : 777 unrouted;      REAL time: 3 secs 
+Phase  1  : 758 unrouted;      REAL time: 3 secs 
 
-Phase  2  : 662 unrouted;      REAL time: 3 secs 
+Phase  2  : 641 unrouted;      REAL time: 3 secs 
 
-Phase  3  : 245 unrouted;      REAL time: 4 secs 
+Phase  3  : 234 unrouted;      REAL time: 4 secs 
 
-Phase  4  : 245 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 4 secs 
+Phase  4  : 234 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 4 secs 
 
 Updating file: fx2lp_interface_top.ncd with current fully routed design.
 
@@ -146,12 +146,12 @@ Generating Clock Report
 +---------------------+--------------+------+------+------------+-------------+
 |             pll_180 | BUFGMUX_X3Y13| No   |    2 |  0.000     |  2.047      |
 +---------------------+--------------+------+------+------------+-------------+
-|               pll_0 |  BUFGMUX_X2Y3| No   |    8 |  0.012     |  1.403      |
+|               pll_0 |  BUFGMUX_X2Y3| No   |    8 |  0.010     |  1.400      |
 +---------------------+--------------+------+------+------------+-------------+
-|              pll_90 |  BUFGMUX_X2Y2| No   |   20 |  0.075     |  1.502      |
+|              pll_90 |  BUFGMUX_X2Y2| No   |   22 |  0.103     |  1.494      |
 +---------------------+--------------+------+------+------------+-------------+
-|curr_state[3]_GND_38 |              |      |      |            |             |
-|         _o_Mux_48_o |         Local|      |   16 |  2.807     |  5.180      |
+|curr_state_FSM_FFd5- |              |      |      |            |             |
+|                 In1 |         Local|      |   16 |  2.628     |  4.162      |
 +---------------------+--------------+------+------+------------+-------------+
 
 * Net Skew is the difference between the minimum and maximum routing
@@ -176,12 +176,12 @@ Asterisk (*) preceding a constraint indicates it was not met.
   TS_clk_in = PERIOD TIMEGRP "clk_in" 48 MH | MINLOWPULSE |     4.832ns|    16.000ns|       0|           0
   z HIGH 50%                                |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
-  TS_pll_clk90 = PERIOD TIMEGRP "pll_clk90" | SETUP       |    16.674ns|     4.159ns|       0|           0
-   TS_clk_in PHASE 5.20833333 ns HIGH       | HOLD        |     0.437ns|            |       0|           0
+  TS_pll_clk90 = PERIOD TIMEGRP "pll_clk90" | SETUP       |    15.655ns|     5.178ns|       0|           0
+   TS_clk_in PHASE 5.20833333 ns HIGH       | HOLD        |     0.438ns|            |       0|           0
      50%                                    |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
-  TS_pll_clk0 = PERIOD TIMEGRP "pll_clk0" T | SETUP       |    17.217ns|     3.616ns|       0|           0
-  S_clk_in HIGH 50%                         | HOLD        |     0.658ns|            |       0|           0
+  TS_pll_clk0 = PERIOD TIMEGRP "pll_clk0" T | SETUP       |    16.955ns|     3.878ns|       0|           0
+  S_clk_in HIGH 50%                         | HOLD        |     0.458ns|            |       0|           0
 ----------------------------------------------------------------------------------------------------------
   TS_pll_clk180 = PERIOD TIMEGRP "pll_clk18 | MINPERIOD   |    18.167ns|     2.666ns|       0|           0
   0" TS_clk_in PHASE 10.4166667 ns HIGH     |             |            |            |        |            
@@ -199,10 +199,10 @@ Derived Constraints for TS_clk_in
 |           Constraint          | Requirement |-------------+-------------|-------------+-------------|-------------+-------------|
 |                               |             |   Direct    | Derivative  |   Direct    | Derivative  |   Direct    | Derivative  |
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
-|TS_clk_in                      |     20.833ns|     16.000ns|      4.159ns|            0|            0|            0|         1845|
+|TS_clk_in                      |     20.833ns|     16.000ns|      5.178ns|            0|            0|            0|         1591|
 | TS_pll_clk180                 |     20.833ns|      2.666ns|          N/A|            0|            0|            0|            0|
-| TS_pll_clk0                   |     20.833ns|      3.616ns|          N/A|            0|            0|          901|            0|
-| TS_pll_clk90                  |     20.833ns|      4.159ns|          N/A|            0|            0|          944|            0|
+| TS_pll_clk0                   |     20.833ns|      3.878ns|          N/A|            0|            0|          901|            0|
+| TS_pll_clk90                  |     20.833ns|      5.178ns|          N/A|            0|            0|          690|            0|
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
 
 All constraints were met.

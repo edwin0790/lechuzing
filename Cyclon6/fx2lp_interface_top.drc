@@ -1,14 +1,13 @@
 Release 14.7 Drc P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Fri Dec 29 09:18:50 2017
+Tue Jan  2 16:36:08 2018
 
 drc -z fx2lp_interface_top.ncd fx2lp_interface_top.pcf
 
-WARNING:PhysDesignRules:372 - Gated clock. Clock net
-   curr_state[3]_GND_38_o_Mux_48_o is sourced by a combinatorial pin. This is
-   not good design practice. Use the CE pin to control the loading of data into
-   the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net curr_state_FSM_FFd5 is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:2410 - This design is using one or more 9K Block RAMs
    (RAMB8BWER).  9K Block RAM initialization data, both user defined and
    default, may be incorrect and should not be used.  For more information,

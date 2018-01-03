@@ -90,6 +90,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
   signal pll_0, pll_90, pll_180, pll_270        :   std_logic;
   signal locked                                 :   std_logic;
   signal slwr_int, slrd_int, sloe_int, done_int :   std_logic;
+  signal push_int, pop_int						:	std_logic;
   signal faddr_int                              :   std_logic_vector(1 downto 0);
   signal fdata_out, fdata_in                    :   std_logic_vector(port_width downto 0);
   signal read_empty_flag, read_full_flag        :   std_logic;
@@ -201,24 +202,30 @@ begin
   slrd_int <= '0' when curr_state = read_read else
               '1';
 
+  pop_int <= '0' when curr_state = write_end else
+              '1';
+
+  push_int <= '0' when curr_state = read_end else
+              '1';
+
   with curr_state select
-    sloe_int <= '0' when read_wait_empty | read_read | read_end,
+    sloe_int <= '0' when read_read,
                 '1' when others;
 
   with curr_state select
-    fdata <=  fdata_out        when write_no_full | write_write | write_end,
+    fdata <=  fdata_out        when write_write | write_end,
               (others => 'Z')  when others;
 
   with curr_state select
-    fdata_in <= fdata     when read_wait_empty | read_read | read_end,
+    fdata_in <= fdata     when read_end | read_wait_empty,
                 fdata_in  when others;
 --              (others => '0');
 
 -- control de la memoria
-  fifo_push <= ((not slrd_int) and (not fifo_full));
-  fifo_pop  <= ((not slwr_int) and (not fifo_empty));
+  fifo_push <= ((not push_int) and (not fifo_full));
+  fifo_pop  <= ((not pop_int) and (not fifo_empty));
 
-  fifo_flush <= '1' when curr_state = read_addr else '0';
+  fifo_flush <= '1' when reset = '0' else '0';
 
   -- Implementacion de las maquinas de estado
   fsm: process(curr_state, write_full_flag, read_empty_flag)

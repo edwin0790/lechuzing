@@ -1,17 +1,8 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Fri Dec 29 09:14:20 2017
+// Written by: Map P.20131013 on Wed Jan 03 14:14:14 2018
 //! **************************************************************************
 
 SCHEMATIC START;
-COMP "fdata<9>" LOCATE = SITE "P32" LEVEL 1;
-COMP "flaga" LOCATE = SITE "P12" LEVEL 1;
-COMP "flagb" LOCATE = SITE "P14" LEVEL 1;
-COMP "flagc" LOCATE = SITE "P15" LEVEL 1;
-COMP "flagd" LOCATE = SITE "P11" LEVEL 1;
-COMP "sloe" LOCATE = SITE "P6" LEVEL 1;
-COMP "slrd" LOCATE = SITE "P16" LEVEL 1;
-COMP "reset" LOCATE = SITE "P38" LEVEL 1;
-COMP "pktend" LOCATE = SITE "P10" LEVEL 1;
 COMP "slwr" LOCATE = SITE "P17" LEVEL 1;
 COMP "clk_in" LOCATE = SITE "P56" LEVEL 1;
 COMP "led<0>" LOCATE = SITE "P134" LEVEL 1;
@@ -39,6 +30,15 @@ COMP "fdata<5>" LOCATE = SITE "P26" LEVEL 1;
 COMP "fdata<6>" LOCATE = SITE "P30" LEVEL 1;
 COMP "fdata<7>" LOCATE = SITE "P29" LEVEL 1;
 COMP "fdata<8>" LOCATE = SITE "P33" LEVEL 1;
+COMP "fdata<9>" LOCATE = SITE "P32" LEVEL 1;
+COMP "flaga" LOCATE = SITE "P12" LEVEL 1;
+COMP "flagb" LOCATE = SITE "P14" LEVEL 1;
+COMP "flagc" LOCATE = SITE "P15" LEVEL 1;
+COMP "flagd" LOCATE = SITE "P11" LEVEL 1;
+COMP "sloe" LOCATE = SITE "P6" LEVEL 1;
+COMP "slrd" LOCATE = SITE "P16" LEVEL 1;
+COMP "reset" LOCATE = SITE "P38" LEVEL 1;
+COMP "pktend" LOCATE = SITE "P10" LEVEL 1;
 PIN fifo/Mram_data_array_pins<18> = BEL "fifo/Mram_data_array" PINNAME
         CLKAWRCLK;
 PIN fifo/Mram_data_array_pins<19> = BEL "fifo/Mram_data_array" PINNAME
@@ -64,10 +64,9 @@ TIMEGRP pll_clk90 = BEL "curr_state_FSM_FFd8" BEL "curr_state_FSM_FFd9" BEL
         "fifo/read_ptr_7" BEL "fifo/read_ptr_6" BEL "fifo/read_ptr_5" BEL
         "fifo/read_ptr_4" BEL "fifo/read_ptr_3" BEL "fifo/read_ptr_2" BEL
         "fifo/read_ptr_1" BEL "fifo/read_ptr_0" BEL "fifo/fifo_full_s" BEL
-        "fifo/fifo_empty_s" BEL "fifo/write_busy_d" BEL
-        "curr_state_FSM_FFd2_1" BEL "curr_state_FSM_FFd7_1" BEL
-        "curr_state_FSM_FFd2_2" BEL "fifo/fifo_empty_s_1" PIN
-        "fifo/Mram_data_array_pins<18>" PIN "fifo/Mram_data_array_pins<19>";
+        "fifo/fifo_empty_s" BEL "fifo/write_busy_d" BEL "fifo/fifo_empty_s_1"
+        BEL "curr_state_FSM_FFd1_1" PIN "fifo/Mram_data_array_pins<18>" PIN
+        "fifo/Mram_data_array_pins<19>";
 PIN oddr_y_pins<1> = BEL "oddr_y" PINNAME CK0;
 PIN oddr_y_pins<2> = BEL "oddr_y" PINNAME CK1;
 TIMEGRP pll_clk180 = BEL "pll/clkout3_buf" PIN "oddr_y_pins<1>" PIN

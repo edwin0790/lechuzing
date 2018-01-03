@@ -138,17 +138,17 @@ BEGIN
    stim_proc: process
    begin
       -- hold reset state for 100 ns.
-      reset <= '1';
+      reset <= '0';
       flaga <= '1';
       flagb <= '0';
       flagc <= '1';
       flagd <= '0';
 
       wait for 100 ns;
-      reset <= '0';
+      reset <= '1';
 
       fdata <= x"ABCD";
-      flagd <= '1';
+      flagb <= '1';
 
       wait until slrd = '0';
       wait until slrd = '1';
@@ -159,7 +159,7 @@ BEGIN
       wait until slrd = '0';
       wait until slrd = '1';
       wait for 10 ns;
-      flagd <= '0';
+      flagb <= '0';
 
 --      send_req <= '1';
       fdata <= (others => 'Z');
