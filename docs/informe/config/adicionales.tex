@@ -1,0 +1,36 @@
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumerate}
+\usepackage{lineno}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[titletoc]{appendix}
+\usepackage{siunitx}
+\usepackage{titling}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=black,
+	urlcolor=black,
+	pdftitle={\@title},
+	bookmarks=true
+}
+
+\DeclareSIUnit[number-unit-product = {}]
+\byte{b}
+
+\graphicspath{{imgs/}}
+
+\renewcommand{\chaptermark}[1]{%
+    \markboth{\thechapter.\ #1}{}}
+
+\lstset{literate=
+	{á}{{\'a}}1	{é}{{\'e}}1	{í}{{\'i}}1	{ó}{{\'o}}1	{ú}{{\'u}}1	{α}{{$\alpha$}}1	{β}{{$\beta$}}1	{γ}{{$\gamma$}}1	{ñ}{{\~n}}1
+}
+
+\renewcommand{\appendixpagename}{Apéndice}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$-$}
