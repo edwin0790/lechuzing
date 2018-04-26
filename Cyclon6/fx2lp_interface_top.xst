@@ -1,9 +1,6 @@
-set -tmpdir "xst/projnav.tmp"
-set -xsthdpdir "xst"
-run
--ifn fx2lp_interface_top.prj
--ofn fx2lp_interface_top
--ofmt NGC
+set -tmpdir "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/xst/projnav.tmp"
+set -xsthdpdir "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/xst"
+run -compileonly yes
 -p xc6slx9-2-tqg144
 -top fx2lp_interface_top
 -opt_mode Speed
@@ -50,3 +47,4 @@ run
 -iob Auto
 -equivalent_register_removal YES
 -slice_utilization_ratio_maxmargin 5
+-ifn fx2lp_interface_top.prj

@@ -86,6 +86,10 @@
     <transform xil_pn:end_ts="1501077165" xil_pn:in_ck="-3821411015379714755" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1501077165">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="fi_ram_memory.vhd"/>
       <outfile xil_pn:name="fifo_512x8.vhd"/>
       <outfile xil_pn:name="fx2lp_interface_top.vhd"/>
@@ -107,6 +111,11 @@
     <transform xil_pn:end_ts="1501077165" xil_pn:in_ck="-3821411015379714755" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1501077165">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="fi_ram_memory.vhd"/>
       <outfile xil_pn:name="fifo_512x8.vhd"/>
       <outfile xil_pn:name="fx2lp_interface_top.vhd"/>
@@ -116,7 +125,10 @@
     <transform xil_pn:end_ts="1501077168" xil_pn:in_ck="-3821411015379714755" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="5637909112574287658" xil_pn:start_ts="1501077165">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="fuse.log"/>
       <outfile xil_pn:name="interface_test_bench_beh.prj"/>
@@ -128,6 +140,9 @@
     <transform xil_pn:end_ts="1501077168" xil_pn:in_ck="-1113440396545998597" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="1060318547496360919" xil_pn:start_ts="1501077168">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="interface_test_bench_isim_beh.wdb"/>
       <outfile xil_pn:name="isim.cmd"/>
       <outfile xil_pn:name="isim.log"/>
@@ -160,8 +175,8 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1501007143" xil_pn:in_ck="1008584480899972126" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-6658582869466540199" xil_pn:start_ts="1501007127">
-      <status xil_pn:value="SuccessfullyRun"/>
+    <transform xil_pn:end_ts="1501096439" xil_pn:in_ck="1008584480899972126" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-6658582869466540199" xil_pn:start_ts="1501096426">
+      <status xil_pn:value="FailedRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
       <status xil_pn:value="OutOfDateForInputs"/>
@@ -173,7 +188,6 @@
       <outfile xil_pn:name="fx2lp_interface_top.ngc"/>
       <outfile xil_pn:name="fx2lp_interface_top.ngr"/>
       <outfile xil_pn:name="fx2lp_interface_top.prj"/>
-      <outfile xil_pn:name="fx2lp_interface_top.stx"/>
       <outfile xil_pn:name="fx2lp_interface_top.syr"/>
       <outfile xil_pn:name="fx2lp_interface_top.xst"/>
       <outfile xil_pn:name="fx2lp_interface_top_stx_beh.prj"/>
@@ -186,7 +200,7 @@
       <status xil_pn:value="ReadyToRun"/>
     </transform>
     <transform xil_pn:end_ts="1501007150" xil_pn:in_ck="2409227517223853396" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="-8576086096737069685" xil_pn:start_ts="1501007143">
-      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="AbortedRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="_ngo"/>

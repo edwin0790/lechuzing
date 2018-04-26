@@ -15,6 +15,7 @@ entity fi_ram_memory is
     data_in:  in    std_logic_vector(port_width downto 0);
     data_out: out   std_logic_vector(port_width downto 0);
     push:     in    std_logic;
+    pop:      in    std_logic;
     reset:    in    std_logic
 
   );
