@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/lechuzin/Facultad/Trabajo Final/lechuzing/Spartan6/fx2lp_interface_top.ncd
+OUTFILE=/home/lechuzin/Facultad/Trabajo Final/lechuzing/Spartan6/fx2lp_interface_top.bit
+FAMILY=Spartan6
+PART=xc6slx9-2tqg144
+WORKINGDIR=/home/lechuzin/Facultad/Trabajo Final/lechuzing/Spartan6
+LICENSE=WebPack
+USER_INFO=211046100_0_0_279
