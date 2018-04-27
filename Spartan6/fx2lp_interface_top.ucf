@@ -4,7 +4,7 @@ NET "clk_in" TNM_NET = clk_in;
 TIMESPEC TS_clk_in = PERIOD "clk_in" 50MHz HIGH 50%;
 
 NET "clk_in" LOC = P56 |IOSTANDARD = LVTTL;
-NET "reset" LOC = P38 |IOSTANDARD = LVTTL;
+NET "button" LOC = P38 |IOSTANDARD = LVTTL;
 
 #net "clk_out" loc = p | iostandard = lvttl;
 net "fdata<15>" LOC = p50 |IOSTANDARd = LVTTL;
