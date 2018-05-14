@@ -28,11 +28,11 @@ entity fx2lp_interface_top is
   constant port_width: integer := 15
   );
   port(
-    -- señales que van y vienen desde y hacia el FX2LP
+    -- senales que van y vienen desde y hacia el FX2LP
     fdata   : inout std_logic_vector(port_width downto 0);  -- entrada y salida de datos FIFO
     faddr   : out   std_logic_vector(1 downto 0);           -- canal FIFO
-    slrd    : out   std_logic;                              -- señal de lectura
-    slwr    : out   std_logic;                              -- señal de escritura
+    slrd    : out   std_logic;                              -- senal de lectura
+    slwr    : out   std_logic;                              -- senal de escritura
 
                                                             -- EP2 streaming in (to pc)
     flaga   : in    std_logic;                              -- EP2_full--->write_full_flag
@@ -40,16 +40,15 @@ entity fx2lp_interface_top is
                                                             -- EP8 bulk out (from pc)
     flagc   : in    std_logic;                              -- EP8_full--->read_full_flag
     flagd   : in    std_logic;                              -- EP2_empty-->write_empty_flag
-    sloe    : out   std_logic;                              -- señal de habilitación de salida
+    sloe    : out   std_logic;                              -- senal de habilitacion de salida
 
     pktend  : out   std_logic;
-    done    : out   std_logic;
     -- reloj
       -- se utiliza el reloj que	 provee el EZ-USB-FX2LP
     clk_in  : in    std_logic;                              -- entrada de reloj
     clk_out : out   std_logic;                              -- salido de reloj
 
-    -- señales que se comunican desde y hacia el sistema
+    -- senales que se comunican desde y hacia el sistema
     button  : in    std_logic;                              -- fundamentalmente para sincronizacion..activo en bajo
     send_req: in    std_logic;                              -- pedido de envío de datos
     data_out: out   std_logic_vector(port_width downto 0);
@@ -89,20 +88,20 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	);
 	end component;
 
-	signal sys_clk													: std_logic;
-	signal pll_0, pll_90, pll_180, pll_270					: std_logic;
-	signal locked													: std_logic;
-	signal slwr_int, slrd_int, sloe_int, done_int		: std_logic;
-	signal pktend_int												: std_logic;
-	signal push_int, pop_int									: std_logic;
-	signal faddr_int												: std_logic_vector(1 downto 0);
+	signal sys_clk													: std_logic := '0';
+	signal pll_0, pll_90, pll_180, pll_270					: std_logic := '0';
+	signal locked													: std_logic := '0';
+	signal slwr_int, slrd_int, sloe_int						: std_logic := '1';
+	signal pktend_int												: std_logic := '1';
+	signal push_int, pop_int									: std_logic := '0';
+	signal faddr_int												: std_logic_vector(1 downto 0) := "00";
 	signal fdata_out, fdata_in									: std_logic_vector(port_width downto 0);
-	signal read_empty_flag, read_full_flag					: std_logic;
-	signal write_empty_flag, write_full_flag				: std_logic;
-	signal write_req												: std_logic;
+	signal read_empty_flag, read_full_flag					: std_logic := '0';
+	signal write_empty_flag, write_full_flag				: std_logic := '0';
+	signal write_req												: std_logic := '0';
 
-	signal fifo_flush												: std_logic;
-	signal fifo_push, fifo_pop, fifo_full, fifo_empty	: std_logic;
+	signal fifo_flush												: std_logic := '0';
+	signal fifo_push, fifo_pop, fifo_full, fifo_empty	: std_logic := '0';
 
 	signal reset													: std_logic := '0';
 	signal debug_clk												: std_logic := '0';
@@ -110,8 +109,10 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	signal count2													: natural range 0 to 2 := 0;
 	signal cont														: natural range 0 to 16777215 := 10000000;
 	signal rst_cont												: natural range 0 to 1023 := 1023;
-	signal checksum												: std_logic_vector(15 downto 0);
-
+	signal checksum												: std_logic_vector(15 downto 0) := x"0000";
+-- debug
+	signal counter													: std_logic_vector(15 downto 0) := x"0000";
+-- debug
 	signal trig3, trig2											: std_logic := '0';
 
 	-- Maquinas de Estados: xc6slx9-2tqg144
@@ -122,7 +123,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		write_addr, write_no_full, write_write, write_end
 	);
 	signal curr_state, next_state								: states := idle;
-	signal num_state												: std_logic_vector(3 downto 0);
+	signal num_state												: std_logic_vector(3 downto 0) := x"0";
 	begin
 
 	with curr_state select
@@ -173,7 +174,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		push		=> fifo_push,
 		pop			=> fifo_pop,
 		din			=> fdata_in,
-		dout		=> fdata_out,
+		--dout		=> --fdata_out, -- debug
 		full		=> fifo_full,
 		empty		=> fifo_empty
 
@@ -197,7 +198,6 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	sloe   <= sloe_int;
 	faddr  <= faddr_int;
 	pktend <= pktend_int;
-	-- done   <= done_int; --for debug
 
 	write_full_flag  <= flaga;
 	write_empty_flag  <= flagd;
@@ -234,6 +234,11 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		sloe_int <=	'0' when read_read | read_no_empty,
 						'1' when others;
 
+-- debug
+	fdata_out(15 downto 8) <= counter(7 downto 0);
+	fdata_out(7 downto 0) <= counter(15 downto 8);
+	
+-- debug
 	with curr_state select
 		fdata <=	fdata_out        when write_no_full | write_write | write_end,
 					(others => 'Z')  when others;
@@ -383,12 +388,22 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	variable suma : integer range 0 to 65535 := 0;
 	begin
 		if curr_state = write_addr then
-			suma := 0;
+			checksum <= x"0000";
 		elsif rising_edge(fifo_pop) then
-			suma := suma + to_integer(unsigned(fdata_out(7 downto 0)));
-			suma := suma + to_integer(unsigned(fdata_out(15 downto 8)));
+			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(7 downto 0)));
+			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(15 downto 8)));
 		end if;
-		checksum <= std_logic_vector(to_unsigned(suma, 16));
 	end process sum;
 	
+	-- debug
+	contador_grande: process(button, pop_int)
+	begin
+		if button = '0' then
+			counter <= x"0000";
+		elsif falling_edge(pop_int) then
+			counter <= std_logic_vector(unsigned(counter) + 1);
+		end if;
+	end process contador_grande;
+	-- debug
+
 end fx2lp_interface_arq;

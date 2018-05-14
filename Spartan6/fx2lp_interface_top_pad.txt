@@ -1,7 +1,7 @@
-Release 14.7 - par P.20131013 (lin64)
+Release 14.7 - par P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Thu Apr 12 14:49:42 2018
+Mon May 14 15:30:05 2018
 
 
 INFO: The IO information is provided in three file formats as part of the Place and Route (PAR) process.  These formats are:
@@ -40,27 +40,27 @@ Pinout by Pin Number:
 |P18       |           |         |VCCO_3                    |         |           |3             |          |         |           |         |3.30   |          |           |                |
 |P19       |           |         |VCCINT                    |         |           |              |          |         |           |         |1.2    |          |           |                |
 |P20       |           |         |VCCAUX                    |         |           |              |          |         |           |         |2.5    |          |           |                |
-|P21       |fdata<0>   |IOB      |IO_L42N_GCLK24_3          |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P22       |fdata<1>   |IOB      |IO_L42P_GCLK25_TRDY2_3    |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P23       |fdata<3>   |IOB      |IO_L41N_GCLK26_3          |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P24       |fdata<2>   |IOB      |IO_L41P_GCLK27_3          |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P21       |fdata<1>   |IOB      |IO_L42N_GCLK24_3          |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P22       |fdata<0>   |IOB      |IO_L42P_GCLK25_TRDY2_3    |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P23       |fdata<3>   |IOB      |IO_L41N_GCLK26_3          |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P24       |fdata<2>   |IOB      |IO_L41P_GCLK27_3          |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P25       |           |         |GND                       |         |           |              |          |         |           |         |       |          |           |                |
-|P26       |fdata<5>   |IOB      |IO_L37N_3                 |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P27       |fdata<4>   |IOB      |IO_L37P_3                 |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P26       |fdata<5>   |IOB      |IO_L37N_3                 |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P27       |fdata<4>   |IOB      |IO_L37P_3                 |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P28       |           |         |VCCINT                    |         |           |              |          |         |           |         |1.2    |          |           |                |
-|P29       |fdata<7>   |IOB      |IO_L36N_3                 |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P30       |fdata<6>   |IOB      |IO_L36P_3                 |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P29       |fdata<7>   |IOB      |IO_L36N_3                 |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P30       |fdata<6>   |IOB      |IO_L36P_3                 |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P31       |           |         |VCCO_3                    |         |           |3             |          |         |           |         |3.30   |          |           |                |
-|P32       |fdata<9>   |IOB      |IO_L2N_3                  |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P33       |fdata<8>   |IOB      |IO_L2P_3                  |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P34       |fdata<11>  |IOB      |IO_L1N_VREF_3             |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P35       |fdata<10>  |IOB      |IO_L1P_3                  |BIDIR    |LVTTL      |3             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P32       |fdata<9>   |IOB      |IO_L2N_3                  |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P33       |fdata<8>   |IOB      |IO_L2P_3                  |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P34       |fdata<11>  |IOB      |IO_L1N_VREF_3             |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P35       |fdata<10>  |IOB      |IO_L1P_3                  |TRISTATE |LVTTL      |3             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P36       |           |         |VCCAUX                    |         |           |              |          |         |           |         |2.5    |          |           |                |
 |P37       |           |         |PROGRAM_B_2               |         |           |              |          |         |           |         |       |          |           |                |
-|P38       |reset      |IOB      |IO_L65N_CSO_B_2           |INPUT    |LVTTL      |2             |          |         |           |NONE     |       |LOCATED   |NO         |NONE            |
+|P38       |button     |IOB      |IO_L65N_CSO_B_2           |INPUT    |LVTTL      |2             |          |         |           |NONE     |       |LOCATED   |NO         |NONE            |
 |P39       |           |IOBM     |IO_L65P_INIT_B_2          |UNUSED   |           |2             |          |         |           |         |       |          |           |                |
-|P40       |fdata<13>  |IOB      |IO_L64N_D9_2              |BIDIR    |LVTTL      |2             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P41       |fdata<12>  |IOB      |IO_L64P_D8_2              |BIDIR    |LVTTL      |2             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P40       |fdata<13>  |IOB      |IO_L64N_D9_2              |TRISTATE |LVTTL      |2             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P41       |fdata<12>  |IOB      |IO_L64P_D8_2              |TRISTATE |LVTTL      |2             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P42       |           |         |VCCO_2                    |         |           |2             |          |         |           |         |3.30   |          |           |                |
 |P43       |           |IOBS     |IO_L62N_D6_2              |UNUSED   |           |2             |          |         |           |         |       |          |           |                |
 |P44       |           |IOBM     |IO_L62P_D5_2              |UNUSED   |           |2             |          |         |           |         |       |          |           |                |
@@ -69,8 +69,8 @@ Pinout by Pin Number:
 |P47       |           |IOBS     |IO_L48N_RDWR_B_VREF_2     |UNUSED   |           |2             |          |         |           |         |       |          |           |                |
 |P48       |           |IOBM     |IO_L48P_D7_2              |UNUSED   |           |2             |          |         |           |         |       |          |           |                |
 |P49       |           |         |GND                       |         |           |              |          |         |           |         |       |          |           |                |
-|P50       |fdata<15>  |IOB      |IO_L31N_GCLK30_D15_2      |BIDIR    |LVTTL      |2             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
-|P51       |fdata<14>  |IOB      |IO_L31P_GCLK31_D14_2      |BIDIR    |LVTTL      |2             |12        |SLOW     |           |NONE     |       |LOCATED   |YES        |NONE            |
+|P50       |fdata<15>  |IOB      |IO_L31N_GCLK30_D15_2      |TRISTATE |LVTTL      |2             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P51       |fdata<14>  |IOB      |IO_L31P_GCLK31_D14_2      |TRISTATE |LVTTL      |2             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P52       |           |         |VCCINT                    |         |           |              |          |         |           |         |1.2    |          |           |                |
 |P53       |           |         |VCCAUX                    |         |           |              |          |         |           |         |2.5    |          |           |                |
 |P54       |           |         |GND                       |         |           |              |          |         |           |         |       |          |           |                |
@@ -151,8 +151,8 @@ Pinout by Pin Number:
 |P129      |           |         |VCCAUX                    |         |           |              |          |         |           |         |2.5    |          |           |                |
 |P130      |           |         |GND                       |         |           |              |          |         |           |         |       |          |           |                |
 |P131      |led<3>     |IOB      |IO_L35N_GCLK16_0          |OUTPUT   |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
-|P132      |led<2>     |IOB      |IO_L35P_GCLK17_0          |TRISTATE |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
-|P133      |led<1>     |IOB      |IO_L34N_GCLK18_0          |TRISTATE |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P132      |led<2>     |IOB      |IO_L35P_GCLK17_0          |OUTPUT   |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
+|P133      |led<1>     |IOB      |IO_L34N_GCLK18_0          |OUTPUT   |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P134      |led<0>     |IOB      |IO_L34P_GCLK19_0          |OUTPUT   |LVTTL      |0             |12        |SLOW     |           |         |       |LOCATED   |NO         |NONE            |
 |P135      |           |         |VCCO_0                    |         |           |0             |          |         |           |         |3.30   |          |           |                |
 |P136      |           |         |GND                       |         |           |              |          |         |           |         |       |          |           |                |
