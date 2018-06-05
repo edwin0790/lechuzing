@@ -82,7 +82,7 @@ architecture test of clk_wiz_v3_6_tb is
 
 
   -- we'll be using the period in many locations
-  constant PER1        : time := 20.833 ns;
+  constant PER1        : time := 20.000 ns;
 
 
   -- Declare the input clock signals
