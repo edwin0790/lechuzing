@@ -111,7 +111,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	signal rst_cont												: natural range 0 to 1023 := 1023;
 	signal checksum												: std_logic_vector(15 downto 0) := x"0000";
 -- debug
-	signal counter													: std_logic_vector(15 downto 0) := x"0000";
+--	signal counter													: std_logic_vector(15 downto 0) := x"0000";
 -- debug
 	signal trig3, trig2											: std_logic := '0';
 
@@ -174,7 +174,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		push		=> fifo_push,
 		pop			=> fifo_pop,
 		din			=> fdata_in,
-		--dout		=> --fdata_out, -- debug
+		dout		=> fdata_out, -- debug
 		full		=> fifo_full,
 		empty		=> fifo_empty
 
@@ -235,16 +235,16 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 						'1' when others;
 
 -- debug
-	fdata_out(15 downto 8) <= counter(7 downto 0);
-	fdata_out(7 downto 0) <= counter(15 downto 8);
+--	fdata_out(15 downto 8) <= counter(7 downto 0);
+--	fdata_out(7 downto 0) <= counter(15 downto 8);
 	
 -- debug
 	with curr_state select
-		fdata <=	fdata_out        when write_no_full | write_write | write_end,
+		fdata <=	fdata_out        when write_no_full | write_write | write_end | write_addr,
 					(others => 'Z')  when others;
 
 	with curr_state select
-		fdata_in <=	fdata     when read_no_empty | read_read,
+		fdata_in <=	fdata     when read_no_empty | read_read | read_addr,
 						fdata_in  when others;
 	--              (others => '0');
 
@@ -384,26 +384,26 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		end if;
 	end process init_rst;
 	
-	sum: process(curr_state, fifo_pop)
+	sum: process(curr_state, push_int)
 	variable suma : integer range 0 to 65535 := 0;
 	begin
 		if curr_state = write_addr then
 			checksum <= x"0000";
-		elsif rising_edge(fifo_pop) then
+		elsif rising_edge(push_int) then
 			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(7 downto 0)));
 			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(15 downto 8)));
 		end if;
 	end process sum;
 	
 	-- debug
-	contador_grande: process(button, pop_int)
-	begin
-		if button = '0' then
-			counter <= x"0000";
-		elsif falling_edge(pop_int) then
-			counter <= std_logic_vector(unsigned(counter) + 1);
-		end if;
-	end process contador_grande;
+--	contador_grande: process(button, pop_int)
+--	begin
+--		if button = '0' then
+--			counter <= x"0000";
+--		elsif falling_edge(pop_int) then
+--			counter <= std_logic_vector(unsigned(counter) + 1);
+--		end if;
+--	end process contador_grande;
 	-- debug
 
 end fx2lp_interface_arq;

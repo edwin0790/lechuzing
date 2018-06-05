@@ -31,6 +31,7 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use ieee.std_logic_unsigned.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -90,6 +91,9 @@ ARCHITECTURE behavior OF interface_test_bench IS
    -- Clock period definitions
    constant clk_in_period : time := 21 ns;
    constant clk_out_period : time := 21 ns;
+	
+	-- Data generator
+	signal counter: std_logic_vector(15 downto 0) := x"0000";
 
 BEGIN
 
@@ -130,42 +134,40 @@ BEGIN
 		wait for clk_out_period/2;
    end process;
 
+	-- Start up reset
+	button <= '0', '1' after 100 ns;
 
+	-- flags signaling. All them are low_active
+	flags_proc: process
+	begin
+		flaga <= '1'; -- ep2full
+		flagb <= '0'; -- ep8empty
+		flagc	<= '1'; -- ep8full
+		flagd <= '0'; -- ep2empty
+		wait until button = '1';
+		
+		wait until falling_edge(clk_in);
+
+		flagb <= '1';
+		wait until counter = x"0060";
+		wait until falling_edge(clk_in);
+		
+		flagb <= '0';
+		wait until pktend = '0';
+	end process;
+	
+	-- Data counter
+	data_proc: process(slrd)
+	begin
+		if button = '0' then
+			counter <= x"0000";
+		elsif rising_edge(slrd)then
+			counter <= counter + 1;
+		end if;
+	end process;
+	
    -- Stimulus process
-   stim_proc: process
-   begin
-      -- hold reset state for 100 ns.
-      button <= '0';
-      flaga <= '1';
-      flagb <= '0';
-      flagc <= '1';
-      flagd <= '0';
-
-      wait for 100 ns;
-      button <= '1';
-
-      fdata <= x"ABCD";
-      flagb <= '1';
-
-      wait until slrd = '0';
-      wait until slrd = '1';
-      wait for 10 ns;
-
-      fdata <= x"BEDF";
-
-      wait until slrd = '0';
-      wait until slrd = '1';
-      wait for 10 ns;
-      flagb <= '0';
-
---      send_req <= '1';
-      fdata <= (others => 'Z');
-
-      wait for clk_in_period*10;
---      send_req <= '0';
-      -- insert stimulus here
-
-      wait;
-   end process;
-
+	with flagb select
+		fdata <= counter when '1',(others => 'Z')when others;
+	
 END;

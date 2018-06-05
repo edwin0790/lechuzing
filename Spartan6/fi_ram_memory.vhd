@@ -26,8 +26,8 @@ architecture beh of fifo_ram is
 
 	signal  write_ptr:		std_logic_vector((mem_depth-1) downto 0) := (others => '0');
 	signal  read_ptr:		std_logic_vector((mem_depth-1) downto 0) := (others => '0');
-	signal	write_quant:	std_logic_vector(mem_depth downto 0);
-	signal	read_quant:		std_logic_vector(mem_depth downto 0);
+	signal	write_quant:	std_logic_vector(mem_depth downto 0) := (others => '0');
+	signal	read_quant:		std_logic_vector(mem_depth downto 0) := (others => '0');
 	signal  data_quant:		std_logic_vector(mem_depth downto 0);
 	signal	s_full:			std_logic;
 	signal	s_empty:		std_logic;
@@ -47,14 +47,17 @@ architecture beh of fifo_ram is
 	
 	data_quant <= write_quant - read_quant;
 	
-	for_label: for i in mem_depth downto 0 generate
+	-- La profundidad de la memoria es de X bytes. Para ello, debemos poder barrer todos los X bytes.
+	-- entonces es necesario un contador con X+1 Bytes. Esto exige un bit más. Cuando este bit se
+	-- enciende, debe marcar overflow y mostrar un cero.
+	overflow_mark: for i in mem_depth downto 0 generate
 		if_minus: if i < mem_depth generate
 			neg_cero(i) <= '0';
 		end generate if_minus;
 		if_top: if i = mem_depth generate
 			neg_cero(i) <= '1';
 		end generate if_top;
-	end generate for_label;
+	end generate overflow_mark;
 
 	process(reset, pop)
 	begin
@@ -84,7 +87,7 @@ architecture beh of fifo_ram is
 		if(data_quant = pos_cero)then
 			s_empty <= '1';
 			s_full <= '0';
-		elsif(data_quant = neg_cero)then
+		elsif(data_quant = neg_cero - 1)then -- me está robando un byte, le vamos a poner un byte extra..
 			s_full <= '1';
 			s_empty <= '0';
 		else
