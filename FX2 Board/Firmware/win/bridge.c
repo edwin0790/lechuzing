@@ -62,19 +62,18 @@ BYTE    AlternateSetting = 0;   // Alternate settings
 //   The following hooks are called by the task dispatcher.
 //-----------------------------------------------------------------------------
 
-WORD mycount;
+WORD mycount = 0;
 WORD blinktime = 0;
 BYTE inblink = 0x00;
 BYTE outblink = 0x00;
 WORD blinkmask = 0;			// HS/FS blink rate
 
-volatile BYTE uart_char;
-//volatile BYTE *ptr;
+BYTE refresh = 0;
 
 void TD_Init(void)             // Called once at startup
 {
 	BYTE dum;
-	WORD i;
+//	WORD i;
 	
 	// turn off the 4 LED's
 	dum = D2OFF;
@@ -83,7 +82,7 @@ void TD_Init(void)             // Called once at startup
 	dum = D5OFF;
 
    	// set the CPU clock to 48MHz
-	//CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); //comented 'cos are configured by Serial_Init
+	//CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); // 48 MHz //comented 'cos are configured by Serial_Init
 	FX2LPSerial_Init();
 	FX2LPSerial_XmitString("Serial Port Initialized");
 	FX2LPSerial_XmitChar('\n');
@@ -155,28 +154,41 @@ void TD_Init(void)             // Called once at startup
 
 	//being sure that auto mode is off;
 
-	EP8BCL = 0x80;
+	EP2BCH = 0x00;
 	SYNCDELAY;
-	EP8BCL = 0x80;
+	EP2BCH = 0x00;
+	SYNCDELAY;
+	EP2BCH = 0x00;
+	SYNCDELAY;
+	EP2BCL = 0x00;
+	SYNCDELAY;
+	EP2BCL = 0x00;
+	SYNCDELAY;
+	EP2BCL = 0x00;
 	SYNCDELAY;
 
-	for(dum = 0; dum < 3; dum++)
+	for(dum = 0; dum < 2; dum++)
 	{
-		for(i = 0; i < 1024; i++)
-		{
-			EP2FIFOBUF[i] = 0xFF;
-		}
-		
+//		for(i = 0; i < 512; i++)
+//		{
+//			EP8FIFOBUF[i] = (char) (i & 0x00FF);
+//		}
+//		
+//		SYNCDELAY;
+		EP8BCH = 0x02;
 		SYNCDELAY;
-		EP2BCH = 0x00;
-		SYNCDELAY;
-		EP2BCL = 0x00;
+		EP8BCL = 0x00;
 		SYNCDELAY;
 	}
+
 
 	REVCTL = 0x00;
 	// We want to get SOF interrupts
 	USBIE |= bmSOF;
+	EIEX4 = 1;
+	INTSETUP |= (INT4IN | bmAV4EN);
+	EXIF &= ~0x40;
+	EP8FIFOIE = 0x03;
 
 	FX2LPSerial_XmitString("Bridge Configured\n");
 }
@@ -184,47 +196,58 @@ void TD_Init(void)             // Called once at startup
 void TD_Poll(void)             // Called repeatedly while the device is idle  
 {
 	BYTE dum;
+	WORD i;
 	
-	if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
+	if(!mycount)
 	{
-		dum = D4ON;
+// debug2
+//		FX2LPSerial_XmitString("INTERRUPT: ");
+//		FX2LPSerial_XmitHex1(EP8FIFOIRQ);
+//		FX2LPSerial_XmitString(" INT4IVEC: ");
+//		FX2LPSerial_XmitHex2(INT4IVEC);
+//		FX2LPSerial_XmitChar('\n');
+		//debug2
+		//debug1
+//		FX2LPSerial_XmitString("Buffer:\n");
+//		for(i = 0; i < 512; i++)
+//		{
+//			FX2LPSerial_XmitHex2(EP8FIFOBUF[i]);
+//			FX2LPSerial_XmitString("  ");
+//		}
+//		FX2LPSerial_XmitString("\n-----------------\n\n");
+		//debug1
 	}
-	else
-	{
-		dum = D4OFF;
-	}
+	
+	mycount++;
+	
+		if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
+		{
+			dum = D4ON;
+		}
+		else
+		{
+			dum = D4OFF;
+		}
 
-	if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full//(EP2468STAT & bmBIT6)//ep8 empty
-	{
-		dum = D3ON;
-	}
-	else
-	{
-		dum = D3OFF;
-	}
-	
-	if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
-	{
-		dum = D2ON;
-//		EA = 0;
-//		EP2BCH = 0x04;
-//		SYNCDELAY;
-//		EP2BCL = 0x00;          // re(arm) EP2OUT
-//		SYNCDELAY;
-//		EP2BCH = 0x04;
-//		SYNCDELAY;
-//		EP2BCL = 0x00;          // re(arm) EP2OUT
-//		SYNCDELAY;
-//		EP2BCH = 0x04;
-//		SYNCDELAY;
-//		EP2BCL = 0x00;          // re(arm) EP2OUT
-//		SYNCDELAY;
-//		EA = 1;
-	}
-	else
-	{
-		dum = D2OFF;
-	}
+		//if(EXIF & bmBIT6)// for debug. InT4 flag
+		if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full//(EP2468STAT & bmBIT6)//ep8 empty
+		{
+			//FX2LPSerial_XmitString("Estoy Aqui y sigo aqui\n\n");
+			dum = D3ON;
+		}
+		else
+		{
+			dum = D3OFF;
+		}
+
+		if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
+		{
+			dum = D2ON;
+		}
+		else
+		{
+			dum = D2OFF;
+		}
 
 //	EZUSB_WriteI2C(LED_ADDR, 0x01, &(Digit[EP8BCL]));
 //	EZUSB_WaitForEEPROMWrite(LED_ADDR);
@@ -366,7 +389,7 @@ void ISR_Ures(void) interrupt 0
    USBIRQ = bmURES;         // Clear URES IRQ
    dum = D2OFF;				// Turn off high-speed LED
    blinkmask = 0x0400;		// 2 sec period for FS
-	FX2LPSerial_XmitString("reset done\n");
+//	FX2LPSerial_XmitString("reset done\n");
 }
 
 void ISR_Susp(void) interrupt 0
@@ -378,7 +401,7 @@ void ISR_Susp(void) interrupt 0
 
 void ISR_Highspeed(void) interrupt 0
 {
-	FX2LPSerial_XmitString("Setting HighSpeed...\n\n");
+//	FX2LPSerial_XmitString("Setting HighSpeed...\n\n");
    blinkmask = 0x1000;		// 1 sec period for HS
    if (EZUSB_HIGHSPEED())
    {
@@ -389,10 +412,10 @@ void ISR_Highspeed(void) interrupt 0
 
       // This register sets the number of Isoc packets to send per
       // uFrame.  This register is only valid in high speed.
-      EP2ISOINPKTS = 0x83;	// 3 packets per microframe, AADJ=1
-			EA = 0;
-			SYNCDELAY;
-			EA = 1;
+//      EP2ISOINPKTS = 0x83;	// 3 packets per microframe, AADJ=1
+//			EA = 0;
+//			SYNCDELAY;
+//			EA = 1;
 //	  dum = D2ON;		// Turn on high-speed LED
    }
    else
@@ -433,7 +456,7 @@ void ISR_Ep2inout(void) interrupt 0
 	if(!(EP2468STAT & bmEP2EMPTY))
 	{
 		EA = 0;
-		EP2BCL = 0x00;          // re(arm) EP2OUT
+		EP2BCL = 0x80;          // re(arm) EP2OUT
 		SYNCDELAY;
 		EA = 1;
 	}
@@ -446,6 +469,7 @@ void ISR_Ep6inout(void) interrupt 0
 }
 void ISR_Ep8inout(void) interrupt 0
 {
+	FX2LPSerial_XmitString("EP8: Atendiendo ISR IN/OUT\n");
     // Perform USB activity based upon the Alt. Interface selected
            // check EP8 EMPTY(busy) bit in EP2468STAT (SFR), core set's this bit when FIFO is empty
 //	if(!(EP2468STAT & bmEP8EMPTY))
@@ -516,6 +540,13 @@ void ISR_Ep6eflag(void) interrupt 0
 }
 void ISR_Ep8eflag(void) interrupt 0
 {
+	EXIF &= ~bmBIT6;
+	EP8FIFOIRQ = 0x02;
+	FX2LPSerial_XmitHex2(EP8BCH);
+	FX2LPSerial_XmitHex2(EP8BCL);
+	FX2LPSerial_XmitString("\nEP8: Estoy vacío\n");
+
+
 }
 void ISR_Ep2fflag(void) interrupt 0
 {
@@ -528,6 +559,9 @@ void ISR_Ep6fflag(void) interrupt 0
 }
 void ISR_Ep8fflag(void) interrupt 0
 {
+	EXIF &= ~0x40;
+	EP8FIFOIRQ = 0x01;
+	FX2LPSerial_XmitString("EP8: Estoy lleno\n");
 }
 void ISR_GpifComplete(void) interrupt 0
 {
