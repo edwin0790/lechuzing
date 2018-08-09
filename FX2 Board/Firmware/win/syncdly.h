@@ -55,14 +55,12 @@
 
 // _IFREQ can be in the range of: 5000 to 48000
 #ifndef _IFREQ 
-//#define _IFREQ 48000   // IFCLK frequency in kHz
-#define _IFREQ 30000   // IFCLK frequency in kHz redefined
+#define _IFREQ 48000   // IFCLK frequency in kHz
 #endif
 
 // CFREQ can be any one of: 48000, 24000, or 12000
 #ifndef _CFREQ
-//#define _CFREQ 48000   // CLKOUT frequency in kHz
-#define _CFREQ 24000   // CLKOUT frequency in kHz redefined
+#define _CFREQ 48000   // CLKOUT frequency in kHz
 #endif
 
 #if( _IFREQ < 5000 )
