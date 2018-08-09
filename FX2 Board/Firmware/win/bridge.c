@@ -88,13 +88,13 @@ void TD_Init(void)             // Called once at startup
 	FX2LPSerial_XmitChar('\n');
 	FX2LPSerial_XmitChar('\n');
 	
-	// set the slave FIFO interface to 48MHz
+	// set the slave FIFO interface to 48MHz <-de nuevo 48... ahora  a 30MHz
    		//set s-fifo to internal clk, no_output, no_inverted clk, no_async, no_gstate, slavefifo(11) = 0xC3
-	IFCONFIG = 0xcb;/*/0xCB; *///para hacerlo async. Error de diseño. Corregir en VHDL previamente
+	IFCONFIG = 0xcb;// & ~bm3048MHZ;/*/0xCB; *///para hacerlo async. Error de diseño. Corregir en VHDL previamente
 
 	SYNCDELAY; // IFCONFIG@ef01.... REVCTL writing needs SYNCDELAY
 
-	REVCTL = 0x01; /*Chip Revision Control Register: poniendo esto en 0x01 me deja manipular los paquetes, pero debo mover paquete por paquete a 
+	REVCTL = 0x03; /*Chip Revision Control Register: poniendo esto en 0x01 me deja manipular los paquetes, pero debo mover paquete por paquete a 
 										cada buffer... no logro tomar ningún tipo de flag y mucho menos pude mover el buffer a la memoria fifo
 										Por otro lado, poniendo el bit 0x02 logro desactivar el auto-armado de los endopints y puedo cambiar de modo autoout a manualout
 										sin necesidad de perder datos.
@@ -146,9 +146,9 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 
 	//setting on auto mode. rising edge is necessary
-	EP8FIFOCFG = 0x31;// & ~bmAUTOOUT; //at the end, auto mode is setted off
+	EP8FIFOCFG = 0x01 & ~bmAUTOOUT; //at the end, auto mode is setted off
 	SYNCDELAY;
-	EP2FIFOCFG = 0x0D;
+	EP2FIFOCFG = 0x05;
 	SYNCDELAY;
 
 
@@ -160,35 +160,21 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 	EP2BCH = 0x00;
 	SYNCDELAY;
-	EP2BCL = 0x00;
+	EP2BCL = 0xff;
 	SYNCDELAY;
-	EP2BCL = 0x00;
+	EP2BCL = 0xff;
 	SYNCDELAY;
-	EP2BCL = 0x00;
+	EP2BCL = 0xff;
 	SYNCDELAY;
 
-	for(dum = 0; dum < 2; dum++)
-	{
-//		for(i = 0; i < 512; i++)
-//		{
-//			EP8FIFOBUF[i] = (char) (i & 0x00FF);
-//		}
-//		
-//		SYNCDELAY;
-		EP8BCH = 0x02;
-		SYNCDELAY;
-		EP8BCL = 0x00;
-		SYNCDELAY;
-	}
 
-
-	REVCTL = 0x00;
 	// We want to get SOF interrupts
 	USBIE |= bmSOF;
 	EIEX4 = 1;
 	INTSETUP |= (INT4IN | bmAV4EN);
 	EXIF &= ~0x40;
 	EP8FIFOIE = 0x03;
+	EP2FIFOIE = 0x01;
 
 	FX2LPSerial_XmitString("Bridge Configured\n");
 }
@@ -196,11 +182,39 @@ void TD_Init(void)             // Called once at startup
 void TD_Poll(void)             // Called repeatedly while the device is idle  
 {
 	BYTE dum;
-	WORD i;
 	
-	if(!mycount)
+	//debug3
+//	WORD viejos, nuevos;
+//	
+//	nuevos = (EP8BCH << 8) | EP8BCL;
+//	if(nuevos != viejos)
+//	{
+//		viejos = nuevos;
+//		FX2LPSerial_XmitHex4(nuevos);
+//		FX2LPSerial_XmitChar(' ');
+//		FX2LPSerial_XmitHex2(EP8FIFOBCH);
+//		FX2LPSerial_XmitHex2(EP8FIFOBCL);
+
+//		FX2LPSerial_XmitChar('\n');
+//	}
+	//debug3
+	if((EP2468STAT & bmEP8FULL))
+//	if(!mycount)
 	{
-// debug2
+		OUTPKTEND = 0x08;
+	}
+	else
+		OUTPKTEND = 0x00;
+	
+	if((EP24FIFOFLGS & bmBIT0))
+	{
+		INPKTEND = 0x02;
+	}
+	else
+	{
+		INPKTEND = 0x00;
+	}
+		//debug2
 //		FX2LPSerial_XmitString("INTERRUPT: ");
 //		FX2LPSerial_XmitHex1(EP8FIFOIRQ);
 //		FX2LPSerial_XmitString(" INT4IVEC: ");
@@ -216,9 +230,8 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 //		}
 //		FX2LPSerial_XmitString("\n-----------------\n\n");
 		//debug1
-	}
 	
-	mycount++;
+//	mycount++;
 	
 		if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
 		{
@@ -542,8 +555,11 @@ void ISR_Ep8eflag(void) interrupt 0
 {
 	EXIF &= ~bmBIT6;
 	EP8FIFOIRQ = 0x02;
-	FX2LPSerial_XmitHex2(EP8BCH);
-	FX2LPSerial_XmitHex2(EP8BCL);
+//	FX2LPSerial_XmitHex2(EP8BCH);
+//	FX2LPSerial_XmitHex2(EP8BCL);
+//	FX2LPSerial_XmitString("\n");
+//	FX2LPSerial_XmitHex2(EP8FIFOBCH);
+//	FX2LPSerial_XmitHex2(EP8FIFOBCL);
 	FX2LPSerial_XmitString("\nEP8: Estoy vacío\n");
 
 

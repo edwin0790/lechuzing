@@ -17,8 +17,10 @@
 // Constants
 //-----------------------------------------------------------------------------
 #define DELAY_COUNT   0x9248*8L  // Delay for 8 sec at 24Mhz, 4 sec at 48
-#define _IFREQ  48000            // IFCLK constant for Synchronization Delay
-#define _CFREQ  48000            // CLKOUT constant for Synchronization Delay
+#define _IFREQ  30000            // IFCLK constant for Synchronization Delay
+#define _CFREQ  24000            // CLKOUT constant for Synchronization Delay
+//#define _IFREQ 48000   // origin
+//#define _CFREQ 48000   // origin
 
 //-----------------------------------------------------------------------------
 // Random Macros
@@ -187,7 +189,7 @@ void main(void)
    // disconnected and need to connect.  If we just renumerated this
    // is not necessary but doesn't hurt anything
    USBCS &=~bmDISCON;
-
+	 
 	 FX2LPSerial_XmitString("Reconecting...\n\n");
    // The three LSBs of the Clock Control Register (CKCON, at SFR location 0x8E) control the stretch
    // value; stretch values between zero and seven may be used. A stretch value of zero adds zero
@@ -204,7 +206,7 @@ void main(void)
    {
       if(GotSUD)            // Wait for SUDAV
       {
-				FX2LPSerial_XmitString("Get Setup Data Available\n");
+//				FX2LPSerial_XmitString("Get Setup Data Available\n");
          SetupCommand();          // Implement setup command
            GotSUD = FALSE;            // Clear SUDAV flag
       }

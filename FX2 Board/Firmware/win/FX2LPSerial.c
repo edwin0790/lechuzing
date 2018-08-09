@@ -7,10 +7,12 @@ void FX2LPSerial_Init()  // initializes the registers for using Timer2 as baud r
 {
 	T2CON = 0x34 ;
 	RCAP2H  = 0xFF ;
+//	RCAP2L = 0xF3; //modified for 57600 baud rate at 24MHz
 	RCAP2L = 0xD9;
 	SCON0 = 0x5A ;
 	TI = 1;
 
+//CPUCS = ((CPUCS & ~bmCLKSPD1) | bmCLKSPD) ;	//24MHz modified//Setting up the clock frequency
 CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1) ;	//Setting up the clock frequency
 
 
