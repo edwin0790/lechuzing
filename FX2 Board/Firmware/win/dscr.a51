@@ -94,7 +94,7 @@ HighSpeedConfigDscr:
       db   82H                ;; Endpoint 2 and direction IN
       db   ET_ISO            ;; Endpoint type
       db   00H                ;; Maximun packet size (LSB)
-      db   14H                ;; Max packect size (MSB) 10100b 3x1024 byte packets/uFrame
+      db   02H                ;; Max packect size (MSB) 10100b 3x1024 byte packets/uFrame
       db   01H                ;; Polling interval
       
 ;; Bulk OUT Endpoint Descriptor

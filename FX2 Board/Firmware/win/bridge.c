@@ -124,7 +124,7 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
 	SYNCDELAY;
-	EP2CFG = 0xDB;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=1024, BUF=3x EP2CFG@e612
+	EP2CFG = 0xD2;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=1024, BUF=3x EP2CFG@e612 --> size = 512, buf = 2x
 	SYNCDELAY;
 
 	FIFORESET = 0x80;
@@ -146,7 +146,7 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 
 	//setting on auto mode. rising edge is necessary
-	EP8FIFOCFG = 0x31;// & ~bmAUTOOUT; //at the end, auto mode is setted off
+	EP8FIFOCFG = 0x11;// & ~bmAUTOOUT; //at the end, auto mode is setted off
 	SYNCDELAY;
 	EP2FIFOCFG = 0x0D;
 	SYNCDELAY;
@@ -154,32 +154,24 @@ void TD_Init(void)             // Called once at startup
 
 	//being sure that auto mode is off;
 
-	EP2BCH = 0x00;
-	SYNCDELAY;
-	EP2BCH = 0x00;
-	SYNCDELAY;
-	EP2BCH = 0x00;
-	SYNCDELAY;
-	EP2BCL = 0x00;
-	SYNCDELAY;
-	EP2BCL = 0x00;
-	SYNCDELAY;
-	EP2BCL = 0x00;
-	SYNCDELAY;
+//	EP2BCH = 0x00;
+//	SYNCDELAY;
+//	EP2BCH = 0x00;
+//	SYNCDELAY;
+//	EP2BCH = 0x00;
+//	SYNCDELAY;
+//	EP2BCL = 0x00;
+//	SYNCDELAY;
+//	EP2BCL = 0x00;
+//	SYNCDELAY;
+//	EP2BCL = 0x00;
+//	SYNCDELAY;
 
-	for(dum = 0; dum < 2; dum++)
-	{
-//		for(i = 0; i < 512; i++)
-//		{
-//			EP8FIFOBUF[i] = (char) (i & 0x00FF);
-//		}
-//		
+
+//		EP8BCH = 0x02;
 //		SYNCDELAY;
-		EP8BCH = 0x02;
-		SYNCDELAY;
-		EP8BCL = 0x00;
-		SYNCDELAY;
-	}
+//		EP8BCL = 0x00;
+//		SYNCDELAY;
 
 
 	REVCTL = 0x00;
