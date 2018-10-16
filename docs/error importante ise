@@ -1,0 +1,15 @@
+ERROR:Place:1205 - This design contains a global buffer instance,
+   <pll/clkout1_buf>, driving the net, <clk_out_OBUF>, that is driving the
+   following (first 30) non-clock load pins off chip.
+   < PIN: clk_out.O; >
+   This design practice, in Spartan-6, can lead to an unroutable situation due
+   to limitations in the global routing. If the design does route there may be
+   excessive delay or skew on this net. It is recommended to use a Clock
+   Forwarding technique to create a reliable and repeatable low skew solution:
+   instantiate an ODDR2 component; tie the .D0 pin to Logic1; tie the .D1 pin to
+   Logic0; tie the clock net to be forwarded to .C0; tie the inverted clock to
+   .C1. If you wish to override this recommendation, you may use the
+   CLOCK_DEDICATED_ROUTE constraint (given below) in the .ucf file to demote
+   this message to a WARNING and allow your design to continue. Although the net
+   may still not route, you will be able to analyze the failure in FPGA_Editor.
+   < PIN "pll/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE; >

@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
+# Start of session at: Fri May 11 16:24:20 2018
+# Process ID: 6228
+# Log file: G:/Facultad/Trabajo Final/Spartan6/planAhead_run_2/planAhead.log
+# Journal file: G:/Facultad/Trabajo Final/Spartan6/planAhead_run_2/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source {G:/Facultad/Trabajo Final/Spartan6/pa.fromNetlist.tcl}
+set_property iostandard LVCMOS33 [get_ports [list {fdata[15]} {fdata[14]} {fdata[13]} {fdata[12]} {fdata[11]} {fdata[10]} {fdata[9]} {fdata[8]} {fdata[7]} {fdata[6]} {fdata[5]} {fdata[4]} {fdata[3]} {fdata[2]} {fdata[1]} {fdata[0]}]]
+set_property iostandard LVTTL [get_ports [list {fdata[15]} {fdata[14]} {fdata[13]} {fdata[12]} {fdata[11]} {fdata[10]} {fdata[9]} {fdata[8]} {fdata[7]} {fdata[6]} {fdata[5]} {fdata[4]} {fdata[3]} {fdata[2]} {fdata[1]} {fdata[0]}]]
+save_constraints
