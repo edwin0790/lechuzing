@@ -1,0 +1,8 @@
+	Como interfaz entre la FPGA y la PC se utilizó la placa de desarrollo CY3684 FX2LP EZ-USB Development Kit de Cypress Semiconductor. Esta placa posee como núcleo un CY7C68013A, circuito integrado que posee todas las herramientas necesarias para realizar la interfaz, como así también un buen número de periféricos que permiten al desarrollador realizar pruebas y depuración.\\
+	
+	Entre estas, se pueden mencionar 6 pulsadores, de los cuales cuatro se utilizan para proposito general, uno para reestablecer los valores por defecto de la placa y uno para enviar señales de suspensión y reestablecimiento del programa actualmente cargado en el microcontrolador. A su vez, posee dos memorias EEPROM que sirven para cargar firmware y archivos de configuración del sistema, un display de 8 segmentos, 4 leds de multiple propósito, dos puertos UART, una salida de pines compatible con puertos ATA y 6 puertos de 20 pines que se utilizan para la conexión hacia el chip núcleo. Como soporte para el firmware, posee también un bloque de \SI{64}{\kilo\byte} de memoria SRAM.\\
+	
+	Se seleccionó este controlador como interfaz con el objetivo de utilizar la m9enor cantidad de los recursos configurables de la FPGA, de forma tal que estos queden disponibles para el desarrollo de los sistemas que necesiten los potenciales sensores que se desee leer a posteriori.\\
+	
+	A continuación se describe en datalle la arquitectura y las funciones del CI CY7C68103A, la configuración de funcinamiento escogida, y el desarrollo del firmaware en base al framwork provisto por Cypress que facilita la implementación de periféricos.\\
+	
