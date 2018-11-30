@@ -1,0 +1,92 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'arq.eps' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{595.27559055bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.41428571)%
+    \put(0,0){\includegraphics[width=\unitlength]{arq.eps}}%
+    \put(0.06162205,0.14138744){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{EZ-USB® Technical Reference Manual, Document # 001-13670 Rev. *E21\\ Introducing EZ-USB®}}}%
+    \put(0.06162205,1.25374617){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{1}\textbf{.}\textbf{1}\textbf{4}\textbf{E}\textbf{Z}\textbf{-}\textbf{U}\textbf{S}\textbf{B}\textbf{ }\textbf{B}\textbf{l}\textbf{o}\textbf{c}\textbf{k}\textbf{ }\textbf{D}\textbf{i}\textbf{a}\textbf{g}\textbf{r}\textbf{a}\textbf{m}}}}%
+    \put(0.35785459,1.22078648){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Figure 1-9. EZ-USB Block Diagram}}}%
+    \put(0.57173872,0.87385473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{8}\textbf{0}\textbf{5}\textbf{1}\textbf{\\ }\textbf{4}\textbf{8}\textbf{ }\textbf{M}\textbf{H}\textbf{z}}}}%
+    \put(0.29989824,0.68244759){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{16 KB\\ Pgm/Data\\ RAM}}}%
+    \put(0.30453475,0.80854045){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{4 KB\\ Endpoint\\ RAM}}}%
+    \put(0.56770697,0.68486664){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{port D}}}%
+    \put(0.60006173,0.58477854){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{G}\textbf{P}\textbf{I}\textbf{F}}}}%
+    \put(0.29284269,0.58477854){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{F}\textbf{I}\textbf{F}\textbf{O}\textbf{S}}}}%
+    \put(0.50430777,0.45072299){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{16}}}}%
+    \put(0.59880257,0.40468063){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{General Programmable Interface\\ (e.g. ATA, EPP, etc.)}}}%
+    \put(0.28679507,0.74685473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{USB regs}}}%
+    \put(0.28538396,0.72558727){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{0.5K Data\\ RAM}}}%
+    \put(0.50773475,0.68486664){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{port B}}}%
+    \put(0.67888237,0.81196743){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{port A}}}}%
+    \put(0.72232443,0.82547378){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{8}}}%
+    \put(0.67122205,0.53770808){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{7}}}}%
+    \put(0.70871729,0.58578648){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{14}}}%
+    \put(0.67888237,0.74766108){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{port E}}}}%
+    \put(0.68009189,0.68345553){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{port C}}}}%
+    \put(0.72232443,0.76056267){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{8}}}%
+    \put(0.72373554,0.69686108){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.40492523,0.53589362){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{16}}}%
+    \put(0.61901094,0.49295553){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{4}}}}%
+    \put(0.14477681,0.59102775){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Ext\\ Clock}}}%
+    \put(0.25262602,1.19558824){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{D+D-}}}%
+    \put(0.61376967,1.07745791){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{Data(8)}}}}%
+    \put(0.53182443,1.0728214){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{Addr(16)}}}}%
+    \put(0.68049507,0.9807968){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{SIO}}}}%
+    \put(0.72373554,0.98875966){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
+    \put(0.68049507,0.90419362){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{i2c}}}}%
+    \put(0.68049507,1.02413807){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{SIO}}}}%
+    \put(0.72554983,0.90883013){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
+    \put(0.43365142,1.03824918){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{PHY\\ Interface}}}%
+    \put(0.14941332,0.98482854){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{24 MHz\\ crystal}}}%
+    \put(0.26613237,1.07503886){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{USB\\ 2.0\\ PHY}}}%
+    \put(0.27097046,0.97575711){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{PLL}}}%
+    \put(0.72494507,1.03200014){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
+  \end{picture}%
+\endgroup%
