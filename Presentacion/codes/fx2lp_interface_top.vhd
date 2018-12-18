@@ -44,7 +44,8 @@ entity fx2lp_interface_top is
 
     pktend  : out   std_logic;
     -- reloj
-      -- se utiliza el reloj de la placa MOJOv3
+      -- se utiliza el reloj que provee la placa MOJOv3.
+      -- Se prevee usar reloj del EZ-USB con el impreso de conexiones nuevo
     clk_in  : in    std_logic;                              -- entrada de reloj
     clk_out : out   std_logic;                              -- salido de reloj
 
@@ -53,7 +54,7 @@ entity fx2lp_interface_top is
     send_req: in    std_logic;                              -- pedido de envío de datos
     data_out: out   std_logic_vector(port_width downto 0);
     data_in : in    std_logic_vector(port_width downto 0);
-	
+
 	led		: out	std_logic_vector(7 downto 0)
   );
 end fx2lp_interface_top;
@@ -72,22 +73,6 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	);
 	end component;
 
-	component fifo_ram
-	generic(
-		port_width: integer;
-		mem_depth:	integer
-	);
-	port(
-		reset:	in	std_logic;
-		push:	in	std_logic;
-		pop:	in	std_logic;
-		din:	in	std_logic_vector;
-		dout:	out	std_logic_vector;
-		full:	out	std_logic;
-		empty:	out	std_logic
-	);
-	end component;
-
 	signal sys_clk													: std_logic := '0';
 	signal pll_0, pll_90, pll_180, pll_270					: std_logic := '0';
 	signal locked													: std_logic := '0';
@@ -100,13 +85,13 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	signal write_empty_flag, write_full_flag				: std_logic := '0';
 	signal write_req												: std_logic := '0';
 
-	signal fifo_flush												: std_logic := '0';
-	signal fifo_push, fifo_pop, fifo_full, fifo_empty	: std_logic := '0';
+	signal d_reg, q_reg											: std_logic_vector(port_width downto 0);
+	signal c_reg, rst_reg, ce_reg								: std_logic;
 
 	signal reset													: std_logic := '0';
 	signal debug_clk												: std_logic := '0';
-	signal count3													: natural range 0 to 3 := 0;
-	signal count2													: natural range 0 to 2 := 0;
+	signal count3													: natural range 0 to 4 := 0;
+	signal count2													: natural range 0 to 3 := 0;
 	signal cont														: natural range 0 to 16777215 := 10000000;
 	signal rst_cont												: natural range 0 to 1023 := 1023;
 	signal checksum												: std_logic_vector(15 downto 0) := x"0000";
@@ -136,8 +121,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 							"0011" when write_write,
 							"0000" when write_end;
 	--debuggin leds
-	led <= checksum(7 downto 0) when button = '1' else
-			 checksum(15 downto 8);
+	led(7 downto 0) <= (others => '0');
 
 	oddr_y : ODDR2 	                                           -- clk out buffer
 	port map
@@ -163,31 +147,23 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		LOCKED    => locked
 	);
 
-	fifo: fifo_ram
-	generic map(
-		mem_depth	=> 10,
-		--	mem_depth	=> 2,
-		port_width	=> 16
-	)
-	port map(
-		reset		=> not reset, --reset de la memoria activo en alto
-		push		=> fifo_push,
-		pop			=> fifo_pop,
-		din			=> fdata_in,
-		dout		=> fdata_out, -- debug
-		full		=> fifo_full,
-		empty		=> fifo_empty
+--registro inttermedio de eco
+	c_reg <= sys_clk;
+	rst_reg <= reset;
+	d_reg <= fdata_in;
+	fdata_out <= q_reg;
+	ce_reg <= push_int;
 
-	--    din         => fdata_in,
-	--    write_busy  => fifo_push,
-	--    fifo_full   => fifo_full,
-	--    dout        => fdata_out,
-	--    read_busy   => fifo_pop,
-	--    fifo_empty  => fifo_empty,
-	--    fifo_clk    => sys_clk,
-	--    reset_al    => reset,
-	--    fifo_flush  => fifo_flush
-	);
+	reg: process(c_reg, rst_reg, ce_reg)
+		begin
+		if(rst_reg = '0')then
+			q_reg <= (others => 'Z');
+		elsif(rising_edge(c_reg))then
+			if(ce_reg = '1')then
+				q_reg <= d_reg;
+			end if;
+		end if;
+	end process reg;
 
 	-- reloj
 	sys_clk <= pll_90;
@@ -204,11 +180,13 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	read_full_flag  <= flagc;
 	read_empty_flag  <= flagb;
 
-	write_req <= not fifo_empty;
-
+	with curr_state select
+		write_req <= '1' when read_read,
+						 '0' when write_end,
+						 write_req when others;
 
 	reset <= '1' when rst_cont = 0 else '0';
-	
+
 	-- control signaling
 	with curr_state select
 		faddr_int <=	out_ep_addr when read_addr | read_no_empty | read_read,-- | idle,--edwin,
@@ -224,12 +202,11 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	pop_int <=	'0' when (curr_state = write_end) else
 					'1';
 
-	push_int <=	'0' when curr_state = read_read else
+	push_int <=	'0' when (curr_state = read_read)else
 					'1';
 
-	--  pktend_int <= '0' when curr_state = write_write and next_state = idle else
-	--				'1';
-				
+	pktend_int <= (read_empty_flag or write_req);
+
 	with curr_state select
 		sloe_int <=	'0' when read_read | read_no_empty,
 						'1' when others;
@@ -237,8 +214,8 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 -- debug
 --	fdata_out(15 downto 8) <= counter(7 downto 0);
 --	fdata_out(7 downto 0) <= counter(15 downto 8);
-	
 -- debug
+
 	with curr_state select
 		fdata <=	fdata_out        when write_no_full | write_write | write_end | write_addr,
 					(others => 'Z')  when others;
@@ -246,31 +223,19 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	with curr_state select
 		fdata_in <=	fdata     when read_no_empty | read_read | read_addr,
 						fdata_in  when others;
-	--              (others => '0');
 
 	trig3 <= '1' when (next_state = write_write) else '0';
 
 	with next_state select
 		trig2 <=	'1' when read_no_empty | read_read | write_no_full | write_end,
 					'0' when others;
-				
-	pktend_int <= not fifo_empty;
-				 --'1' when fifo_empty = '0' else '0';	
-											--or curr_state /= idle else '0';
-					
-	-- control de la memoria
-	fifo_push <= ((not push_int) and (not fifo_full));
-	fifo_pop  <= ((not pop_int) and (not fifo_empty));
-
-	--memoria vieja
-	fifo_flush <= '1' when reset = '0' else '0';
 
 	-- Implementacion de las maquinas de estado
 	fsm: process(curr_state, write_full_flag, read_empty_flag, write_req)
 	begin
 		case curr_state is
 			when idle =>
-				if(read_empty_flag = '1')then
+				if(read_empty_flag = '1' and (write_req = '0'))then
 					next_state <= read_addr;
 				elsif((write_full_flag = '1') and (write_req = '1'))then
 					next_state <= write_addr;
@@ -279,41 +244,23 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 				end if;
 
 			when read_addr =>
-				if(read_empty_flag = '1')then
 					next_state <= read_no_empty;
-				else
-					next_state <= read_addr;
-				end if;
 
 			when read_no_empty =>
 				next_state <= read_read;
 
 			when read_read =>
-				if(read_empty_flag = '1')then
-					next_state <= read_no_empty;
-				else
 					next_state <= idle;
-				end if;
 
 			when write_addr =>
-				if(read_empty_flag = '1')then
-					next_state <= idle;
-				elsif(write_full_flag = '1')then
 					next_state <= write_no_full;
-				else
-					next_state <= write_addr;
-				end if;
 
 			when write_no_full =>
 				next_state <= write_write;
 
 			when write_write =>
-				if((write_full_flag = '1') and (read_empty_flag = '0') and (write_req = '1'))then
 					next_state <= write_end;
-				else
-					next_state <= idle;
-				end if;
-		  
+
 			when write_end =>
 				if(write_req = '1')then
 					next_state <= write_write;
@@ -334,7 +281,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 			if count3 > 0 then
 				count3 <= count3 - 1;
 			elsif trig3 = '1' then
-				count3 <= 3;
+				count3 <= 4;
 			end if;
 		end if;
 	end process counter3;
@@ -347,11 +294,11 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 			if count2 > 0 then
 				count2 <= count2 - 1;
 			elsif trig2 = '1' then
-				count2 <= 2;
+				count2 <= 3;
 			end if;
 		end if;
 	end process counter2;
-		
+
 	 -- reloj
 	global_fsm_clk: process (sys_clk, reset)
 	begin
@@ -383,18 +330,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 			end if;
 		end if;
 	end process init_rst;
-	
-	sum: process(curr_state, push_int)
-	variable suma : integer range 0 to 65535 := 0;
-	begin
-		if curr_state = write_addr then
-			checksum <= x"0000";
-		elsif rising_edge(push_int) then
-			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(7 downto 0)));
-			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(15 downto 8)));
-		end if;
-	end process sum;
-	
+
 	-- debug
 --	contador_grande: process(button, pop_int)
 --	begin
