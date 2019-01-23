@@ -1,0 +1,49 @@
+\documentclass[]{article}
+
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel}
+
+%\tikzstyle{style} = [definition]
+
+\begin{document}
+	\begin{tikzpicture}[scale=1,text width=50,align=center,>=latex,node distance=3.1,
+	interior/.style={rectangle,rounded corners,draw=black,minimum size=30, text width=20,fill=white,},
+	exterior/.style={rectangle,draw=black,minimum size=40,},
+	mode text/.style={midway,sloped,text width=140,}]
+	\begin{scope}[]
+	
+			\node[interior]	(mis)								{MIS};
+			\node			(im)	[right=of mis]				{};
+			\node[interior]	(uc)	[above=of im]				{$\mu$C};
+			\node[interior] (fifo)	[right=of im,text width=40]	{FIFOs Esclavas};
+			\node			(et)	[left=of uc]				{FX2LP};
+			
+			\draw[->]([xshift=5]fifo.north)to node[above,mode text]{MODO ENTRADA MANUAL} ([yshift=4]uc.east);
+			\draw[->]([yshift=4]uc.west)to node[above,mode text]{MODO ENTRADA MANUAL}([xshift=-5]mis.north);
+			\draw[->] ([yshift=-4]uc.east)to node[below,mode text]{MODO SALIDA MANUAL}([xshift=-5]fifo.north);
+			\draw[->]([xshift=5]mis.north)to node[below,mode text]{MODO SALIDA MANUAL}([yshift=-4]uc.west);
+			
+			\draw[->]([yshift=3]fifo.west)to node[above,mode text]{MODO AUTO ENTRADA}([yshift=3]mis.east);
+			\draw[->]([yshift=-3]mis.east)to node[below,mode text]{MODO AUTO SALIDA}([yshift=-3]fifo.west);
+			
+			\node[exterior]	(pc)	[left=of mis]	{Host};
+			\draw[->]([yshift=3]mis.west)to([yshift=3]pc.east);
+			\draw[->]([yshift=-3]pc.east)to([yshift=-3]mis.west);
+			
+			\node[exterior]	(fpga)	[right=of fifo]	{Maestro Externo};
+			\draw[->]([yshift=3]fifo.east)to node[above]{Banderas}([yshift=3]fpga.west);
+			\draw[<-]([yshift=-3]fifo.east)to node[below]{Control}([yshift=-3]fpga.west);
+		\end{scope}
+			
+		\begin{scope}[on background layer,]
+			\node(fx)[rounded corners,fill=black!10,fit=(mis)(uc)(fifo)(et)]{};
+		\end{scope}
+		
+		%hacer figura buscada
+	\end{tikzpicture}
+\end{document}

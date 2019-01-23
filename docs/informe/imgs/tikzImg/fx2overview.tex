@@ -1,0 +1,87 @@
+\documentclass[]{article}
+
+\usepackage[a3paper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=40,fill=white]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+%\tikzstyle{mode text} = [midway,sloped,text width=200,align=center]
+
+\begin{document}
+	\begin{tikzpicture}[scale=0.5]
+		\begin{scope}[
+			>=latex,
+			node distance=1,
+			align=center,
+			transform shape
+			]
+			\node			(aux1)	[]				{};
+			\node[core,
+				minimum height=95]
+							(mis)	[left=of aux1,anchor=north east]	{MIS};
+			\node[core]		(ram)	[right=of aux1,anchor=north west, text width=30]	{16 kB RAM};
+			\node[perif,
+				text width=60]
+							(xcvr)	[left=of mis]	{Transceptor USB};
+			\node[interior,
+				minimum size=60,
+				text width=50]
+							(uc)	[above=of aux1]	{8051 Mejorado};			
+			\node[perif,
+				node distance=2.9]
+							(pll)	[left=of uc]	{PLL};
+
+			\node			(aux2)	[right=of ram.south]{};				
+			\node[interior]	(bus)	[right=of aux2,rotate=90,anchor=north west]	{Bus de datos y direcciones};
+
+			\node[perif]	(i2c)	[right=of bus.south east,anchor=north west]	{I2C};
+			\node[perif]	(gpif)	[right=of bus.south west,anchor=south west] {GPIF};
+			\node[perif,
+				text width=40]
+							(fifo)	[below=of gpif]	{4 kB FIFO};
+			\node 			(aux3)	[right=of fifo]	{};
+			\node 			(aux5) 	[left=of ram] {};
+			
+			\draw[<->]	(mis) -- (xcvr);
+			\draw[<->]	(ram) -- (ram -| mis.east);
+			\draw[<->]	(fifo) -- (fifo -| mis.east);
+			\draw[<->]	(ram) to (ram -| bus.north);
+			\draw[<->]	(uc) to (uc -| bus.north);
+			\draw[<-]	(xcvr) to (xcvr |- pll.south);
+			\draw[->]	(pll) to (uc);
+			\draw[<->]	(i2c) to (i2c -| bus.south);
+			\draw[<->]	(gpif) to (gpif -| bus.south);
+			\draw[]		(fifo) -| (aux5.center);
+		\end{scope}
+			
+		\begin{scope}[on background layer]
+			\node[contenedor] (fx2) [fit=(pll)(xcvr)(uc)(bus)(mis)(ram)(fifo)(gpif)(i2c)(aux3)]{};
+		\end{scope}
+		
+		\begin{scope}[
+		transform shape,
+		>=latex
+		]
+			\node[text width=40,align=center]	(xtal)	[left=of pll]{Xtal \SI{24}{\mega\hertz}};
+			\node	(host)	[left=3of xcvr]	{PC};
+			\draw[<->,ultra thick] (host) -- node [above,text width=70,midway,align=center]{Comunicación USB} (xcvr);
+			\draw[->] (xtal) to (pll);
+			\draw[<->,ultra thick] (bus.240) -- node [above,align=center,text width=80] {Datos, direcciones y entradas adicionales}(bus.240 -| fx2.east);
+			\draw[<->,thick] (gpif) to (gpif -| fx2.east);
+			\draw[<->,thick] (fifo) to (fifo -| fx2.east);
+			\draw[<->,thick] (i2c) to (i2c -| fx2.east);
+		\end{scope}
+		
+		%hacer figura buscada
+	\end{tikzpicture}
+\end{document}
