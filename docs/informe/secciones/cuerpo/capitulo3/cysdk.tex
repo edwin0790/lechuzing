@@ -1,0 +1,64 @@
+Dentro del kit de desarrollo avanzado EZ-USB DVK, Cypress provee un amplio conjunto de herramientas que facilitan al desarrollador la implementación de todo lo necesario, desde lo que a software se refiere. Este conjunto de herramientas, Cypress lo denomida Kit de Desarrollo de Software (o SDK, acrónimo del habla inglesa, {\it Software Development Kit}).\\
+
+El kit abarca una gran cantidad de aspectos, como ser la elaboración del firmware implementado en el 8051 del controlador, la elaboración de drivers, la conversión de archivos de programación y programas que grabar la información en los diferentes chip, ya sea en la RAM del microcontrolador o en EEPROM, para cargar programas no volátiles que posteriormente serán ejecutados por el 8051.\\
+
+Debido a que no todo fue utilizado en este trabajo, a continuación se desarrollarán solo las herramientas utilizadas.\\
+
+\subsection{Framework Cypress}
+	Con la intención dotar al desarrollador con una herramienta que le potencie la velocidad de diseño, Cypress provee una plantilla de codigo en lenguaje C para microcontroladores 8051.\\
+	
+	Esta plantilla posee precargados todos los registros que posee la serie de controladores FX2LP con los mismos nombres que figuran en el manual de usuario. Además incorpora todas las funciones que el microcontrolador debe llevar a cabo para efectuar la comunicación USB. Los archivos que incorpora son:\\
+	
+	\begin{itemize}
+		\item fw.c: es el código fuente principal. Contiene la función main() y lo necesario para manejar la comunicación USB.
+		\item periph.c: contiene la implementación de las funciones invocadas por fw.c. Aquí se encuentran las funciones TD\_Init() y TD\_Poll() a través de las cuales el usuario implementa el programa que necesita. También contiene todas las funciones de interrupción vectorizadas.
+		\item fx2.h: posee la definición de constantes, macros, tipos de datos y funciones prototipo de la biblioteca.
+		\item fx2regs.h: declara registros y máscaras.
+		\item dscr.a51: este archivo es el descriptor de dispositivo. Es la información que USB necesita para poder registrar el dispositivo en el anfitrión, asignarle direccion y establecer los parámetros.
+		\item ezusb.lib: biblioteca que implementa las funciones provistas por el fabricante.
+		\item syncdely.h: macro de sincronismo. Algunos accesos de registro requieren un tiempo de establecimiento específico que en el código se implementa deteniendo el microcontrolador ciertos ciclos de reloj.
+		\item usbjmptb.obj: especifica las direcciones en memoria de las interrupciones vectorizadas
+	\end{itemize}
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=.75\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,>=latex]
+				\node[mealy]	(start)	[]	{Iniciar: Reset \\ \verb|main();|};
+				\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
+				edge[<-,thick] (start);
+				\node[moore]	(us1)	[below=of init]		{\verb|TD_Init();|}
+				edge[<-,thick]	(init);
+				\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
+				edge[<-,thick](us1);
+				\node[node distance=0.7]			(aux1)	[below=of EI] 	{};
+				\draw[<-,thick](aux1.base) to (EI);
+				\node[moore,node distance=.5]	(poll)	[below=of aux1]	{\verb|TD_Poll();|}
+				edge[<-,thick](aux1.base);
+				\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
+				edge[<-,thick](poll);
+				\node[moore]	(setup)	[right=of pr1]	{\verb|SetupComand();|};
+				\draw[->,thick] (setup) |- (aux1.base);
+				\node[]			(aux2)	[below=of pr1]	{};
+				\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
+				\draw[thick]	(pr1) -- node[left,near start]{No}	(aux2.base);
+				\node[node distance=2.5](aux3)	[left=of aux2] {};
+				\draw[thick]	(aux2.base) -- (aux3.base);
+				\draw[->,thick]	(aux3.base)	|-	(aux1.base);
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama en bloques simplificado}
+		\label{diagfw}
+	\end{figure}
+	
+	La Figura \ref{diagfw} muestra una versión modificada del diagrama de flujo que sigue el código fuente provisto por Cypress. De ella se quitan funciones que no son necesarias para los objetivos del presente trabajo.\\
+	
+	Cuando el programa es cargado al controlador, este se encarga de inicializar todas la variables de estado a su valor por defecto. También en este punto establece la comunicación con el anfitrión y le envía los descriptores provistos en el archivo \verb|dscr.a51|. Acto seguido, ejecuta la funcion \verb|TD_Init()|, a través de la cual el usuario programa e inicia la configuración del sistema. Luego, es necesario habilitar todas las interrupcionnes necesarias y finalmente, se invoca repetidamente la función \verb|TD_Poll()|, en donde el usuario escribe las tares que ejecutará el 8051.\\
+	
+	\subsection{Entorno de desarrollo y compilador}
+	Si bien Cypress no desarrolla entornos de desarrollo para escribir, compilar y depurar códigos, distribuye junto con el kit 3684 una versión de evaluación de Keil $\mu$Vision con el compilador C51 para programar microcontroladores basados en 8051. Aún la versión de limitada de este entorno, resulta suficiente para la programación del controlador USB.\\
+	
+	\subsection{Cypress USB Control Center}
+	Dentro del kit de desarrollo de software que brinda Cypress se encuentra el programa USB Control Center. Este software se utiliza durante este trabajo para cargar un programa compilado en el controlador FX2LP, para transmitir y recibir mensajes.\\
+	
+	La utilidad de este programa radica en la realimentación mínima de lo que está realizando el controlador, de forma que facilita las pruebas sobre el sistema en desarrollo.\\	

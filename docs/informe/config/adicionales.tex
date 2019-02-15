@@ -20,7 +20,7 @@
 }
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel}
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes}
 
 %\tikzstyle{style} = [definition]
 \tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
@@ -29,9 +29,26 @@
 \tikzstyle{contenedor} = [rectangle,draw=black]
 \tikzstyle{core}=[interior]
 \tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{buf}=[core, text width=53, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+	Buffer {#1}\\
+	[8pt]EP{#2}\\
+	[8pt]{#3} Bytes}
 
 \DeclareSIUnit[number-unit-product = {}]
-\byte{b}
+\byte{B}
 
 \graphicspath{{./imgs/}}
 
