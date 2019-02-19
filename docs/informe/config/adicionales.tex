@@ -1,4 +1,7 @@
-\usepackage{listings}
+\usepackage{listingsutf8}
+%\usepackage{listings}
+\lstset{inputencoding=utf8/latin1}
+\lstset{tabsize=4}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{enumerate}
@@ -20,7 +23,7 @@
 }
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes}
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic}
 
 %\tikzstyle{style} = [definition]
 \tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
@@ -39,8 +42,8 @@
 
 \newcommand{\epg}[3]{
 	Buffer {#1}\\
-	[44pt]EP{#2}\\
-	[44pt]{#3} Bytes}
+	[38.5pt]EP{#2}\\
+	[38.5pt]{#3} Bytes}
 
 \newcommand{\ep}[3]{
 	Buffer {#1}\\
@@ -62,3 +65,8 @@
 \renewcommand{\appendixpagename}{Apéndice}
 \renewcommand{\labelitemi}{$\bullet$}
 \renewcommand{\labelitemii}{$-$}
+
+% Las próximas líneas son archivos que conviene que estén por aquí
+
+	%bridge.c
+\newcommand{\bridge}{secciones/cuerpo/capitulo3/bridge.c}

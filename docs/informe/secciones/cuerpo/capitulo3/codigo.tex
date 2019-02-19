@@ -1,5 +1,195 @@
-A continuación se desarrollan los aspectos más relevantes del código elaborado.
+A continuación se desarrolla el aspecto más relevantes del código elaborado, que es la función de inicialización.\\
+
+Al establecer el modo automático de funcionamiento, la función \verb|TD_Poll()| se encuentra vacía.\\
 
 \subsection{Inicialización del dispositivo}
-	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Esta función es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.\\	
+	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.\\
 	
+	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{24}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
+	
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); // 48 MHz
+	\end{lstlisting}
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[circuit logic US, node distance=1,shape border uses incircle]
+			\begin{scope}[transform shape]
+				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg4){};
+				\node[buffer gate] (ifcfg5) [right=of ifcfg4] {};
+				\node[not gate]	(a)		[left=of ifcfg4.input 2]	{};
+				\node[node distance=2](aux a)	[left=of ifcfg4.input 1]	{};
+				\node[] (aux 1) [left=of aux a] {};
+				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg6) [left=of aux 1]{};
+				\node[mux, inputs={nn},info={[text width=10]center:1\\0},point left,node distance=4] (ifcfg7) [below=of ifcfg6]{};
+				\node[mux,inputs={nn},info={[text width=10]center:0\\1},node distance=2,point left] (ifcfg4bis) [right=of ifcfg7.input 1]{};
+				\node[not gate,node distance=1.7] (b) [right=of ifcfg4bis.input 1,point left] {};
+				\node[node distance=3] (aux b) [right=of ifcfg4bis.input 2] {};
+				\node[buffer gate,point left] (c)	[right=of aux b]	{};
+				
+				\node[]	(sel4)	[below=of ifcfg4]	{IFCFG.4};
+				%	\node[node distance=1.5] (sel4bis) [above=of ifcfg4bis] {IFCFG.4};
+				\node[]	(sel5)	[above=of ifcfg5]	{IFCFG.5};
+				\node[] (sel6)	[below=of ifcfg6]	{IFCFG.6};
+				\node[node distance=1.5]	(sel7)	[above=of ifcfg7]	{IFCFG.7};
+				\node[] (aux 2) [right=of ifcfg5]		{};
+				\node[node distance=1.5] (aux 3)  [below=of aux 2] {};
+				\node[align=center] (output) [right=of aux 3] {Pin\\IFCLK};
+				\node[] (freq1)	[left=of ifcfg6.input 1]	{30 MHz};
+				\node[]	(freq2) [left=of ifcfg6.input 2]	{48 MHz};
+				\node[align=center] (clkin) [left=of ifcfg7]	{Entrada\\IFCLK\\Interna};
+				
+				\draw (ifcfg4) to (ifcfg5);
+				\draw (aux a.base) to (ifcfg4.input 1);
+				\draw (aux a.base) |- (a.input);
+				\draw (ifcfg6) to (aux a.base);
+				\draw (aux 1.base) |- (ifcfg7.input 2);
+				\draw (ifcfg4bis) to (ifcfg7.input 1);
+				\draw (c) to (ifcfg4bis.input 2);
+				\draw (b) to (ifcfg4bis.input 1);
+				\draw (aux b.base) |- (b.input);
+				\draw (a) to (ifcfg4.input 2);
+				\draw (ifcfg5) to (aux 2.base);
+				\draw (aux 2.base) |- (c);
+				\draw (aux 3.base) -- (output);
+				
+				\draw (clkin) to (ifcfg7);
+				\draw (freq1) to (ifcfg6.input 1);
+				\draw (freq2) to (ifcfg6.input 2);
+				\draw (sel5) to (ifcfg5.north);
+				\draw (sel4) to (ifcfg4.select);
+				\draw (sel4) -| (ifcfg4bis.select);
+				\draw (sel6) to (ifcfg6.select);
+				\draw (sel7) to (ifcfg7.select);	
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Esquema funcional para la entrada de reloj de la Interfaz}
+		\label{ifclk};
+	\end{figure}
+
+	
+	Luego se debe configurar el funcionamiento del reloj de la interfaz. El esquema de la Figura \ref{ifclk} muestra la configuración del hardware. Cómo se observa, La interfaz puede funcionar con frecuencias de \SI{48}{\mega\hertz} o \SI{30}{\mega\hertz} provistas por el FX2LP. Además, la señal puede ser dirigida al exterior, o bien, ser provista por un periférico. Los inversores se programan de forma tal que la interfaz sea activa en el flanco positivo o negativo del reloj fuente. En este trabajo, el registro se programa para tomar como reloj la señal de \SI{48}{\mega\hertz} provisto por el mismo chip, la polaridad es de flanco ascendente y no se posee señal de reloj en el pin externo IFCKL. Además, se programa de modo asíncrono y en modo FIFO esclavo, a cuya configuración se accede por este puerto.\\
+	
+	El autor entiende sobre la posibilidad y conveniencia de utilizar el modo sincrónico para conectar la interfaz. Más aún, es factible proveer la señal necesaria de reloj desde la FPGA y evitar así problemas de desajustes y fallas de sincronismo. Sin embargo, por error del alumno en el diseño del impreso de interconexión, la entrada de reloj no quedó conectada al chip de la FPGA. Durante la escritura de este informe, se encuentra en viaje el impreso con las correcciones pertinentes y espera ser implementado en trabajos futuros.\\
+	
+	La configuración, entonces, queda definida por la sentencia de código:
+	
+%	\lstinputlisting[language=C,firstline=91,lastline=95]{\bridge}
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	//colocar Interfaz FIFO esclava a 48MHz
+	//clk interno, no_salida, no_invertir clk, no_asincr
+	//fifoesclava(11) = 0xC3
+	//0xCB; para asincr.
+	IFCONFIG = 0xCB;
+	SYNCDELAY;
+	\end{lstlisting}
+		
+	A continuación, se debe establecer el funcionamiento de los pines bandera. Estos avisan cuando un EP está vacío, completo o a un nivel programable. Para este trabajo, son necesarios solo una bandera que señale el nivel vacío del puerto por el que entran los datos a la FPGA y otra que señale el nivel completo del EP donde escribe los datos a enviar. Si bien no son leídos en ningún momento, para evitar problemas se configuran las banderas vacías y completas para ambos EP's:
+	
+%	\lstinputlisting[language=C,firstline=108,lastline=113]{\bridge}
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	//Pin Flags Configuratión
+	PINFLAGSAB = 0xBC;	// FLAGA <- EP2 Full Flag
+						// FLAGD <- EP2 Empty Flag
+	SYNCDELAY;
+	PINFLAGSCD = 0x8F;	// FLAGC <- EP8 Full Flag
+						// FLAGB <- EP8 Empty Flag
+	\end{lstlisting}
+	
+	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).\\
+	
+	La programación de este trabajo es con una entrada isocrónica de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
+	
+%	\lstinputlisting[language=C,firstline=117,lastline=128]{\bridge}
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	EP1OUTCFG = 0xA0;
+	SYNCDELAY;
+	EP1INCFG = 0xA0;
+	SYNCDELAY;
+	EP4CFG &= 0x7F;
+	SYNCDELAY;
+	EP6CFG &= 0x7F;
+	SYNCDELAY;
+	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
+	SYNCDELAY;
+	EP2CFG = 0xD2;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=512, BUF=2x
+	SYNCDELAY;
+	\end{lstlisting}
+	
+	Como siguiente paso, se limpian las memorias FIFO de cualquier dato espúreo que contengan al momento del inicio del programa.
+	
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	FIFORESET = 0x80;
+	SYNCDELAY;
+	FIFORESET = 0x02;
+	SYNCDELAY;
+	FIFORESET = 0x04;
+	SYNCDELAY;
+	FIFORESET = 0x06;
+	SYNCDELAY;
+	FIFORESET = 0x08;
+	SYNCDELAY;
+	FIFORESET = 0x00;
+	SYNCDELAY;
+	\end{lstlisting}
+	
+	De esta forma, el controlador se encuentra listo para configurar las memorias asignadas a cada uno de los EP's. Se debe notar que en primer lugar se coloca 0x00 y luego el valor estipulado. Esto se basa en que el modo automático se prepara para transmitir ante un flanco ascendente del registro que lo habilita.
+	
+%	\lstinputlisting[language=C,firstline=143,lastline=152]{\bridge}
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	EP8FIFOCFG = 0x00;
+	SYNCDELAY;
+	EP2FIFOCFG = 0x00;
+	SYNCDELAY;
+	
+	//setting on auto mode. rising edge is necessary
+	EP8FIFOCFG = 0x11;// & ~bmAUTOOUT; //at the end, auto mode is setted off
+	SYNCDELAY;
+	EP2FIFOCFG = 0x0D;
+	SYNCDELAY;
+	\end{lstlisting}
+
+	Finalmente, se habilitan las interrupciones necesarias.
+	
+%	\lstinputlisting[language=C,firstline=179,lastline=183]{\bridge}
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	USBIE |= bmSOF;
+	\end{lstlisting}
+
+	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.\\
+	
+\subsection{Encabezado y declaraciones importantes}
+	Para el correcto funcionamiento de este código, es necesario incorporar el encabezado que se observa a continuación.
+	
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	#pragma noiv               // No generar vectores de interrupción
+	#include "fx2.h"
+	#include "fx2regs.h"
+	#include "syncdly.h"            // SYNCDELAY macro
+	#include "FX2LPSerial.h"
+	#include "leds.h"
+	
+	extern BOOL   GotSUD;         // Received setup data flag
+	extern BOOL   Sleep;
+	extern BOOL   Rwuen;
+	extern BOOL   Selfpwr;
+	
+	BYTE    Configuration;      // Current configuration
+	BYTE    AlternateSetting = 0;   // Alternate settings
+	
+	//-----------------------------------------------------------------------------
+	// Task Dispatcher hooks
+	//   The following hooks are called by the task dispatcher.
+	//-----------------------------------------------------------------------------
+	
+	WORD mycount = 0;
+	WORD blinktime = 0;
+	BYTE inblink = 0x00;
+	BYTE outblink = 0x00;
+	WORD blinkmask = 0;			// HS/FS blink rate
+	
+	BYTE refresh = 0;
+	\end{lstlisting}
+%	\linenumbers*
+%	\lstinputlisting[language=C,lastline=186]{\bridge}
+%	\nolinenumbers
