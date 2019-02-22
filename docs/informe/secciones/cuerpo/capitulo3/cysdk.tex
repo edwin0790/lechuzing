@@ -56,11 +56,20 @@ Debido a que no todo fue utilizado en este trabajo, a continuación se desarroll
 	Cuando el programa es cargado al controlador, este se encarga de inicializar todas la variables de estado a su valor por defecto. También en este punto establece la comunicación con el anfitrión y le envía los descriptores provistos en el archivo \verb|dscr.a51|. Acto seguido, ejecuta la funcion \verb|TD_Init()|, a través de la cual el usuario programa e inicia la configuración del sistema. Luego, es necesario habilitar todas las interrupcionnes necesarias y finalmente, se invoca repetidamente la función \verb|TD_Poll()|, en donde el usuario escribe las tares que ejecutará el 8051.\\
 	
 	\subsection{Entorno de desarrollo y compilador}
-	Si bien Cypress no desarrolla entornos de desarrollo para escribir, compilar y depurar códigos, distribuye junto con el kit 3684 una versión de evaluación de Keil $\mu$Vision con el compilador C51 para programar microcontroladores basados en 8051. Aún la versión de limitada de este entorno, resulta suficiente para la programación del controlador USB.\\
+	Si bien Cypress no desarrolla software para escribir, compilar y depurar códigos, distribuye junto con el kit 3684 una versión para evaluación de Keil $\mu$Vision con el compilador C51 para programar microcontroladores basados en 8051. Aún la versión limitada de este entorno, resulta suficiente para la programación del controlador USB.\\
+	
+	Keil $\mu$Vision es un entorno de desarrollo integrado (IDE). Se entiende por IDE a un software que integra en un entorno gráfico las herramientas que permiten elaborar un programa que ejecutará un procesador, desde la escritura del algoritmo en uno o más lenguajes, las pruebas, el depurado y el compilado del mismo.\\
+	
+	El programa utilizado posee, entre otras cosas, editor de textos con atajos de teclado, comandos que aceleran la escritura de código y resaltador de palabras claves para diferentes lenguajes de programación, navegador de archivos. También ejecuta, con solo un click, el compilador con la sintaxis correcta, y posee un depurador que, a través de un intérprete, permite ir ejecutando el código línea por línea o por bloques.\\
+	
+	Para realizar un programa en este entorno, Cypress provee, junto con su framework, un proyecto vacío que puede ser copiado y pegado. Sin embargo, se puede realizar la configuración manual. Las instrucciones de este procedimiento se ubican en el Apéndice \ref{app:keil}
+	
+	En cuanto al compilador se refiere, el utilizado es C51. Éste es un programa que otorga un archivo hexadecimal con un código que será ejecutado por microcontroladores que estén implementados con la misma estructura que un Intel 8051, cómo lo es el microcontrolador que posee el FX2LP.\\
 	
 	\subsection{Cypress USB Control Center}
 	Dentro del kit de desarrollo de software que brinda Cypress se encuentra el programa USB Control Center. Este software se utiliza durante este trabajo para cargar un programa compilado en el controlador FX2LP, para transmitir y recibir mensajes.\\
 	
-	La utilidad de este programa radica en la realimentación mínima de lo que está realizando el controlador, de forma que facilita las pruebas sobre el sistema en desarrollo.\\
+	La utilidad de este programa radica en la realimentación, aunque mínima, de la entrada y salida de datos, facilitando las pruebas sobre el sistema en desarrollo.\\
 	
+	En el Apéndice \ref{app:cyusb} se explica su funcionamiento y manejo.
 	

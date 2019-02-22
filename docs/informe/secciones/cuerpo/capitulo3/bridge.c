@@ -24,8 +24,6 @@ BYTE inblink = 0x00;
 BYTE outblink = 0x00;
 WORD blinkmask = 0;			// HS/FS blink rate
 
-BYTE refresh = 0;
-
 void TD_Init(void)             // Called once at startup
 {
 	BYTE dum;
