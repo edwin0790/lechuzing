@@ -1,6 +1,6 @@
-El núcleo del Kit de Desarrollo FX2LP EZ-USB es un CY7C68013A. Dicho circuito integrado, cuya arquitectura se presenta en la Figura \ref{arqEzUSB}, pertenece a la serie FX2LP de la familia de integrados EZ-USB comercializado por Cypress Semiconductors.\\
+El núcleo del Kit de Desarrollo FX2LP EZ-USB es un CY7C68013A. Este circuito integrado es un controlador USB y pertenece a la serie FX2LP del catálogo de integrados EZ-USB comercializado por Cypress Semiconductors. Su arquitectura se presenta en la Figura \ref{arqEzUSB}. \\
 
-Esta serie se caracteriza por brindar una conexión USB 2.0 de alta velocidad y bajo consumo energético, especialmente diseñados para productos con autonomía limitada. Se integra un controlador USB completo, incluyendo un transceptor USB, un MIS (Motor de Interfaz Serial), buffers de datos implementados con memorias tipo FIFO (\(First In First Out\); Primero Entrado, Primero Salido), un microcontrolador 8051 mejorado y una interfaz programable hacia los periféricos. Además posee un PLL con divisor configurable a través de los cuales proveen las señales de reloj adecuadas para el correcto funcionamiento del sistema.\\
+La serie de controladores FX2LP se caracteriza por brindar una conexión USB 2.0 de alta velocidad y bajo consumo energético. Está diseñada, preferentemente más no exclusivamente, para periféricos con autonomía limitada. Se integra un controlador USB completo. Esto incluye un transceptor USB, un Motor de Interfaz Serie (MIS), buffers de datos configurables, un microcontrolador 8051 mejorado y una interfaz programable hacia los periféricos implementada con memoria tipo FIFO (\(First In First Out\); Primero Entrado, Primero Salido). Además posee un PLL con divisor configurable a través de los cuales proveen las señales de reloj adecuadas para el correcto funcionamiento del sistema.\\
 
 \begin{figure}[b]
 	\centering
@@ -80,29 +80,50 @@ Esta serie se caracteriza por brindar una conexión USB 2.0 de alta velocidad y 
 	\label{arqEzUSB}
 \end{figure}
 
-De esta forma, se permite al usuario trasmitir datos desde y hacia el anfitrión a través del  mismo puerto USB, o bien via RS-232. Para comunicarse con sistemas periféricos se puede aprovechar el puerto $I^2C$, la interfaz de propósito general, que actúa como maestro y a la cual se le puede acoplar un periférico esclavo, y/o las memorias FIFO en modo esclavo que puede ser conectada a un sistema maestro. Esto brinda muchas alternativas, desde la conexión a puertos estandar, como ser ATA, PCMCIA, EPP, etc. o también la conexión de dispositivos tales como DSP's y FPGA's.\\
+%Variante 1
+
+%El usuario puede trasmitir datos desde y hacia el anfitrión a través del mismo puerto USB, o bien via RS-232. Para comunicarse con sistemas periféricos se puede aprovechar el puerto $I^2C$, la interfaz de propósito general, que actúa como maestro y a la cual se le puede acoplar un periférico esclavo, y/o las memorias FIFO en modo esclavo que puede ser conectada a un sistema maestro. Esto brinda muchas alternativas, desde la conexión a puertos estandar, como ser ATA, PCMCIA, EPP, etc. o también la conexión de dispositivos tales como DSP's y FPGA's.\\
+\textbf{\hl{variante 1}}
+\hl{El usuario puede trasmitir datos desde y hacia el anfitrion a traves del mismo puerto USB, o bien via RS-232. Para comunicarse con sistemas perifericos se puede aprovechar el puerto $I^2C$, la interfaz de proposito general, que actua como maestro y a la cual se le puede acoplar un periferico esclavo, y/o las memorias FIFO en modo esclavo que puede ser conectada a un sistema maestro. Esto brinda muchas alternativas de conexion, desde puertos estandar, como ser ATA, PCMCIA, EPP, etc. hasta dispositivos personalizables como DSP's y FPGA's}.\\
+
+%variante 2
+%El flujo de datos posee dos puntas entre las cuales el controlador hace de nexo. Para ello necesita poder comunicarse tanto con el \host como con los periféricos.\\
+%
+%El intercambio de información con el \host se lleva a cabo a través del mismo puerto USB, objetivo principal de este trabajo. Sin embargo, también posee dos puertos UART que facilitan en gran medida la tarea de depuración del desarrollo.\\
+%
+%En cuanto a la interfaz con uno o más periféricos, el controlador posee un puerto $I^2C$, una interfaz de propósito general (GPIF), para sistemas que necesitan ser comandados en forma externa; y una interfaz con memorias FIFO esclavas, a través de las cuales se puede conectar sistemas que cumplen un rol activo en el envío y recepción de información.\\
+
+\textbf{\hl{variante 2}}
+
+\hl{El flujo de datos posee dos puntas entre las cuales el controlador hace de nexo. Para ello necesita poder comunicarse tanto con el HOST como con los perifericos.}\\
+
+\hl{El intercambio de informacion con el HOST se lleva a cabo a traves del mismo puerto USB, objetivo principal de este trabajo. Sin embargo, tambien posee dos puertos UART que facilitan en gran medida la tarea de depuracion del desarrollo.}\\
+
+\hl{En cuanto a la interfaz con uno o mas perifericos, el controlador posee un puerto $I^2C$, una interfaz de proposito general (GPIF), para sistemas que necesitan ser comandados en forma externa; y una interfaz con memorias FIFO esclavas, a traves de las cuales se puede conectar sistemas que cumplen un rol activo en el envio y recepcion de informacion.}\\
 
 Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que responden a las diferentes señales que les proporciona un maestro externo implementado con un FPGA; por lo que a continuación se explicitan algunos detalles referidos a ellos, con lo que se busca aclarar el funcionamiento y que el lector comprenda los fundamentos de las configuraciones que se plasmarán en el código del firmware.\\
 
 \subsection{Motor de Interfaz Serial}
 
-	La comunicación USB entre el controlador FX2LP y la PC se realiza a través del transceptor, unido al MIS. Como se observa en la Figura \ref{usbxcvr}, el usuario, a fin de intercambiar datos, solo debe colocar o extraer los datos de registros destinados a tal fin y modificar las banderas de handshaking, que en la figura se observan como ACK (abreviación del ingles {\it acknowledge}, que significa reconocer, aceptar o agradecer), que indican si el sistema está disponible, si los datos fueron colocados o leídos, dependiendo el caso tratado. De forma automática, el MIS y el transceptor USB se encargan de empaquetar, enviar, recibir y desempaquetar toda la información, así como leer los tokens que emite el host, calcular y corroborar los códigos cíclicos de detección de errores y todo lo relacionado al protocolo propiamente dicho.\\
-
-	\begin{figure}[ht]
+	\begin{figure}[ht]%TODO hacer con tikz para que quede prolija
 		\centering
 		\includegraphics[width=.8\textwidth]{usbxcvr}
-		\caption{Implementación del enlace USB realizado por el EZ-USB}
+		\caption{Implementación del enlace USB realizado por el EZ-USB (\hl{se copiaria con tikz para mejorar prolijidad})}
 		\label{usbxcvr}
 	\end{figure}
+	
+	La comunicación USB entre el controlador FX2LP y la PC se realiza a través del transceptor, unido al MIS. Con el objetivo de intercambiar datos, el firmware solo debe colocar o extraer los datos de buffers programables y modificar las banderas de handshaking. En forma automática, el MIS se encargan de empaquetar, enviar, recibir y desempaquetar toda la información, así como leer los tokens que emite el host, calcular y corroborar los códigos cíclicos de detección de errores y todo lo relacionado al protocolo propiamente dicho. El transceptor codifica y decodifica todo a nivel físico.\\
+	
+	La Figura \ref{usbxcvr} muestra la función del MIS. Toma los datos colocados los buffers de extremos, agrega todo el encabezado y la cola y, finalmente, coloca el registro de handshaking. Esto último, se observan como ACK (abreviación del ingles {\it acknowledge}, que significa reconocer, aceptar o agradecer)en la Figura \ref{usbxcvr}. En el extremo del controlador, estas banderas se colocan en un registro especial que indica si el sistema está disponible, si los datos fueron colocados o leídos, dependiendo el caso tratado. \\
 		
 \subsection{Buffers de extremos}
 	El MIS guarda los datos que aún no han sido enviados y/o los que han sido recibidos pero no leídos por ningún periférico en una memoria RAM específica, denominada buffer de extremo.\\
 	
-	La norma USB define a un dispositivo extremo como una porción exclusiva e identificable de un dispositivo USB que es fuente o un sumidero de información. En otras palabras, USB ve a cada extremo como una memoria FIFO de donde surge o finalizan la información. En ingles, el termino extremo se escribe endpoint, por lo que, en adelante, cuando se hable de ellos se abreviara como EP o EPx, siendo la x un número que indica la dirección del extremo.\\
+	La norma USB define a un dispositivo extremo como una porción exclusiva e identificable de un dispositivo USB que es fuente o un sumidero de información. En otras palabras, USB ve a cada extremo como una memoria FIFO de donde surge o finaliza la información. En ingles, el termino extremo se escribe endpoint, por lo que, en adelante, cuando se hable de ellos se abreviara como EP o EPx, siendo la x un número que indica la dirección del extremo.\\
 	
 	La serie de controladores FX2LP dispone de hasta 7 EP's programables, los cuales deben poseer al menos dos buffers.\\
 	
-	La norma USB indica que cualquier dispositivo USB debe poseer un EP con dirección 0 que se destina para control y configuración, por lo que el controlador está dotado de \SI{64}{\byte} para este fin. Es el único EP que puede ser bidireccional en el sentido del flujo de datos. A través de él, anfitrión y dispositivo intercambiarán solo transferencias de control.\\
+	La norma USB indica que cualquier dispositivo USB debe poseer un EP con dirección 0 que se destina para control y configuración, por lo que el controlador está dotado de \SI{64}{\byte} para este fin. Es el único EP que puede ser bidireccional en el sentido del flujo de datos. A través de él, \host y dispositivo intercambiarán solo transferencias de control.\\
 	
 	Luego, se incorpora un EP1, que posee dos buffers fijos, o sea no configurables, de 64 bytes, uno como entrada y el otro como salida.\\
 	
@@ -162,18 +183,18 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 	\label{epbuf}
 	\end{figure}
 	
-	Finalmente, \SI{4}{\kibi\byte} de memoria debe ser configurada para los EP2, EP4, EP6 y EP8. La configuración de los EP la realiza el firmware en tiempo de ejecución. Las variables, conforme a los requerimientos de ancho de banda, acceso al bus son:
+	Finalmente, \SI{4}{\kibi\byte} de memoria debe ser configurada para los EP2, EP4, EP6 y EP8. La configuración de los EP la realiza el firmware en tiempo de ejecución. Las variables, conforme a los requerimientos de ancho de banda y acceso al bus son:
 	
 	\begin{itemize}
 		\item Tamaño: Dependiendo del extremo a configurar puede ser de 512 o 1024 bytes.
-		\item Tipo de acceso al bus: Definido según la norma USB, este tipo puede ser por bultos, isocrónico o de interrupción.
+		\item Tipo de acceso al bus: Definido según la norma USB, este tipo puede ser por bultos, isocrónico o de interrupción. No se admiten en estos EPs paquetes de control.
 		\item Cantidad de buffers: Dependiendo del extremo, puede ser dos, tres o cuatro buffers por extremo.
 		\item Habilitación: Se debe indicar al sistema si los extremos se usan o no. El EP no valido, no responderá a un pedido de entrada o salida.
 	\end{itemize}
 	
-	La Figura \ref{epbuf} muestra solo dos las posibles configuraciones de los extremos. A la izquierda se observa la configuración por defecto del controlador FX2LP. Esto es, los cuatro EP's habilitados, con 512 bytes cada uno, buffers dobles y comunicación por bultos. A la derecha se muestra la configuración elegida para este trabajo, es decir, solo son válidos el EP2 y EP8. EP2 posee tres buffers de 1024 bytes y el EP8 dos buffers con 512 bytes de capacidad cada uno. Siempre hay que considerar no se dispone más que \SI{4}{\kibi\byte} de memoria\\
+	La Figura \ref{epbuf} muestra solo dos de las posibles configuraciones de los EPs. A la izquierda se observa la configuración por defecto del controlador FX2LP. Esto es, los cuatro EP's habilitados, con 512 bytes cada uno, buffers dobles y comunicación por bultos. A la derecha se muestra la configuración elegida para este trabajo, es decir, solo son válidos el EP2 y EP8. EP2 posee tres buffers de 1024 bytes y el EP8 dos buffers con 512 bytes de capacidad cada uno. Siempre hay que considerar que no se dispone más que \SI{4}{\kibi\byte} de memoria\\
 	
-	La característica de los buffers múltiples evita la congestión de datos. Con doble buffer, un periférico (o el microcontrolador) coloca o extrae datos de un buffer, mientras otro, del mismo EP, se encuentra enviando o recibiendo datos mediante el MIS. Cuando se configura un triple buffer, se agrega una porción mas de memoria a la reserva. De esta forma, se le otorga al sistema una gran capacidad de datos y ancho de banda.\\
+	La característica de los buffers múltiples evita la congestión de datos. Con doble buffer, un periférico (o el microcontrolador) coloca o extrae datos de un buffer, mientras otro, del mismo EP, se encuentra enviando o recibiendo datos mediante el MIS. Cuando se configura un triple o cuádruple buffer, se agrega una o dos porciones mas de memoria a la reserva, respectivamente. De esta forma, se le otorga al sistema una gran capacidad de datos y ancho de banda.\\
 	
 	Un detalle importante de los buffers múltiples es que, a la vista del controlador y/o de un periférico, el buffer posee una sola y única dirección y, es el sistema mismo quien se encarga de seleccionar el buffer en uso. Esto quiere decir que, por ejemplo, teniendo 4 buffers de 512 bytes cada uno, el 8051 verá solo uno de 512 bytes, sin necesidad de identificar con cuál de los cuatro está trabajando.\\   
 
@@ -183,7 +204,7 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 	
 	Estas memorias funcionan en modo esclavo, es decir, se debe conectar, al controlador, un dispositivo  capaz de proveer una lógica maestra externa que comande la entrada y salida de datos desde una memoria FIFO hacia o desde el exterior.\\
 	
-	Para los fines del presente trabajo, este modo de funcionamiento es óptimo, ya que dotando al FPGA de una máquina de estados mínima, se logra la transferencia de datos en los tiempos requeridos.\\
+	Para los fines del presente trabajo, este modo de funcionamiento es óptimo ya que, dotando al FPGA de una máquina de estados mínima, se logra la transferencia de datos en los tiempos requeridos.\\
 	
 	El sistema de bus permite conectar a estas memorias hasta cuatro dispositivos diferentes. Por esto, existe una memoria FIFO para cada uno de los EP programables en el buffer de extremos.\\
 	
@@ -206,17 +227,17 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 				\draw[<-,thick]	([yshift=-5*110/6]fifo.east) --node [above]{PKTEND} ([yshift=-5*110/6]master.west);
 			\end{scope}				
 		\end{tikzpicture}
-		\caption{Configuración de puertos para la interfaz entre las FIFO's y un maestro externo}
+		\caption{Puertos de interfaz entre las FIFO's y un maestro externo}
 		\label{interfazfifo}
 	\end{figure}
 
 	La Figura \ref{interfazfifo} muestra la interfaz entre las memorias FIFO's y un maestro esclavo. Estos son:
 	
 	\begin{itemize}
-		\item IFCLK: señal de reloj. En caso de conectar las memorias en modo asincrónico, no es necesario. La señal de reloj puede ser establecida por el controlador o por el dispositivo de control en forma programable.
-		\item FD[15:0]: constituye el bus de datos. Según se programe, este puede ser de 8 o 16 bits.
+		\item IFCLK: señal de reloj. No es necesario en caso de conectar la interfaz en modo asincrónico. La señal de reloj puede ser provista por el controlador o por el dispositivo de control en forma programable.
+		\item FD[15:0]: constituye el bus de datos. Según se programe, este puede ser de 8 o 16 bits, en forma independiente para cada EP.
 		\item FIFOADDR[1:0]: puerto de direcciones. A través de el se selecciona la memoria activa en el bus.
-		\item FLAGx: Los cuatro puertos de flag son configurables e indican memoria llena, vacía o un nivel programable, en forma fija sobre una memoria en particular o que indiquen sobre la memoria activa.
+		\item FLAGx: Los cuatro puertos de flag son configurables e indican memoria llena, vacía o un nivel programable. También pueden indicar el estado sobre una memoria en particular o sobre la activa.
 		\item SLOE, SLWR, SLRD: son las señales de control. A través de ellas el maestro entrega las ordenes de lectura y escritura.
 		\item PKTEND: a través de este puerto el maestro indica que terminó una transferencia de datos.
 	\end{itemize}
@@ -262,6 +283,6 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 	
 	Los fabricantes llaman a estos caminos "MODO MANUAL", en caso de enviar los datos a través del 8051, y "MODO AUTOMÁTICO", cuando la comunicación es directa entre el MIS y las FIFO. Además, se programan en forma independiente para cada extremo, sea este de salida o entrada.\\
 	
-	Se debe notar en la Figura \ref{modesfifo} que se refiere a paquetes de entrada cuando estos poseen una dirección que se inicia en un periférico y termina en el anfitrión y de salida cuando llevan el sentido contrario. Esto se debe al carácter {\it anfritión-céntrico} de la comunicación USB, en donde el principal componente es el anfitrión y a él se acoplan los diferentes dispositivos.\\
+	Se debe notar en la Figura \ref{modesfifo} que se refiere a paquetes de entrada cuando estos poseen una dirección que se inicia en un periférico y termina en el anfitrión y de salida cuando llevan el sentido contrario. Esto se debe al carácter {\it anfritión-céntrico} de la comunicación USB, en donde el principal componente es el \host\ y a él se acoplan los diferentes dispositivos.\\
 	
 	

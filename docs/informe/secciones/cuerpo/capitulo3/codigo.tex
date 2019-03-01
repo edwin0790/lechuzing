@@ -7,7 +7,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 \subsection{Inicialización del dispositivo}
 	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.\\
 	
-	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{24}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
+	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{48}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 	CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); // 48 MHz
@@ -145,7 +145,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	SYNCDELAY;
 	
 	//setting on auto mode. rising edge is necessary
-	EP8FIFOCFG = 0x11;// & ~bmAUTOOUT; //at the end, auto mode is setted off
+	EP8FIFOCFG = 0x11;
 	SYNCDELAY;
 	EP2FIFOCFG = 0x0D;
 	SYNCDELAY;
@@ -214,9 +214,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	
 	Se observa a continuación los descriptores usados en el presente trabajo.\\%TODO ref al anexo.
 
-%	\linenumbers*
-%	\lstinputlisting[language=asm]{}
-%	\nolinenumbers
+
 
 %	\linenumbers*
 %	\lstinputlisting[language=asm,lastline=186]{\bridge}

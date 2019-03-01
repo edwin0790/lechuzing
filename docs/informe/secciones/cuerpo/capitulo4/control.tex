@@ -1,0 +1,47 @@
+En el Capitulo \ref{cap:cy} del presente informe se describen los puertos de la interfaz entre un maestro esterno y las memorias FIFO del controlador de Cypress.\\
+
+Al abordar, ahora, el control del mismo, es necesario desarrollar con mayor detalle cada una de estas señales. Así, se podrá comprender, con mayor detalle, las señales que debe enviar y recibir una MEA que controle esta interfaz.\\
+
+Si bien el modo de funcionamiento de la interfaz puede ser síncorno o asíncorno, se detalla sólo este último, es decir, el implementado, ya que debido a errores de diseño de quien escribe, no es posible implementar, hasta el momento de la escritura, un funcionamiento sincrónico del sistema.\\
+
+Por lo anterior, no se detalla en ningún momento la señal del puerto IFCLK.\\
+
+\subsection{Lectura de datos desde la interfaz}
+
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,text width=60]
+				\setcounter{wavecount}{0}
+				\newwave{FIFOADR[0]}
+					\bit{1}{7}
+				\newwave{FIFOADR[1]}
+					\bit{1}{7}
+				\newwave{FLAG Vac\'io}
+					\bit{1}{5}
+					\bit{0}{2}
+				\newwave{SLOE}
+					\bit{1}{1}
+					\bit{0}{5}
+					\bit{1}{1}
+				\newwave{SLRD}
+					\bit{1}{2}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{2}
+				\newwave{FD[0:15]}
+					\bitvector{Z}{1}
+					\bitvector{1}{2}
+					\bitvector{0}{2}
+					\bitvector{X}{1}
+					\bitvector{Z}{1}
+			\end{scope}
+			\begin{scope}[on background layer]
+				\foreach \x in {1,2,...,7}{
+					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{este texto}
+		\label{if:label}
+	\end{figure}

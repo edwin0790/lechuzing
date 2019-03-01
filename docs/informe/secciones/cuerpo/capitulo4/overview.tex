@@ -1,0 +1,39 @@
+Para el logro de los objetivos del presente trabajo, que es la realización de una comunicación USB para el envío y recepción de información originada en desarrollos científicos basados en un FPGA, es necesario no solo la elaboración de drivers, interfaz y periféricos, sino también un núcleo de FPGA capaz de comunicarse con ambos lados de la interfaz, es decir, con el controlador USB y con el desarrollo mismo, implementado dentro de la FPGA.\\
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.4*\textwidth/\paperwidth,>=latex,node distance=3]
+		\begin{scope}[transform shape,node distance=1.5,align=center]
+		\node[interior,text width=60](mea)	{M\'aquina de Estados Algorítmica};
+		\node	(aux1)	[right=of mea]	{};
+		\node[interior,text width=60](dev)		[right=of aux1]	{Desarrollo científico};
+		\draw[<->] (mea.east) -- node[above]{Flujo de Datos} (dev.west);
+		\node[node distance = .5]	(texto fpga) [below=of aux1] {FPGA};
+		\end{scope}
+		\begin{scope}[on background layer]
+		\node[fit=(mea)(dev)(texto fpga),rectangle,draw](fpga){};
+		\end{scope}
+		\begin{scope}[transform shape,]
+		\node[exterior,text width=70,align=center,minimum height=65] (cy)	[left=of fpga]{Controlador FX2LP};
+		\end{scope}
+		
+		\begin{scope}[transform shape]
+		\draw[<->] (cy.20) to node[above]{Datos} (cy.20 -| fpga.west);
+		\draw[<->] (cy.-20) to node[above] {Control} (cy.-20 -| fpga.west);
+		\end{scope}
+
+	\end{tikzpicture}
+	\caption{\hl{alguna descripcion}}
+	\label{interfaz:ov}
+\end{figure}
+
+La Figura \ref{interfaz:ov} muestra un esquema en el cual se observan, como extremos, un desarrollo científico particular y el controlador de Cypress. Entre ambos, se encuentra una Máquina de Estados Algorítmica (MEA) que hace de nexo. La MEA debe poder manejar correctamente las señales de control, así como envíar, recibir y canalizar los datos que circulan a través de ella.\\
+
+La MAE se desarrolla en VHDL y se implementa en la placa MOJO que, cómo se menciona en el Capítulo%TODO referencia al capítulo
+, posee una FPGA Spartan VI de Xilinx.\\
+
+Para poder elaborar la MAE, es necesario conocer y entender el funcionamiento y las señales que requiere la interfaz de las memorias FIFO del controlador FX2LP.\\
+
+Por ello, en este capítulo se desarrolla, en primer lugar la estructura de la interfaz. Luego, se aborda el diseño de la MAE y finalmente, su implementación en VHDL.\\
+
+Además de lo anterior, se detalla el diseño y la elaboración de un circuito impreso de interconexión, a través del cual las señales de las placas de desarrollo MOJO y CY3684 conectan en forma física sus puertos.\\

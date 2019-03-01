@@ -1,21 +1,21 @@
-Dentro del kit de desarrollo avanzado EZ-USB DVK, Cypress provee un amplio conjunto de herramientas que facilitan al desarrollador la implementación de todo lo necesario, desde lo que a software se refiere. Este conjunto de herramientas, Cypress lo denomida Kit de Desarrollo de Software (o SDK, acrónimo del habla inglesa, {\it Software Development Kit}).\\
+Dentro del kit de desarrollo avanzado EZ-USB DVK, Cypress provee un amplio conjunto de herramientas que facilitan la implementación del software a la persona que lo produce. Cypress denomina, a estas soluciones, Kit de Desarrollo de Software (o SDK, acrónimo del habla inglesa, {\it Software Development Kit}).\\
 
-El kit abarca una gran cantidad de aspectos, como ser la elaboración del firmware implementado en el 8051 del controlador, la elaboración de drivers, la conversión de archivos de programación y programas que grabar la información en los diferentes chip, ya sea en la RAM del microcontrolador o en EEPROM, para cargar programas no volátiles que posteriormente serán ejecutados por el 8051.\\
+El kit abarca una gran cantidad de aspectos, como ser la elaboración del firmware implementado en el 8051 del controlador, la elaboración de drivers, la conversión de archivos de programación y ejecutables que graban la información en los diferentes chip, ya sea en la RAM del microcontrolador o en EEPROM, para cargar programas no volátiles que posteriormente serán ejecutados por el 8051.\\
 
-Debido a que no todo fue utilizado en este trabajo, a continuación se desarrollarán solo las herramientas utilizadas.\\
+Debido a que no todo se utiliza en este trabajo, a continuación se desarrollarán las herramientas más destacadas.\\
 
 \subsection{Framework Cypress}
-	Con la intención dotar al desarrollador con una herramienta que le potencie la velocidad de diseño, Cypress provee una plantilla de codigo en lenguaje C para microcontroladores 8051.\\
+	Con la intención de dotar al desarrollador con una herramienta que le potencie la velocidad de diseño, Cypress provee una plantilla de codigo en lenguaje C para microcontroladores 8051.\\
 	
-	Esta plantilla posee precargados todos los registros que posee la serie de controladores FX2LP con los mismos nombres que figuran en el manual de usuario. Además incorpora todas las funciones que el microcontrolador debe llevar a cabo para efectuar la comunicación USB. Los archivos que incorpora son:\\
+	Esta plantilla posee precargados todos los registros que posee la serie de controladores FX2LP con los mismos nombres que figuran en el manual de usuario. Además incorpora las funciones que el microcontrolador debe llevar a cabo para efectuar la comunicación USB y algunas que permiten interactuar con la placa de desarrollo CY3684. Los archivos que incorpora son:\\
 	
 	\begin{itemize}
 		\item fw.c: es el código fuente principal. Contiene la función main() y lo necesario para manejar la comunicación USB.
-		\item periph.c: contiene la implementación de las funciones invocadas por fw.c. Aquí se encuentran las funciones TD\_Init() y TD\_Poll() a través de las cuales el usuario implementa el programa que necesita. También contiene todas las funciones de interrupción vectorizadas.
+		\item periph.c: contiene la implementación de las funciones invocadas por fw.c. Aquí se encuentran TD\_Init() y TD\_Poll(), las funciones a través de las cuales el usuario implementa el programa que necesita. También contiene todas las funciones de interrupción vectorizadas.
 		\item fx2.h: posee la definición de constantes, macros, tipos de datos y funciones prototipo de la biblioteca.
 		\item fx2regs.h: declara registros y máscaras.
-		\item dscr.a51: este archivo es el descriptor de dispositivo. Es la información que USB necesita para poder registrar el dispositivo en el anfitrión, asignarle direccion y establecer los parámetros.
-		\item ezusb.lib: biblioteca que implementa las funciones provistas por el fabricante.
+		\item dscr.a51: este archivo es el descriptor de dispositivo. Es la información que USB necesita para poder registrar el dispositivo en el \host, asignarle dirección y establecer los parámetros.
+		\item ezusb.lib: biblioteca que implementa funciones provistas por el fabricante.
 		\item syncdely.h: macro de sincronismo. Algunos accesos de registro requieren un tiempo de establecimiento específico que en el código se implementa deteniendo el microcontrolador ciertos ciclos de reloj.
 		\item usbjmptb.obj: especifica las direcciones en memoria de las interrupciones vectorizadas
 	\end{itemize}
@@ -62,7 +62,7 @@ Debido a que no todo fue utilizado en este trabajo, a continuación se desarroll
 	
 	El programa utilizado posee, entre otras cosas, editor de textos con atajos de teclado, comandos que aceleran la escritura de código y resaltador de palabras claves para diferentes lenguajes de programación, navegador de archivos. También ejecuta, con solo un click, el compilador con la sintaxis correcta, y posee un depurador que, a través de un intérprete, permite ir ejecutando el código línea por línea o por bloques.\\
 	
-	Para realizar un programa en este entorno, Cypress provee, junto con su framework, un proyecto vacío que puede ser copiado y pegado. Sin embargo, se puede realizar la configuración manual. Las instrucciones de este procedimiento se ubican en el Apéndice \ref{app:keil}
+	Para realizar un programa en este entorno, Cypress provee, junto con su framework, un proyecto vacío que puede ser copiado y pegado. Sin embargo, se puede realizar la configuración manual. Las instrucciones de este procedimiento se ubican en el Apéndice \ref{app:keil}.\\
 	
 	En cuanto al compilador se refiere, el utilizado es C51. Éste es un programa que otorga un archivo hexadecimal con un código que será ejecutado por microcontroladores que estén implementados con la misma estructura que un Intel 8051, cómo lo es el microcontrolador que posee el FX2LP.\\
 	
