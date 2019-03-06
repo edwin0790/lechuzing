@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{Perez2017}
+M.~Perez, F.~Alcalde, M.~S. Haro, I.~Sidelnik, J.~J. Blostein, M.~G. Berisso,
+  and J.~Lipovetzky, ``{Implementation of an ionizing radiation detector based
+  on a FPGA-controlled COTS CMOS image sensor},'' in {\em 2017 XVII Workshop on
+  Information Processing and Control (RPIC)}, pp.~1--6, IEEE, sep 2017.
+
+\bibitem{biswas2018embedded}
+R.~Biswas, {\em An Embedded Solution for JPEG 2000 Image Compression Based
+  Back-end for Ultrasonography System}.
+\newblock PhD thesis, IIT, Kharagpur, 2018.
+
+\bibitem{Yanagisawa2018}
+T.~Yanagisawa, T.~Ikenaga, Y.~Sugimoto, K.~Kawatsu, M.~Yoshikawa, S.-i.
+  Okumura, and T.~Ito, ``{New NEO search technology using small telescopes and
+  FPGA},'' in {\em 2018 IEEE Aerospace Conference}, vol.~2018-March, pp.~1--7,
+  IEEE, mar 2018.
+
+\bibitem{Cui2018}
+Z.~Cui, Z.~Tian, Y.~Zhang, Z.~Bi, and S.~Fu, ``{Study on real time 3D imaging
+  of streak tube lidar based on LabVIEW},'' {\em Optik}, vol.~157,
+  pp.~768--773, 2018.
+
+\end{thebibliography}
