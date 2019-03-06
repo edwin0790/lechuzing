@@ -1,9 +1,10 @@
+%! TEX option=--shell-escape
 \documentclass[12pt,a4paper,openright,twoside]{report}
 
-\input{./config/basica}
-\input{./config/pagina}
-\input{./config/adicionales}
-\input{./config/terms}
+\input{config/basica}
+\input{config/pagina}
+\input{config/adicionales}
+\input{config/terms}
 
 \lstset{literate=
 	{á}{{\'a}}1	{é}{{\'e}}1	{í}{{\'i}}1	{ó}{{\'o}}1	{ú}{{\'u}}1	{α}{{$\alpha$}}1	{β}{{$\beta$}}1	{γ}{{$\gamma$}}1	{ñ}{{\~n}}1
@@ -16,12 +17,15 @@
 %	\input{secciones/intro/caratula}
 %	\null
 %	\input{secciones/intro/agradecimientos}
-	\tableofcontents
-%	\input{secciones/cuerpo/capitulo1}
+%	\tableofcontents
+	\input{secciones/cuerpo/capitulo1}
 %	\input{secciones/cuerpo/capitulo2}
-	\input{secciones/cuerpo/capitulo3}
-	\input{secciones/cuerpo/capitulo4}
-	
+%		\input{secciones/cuerpo/capitulo3}
+%	\input{secciones/cuerpo/capitulo4}
+%
+%	\bibliographystyle{ieeetr}
+	\bibliographystyle{IEEEtran}
+	\bibliography{extras/bibliography}
 %	\begin{appendices}
 %		\appendix
 %		\input{secciones/extras/apendice1}
