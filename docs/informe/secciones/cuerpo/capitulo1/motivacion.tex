@@ -18,40 +18,43 @@ La Ciencia es un conjunto de técnicas y procedimientos que, a través de un mé
 
 Cuando se nombra la palabra ciencia, se hace referencia a un conjunto conformado por diferentes objetos de estudio. El objeto de estudio es el sujeto a través del cuál se da la principal clasificación de las diferente ramas de la Ciencia: las Ciencias Sociales estudian las relaciones humanas y las Ciencias Naturales dedican sus esfuerzos a objetos que se encuentran en la naturaleza. Dentro del último grupo encontramos las Ciencias de la Tierra se enfocan en una rama más particular de la naturaleza, como lo es el estudio de la superficie terrestre; y siguiendo así se puede encontrar muchas más clasificaciones de ciencias, incluso como ramas englobadas por las anteriormente nombradas.\\
 
-Sin embargo, toda ciencia necesita, para su correcta producción científica, adquirir una gran cantidad de datos que luego serán ordenados, procesados y transformados en información y conocimiento. La incorporación de una herramienta especialmente diseñada para el procesamiento de datos, como lo es la computadora, permite manejar un numero creciente de información. Es por eso que se encuentra en desarrollo un gran número de sensores y dispositivos que permitan obtener una cantidad aún mayor de datos.\\
+Sin embargo, la producción científica necesita adquirir una gran cantidad de datos que luego serán ordenados, procesados, analizados y transformados en información y conocimiento. En este sentido, la incorporación de una herramienta especialmente diseñada para el procesamiento de datos, como lo es la computadora, permite manejar un numero creciente de información. Es por eso que se encuentra en desarrollo un gran número de sensores y dispositivos que permitan obtener flujos crecientes de datos.\\
 
 Uno de los desarrollo que se encuentra actualmente en boga es el de sensores y sistemas que adquieran imágenes de diferentes tipos. La captura de imágenes requiere de sistemas digitales de alta velocidad que tengan la capacidad de acarrear los datos desde el lugar físico en donde se obtienen los datos, es decir, en el transductor mismo, hasta el circuito o el sistema destinado al proceso de los mismos.\\
 
-Para este tipo de aplicacones, se torna de interés la utilización de un tipo particular de dispositivos electrónicos denominados FPGA ({\it Field-Programmable Gate Array}, o en español, Arreglo de Compuertas Programables en Campo), circuitos integrados  programable diseñados para sintetizar circuitos digitales de alta velocidad. Este tipo de componentes permite implementar circuitos que ejecutan tareas complejas que resuelvan problemas específicos.\\
+Para este tipo de aplicaciones, se torna de interés la utilización de un tipo particular de dispositivos electrónicos denominados FPGA ({\it Field-Programmable Gate Array}, o en español, Arreglo de Compuertas Programables en Campo), circuitos integrados programable para sintetizar circuitos digitales de alta velocidad. En otras palabras, este tipo de componentes permite implementar circuitos que ejecutan tareas complejas y resuelve problemas específicos.\\
 
-Algunos trabajos han abordado el tema. Por ejemplo, el desarrollo de un sensor de radiación utilizando un sensor CMOS comercial. Para ello, los autores utilizaron un FPGA para configurar y transmitir imagenes a un grabador de video a través de puerto UART. Esto permitió adquirir una imagen a través de un disparador realizado con un pulsador\cite{Perez2017}.\\
+Existen numerosos trabajos que utilizan FPGA para la producción de imágenes. Por ejemplo, el desarrollo de un sensor de radiación utilizando un sensor CMOS comercial. Para ello, los autores utilizaron un FPGA para configurar y transmitir imagenes a un grabador de video a través de puerto UART. Esto permitió adquirir una imagen a través de un disparador realizado con un pulsador\cite{Perez2017}.\\
 
-La ultrasonografía es la técnica de adquirir imágenes basandose en rebotes de ultrasonido. Sus aplicaciones son múltiple, siendo la más destacada de ellas el diagnóstico médico, ya que es una técnica no invasica y libre de riesgos debido a la radiación ionizante. Se desarrolló en un trabajo reciente un sistema de diagnóstico de imágenes por ultrasonido de bajo costo utilizando una FPGA\cite{biswas2018embedded}. El autor presentó un algoritmo realizado en PC y luego implementado en una FPGA.
+Se denomina ultrasonografía a la técnica de adquirir imágenes basandose en rebotes de ultrasonido. Sus aplicaciones son múltiple, en las que se destaca el diagnóstico médico, ya que es una técnica no invasiva y sin riesgos de radiación ionizante sobre el paciente. Un trabajo reciente desarrolló un sistema de ecografía médica con bajo costo utilizando un FPGA\cite{biswas2018embedded}. El autor también presentó un algoritmo realizado y probado en PC. Luego se implementó e en una FPGA.\\
 
-También existen sistemas de telescopía implementados con FPGA. Yanagisawa y otros desarrollaron un sistema con telescopios pequeños para explorar objetos de campo cercano con la finalidad de monitorear cuerpos celestes que puedan colisionar con el planeta\cite{Yanagisawa2018}. Los autores utilizan la velocidad de los circuitos implementados en FPGA para minimizar el tiempo de adquisición.
+Existen sistemas de telescopía implementados con FPGA. Yanagisawa y otros desarrollaron un sistema con telescopios pequeños para explorar objetos de campo cercano con la finalidad de monitorear cuerpos celestes que puedan colisionar con el planeta\cite{Yanagisawa2018}. Los autores utilizan la velocidad de los circuitos implementados en FPGA para minimizar el tiempo de adquisición.
 
-Existen sensores de imagenes de distancia\cite{Cui2018}.\\
+Existen sensores de imagenes de distancia desarrollados mediante FPGA\cite{Cui2018}.\\%BORRAR esta cita!!!
 
 A diferencia de un microprocesador o un microcontrolador, también muy usados en la industria electrónica, en el cual una unidad logica algoritmica ejecuta un programa cargado secuencial, es decir, linea por línea, un FPGA puede ser programado de forma tal que cada proceso se ejecute en forma independiente y paralela, dotando al sistema de una mayor velocidad en el procesamiento.\\
 
 De esta forma, un diseñador puede manipular un volumen mucho mayor de datos, que a los efectos de la adquisición y medición de imágenes, resulta más adecuado.\\
 
-Pero como ya se mencionó con anterioridad, la obtención de datos por si misma no le otorga al científico la información, y por ende, el conocimiento nuevo que desea. Para ello, es probable que este gran flujo de datos requiera de un procesamiento y análisis más exhaustivo de los mismos.
+Pero como ya se mencionó con anterioridad, la obtención de datos por si misma no le otorga al científico la información, y por ende, el conocimiento nuevo que desea. Para ello, es probable que este gran flujo de datos requiera de un procesamiento y análisis más exhaustivo de los mismos.\\
 
-Es por esto que la PC {\it Personal Computer} se ha transformado en la herramienta indispensable en cualquier ámbito, pero en especial en los entornos en donde se requiere el  manejo, calculo, procesamiento y análisis de grandes cantidades de informacion de diferentes índoles.\\
+Es por esto que la PC {\it Personal Computer} se ha transformado en la herramienta indispensable en cualquier ámbito, pero en especial en los entornos en donde se requiere el  manejo, cálculo, procesamiento y análisis de grandes cantidades de datos e información.\\
 
-Desde la inclusión de la norma USB, en el año 1996 a la fecha, se ha convertido en el elemento que no falta en ningun equipo, al punto tal que ha desplazado a cualquier otro conector. Al punto tal es esto, que para requerir algún puerto adicional que no sea de esta norma, cualquier comprador debe especificar que así sea, mas o es necesario especificar que tiene USB como norma de conexión.\\
+Se torna de suma utilidad, entonces, proveer una comunicación efectiva y robusta que permita mover grandes volúmenes de datos en poco tiempo, y de esta forma facilitar los tiempos de desarrollo, las pruebas y depuración de sistemas.\\
 
-Este trabajo, pretende elaborar una interfaz entre los dos extremos, es decir, entre la PFGA y la PC, de forma tal que permita a un desarrollador, investigador o usuario en general, obtener una comunicación confiable y con un ancho de banda que permita mover el flujo de datos que genera una sensor que adquiera imágenes.\\
+Desde la inclusión de la norma USB, en el año 1996 a la fecha, se ha convertido en el elemento que no falta en ningun equipo, al punto tal que ha desplazado a cualquier otro conector. Al punto tal es esto, que para requerir algún puerto adicional que no sea de esta norma, cualquier comprador debe especificar que así sea, mas no es necesario especificar que tiene USB como norma de conexión.\\
 
-Es cierto que el protocólo puede ser totalmente implementado en una FPGA, sin embargo, esto requeriría un muy alto costo tanto económico como en recursos disponibles del chip programable para una tarea genérica que es mejor elaborar con un circuito integrado diseñado especialmente para tal fin. Es por esto que se utiliza como lazo de interfaz un chip comercial elaborado por Cypress Semiconductor.\\
-
-
-
+El presente trabajo pretende ofrecer una comunicación basada en la versión 2.0 de la norma USB entre una PC y un FPGA, y otorgue una herramienta adicional a científicos que desarrollen o utilicen sistemas basados en FPGA.\\
+%
+%Este trabajo, pretende elaborar una interfaz entre los dos extremos, es decir, entre la PFGA y la PC, de forma tal que permita a un desarrollador, investigador o usuario en general, obtener una comunicación confiable y con un ancho de banda que permita mover el flujo de datos que genera una sensor que adquiera imágenes.\\
+%
+%Es cierto que el protocolo puede ser totalmente implementado en una FPGA, sin embargo, esto requeriría un muy alto costo tanto económico como en recursos disponibles del chip programable para una tarea genérica que es mejor elaborar con un circuito integrado diseñado especialmente para tal fin. Es por esto que se utiliza como lazo de interfaz un chip comercial elaborado por Cypress Semiconductor.\\
+%
+%
+%
 %[1][https://ieeexplore.ieee.org/abstract/document/8214376]
 %[2][http://www.idr.iitkgp.ac.in/jspui/bitstream/123456789/9068/1/NB15975_Abstract.pdf]
 %[3][https://ieeexplore.ieee.org/abstract/document/8396725]
-%[4][https://www.sciencedirect.com/science/article/pii/S0030402617316029]
 
 
 
