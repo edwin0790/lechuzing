@@ -33,16 +33,30 @@ Existen sistemas de telescopía implementados con FPGA. Yanagisawa, entre otros,
 %EXTRAIDA Existen sensores de imagenes de distancia desarrollados mediante FPGA\cite{Cui2018}.\\%BORRAR esta cita!!!
 
 \subsubsection*{El procesamiento de datos}
-La obtención de datos por si misma no otorga información. Para ello, es probable que un gran flujo de datos requiera de un procesamiento y análisis exhaustivo de los mismos. La invención y evolución de las computadoras, como así también el desarrollo de nuevos algoritmos, dan lugar a procesamiento de datos cada vez más complejos en tiempos mucho menores. Las primeras ENIAC, computadora de propósito general desarrollada en el año 1946 para el cálculo de tablas balísticas de las fuerzas armadas estadounidenses, podía ejecutar 20 operación cada \SI{10}{\micro\second}, es decir, a \SI{100}{\kilo\hertz}. Hoy por hoy, un procesador moderno puede ejecutar hasta 16 operaciones cada \SI{1}{\micro\second}.\\
+La obtención de datos por si misma no otorga información. Para ello, es probable que un gran flujo de datos requiera de un procesamiento y análisis exhaustivo de los mismos. La invención y evolución de las computadoras, como así también el desarrollo de nuevos algoritmos, dan lugar a procesamiento de datos cada vez más complejos en tiempos mucho menores.\\
+
+Las primeras ENIAC, computadora de propósito general desarrollada en el año 1946 para el cálculo de tablas balísticas de las fuerzas armadas estadounidenses, podía ejecutar 20 operación cada \SI{10}{\micro\second}, es decir, podía ejecutar instrucciones con una frecuencia máxima de \SI{200}{\kilo\hertz}. A su vez, tuvo un costo aproximado de U\$S 500.000, pesaba 5 t y consumía \SI{175}{\kilo\watt}.\\
+
+En contraste con aquello, es posible conseguir en el mercado actual, computadoras que pesan unidades de kilogramos, pueden ejecutar instrucciones en unidades de nanosegundo, (5 ordenes de magnitud menos), consumen apenas centenas de watts y cuestan algunos cientos de U\$S. A tal punto ha evolucionado esta tecnología que se encuentran presente computadoras muy potentes en casi cualquier laboratorio, oficina u hogar.\\
+
+Esta potencia de cálculo, ayudado por el desarrollo de nuevos métodos y algoritmos de cálculo, permiten a los investigadores procesar miles de datos en tiempos muy reducidos, ayudando al análisis de los mismos y la obtención de información.\\
+
+\subsubsection*{La comnicación entre los sitemas productores y los procesadores de datos}
+La generación de datos y el procesamiento de lo mismos, según el enfoque del presente trabajo, se da en sistemas diferentes. Estos sistemas requieren, de una conexión a través de la cual los datos puedan ser llevados de un lugar a otro. Se torna de suma utilidad, entonces, proveer una comunicación efectiva y robusta que permita mover grandes volúmenes de datos en poco tiempo, y de esta forma facilitar los tiempos de desarrollo, las pruebas y depuración de sistemas.\\
+
+Implementar un sistema de comunición en una FPGA, si bien no es trivial, puede ser resuelto de muchas maneras, quedando a criterio del desarrollador del sistema utilizar algún sistema de comunicación estándar, o bien, diseñar uno propio. Sin embargo, desde el punto de vista de una computadora, las comunicaciones se vuelven un poco más estrictas y acotadas a los puertos y señales que puede manejar el equipo, conforme el fabricante haya establecido.\\
+
+Es por eso que este trabajo trata de implementar una comunicación entre una computadora personal y una FPGA, utilizando un protocolo estándar, que esté disponible en cualquier computadora comercial y que posea una tasa de bit suficiente para poder transmitir imagenes.\\
 
 
-Es por esto que la PC {\it Personal Computer} se ha transformado en la herramienta indispensable en cualquier ámbito, pero en especial en los entornos en donde se requiere el  manejo, cálculo, procesamiento y análisis de grandes cantidades de datos e información.\\
 
-Se torna de suma utilidad, entonces, proveer una comunicación efectiva y robusta que permita mover grandes volúmenes de datos en poco tiempo, y de esta forma facilitar los tiempos de desarrollo, las pruebas y depuración de sistemas.\\
-
-Desde la inclusión de la norma USB, en el año 1996 a la fecha, se ha convertido en el elemento que no falta en ningun equipo, al punto tal que ha desplazado a cualquier otro conector. Al punto tal es esto, que para requerir algún puerto adicional que no sea de esta norma, cualquier comprador debe especificar que así sea, mas no es necesario especificar que tiene USB como norma de conexión.\\
-
-El presente trabajo pretende ofrecer una comunicación basada en la versión 2.0 de la norma USB entre una PC y un FPGA, y otorgue una herramienta adicional a científicos que desarrollen o utilicen sistemas basados en FPGA.\\
+%Es por esto que la PC {\it Personal Computer} se ha transformado en la herramienta indispensable en cualquier ámbito, pero en especial en los entornos en donde se requiere el  manejo, cálculo, procesamiento y análisis de grandes cantidades de datos e información.\\
+%
+%
+%
+%Desde la inclusión de la norma USB, en el año 1996 a la fecha, se ha convertido en el elemento que no falta en ningun equipo, al punto tal que ha desplazado a cualquier otro conector. Al punto tal es esto, que para requerir algún puerto adicional que no sea de esta norma, cualquier comprador debe especificar que así sea, mas no es necesario especificar que tiene USB como norma de conexión.\\
+%
+%El presente trabajo pretende ofrecer una comunicación basada en la versión 2.0 de la norma USB entre una PC y un FPGA, y otorgue una herramienta adicional a científicos que desarrollen o utilicen sistemas basados en FPGA.\\
 %
 %Este trabajo, pretende elaborar una interfaz entre los dos extremos, es decir, entre la PFGA y la PC, de forma tal que permita a un desarrollador, investigador o usuario en general, obtener una comunicación confiable y con un ancho de banda que permita mover el flujo de datos que genera una sensor que adquiera imágenes.\\
 %
