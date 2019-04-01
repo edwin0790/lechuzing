@@ -96,37 +96,20 @@
 	\path (t_cur) -- node[align=center] {#1} ++(#2,0) node[coordinate] (t_cur) {};}
 
 \begin{document}
-	\begin{tikzpicture}[scale=1,>=latex,
-	every label/.style={text width=70,align=flush center,transform shape}]
+	\begin{tikzpicture}[scale=1,>=latex]
 		\begin{scope}
-			\begin{scope}[transform shape,node distance=.5]
-				\node[core,minimum height=60]		(usb)	{USB};
-				\node(text)	[above=of usb] {PC};
-			\end{scope}
-			\begin{scope}
-				\node[bloque,fit= (usb)(text)]	(pc)	{};
-				\node[bloque,fit=(pc),node distance=2, inner ysep=0] (text2) [right=of pc] {Interfaz de comunicacion};
-				\node[node distance=2] (aux) [right=of usb] {};
-			\end{scope}
-		\end{scope}
-		\begin{scope}[]
 			\begin{scope}[transform shape,node distance=2]
-%				\node[text width=60,align=center]	(text2)	[right=of usb]	{Interfaz de comunicación};
-				\node (aux2) [right=of aux] {};
-				\node[node distance=.5] (aux4) [below=of text2] {};
+				\node[bloque]	(cy)				{Interfaz};
+				\node[bloque]	(fpga)	[right=of cy]{FPGA};
+				\node[bloque]	(pc) 	[left=of cy]	{PC};
+				\draw[->,thick] (pc.15) -- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+				\draw[->,thick] (cy.195) -- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+				\draw[<->,thick] (cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+				\draw[->,thick]  (fpga.195) -- node (ctrl) [below] {Control} (fpga.195 -| cy.east);
+				\node[node distance=.4] (usb text) [above=of usbd+] {USB};
 			\end{scope}
 			\begin{scope}
-%				\node[bloque,fit=(text2)(aux2)(aux4)] (bridge) {};
-			\end{scope}
-		\end{scope}
-		\begin{scope}
-			\begin{scope}[transform shape,node distance=.5]
-				\node[core,node distance=2,minimum size=60]		(com)	[right=of aux2]{ICC};
-				\node(text3)	[above=of com] {FPGA};
-				\node[core,text width=50,align=center, minimum height=60](aux3) 	[right=of com]	{Sistema de adquisición};						
-			\end{scope}
-			\begin{scope}
-				\node[bloque,fit= (com)(text3)(aux3)]	(fpga)	{};
+				\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
 			\end{scope}
 		\end{scope}
 	\end{tikzpicture}

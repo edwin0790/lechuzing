@@ -1,33 +1,49 @@
-Dadas la motivación del presente trabajo, se podría decir a priori que el objetivo del presente trabajo es la implementación de una efectiva comunicación entre una Computadora Personal (PC) y una FPGA. Este objetivo, se plasmará de forma más concreta en la Sección \ref{int:obj} del presente Capitulo.\\
+Dada la motivación, se puede decir a priori que el objetivo del presente trabajo es la implementación de una efectiva comunicación entre una Computadora Personal (PC) y una FPGA. Sin embargo, este objetivo tan amplio se plasmará de forma más concreta y detallada en la Sección \ref{int:obj} del presente Capítulo.\\
 
-El dato de diseño más relevante es el poder transmitir imagenes por la comunicación a implementar. ¿Pero cuantos datos son suficiente para transmitir imagenes? Para nuestro diseño, basaremos como sensor al que utiliza Perez en su Tesis de Maestría \cite{Perez2018}, una cámara para adquirir imagenes monocromáticas de código MT9M001C12STM, comercializado por Actina Imaging \cite{Micron Technology2014} que transmite datos a una tasa de 48 Mbps.\\
+El dato de diseño más relevante es el poder transmitir imágenes por la comunicación a implementar. Pero, ¿Cuántos datos son suficientes para este propósito? Se toma como base de diseño el sensor que utiliza Pérez en su Tesis de Maestría \cite{Perez2018}, una cámara para adquirir imágenes monocromáticas de código MT9M001C12STM, comercializado por Actina Imaging \cite{MicronTechnology2004} que transmite datos a una tasa de \SI{48}{\mega\bit\per\second}.\\
 
-Además la implementación debe ser compatible con equipos convencionales que se consiguen en el mercado. Esto, se cumple solo con dos tipos de puertos: Ethernet, dedicado principalmente a conexión de redes y USB, especializado en periféricos.\\
+Además la implementación debe ser compatible con equipos convencionales que se consigan fácilmente en el mercado y no posean especificaciones fuera de las de uso doméstico. Esto se cumple hoy en día solo con dos tipos de puertos: Ethernet, dedicado principalmente a conexión de redes y USB, especializado en periféricos.\\
 
-Si bien se puede implementar la comunicación vía Ethernet, cumpliendo con las especificaciones propuestas, es muy probable que el único puerto estándar que posea la PC se encuentre conectado a la red y se necesitará una infraestructura mayor para lograr una efectiva comunicación. Por tanto, USB se observa como una solución óptima.\\
+Si bien se puede implementar la comunicación vía Ethernet, cumpliendo con las especificaciones propuestas, es muy probable que el único puerto que posea la PC se encuentre conectado a la red y se necesitará una infraestructura mayor para lograr una efectiva comunicación. Por tanto, USB se observa como una solución óptima.\\
 
 A su vez, USB presenta, al día de la fecha, con tres versiones de su norma, con diferentes velocidades: 
 
 \begin{itemize}
 	\item La version 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. Ambas revisiones alcanzan una tasa máxima de \SI{12}{\mega\bit\per\second}. 
-	\item USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir 480 Mbps.
-	\item Dependiendo de la revisión, USB 3 va desde los 5 Gbps, en su revisión 0 de 2011, hasta \SI{20}{\giga\bit\per\second}, en su revisión 2, de 2017.
+	\item USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir \SI{480}{\mega\bit\per\second}.
+	\item Dependiendo de la revisión, desde USB 3.0, lanzada al mercado en 2011, que transmite \SI{5}{\giga\bit\per\second}, hasta \SI{20}{\giga\bit\per\second} de la revisión USB 3.2, que fue presentada en 2017.
 \end{itemize}
 
 Con estas velocidades, es suficiente para el propósito del siguiente trabajo, la implementación una comunicación USB 2.0, con \SI{480}{\mega\bit\per\second}.\\
 
-\begin{figure}[ht]
+\begin{figure}[t]
 	\centering
-	\begin{tikzpicture}
+	\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
 		\begin{scope}
-			
+			\begin{scope}[transform shape,node distance=2]
+				\node[bloque]	(cy)					{Interfaz};
+				\node[bloque]	(fpga)	[right=of cy]	{FPGA};
+				\node[bloque]	(pc) 	[left=of cy]	{PC};
+				\draw[->,thick]	(pc.15)	-- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+				\draw[->,thick]	(cy.195)-- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+				\draw[<->,thick](cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+				\draw[->,thick]	(fpga.195)	-- node (ctrl) [below]	{Control} (fpga.195 -| cy.east);
+				\node[node distance=.4]	(usb text) [above=of usbd+]	{USB};
+			\end{scope}
+			\begin{scope}
+				\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+			\end{scope}
 		\end{scope}
 	\end{tikzpicture}
+	\caption{Esquema propuesto para implementar la comunicación}
+	\label{fig:esq}
 \end{figure}
 
-El alumno sabe que es posible implementar una comunicación USB completa a través de una FPGA. Sin embargo, esto sería muy costoso en términos de tiempos de desarrollo y de recursos de FPGA disponibles para la implementación de otros sistemas, los cuales son el objetivo de la comunicación. Por esto, se plantea un esquema como el que se observa en la Figura
+El alumno sabe que es posible implementar una comunicación USB completa a través de una FPGA. Sin embargo, esto sería muy costoso en términos de tiempos de desarrollo y de recursos de FPGA disponibles para la implementación de otros sistemas, los cuales son el objetivo de la comunicación.\\
 
-%TODO Atención con estos parrafos!!!!
+Se plantea, entonces, un esquema como el que se observa en la Figura \ref{fig:esq} en la cual se utiliza una interfaz externa al FPGA. La comunicación USB propiamente dicha será efectuada entre la interfaz y la PC, mientras que se plantea una comunicación diferente entre la interfaz y el FPGA. Este último, por su parte, tendrá la tarea de realizar el control de esta comunicación.\\
+
+%Atención con estos parrafos!!!!
 
 %
 % una tasa de bit que permita transmitir imagenes y que los puertos sean fácilmente accesibles en PCs comerciales, resaltan tres protocolos que permitirían lograr este cometido: Ethernet, USB y Wi-Fi. Estos protocolos, son los que actualmente se encuentran presente en cualquier aparato nuevo. Estas normas, entre otras, han dejado de lado a estandares que antes eran muy comunes y que algunos periféricos aún cuentan, como ser RS-232 o PS/2, entre otras.\\ 

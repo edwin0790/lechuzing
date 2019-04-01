@@ -3,44 +3,50 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: informe final.aux
 The style file: ieeetr.bst
 Database file #1: extras/bibliography.bib
-You've used 3 entries,
+Warning--I didn't find a database entry for "Compaq2000"
+Warning--empty school in Perez2018
+Warning--empty journal in MicronTechnology2004
+Warning--can't use both volume and number fields in USBspec
+Warning--empty publisher in USBspec
+You've used 6 entries,
             1876 wiz_defined-function locations,
-            497 strings with 4263 characters,
-and the built_in function-call counts, 833 in all, are:
-= -- 70
-> -- 50
+            517 strings with 4716 characters,
+and the built_in function-call counts, 1431 in all, are:
+= -- 124
+> -- 81
 < -- 0
-+ -- 18
-- -- 15
-* -- 69
-:= -- 137
-add.period$ -- 4
-call.type$ -- 3
-change.case$ -- 2
++ -- 30
+- -- 24
+* -- 114
+:= -- 230
+add.period$ -- 9
+call.type$ -- 6
+change.case$ -- 3
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 40
-empty$ -- 74
-format.name$ -- 15
-if$ -- 188
+cite$ -- 10
+duplicate$ -- 68
+empty$ -- 129
+format.name$ -- 24
+if$ -- 324
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 2
-newline$ -- 13
-num.names$ -- 3
-pop$ -- 13
+int.to.str$ -- 6
+missing$ -- 5
+newline$ -- 24
+num.names$ -- 6
+pop$ -- 26
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 21
+skip$ -- 33
 stack$ -- 0
-substring$ -- 32
-swap$ -- 11
+substring$ -- 51
+swap$ -- 18
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 9
-width$ -- 4
-write$ -- 33
+warning$ -- 4
+while$ -- 15
+width$ -- 7
+write$ -- 59
+(There were 5 warnings)

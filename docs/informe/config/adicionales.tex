@@ -24,7 +24,7 @@
 }
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic}
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees}
 
 %\tikzstyle{style} = [definition]
 \tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
@@ -40,6 +40,9 @@
 \tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
 \tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
 \tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
+\tikzstyle{hub}=[draw=black,anchor=west,circle]
+\tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
 
 \newcommand{\epg}[3]{
 	Buffer {#1}\\

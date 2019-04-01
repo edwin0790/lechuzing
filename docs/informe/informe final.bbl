@@ -17,4 +17,18 @@ T.~Yanagisawa, T.~Ikenaga, Y.~Sugimoto, K.~Kawatsu, M.~Yoshikawa, S.-i.
   FPGA},'' in {\em 2018 IEEE Aerospace Conference}, vol.~2018-March, pp.~1--7,
   IEEE, mar 2018.
 
+\bibitem{Perez2018}
+M.~Perez, {\em {DETECCI{\'{O}}N DE RADIACI{\'{O}}N IONIZANTE UTILIZANDO
+  SENSORES DE IMAGEN CMOS COMERCIALES}}.
+\newblock PhD thesis, 2018.
+
+\bibitem{MicronTechnology2004}
+I.~{Micron Technology}, ``{1 / 2-Inch Megapixel CMOS Digital Image Sensor
+  MT9M001C12STM (Monochrome)},'' pp.~1--35, 2004.
+
+\bibitem{USBspec}
+Compaq, Hewlett-Packard, Intel, Lucent, Microsoft, NEC, and Philips, {\em
+  {Universal Seral Bus Specification}}, vol.~Revision 2.0.
+\newblock 2000.
+
 \end{thebibliography}
