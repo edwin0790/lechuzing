@@ -31,7 +31,7 @@ Para describirlo es conveniente tal vez separar el protocolo en tres partes. Una
 				\end{scope}
 			\end{scope}
 		\end{tikzpicture}
-		\caption{Arquitectura de un sistema USB}
+		\caption{Topología de un sistema USB}
 		\label{fig:arqusb}
 	\end{figure}
 		
@@ -43,15 +43,17 @@ Para describirlo es conveniente tal vez separar el protocolo en tres partes. Una
 		
 	Existe también, a los fines de la norma,un elemento intermedio, denominado {\it HUB} (concentrador o distribuidor, según la traducción del inglés). Este dispositivo se encarga de conectar dos o más {\it dispositivos USB}, ya sea de entrada o salida, de recibir y enviar las direcciones y de regenerar las señales que el {\it HOST} envía y deben ser recibidas por los {\it dispositivos USB}.\\
 	
-	La Figura \ref{fig:arqusb} muestra una arquitectura típica de un sistema USB. En ella, se observa el {\it HOST} como un rectángulo, los {\it dispositivos USB} como rectángulos con los bordes redondeados y los distribuidores como círculos. Se puede notar que el {\it HOST} posee un distribuidor propio llamado {\it Raiz} en el cual se conectan todos los {\it dispositivos USB } y distribuidores. Cada {\it dispositivo USB}posee una única dirección. Los periféricos de entrada y salida, son registrados por el sistema como dos {\it dispositivos USB} separados, conectados por un distribuidor.
+	La Figura \ref{fig:arqusb} muestra la topología típica de un sistema USB. En ella, se observa el {\it HOST} como un rectángulo, los {\it dispositivos USB} como rectángulos con los bordes redondeados y los distribuidores como círculos. Se puede notar que el {\it HOST} posee un distribuidor propio llamado {\it Raiz} en el cual se conectan todos los {\it dispositivos USB } y distribuidores. Cada {\it dispositivo USB}posee una única dirección. Los periféricos de entrada y salida, son registrados por el sistema como dos {\it dispositivos USB} separados, conectados por un distribuidor.
 	
 \subsection{Capa de protocolo}
-	En la capa de protocolo, la especificación de la norma detalla cómo se compone el marco y cómo los paquetes deben ser armados para que sean efectivamente enviados a través del sistema.\\
+	En la capa de protocolo, la especificación de la norma detalla cómo se compone el marco y cómo deben ser estructurados los paquetes para que sean efectivamente enviados a través del sistema. Cada mensaje que se intercambia por el bus se denomina paquete. Cada paquete puede poseer hasta cinco campos, dependiendo del tipo de paquete que sea enviado a través del sistema y de quien sea el remitente. A su vez, cada paquete comienza con una señal de sincronismo ({\it SYNC}) y un Comienzo de Paquete (SOP de {\it Start-of-Packet}).\\
 	
-	Cada mensaje que se intercambia por el bus se denomina paquete. Cada paquete posee en su inicio lo que se denomina PID. el PID (del inglés packet ID o identificador del paquete) puede ser de 4 tipos, definidos por cada uno de los tipos de paquetes que puede haber: 
+	\subsubsection*{Campos de Paquetes}
+	Cada paquete contiene un campo denominado identificador de paquete (PID del inglés {\it Packet Identifier}). El PID indica el tipo de paquete que se está enviando y, como consecuencia, el formato de cada uno, es decir, que campos acarrea y que control de datos utiliza. Un paquete puede tener uno de cuatro tipos diferentes:
+	
 	\begin{itemize}
-		\item en prime lugar se encuentran los paqutes token, a través del cual el host envía las directivas a los distintos periféricos. Estas directivas pueden ser IN, cuando solicita datos a un periferico; OUT, cuando va a enviar datos a un dispositivo; SOF, que indica el inicio de cada cuadro, para que cada dispositivo se sincronice y SETUP, cuando va a enviar un paquete de configuración a algún dispositivo.
-		\item el segundo tipo de paquetes es el paquete de datos. Este tipo de PID puede ser emitido por un dispositivo, si es que envía datos al host o bien por el mismo host cuando el flujo de datos es a la inversa.
+		\item {\bf Paquetes Token:} a través de este tipo de paquetes el host envía las directivas a los distintos periféricos. Estas directivas pueden ser IN, cuando solicita datos de un periférico; OUT, cuando se dispone a enviar datos hacia un {\it dispositivo USB}; SOF, que indica el inicio de cada cuadro, para que cada función se sincronice y SETUP, cuando va a enviar un paquete de configuración a algún extremo.
+		\item {\bf Paquete de Datos:} Este tipo de PID puede ser emitido por un dispositivo, si es que envía datos al host o bien por el mismo host cuando el flujo de datos es a la inversa.
 		\item el tercer tipo de paquets es un paquete de reconocimiento, denominado ACK, (por acknowledge o reconocimiento). Este paquete es enviado por los periféricos y le da idea al host de cual es el estado del dispositivo, es decir, si se encuentra operativo o no, si se encuientra ocupado o si recibió la trasnferencia de forma correcta.
 		\item finalmente existen paquetes especiales, a través de los cuales el protocolo se comunica con los hubs, emite directivas intermedias, envia señales de polling para conocer el estado del bus, entre otras.
 	\end{itemize}
