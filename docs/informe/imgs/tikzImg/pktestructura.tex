@@ -86,7 +86,7 @@
 	rectangle,
 	rounded corners,
 	minimum width=20,
-	minimum height=80,
+	minimum height=100,
 	pattern=north east lines,
 	pattern color=black!35]
 	
@@ -94,8 +94,8 @@
 	draw,
 	rectangle,
 	rounded corners,
-	minimum width=10,
-	minimum height=80,
+	minimum width=20,
+	minimum height=100,
 	align=center]
 	
 \tikzstyle{data}=[
@@ -103,8 +103,9 @@
 	align=center,
 	rectangle,
 	rounded corners,
-	minimum width=100,
-	minimum height=80]
+	minimum width=120,
+	minimum height=100,
+	fill=black!05]
 	
 \tikzstyle{crc}=[
 	draw=black,
@@ -112,7 +113,7 @@
 	rectangle,
 	rounded corners,
 	minimum width=20,
-	minimum height=80,
+	minimum height=100,
 	pattern=dots,
 	pattern color=black!25]
 
@@ -148,28 +149,33 @@
 	\begin{tikzpicture}[scale=1,>=latex]
 		\begin{scope}
 			\begin{scope}[transform shape,node distance=.15]
-				\node[pid]	(pidtok)	{T.\\\ \\P\\I\\D};
+				\node[pid]	(pidtok)	{P\\I\\D\\\ \\T\\o\\k.};
 				\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
 				\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
-				\node[crc]	(crc5)	[right=of eptok]	{R\\e\\c\\o\\n.};
+				\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
 			\end{scope}
 			\begin{scope}
 				\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
-				\node[below=.01 of tokad.south,align=center] (texttok){Paquete Token};
-				\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)]{};
+				\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+				\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
 			\end{scope}
 			\begin{scope}[transform shape,node distance=.15]
-				\node[pid]	(piddat)	{D.\\\ \\P\\I\\D};
-%TODO revisar de aca en adelate todo
-				\node[data]	(da)	[right=of piddat]	{D\\i\\r.};
-				\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
-				\node[crc]	(acktok)[right=of eptok]	{CRC5};
+				\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\ \\P\\I\\D};
+				\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+				\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
 			\end{scope}
 			\begin{scope}
-				\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
-				\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete Token};
-				\node[exterior,inner sep=1,fit=(pidtok)(tokad)(acktok)(texttok)]{};
-			\end{scope}			
+				\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+				\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+			\end{scope}
+			\begin{scope}[transform shape,node distance=.15]
+				\node[pid,node distance=1.3]	(hspid)	[right=of crc16]%.north east,anchor=south east]
+				{H\\S\\\ \\P\\I\\D};
+			\end{scope}
+			\begin{scope}
+				\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+				\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+			\end{scope}
 		\end{scope}
 	\end{tikzpicture}
 \end{document}

@@ -49,13 +49,52 @@ Para describirlo es conveniente tal vez separar el protocolo en tres partes. Una
 	En la capa de protocolo, la especificación de la norma detalla cómo se compone el marco y cómo deben ser estructurados los paquetes para que sean efectivamente enviados a través del sistema. Cada mensaje que se intercambia por el bus se denomina paquete. Cada paquete puede poseer hasta cinco campos, dependiendo del tipo de paquete que sea enviado a través del sistema y de quien sea el remitente. A su vez, cada paquete comienza con una señal de sincronismo ({\it SYNC}) y un Comienzo de Paquete (SOP de {\it Start-of-Packet}).\\
 	
 	\subsubsection*{Campos de Paquetes}
-	Cada paquete contiene un campo denominado identificador de paquete (PID del inglés {\it Packet Identifier}). El PID indica el tipo de paquete que se está enviando y, como consecuencia, el formato de cada uno, es decir, que campos acarrea y que control de datos utiliza. Un paquete puede tener uno de cuatro tipos diferentes:
+	Cada paquete contiene un campo denominado identificador de paquete (PID del inglés {\it Packet Identifier}). El PID indica el tipo de paquete que se está enviando y, como consecuencia, el formato de cada uno, es decir, que campos acarrea y que control de datos utiliza.
+	
+	A su vez, cuando el host solicita algo al sistema, lo realiza a través del denominado campo de dirección. Este campo, se compone de dos partes, la primera es el campo de dirección de una función y el segundo es el campo de dirección de extremo.
+	%TODO quedé por acá.. revisar parrafo anterior y completar la idea
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
+			\begin{scope}
+				\begin{scope}[transform shape,node distance=.15]
+					\node[pid]	(pidtok)	{P\\I\\D\\\ \\T\\o\\k.};
+					\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
+					\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
+					\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
+				\end{scope}
+				\begin{scope}
+					\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
+					\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+					\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
+				\end{scope}
+				\begin{scope}[transform shape,node distance=.15]
+					\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\ \\P\\I\\D};
+					\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+					\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
+				\end{scope}
+				\begin{scope}
+					\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+					\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+				\end{scope}
+				\begin{scope}[transform shape,node distance=.15]
+					\node[pid,node distance=1.5]	(hspid)	[right=of crc16]{H\\S\\\ \\P\\I\\D};
+				\end{scope}
+				\begin{scope}
+					\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+					\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+				\end{scope}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Distintos tipos de paquetes USB}
+		\label{fig:usbpkts}
+	\end{figure}
 	
 	\begin{itemize}
 		\item {\bf Paquetes Token:} a través de este tipo de paquetes el host envía las directivas a los distintos periféricos. Estas directivas pueden ser IN, cuando solicita datos de un periférico; OUT, cuando se dispone a enviar datos hacia un {\it dispositivo USB}; SOF, que indica el inicio de cada cuadro, para que cada función se sincronice y SETUP, cuando va a enviar un paquete de configuración a algún extremo.
 		\item {\bf Paquete de Datos:} Este tipo de PID puede ser emitido por un dispositivo, si es que envía datos al host o bien por el mismo host cuando el flujo de datos es a la inversa.
 		\item el tercer tipo de paquets es un paquete de reconocimiento, denominado ACK, (por acknowledge o reconocimiento). Este paquete es enviado por los periféricos y le da idea al host de cual es el estado del dispositivo, es decir, si se encuentra operativo o no, si se encuientra ocupado o si recibió la trasnferencia de forma correcta.
-		\item finalmente existen paquetes especiales, a través de los cuales el protocolo se comunica con los hubs, emite directivas intermedias, envia señales de polling para conocer el estado del bus, entre otras.
+		\item finalmente existen paquetes especiales, a través de los cuales el protocolo se comunica con los hubs, emite directivas intermedias, envía señales de ping para conocer el estado de los componentes del sistema, entre otras.
 	\end{itemize}
 	
 	Como se menciono anteriormente, el host envía un toquen SOF que sirve para sincronizar los dispositivos al bus. En un sistema USB, el host provee la base de tiempo y envía cada \SI{1}{\milli\second} un SOF (Start of frame, o su traducción, inicio de cuadro) seguido de un numero de 11 bits que sirve para contar cada uno de los marcos. Además, en sistemas de alta velocidad, cada cuadro se divide en ocho microcuadros de \SI{125}{\micro\second}, que también son marcados por un SOF, sin embargo, el contador no se actualiza por cada microcuadro.\\
