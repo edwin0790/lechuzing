@@ -1,4 +1,32 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{Pallas-Areny2001}
+R.~Pall{\`{a}}s-Areny and J.~G. Webster, {\em {Sensors and signal
+  conditioning}}.
+\newblock Wiley-Interscience, 2001.
+
+\bibitem{considine1971encyclopedia}
+D.~M. Considine, {\em Encyclopedia of instrumentation and control}.
+\newblock McGraw-Hill, Inc., 1971.
+
+\bibitem{PerezGarcia2008}
+A.~{Perez Garcia}, ``{Curso de instrumentaci{\'{o}}n},'' p.~261, 2008.
+
+\bibitem{Fraden2010}
+J.~Fraden, {\em {Handbook of modern sensors: physics, designs, and
+  applications}}.
+\newblock New York, NY: Springer New York, 2010.
+
+\bibitem{Slawinski2011}
+E.~Slawi{\~{n}}ski and V.~Mut, {\em {Humanos y m{\'{a}}quinas inteligentes:
+  conocimiento educativo sobre el comportamiento interno de robots que
+  act{\'{u}}an juno y para el hombre}}.
+\newblock Saarbr{\"{u}}cken, Alemania: Editorial Acad{\'{e}}mica
+  Espa{\~{n}}ola, 2011.
+
+\bibitem{Ogata2002}
+K.~Ogata, {\em {Modern control engineering}}.
+\newblock Aeeizh, 2002.
 
 \bibitem{Perez2017}
 M.~Perez, F.~Alcalde, M.~S. Haro, I.~Sidelnik, J.~J. Blostein, M.~G. Berisso,
