@@ -28,6 +28,35 @@ E.~Slawi{\~{n}}ski and V.~Mut, {\em {Humanos y m{\'{a}}quinas inteligentes:
 K.~Ogata, {\em {Modern control engineering}}.
 \newblock Aeeizh, 2002.
 
+\bibitem{Mendis1994}
+S.~Mendis, S.~Kemeny, and E.~Fossum, ``{CMOS active pixel image sensor},'' {\em
+  IEEE Transactions on Electron Devices}, vol.~41, pp.~452--453, mar 1994.
+
+\bibitem{Hu-Guo2009}
+C.~Hu-Guo, J.~Baudot, G.~Bertolone, A.~Besson, A.~S. Brogna, C.~Colledani,
+  G.~Claus, R.~D. Masi, Y.~Degerli, A.~Dorokhov, G.~Doziere, W.~Dulinski,
+  X.~Fang, M.~Gelin, M.~Goffe, F.~Guilloux, A.~Himmi, K.~Jaaskelainen,
+  M.~Koziel, F.~Morel, F.~Orsini, M.~Specht, Q.~Sun, I.~Valin, and M.~Winter,
+  ``{CMOS pixel sensor development: a fast read-out architecture with
+  integrated zero suppression},'' {\em Journal of Instrumentation}, vol.~4,
+  pp.~P04012--P04012, apr 2009.
+
+\bibitem{Baudot2009}
+J.~Baudot, G.~Bertolone, A.~Brogna, G.~Claus, C.~Colledani, Y.~Deǧerli, R.~{De
+  Masi}, A.~Dorokhov, G.~Dozi{\`{e}}re, W.~Dulinski, M.~Gelin, M.~Goffe,
+  A.~Himmi, F.~Guilloux, C.~Hu-Guo, K.~Jaaskelainen, M.~Koziel, F.~Morel,
+  F.~Orsini, M.~Specht, I.~Valin, G.~Voutsinas, and M.~Winter, ``{First test
+  results of MIMOSA-26, a fast CMOS sensor with integrated zero suppression and
+  digitized output},'' {\em IEEE Nuclear Science Symposium Conference Record},
+  pp.~1169--1173, 2009.
+
+\bibitem{Hizawa2007}
+T.~Hizawa, J.~Matsuo, T.~Ishida, H.~Takao, H.~Abe, K.~Sawada, and M.~Ishida,
+  ``{32 × 32 pH image sensors for real time observation of biochemical
+  phenomena},'' {\em TRANSDUCERS and EUROSENSORS '07 - 4th International
+  Conference on Solid-State Sensors, Actuators and Microsystems},
+  pp.~1311--1312, 2007.
+
 \bibitem{Perez2017}
 M.~Perez, F.~Alcalde, M.~S. Haro, I.~Sidelnik, J.~J. Blostein, M.~G. Berisso,
   and J.~Lipovetzky, ``{Implementation of an ionizing radiation detector based

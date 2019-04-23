@@ -1,0 +1,53 @@
+Dada la motivación, se puede decir a priori que el objetivo del presente trabajo es la implementación de una efectiva comunicación entre una Computadora Personal (PC) y una FPGA. Sin embargo, este objetivo tan amplio se plasmará de forma más concreta y detallada en la Sección \ref{int:obj}.\\
+
+El dato de diseño más relevante es el poder transmitir imágenes por la comunicación a implementar. Pero, ¿Cuántos datos son suficientes para este propósito? Se toma como base de diseño el sensor que utiliza Pérez en su Tesis de Maestría \cite{Perez2018}, una cámara para adquirir imágenes monocromáticas de código MT9M001C12STM, comercializado por Actina Imaging \cite{MicronTechnology2004} que transmite datos a una tasa de \SI{48}{\mega\bit\per\second}.\\
+
+Además la implementación debe ser compatible con equipos convencionales que se consigan fácilmente en el mercado y no posean especificaciones fuera de las de uso doméstico. Esto se cumple hoy en día solo con dos tipos de puertos: Ethernet, dedicado principalmente a conexión de redes y USB, especializado en periféricos.\\
+
+Si bien se puede implementar la comunicación vía Ethernet, cumpliendo con las especificaciones propuestas, es muy probable que el único puerto que posea la PC se encuentre conectado a la red y se necesitará una infraestructura mayor para lograr una efectiva comunicación. Por tanto, USB se observa como una solución óptima.\\
+
+A su vez, USB presenta, al día de la fecha, con tres versiones de su norma, con diferentes velocidades: 
+
+\begin{itemize}
+	\item La version 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. Ambas revisiones alcanzan una tasa máxima de \SI{12}{\mega\bit\per\second}. 
+	\item USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir \SI{480}{\mega\bit\per\second}.
+	\item Dependiendo de la revisión, desde USB 3.0, lanzada al mercado en 2011, que transmite \SI{5}{\giga\bit\per\second}, hasta \SI{20}{\giga\bit\per\second} de la revisión USB 3.2, que fue presentada en 2017.
+\end{itemize}
+
+Con estas velocidades, es suficiente para el propósito del siguiente trabajo, la implementación una comunicación USB 2.0, con \SI{480}{\mega\bit\per\second}.\\
+
+\begin{figure}[t]
+	\centering
+	\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
+		\begin{scope}
+			\begin{scope}[transform shape,node distance=2]
+				\node[bloque]	(cy)					{Interfaz};
+				\node[bloque]	(fpga)	[right=of cy]	{FPGA};
+				\node[bloque]	(pc) 	[left=of cy]	{PC};
+				\draw[->,thick]	(pc.15)	-- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+				\draw[->,thick]	(cy.195)-- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+				\draw[<->,thick](cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+				\draw[->,thick]	(fpga.195)	-- node (ctrl) [below]	{Control} (fpga.195 -| cy.east);
+				\node[node distance=.4]	(usb text) [above=of usbd+]	{USB};
+			\end{scope}
+			\begin{scope}
+				\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+			\end{scope}
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Esquema propuesto para implementar la comunicación}
+	\label{fig:esq}
+\end{figure}
+
+El alumno sabe que es posible implementar una comunicación USB completa a través de una FPGA. Sin embargo, esto sería muy costoso en términos de tiempos de desarrollo y de recursos de FPGA disponibles para la implementación de otros sistemas, los cuales son el objetivo de la comunicación.\\
+
+Se plantea, entonces, un esquema como el que se observa en la Figura \ref{fig:esq} en la cual se utiliza una interfaz externa al FPGA. La comunicación USB propiamente dicha será efectuada entre la interfaz y la PC, mientras que se plantea una comunicación diferente entre la interfaz y el FPGA. Este último, por su parte, tendrá la tarea de realizar el control de esta comunicación.\\
+
+%Atención con estos parrafos!!!!
+
+%
+% una tasa de bit que permita transmitir imagenes y que los puertos sean fácilmente accesibles en PCs comerciales, resaltan tres protocolos que permitirían lograr este cometido: Ethernet, USB y Wi-Fi. Estos protocolos, son los que actualmente se encuentran presente en cualquier aparato nuevo. Estas normas, entre otras, han dejado de lado a estandares que antes eran muy comunes y que algunos periféricos aún cuentan, como ser RS-232 o PS/2, entre otras.\\ 
+%
+%En una primera aproximación, la que mayor tasa de datos puede proveer, sin dudas es el estandar Ethernet. Estas comunicaciones pueden alcanzar hasta \SI{400}{\giga bp\second}. Sin embargo, la norma Ethernet está principalmente pensada para redes de computadoras, por lo general se dipone de un solo puerto, el cual puede estar conectado a una red de internet y un periférico que tenga este puerto como conexión requerirá de alguna infrastructura adicional con cables más o menos extensos para lograr la comunicación.\\
+%
+%En el caso de tratar de utilizar una comunicación via Wi-Fi, es posible que se necesite algún enrutador adicional a la hora de conectarse. A su vez, la tecnología inalámbrica con mayor ancho de banda está disponible hace unos pocos años y no todos los equipos cuentan con esta posibilidad, ofreciendo en esos casos una tasa máxima de \SI{54}{\mega bp \second}. La tasa de transmisión real máxima, descontando todos los encabezados y las colas que posee la norma, es de \SI{19}{\mega bp\second}.
