@@ -29,26 +29,92 @@ Existen diversas publicaciones en donde se observa el uso de FPGAs para la imple
 
 Se denomina ultrasonografía a la técnica de adquirir imágenes basandose en reflexiones de ultrasonido. Sus aplicaciones son múltiple, en las que se destaca el diagnóstico médico, ya que es una técnica no invasiva y sin riesgos de radiación ionizante sobre el paciente. Un trabajo reciente desarrolló un sistema de ecografía médica con bajo costo utilizando un FPGA\cite{biswas2018embedded}. El autor también presentó un algoritmo realizado y probado en PC. Luego se implementó e en una FPGA.\\
 
-Yanagisawa, entre otros, desarrolló un sistema con telescopios pequeños para explorar objetos de campo cercano con la finalidad de monitorear cuerpos celestes que puedan colisionar con el planeta\cite{Yanagisawa2018}. Los autores utilizan la velocidad de los circuitos implementados en FPGA para minimizar el tiempo de adquisición.
+Yanagisawa, entre otros, desarrolló un sistema con telescopios pequeños para explorar objetos de campo cercano con la finalidad de monitorear cuerpos celestes que puedan colisionar con el planeta\cite{Yanagisawa2018}. Los autores utilizan la velocidad de los circuitos implementados en FPGA para minimizar el tiempo de adquisición.\\
 
-%EXTRAIDA Existen sensores de imagenes de distancia desarrollados mediante FPGA\cite{Cui2018}.\\%BORRAR esta cita!!!
-
-\subsubsection*{El procesamiento de datos}
 La obtención de datos por si misma no otorga información. Para ello, es probable que un gran flujo de datos requiera de un procesamiento y análisis exhaustivo de los mismos. La invención y evolución de las computadoras, como así también el desarrollo de nuevos algoritmos, dan lugar a procesamiento de datos cada vez más complejos en tiempos mucho menores.\\
 
-Las primeras ENIAC, computadora de propósito general desarrollada en el año 1946 para el cálculo de tablas balísticas de las fuerzas armadas estadounidenses, podía ejecutar 20 operación cada \SI{10}{\micro\second}, es decir, podía ejecutar instrucciones con una frecuencia máxima de \SI{200}{\kilo\hertz}. A su vez, tuvo un costo aproximado de U\$S 500.000, pesaba 5 t y consumía \SI{175}{\kilo\watt}.\\
+Las primeras ENIAC, computadora de propósito general desarrollada en el año 1946 para el cálculo de tablas balísticas de las fuerzas armadas estadounidenses, podía ejecutar 20 operaciones cada \SI{10}{\micro\second} \cite{Goldstine1946}, es decir, ejecutaba instrucciones con una frecuencia máxima de \SI{200}{\kilo\hertz}. A su vez, tuvo un costo aproximado de U\$S 500.000, pesaba 5 t y consumía \SI{175}{\kilo\watt}.\\
 
-En contraste con aquello, es posible conseguir en el mercado actual, computadoras que pesan lo suficiente para poder ser levantadas con las manos, pueden ejecutar instrucciones en nanosegundos, (5 ordenes de magnitud menos), consumen apenas centenas de watts y cuestan algunos cientos de U\$S. A tal punto ha evolucionado esta tecnología que se encuentran presente computadoras muy potentes en casi cualquier laboratorio, oficina u hogar.\\
+En contraste con aquello, es posible conseguir en el mercado actual, computadoras cuyas dimensiones y peso hacen que puedan ser levantadas con las manos, ejecutan instrucciones en cuenstión de nanosegundos, (5 ordenes de magnitud menos), consumen menos de \SI{1}{\kilo\watt} y cuestan algunos cientos de U\$S. A tal punto ha evolucionado esta tecnología que se encuentran presente computadoras muy potentes en casi cualquier laboratorio, oficina u hogar. Esta potencia de cálculo, ayudado por el desarrollo de nuevos métodos y algoritmos de cálculo, permiten a los investigadores procesar miles de datos en tiempos muy reducidos, ayudando al análisis de los mismos y la obtención de información.\\
 
-Esta potencia de cálculo, ayudado por el desarrollo de nuevos métodos y algoritmos de cálculo, permiten a los investigadores procesar miles de datos en tiempos muy reducidos, ayudando al análisis de los mismos y la obtención de información.\\
+La generación de datos y el procesamiento de lo mismos se da en sistemas diferentes. Ellos requieren, por tanto, de una conexión a través de la cual los datos puedan ser transferidos de un sistema al otro. Se torna de suma utilidad, entonces, proveer una comunicación efectiva y robusta que permita transmitir grandes volúmenes de datos en poco tiempo, y de esta forma facilitar los tiempos de desarrollo, las pruebas y depuración.\\
 
-La generación de datos y el procesamiento de lo mismos, según el enfoque del presente trabajo, se da en sistemas diferentes. Estos sistemas requieren, de una conexión a través de la cual los datos puedan ser llevados de un lugar a otro. Se torna de suma utilidad, entonces, proveer una comunicación efectiva y robusta que permita mover grandes volúmenes de datos en poco tiempo, y de esta forma facilitar los tiempos de desarrollo, las pruebas y depuración de sistemas.\\
+Implementar un sistema de comunicación en una FPGA, si bien no es trivial, puede ser resuelto de muchas maneras, quedando a criterio del desarrollador utilizar algún protocolo de comunicación estándar, o bien, diseñar uno propio. Sin embargo, desde el punto de vista de una computadora, las comunicaciones se vuelven un poco más estrictas y acotadas a los puertos y señales que puede manejar el equipo, conforme el fabricante haya establecido.\\
 
-Implementar un sistema de comunicación en una FPGA, si bien no es trivial, puede ser resuelto de muchas maneras, quedando a criterio del desarrollador utilizar algún sistema de comunicación estándar, o bien, diseñar uno propio. Sin embargo, desde el punto de vista de una computadora, las comunicaciones se vuelven un poco más estrictas y acotadas a los puertos y señales que puede manejar el equipo, conforme el fabricante haya establecido.\\
+Es por eso que este trabajo busca implementar una comunicación entre una computadora personal y una FPGA, utilizando un protocolo estándar, que esté disponible en cualquier computadora comercial y que posea una tasa de bit suficiente para poder transmitir imagenes.\\
 
-Es por eso que este trabajo trata de implementar una comunicación entre una computadora personal y una FPGA, utilizando un protocolo estándar, que esté disponible en cualquier computadora comercial y que posea una tasa de bit suficiente para poder transmitir imagenes.\\
+%PRESTAR ATENCION: pegado de archivo externo!!!
+
+%ARCHIVO transmitir.tex modificado
+
+%Dada la motivación, se puede decir a priori que el objetivo del presente trabajo es la implementación de una efectiva comunicación entre una Computadora Personal (PC) y una FPGA. Sin embargo, este objetivo tan amplio se plasmará de forma más concreta y detallada en la Sección \ref{int:obj}.\\
+
+Pero, ¿Cuántos datos son suficientes para este propósito? Se toma como base de diseño el sensor que utiliza Pérez en su Tesis de Maestría \cite{Perez2018}, una cámara para adquirir imágenes monocromáticas de código MT9M001C12STM, comercializado por Actina Imaging \cite{MicronTechnology2004} que transmite datos a una tasa de \SI{48}{\mega\bit\per\second}.\\
+
+Además la implementación debe ser compatible con equipos convencionales que se consigan fácilmente en el mercado y no posean especificaciones fuera de las de uso doméstico. Esto se cumple hoy en día con tres tipos de puertos: Ethernet, dedicado principalmente a conexión de redes mediante cables; Wi-Fi, utilizado para el accesos a la red de forma inalámbrica; y USB, especializado en periféricos.\\
+
+Al hablar de Ethernet o Wi-Fi, se hace referencia a dos formas diferentes de conectarse a una misma cosa: una red de computadoras. En otras palabras, se habla de dos o más nodos, compuestos por PC's o cualquier aparato electrónico con capacidad de realizar cálculo binario, que pueden intercambiar datos a través de una trama bastante compleja de componentes diferentes. Ambos protocolos hacen referencia solo a la conexión física de los dispositivos y el control de acceso de cada uno de ellos a la conexión. Quedando a cargo de otro tipo de sistemas, con sus protocolos, que los datos enviados puedan ser correctamente recibidos por el usuario de la PC. La gran diferencia entre ellos radica en el medio físico que utilizan: Wi-Fi emplea ondas electromagnéticas emitidas mediante radiofrecuencia, mientras que en Ethernet, estas ondas son acarreadas por uno o más conductores, como ser cable coaxial, cables de par trenzado o fibra óptica.\\
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\textwidth]{partrenzado.png}
+	\includegraphics[width=0.4\textwidth]{utp.jpeg}
+	\caption{Par Trenzado y un dibujo de su ficha de conexión.}
+	\label{fig:utp}
+\end{figure}
+
+En particular, el estandar Ethernet, también conocido como IEEE 802.3, es un protocolo que define cómo se deben conectar nodos a través de conductores para conformar red de área local (LAN o {\it Local Area Network}), de forma que puedan transmitir información a velocidades seleccionables entre \SI{1}{\mega\bit\slash\second} y \SI{400}{\giga\bit\slash\second} \cite{Ethernet2018}. Utiliza una tecnología denominada Acceso Múltiple Sensando la Portadora con Detección de Colisiones (CSMA/CD del inglés {\it Carrier Sense Multiple Access with Collision Detection}), la cual antes de transmitir, corrobora que no exista una señal portadora y espera para retransmitir si ésta está presente. Dependiendo de la frecuencia de trabajo y la tasa de transferencia a la que transporta el mensaje, la norma especifica el conector y la distancia máxima a la que debe conectarse una repetidora, es decir, un aparato que reconstruya y emita la señal. Estos conectores pueden ser cable coaxial, fibra optica o cable de par trenzado. Este último es el más usual en las PCs comerciales y se muestra, junto a su ficha característica en la Figura \ref{fig:utp}.\\
 
 
+Si bien se puede implementar la comunicación vía Ethernet, cumpliendo con las especificaciones propuestas, es muy probable que el único puerto que posea la PC se encuentre conectado a la red y se necesitará una infraestructura mayor para lograr una efectiva comunicación. Por tanto, USB se observa como una solución óptima.\\
+
+A su vez, USB presenta, al día de la fecha, con tres versiones de su norma, con diferentes velocidades: 
+
+\begin{itemize}
+	\item La version 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. Ambas revisiones alcanzan una tasa máxima de \SI{12}{\mega\bit\per\second}. 
+	\item USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir \SI{480}{\mega\bit\per\second}.
+	\item Dependiendo de la revisión, desde USB 3.0, lanzada al mercado en 2011, que transmite \SI{5}{\giga\bit\per\second}, hasta \SI{20}{\giga\bit\per\second} de la revisión USB 3.2, que fue presentada en 2017.
+\end{itemize}
+
+Con estas velocidades, es suficiente para el propósito del siguiente trabajo, la implementación una comunicación USB 2.0, con \SI{480}{\mega\bit\per\second}.\\
+
+\begin{figure}[t]
+	\centering
+	\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
+	\begin{scope}
+	\begin{scope}[transform shape,node distance=2]
+	\node[bloque]	(cy)					{Interfaz};
+	\node[bloque]	(fpga)	[right=of cy]	{FPGA};
+	\node[bloque]	(pc) 	[left=of cy]	{PC};
+	\draw[->,thick]	(pc.15)	-- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+	\draw[->,thick]	(cy.195)-- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+	\draw[<->,thick](cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+	\draw[->,thick]	(fpga.195)	-- node (ctrl) [below]	{Control} (fpga.195 -| cy.east);
+	\node[node distance=.4]	(usb text) [above=of usbd+]	{USB};
+	\end{scope}
+	\begin{scope}
+	\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+	\end{scope}
+	\end{scope}
+	\end{tikzpicture}
+	\caption{Esquema propuesto para implementar la comunicación}
+	\label{fig:esq}
+\end{figure}
+
+El alumno sabe que es posible implementar una comunicación USB completa a través de una FPGA. Sin embargo, esto sería muy costoso en términos de tiempos de desarrollo y de recursos de FPGA disponibles para la implementación de otros sistemas, los cuales son el objetivo de la comunicación.\\
+
+Se plantea, entonces, un esquema como el que se observa en la Figura \ref{fig:esq} en la cual se utiliza una interfaz externa al FPGA. La comunicación USB propiamente dicha será efectuada entre la interfaz y la PC, mientras que se plantea una comunicación diferente entre la interfaz y el FPGA. Este último, por su parte, tendrá la tarea de realizar el control de esta comunicación.\\
+
+%Atención con estos parrafos!!!!
+
+%
+% una tasa de bit que permita transmitir imagenes y que los puertos sean fácilmente accesibles en PCs comerciales, resaltan tres protocolos que permitirían lograr este cometido: Ethernet, USB y Wi-Fi. Estos protocolos, son los que actualmente se encuentran presente en cualquier aparato nuevo. Estas normas, entre otras, han dejado de lado a estandares que antes eran muy comunes y que algunos periféricos aún cuentan, como ser RS-232 o PS/2, entre otras.\\ 
+%
+%En una primera aproximación, la que mayor tasa de datos puede proveer, sin dudas es el estandar Ethernet. Estas comunicaciones pueden alcanzar hasta \SI{400}{\giga bp\second}. Sin embargo, la norma Ethernet está principalmente pensada para redes de computadoras, por lo general se dipone de un solo puerto, el cual puede estar conectado a una red de internet y un periférico que tenga este puerto como conexión requerirá de alguna infrastructura adicional con cables más o menos extensos para lograr la comunicación.\\
+%
+%En el caso de tratar de utilizar una comunicación via Wi-Fi, es posible que se necesite algún enrutador adicional a la hora de conectarse. A su vez, la tecnología inalámbrica con mayor ancho de banda está disponible hace unos pocos años y no todos los equipos cuentan con esta posibilidad, ofreciendo en esos casos una tasa máxima de \SI{54}{\mega bp \second}. La tasa de transmisión real máxima, descontando todos los encabezados y las colas que posee la norma, es de \SI{19}{\mega bp\second}.
+
+%ARCHIVO
 
 %Es por esto que la PC {\it Personal Computer} se ha transformado en la herramienta indispensable en cualquier ámbito, pero en especial en los entornos en donde se requiere el  manejo, cálculo, procesamiento y análisis de grandes cantidades de datos e información.\\
 %

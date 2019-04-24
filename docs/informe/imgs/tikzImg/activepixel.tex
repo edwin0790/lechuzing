@@ -153,7 +153,7 @@
 {
 	\pgfsetlinewidth{1pt}
 	\pgfpathcircle{\pgfpoint{0.4*\size}{0.4*\size}}{0.3*\size}
-	\pgfpathcircle{\pgfpoint{0.85*\size}{0.85*\size}}{0.1*\size}
+	\pgfpathcircle{\pgfpoint{0.71*\size}{0.71*\size}}{0.1*\size}
 	\pgfpathmoveto{\pgfpoint{0.3*\size}{0.4*\size}}
 	\pgfpathlineto{\pgfpoint{0.5*\size}{0.4*\size}}
 	\pgfpathmoveto{\pgfpoint{0.4*\size}{0.3*\size}}
@@ -164,7 +164,7 @@
 	size/.store in=\size, size = 10pt}
 
 \begin{document}
-	\begin{tikzpicture}[scale=1,>=latex]
+	\begin{tikzpicture}[scale=2,>=latex]
 				\filldraw[pattern=electron,size=50] (0,0) rectangle (5,5);
 %		\begin{scope}
 %			\begin{scope}[transform shape,node distance=.15]
