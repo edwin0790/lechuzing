@@ -28,6 +28,10 @@ E.~Slawi{\~{n}}ski and V.~Mut, {\em {Humanos y m{\'{a}}quinas inteligentes:
 K.~Ogata, {\em {Modern control engineering}}.
 \newblock Aeeizh, 2002.
 
+\bibitem{Binnig1983}
+G.~Binnig and H.~Rohrer, ``{Scanning tunneling microscopy},'' {\em Surface
+  Science}, vol.~126, pp.~236--244, mar 1983.
+
 \bibitem{Mendis1994}
 S.~Mendis, S.~Kemeny, and E.~Fossum, ``{CMOS active pixel image sensor},'' {\em
   IEEE Transactions on Electron Devices}, vol.~41, pp.~452--453, mar 1994.
@@ -50,12 +54,40 @@ J.~Baudot, G.~Bertolone, A.~Brogna, G.~Claus, C.~Colledani, Y.~Deǧerli, R.~{De
   digitized output},'' {\em IEEE Nuclear Science Symposium Conference Record},
   pp.~1169--1173, 2009.
 
+\bibitem{Galimberti2018}
+C.~L. Galimberti, F.~{Alcalde Bessia}, M.~Perez, M.~G. Berisso, M.~{Sofo Haro},
+  I.~Sidelnik, J.~Blostein, H.~Asorey, and J.~Lipovetzky, ``{A Low Cost
+  Environmental Ionizing Radiation Detector Based on COTS CMOS Image
+  Sensors},'' in {\em 2018 IEEE Biennial Congress of Argentina (ARGENCON)},
+  pp.~1--6, IEEE, jun 2018.
+
+\bibitem{Perez2016}
+M.~P{\'{e}}rez, J.~Lipovetzky, M.~{Sofo Haro}, I.~Sidelnik, J.~J. Blostein,
+  F.~{Alcalde Bessia}, and M.~G. Berisso, ``{Particle detection and
+  classification using commercial off the shelf CMOS image sensors},'' {\em
+  Nuclear Instruments and Methods in Physics Research Section A: Accelerators,
+  Spectrometers, Detectors and Associated Equipment}, vol.~827, pp.~171--180,
+  aug 2016.
+
+\bibitem{Perez2018Thermal}
+M.~P{\'{e}}rez, J.~J. Blostein, F.~A. Bessia, A.~Tartaglione, I.~Sidelnik,
+  M.~S. Haro, S.~Su{\'{a}}rez, M.~L. Gimenez, M.~G. Berisso, and J.~Lipovetzky,
+  ``{Thermal neutron detector based on COTS CMOS imagers and a conversion layer
+  containing Gadolinium},'' {\em Nuclear Instruments and Methods in Physics
+  Research Section A: Accelerators, Spectrometers, Detectors and Associated
+  Equipment}, vol.~893, pp.~157--163, jun 2018.
+
 \bibitem{Hizawa2007}
 T.~Hizawa, J.~Matsuo, T.~Ishida, H.~Takao, H.~Abe, K.~Sawada, and M.~Ishida,
   ``{32 × 32 pH image sensors for real time observation of biochemical
   phenomena},'' {\em TRANSDUCERS and EUROSENSORS '07 - 4th International
   Conference on Solid-State Sensors, Actuators and Microsystems},
   pp.~1311--1312, 2007.
+
+\bibitem{Goldstine1946}
+H.~H. Goldstine and A.~Goldstine, ``{The Electronic Numerical Integrator and
+  Computer (ENIAC)},'' {\em Mathematical Tables and Other Aids to Computation},
+  vol.~2, p.~97, jul 1946.
 
 \bibitem{Perez2017}
 M.~Perez, F.~Alcalde, M.~S. Haro, I.~Sidelnik, J.~J. Blostein, M.~G. Berisso,
@@ -73,11 +105,6 @@ T.~Yanagisawa, T.~Ikenaga, Y.~Sugimoto, K.~Kawatsu, M.~Yoshikawa, S.-i.
   Okumura, and T.~Ito, ``{New NEO search technology using small telescopes and
   FPGA},'' in {\em 2018 IEEE Aerospace Conference}, vol.~2018-March, pp.~1--7,
   IEEE, mar 2018.
-
-\bibitem{Goldstine1946}
-H.~H. Goldstine and A.~Goldstine, ``{The Electronic Numerical Integrator and
-  Computer (ENIAC)},'' {\em Mathematical Tables and Other Aids to Computation},
-  vol.~2, p.~97, jul 1946.
 
 \bibitem{Perez2018}
 M.~Perez, {\em {DETECCI{\'{O}}N DE RADIACI{\'{O}}N IONIZANTE UTILIZANDO
