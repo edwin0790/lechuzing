@@ -25,6 +25,7 @@
 %TODO tengo 18 filminas que no deben ser consideradas
 	\titlepage
 	\begin{frame}[c]{Una comunicación USB\\para aplicaciones científicas basadas en FPGA}
+		\framesubtitle{Preámbulo}
 		\centering
 		\includegraphics[width=0.9\paperwidth]{01motivacion}
 	\end{frame}
@@ -40,10 +41,20 @@
 	\section{Introducción}
 		\subsection{Motivación}
 			\begin{frame}{La producción de información científica}
-				
+				\begin{itemize}
+					\item Los avances en las escalas de integración de circuitos permiten desarrollar sensores que recolectan mayor volumen de datos.
+					\item Los sensores necesitan de circuitos adicionales que les permitan adquirir datos y controlar su funcionamiento
+					\item La utilización de FPGA es muy útil para sintetizar circuitos digitales.
+					\item Los datos deben ser procesados para transformase en información.
+					\item Los datos se deben transmitir desde los sistemas generadores a los sistemas procesadores.
+				\end{itemize}
 			\end{frame}
 			\begin{frame}{La necesidad de una comunicación\\entre un FPGA y una PC}
-				
+				\begin{itemize}
+					\item Las computadoras son herramientas muy útiles para procesar datos.
+					\item Los FGPAs pueden operar a altas velocidades y utilizar puertos paralelos.
+					\item Es de utilidad una comunicación entre las PCs y las aplicaciones que utilizan FPGA para la implementación de circuitos.
+				\end{itemize}
 			\end{frame}
 		\subsection{Objetivos}
 			\begin{frame}{Objetivos}
