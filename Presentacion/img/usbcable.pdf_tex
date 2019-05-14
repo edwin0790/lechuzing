@@ -1,0 +1,114 @@
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'usbcable.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{551.88513985bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.1236709)%
+    \put(0.90813632,0.70295414){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{C}\textbf{u}\textbf{t}\textbf{ }\textbf{E}\textbf{n}\textbf{d}}}}%
+    \put(0.53349884,0.67662181){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(Always downstream}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{usbcable.pdf}}%
+    \put(0.74116433,0.67662181){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{towards the USB Device.)}}}%
+    \put(0.09901566,0.91002167){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{O}\textbf{v}\textbf{e}\textbf{r}\textbf{m}\textbf{o}\textbf{l}\textbf{d}\textbf{e}\textbf{d}\textbf{ }\textbf{S}\textbf{e}\textbf{r}\textbf{i}\textbf{e}\textbf{s}\textbf{ }\textbf{"}\textbf{A}\textbf{"}\textbf{ }\textbf{P}\textbf{l}\textbf{u}\textbf{g}}}}%
+    \put(0.02390867,0.8836896){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(Always upstream}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{usbcable.pdf}}%
+    \put(0.20404486,0.8836896){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{towards the "host" system.)}}}%
+    \put(0.00864779,0.06978139){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{All dimensions are in millimeters (}}}%
+    \put(0.3871749,0.06978142){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{m}\textbf{m}}}}%
+    \put(0.43265806,0.06978139){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{)\\ unless otherwise note.\\ Dimensions are}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{usbcable.pdf}}%
+    \put(0.42906719,1.09973415){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{A}\textbf{A}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{usbcable.pdf}}%
+    \put(0.94703596,1.09674184){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{B}\textbf{B}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{usbcable.pdf}}%
+    \put(0.43924118,0.45249788){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Blunt Cut Termination\\ (Length Dimension Point)}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{usbcable.pdf}}%
+    \put(0.3069809,0.49050014){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Polyvinyl Chloride (PVC) Jacket}}}%
+    \put(0.31146939,0.52491177){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{B}\textbf{l}\textbf{u}\textbf{n}\textbf{t}\textbf{ }\textbf{C}\textbf{u}\textbf{t}\textbf{ }\textbf{T}\textbf{e}\textbf{r}\textbf{m}\textbf{i}\textbf{n}\textbf{a}\textbf{t}\textbf{i}\textbf{o}\textbf{n}\textbf{\\ }\textbf{P}\textbf{r}\textbf{e}\textbf{p}\textbf{a}\textbf{r}\textbf{e}\textbf{d}\textbf{ }\textbf{T}\textbf{e}\textbf{r}\textbf{m}\textbf{i}\textbf{n}\textbf{a}\textbf{t}\textbf{i}\textbf{o}\textbf{n}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{usbcable.pdf}}%
+    \put(0.73099135,0.4351422){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Metallized Mylar Inner Shield}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{usbcable.pdf}}%
+    \put(0.73158977,0.46506558){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{>}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{usbcable.pdf}}%
+    \put(0.74595266,0.46506558){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{65% Tinned Copper Braided\\ Shield}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{usbcable.pdf}}%
+    \put(0.73099135,0.49229558){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Polyvinyl Chloride (PVC) Jacket}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{usbcable.pdf}}%
+    \put(0.83063535,0.38367473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Red (V}}}%
+    \put(0.88300081,0.38367473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{B}\textbf{U}\textbf{S}}}}%
+    \put(0.90394671,0.38367473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{)}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{usbcable.pdf}}%
+    \put(0.82973761,0.36362622){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Black (Ground)}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{usbcable.pdf}}%
+    \put(0.83033625,0.34058545){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Green (D +)}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{usbcable.pdf}}%
+    \put(0.82973761,0.31963928){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{White (D -)}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{usbcable.pdf}}%
+    \put(0.77677368,0.40791236){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{28 AWG STC Drain Wire}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{usbcable.pdf}}%
+    \put(0.83063528,0.28552682){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{User Specified}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{usbcable.pdf}}%
+    \put(0.73667668,0.25709984){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Length Dimension Point}}}%
+    \put(0.43086263,0.58116716){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{D}\textbf{e}\textbf{t}\textbf{a}\textbf{i}\textbf{l}\textbf{ }\textbf{B}\textbf{ }\textbf{-}\textbf{ }\textbf{B}\textbf{ }\textbf{(}\textbf{T}\textbf{y}\textbf{p}\textbf{i}\textbf{c}\textbf{a}\textbf{l}\textbf{ }\textbf{T}\textbf{e}\textbf{r}\textbf{m}\textbf{i}\textbf{n}\textbf{a}\textbf{t}\textbf{i}\textbf{o}\textbf{n}\textbf{s}\textbf{)}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{usbcable.pdf}}%
+    \put(0.04635078,0.81007892){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{D}\textbf{e}\textbf{t}\textbf{a}\textbf{i}\textbf{l}\textbf{ }\textbf{A}\textbf{ }\textbf{-}\textbf{ }\textbf{A}\textbf{\\ }\textbf{(}\textbf{S}\textbf{e}\textbf{r}\textbf{i}\textbf{e}\textbf{s}\textbf{ }\textbf{"}\textbf{A}\textbf{"}\textbf{ }\textbf{P}\textbf{l}\textbf{u}\textbf{g}\textbf{)}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{usbcable.pdf}}%
+    \put(0.06041485,0.66136066){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf{1}\textbf{2}\textbf{3}\textbf{4}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{usbcable.pdf}}%
+    \put(0.1549719,0.45189913){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{27.0}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{usbcable.pdf}}%
+    \put(0.15527116,0.56590647){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{12.0}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{usbcable.pdf}}%
+    \put(0.16065726,0.29450373){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{9.0}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{usbcable.pdf}}%
+    \put(0.15975958,0.69756807){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{7.5}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=24]{usbcable.pdf}}%
+    \put(0.06999017,0.71701811){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{15.7}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=25]{usbcable.pdf}}%
+    \put(0.13552195,0.22986997){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Optional Molded\\ Strain Relief}}}%
+  \end{picture}%
+\endgroup%
