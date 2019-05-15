@@ -10,6 +10,7 @@
 \usepackage{tikz}
 \usetikzlibrary{backgrounds}
 
+\usetheme[secheader]{Boadilla}
 % diagramas temporales
 \newcounter{wavecount}
 
@@ -117,8 +118,12 @@
 				\begin{itemize}
 					\item \only<1> {Física} \only<2> {Lógica}
 				\end{itemize}
-				\only<1>{\includegraphics[width=0.65\textwidth]{topofisica.png}}
+				\only<1>{\includegraphics[width=0.6\textwidth]{topofisica.png}}
 				\only<2>{\includegraphics[width=0.8\textwidth]{topologica.png}}
+			\end{frame}
+			\begin{frame}{USB - Flujo de Datos}
+				\centering
+				\includegraphics[width=0.8\textwidth]{complogicos.png}
 			\end{frame}
 			\begin{frame}{USB - Conexión mecánica}
 				\begin{figure}
@@ -183,14 +188,14 @@
 					\end{tikzpicture}
 				\end{figure}
 			\end{frame}
-			\begin{frame}{USB - Bus Serial Universal}
-				\begin{itemize}
-					\item Lógicamente, cada dispositivo es visto desde el Host como un extremo.
-					\item Cada extremo posee un ``tubo'' de comunicación unidireccional y una dirección única.
-					\item Cada ``tubo'' tiene asignado en el Host un buffer específico.
-					\item Cada extremo tiene una única forma de comunicación con el Host, con su forma de acceso al bus y su determinada cuota de ancho de banda permitida.
-				\end{itemize}
-			\end{frame}
+%			\begin{frame}{USB - Bus Serial Universal}
+%				\begin{itemize}
+%					\item Lógicamente, cada dispositivo es visto desde el Host como un extremo.
+%					\item Cada extremo posee un ``tubo'' de comunicación unidireccional y una dirección única.
+%					\item Cada ``tubo'' tiene asignado en el Host un buffer específico.
+%					\item Cada extremo tiene una única forma de comunicación con el Host, con su forma de acceso al bus y su determinada cuota de ancho de banda permitida.
+%				\end{itemize}
+%			\end{frame}
 			\begin{frame}{USB - Tipo de Transferencias}
 					Existen 4 tipos de transferencia los cuales difieren en cómo es transmitida la información, la dirección que posee, el tamaño máximo, acceso al bus, tiempos de latencia, manejo de errores y la secuencia de requerimiento de datos
 				\begin{itemize}
