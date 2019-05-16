@@ -135,6 +135,32 @@
 					\includegraphics[width=0.9\textwidth]{usbcablea.png}
 				\end{figure}
 			\end{frame}
+			\begin{frame}{USB - Tipo de Transferencias}
+					Existen 4 tipos de transferencia los cuales difieren en cómo es transmitida la información, la dirección que posee, el tamaño máximo, acceso al bus, tiempos de latencia, manejo de errores y la secuencia de requerimiento de datos
+				\begin{itemize}
+					\item Transferencias de Control
+					\item Transferencias de Interrupción
+					\item Transferencias de Bultos
+					\item Transferencias Isocrónicas
+				\end{itemize}
+				%AQUI me quedé
+			\end{frame}
+			\begin{frame}{USB - Tipos de Paquetes}
+				\begin{itemize}
+					\item Paquetes Token
+					\item Paquetes de Datos
+					\item Paquetes de Handshake
+					\item Paquetes Especiales
+				\end{itemize}
+			\end{frame}
+			\begin{frame}{USB - Paquetes más comunes}
+				\begin{itemize}
+					\item Entrada de Paquetes al Host
+					\includegraphics[width=0.8\textwidth]{15inpkt}
+					\item Salida de Paquetes hacia periféricos
+					\includegraphics[width=0.8\textwidth]{16outpkt}
+				\end{itemize}
+			\end{frame}
 			\begin{frame}{USB - Especificaciones eléctricas}
 				\begin{itemize}
 					\item Existen 3 velocidades de señalización posibles:480 Mbit/s denominada high-speed, 12 Mbit/s para full-speed y 1.5 Mbit/s con low-speed.
@@ -196,16 +222,6 @@
 %					\item Cada extremo tiene una única forma de comunicación con el Host, con su forma de acceso al bus y su determinada cuota de ancho de banda permitida.
 %				\end{itemize}
 %			\end{frame}
-			\begin{frame}{USB - Tipo de Transferencias}
-					Existen 4 tipos de transferencia los cuales difieren en cómo es transmitida la información, la dirección que posee, el tamaño máximo, acceso al bus, tiempos de latencia, manejo de errores y la secuencia de requerimiento de datos
-				\begin{itemize}
-					\item Transferencias de Control
-					\item Transferencias de Interrupción
-					\item Transferencias de Bultos
-					\item Transferencias Isocrónicas
-				\end{itemize}
-				%AQUI me quedé
-			\end{frame}
 	\section{Implementación}
 		\subsection{Arquitectura del sistema}
 			\begin{frame}{Arquitectura del sistema propuesto}
