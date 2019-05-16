@@ -1,6 +1,5 @@
-\documentclass[]{article}
+\documentclass[]{standalone}
 
-\usepackage[a3paper]{geometry}
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -11,14 +10,14 @@
 
 %\tikzstyle{style} = [definition]
 \tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=40,fill=white]
-\tikzstyle{core}=[interior]
-\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{core}=[rectangle,rounded corners,draw=black,minimum size=40]
+\tikzstyle{perif} = [core,minimum height=20]
 \tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
 \tikzstyle{contenedor} = [rectangle,draw=black]
 %\tikzstyle{mode text} = [midway,sloped,text width=200,align=center]
 
 \begin{document}
-	\begin{tikzpicture}[scale=0.5]
+	\begin{tikzpicture}[scale=1]
 		\begin{scope}[
 			>=latex,
 			node distance=1,
@@ -81,7 +80,5 @@
 			\draw[<->,thick] (fifo) to (fifo -| fx2.east);
 			\draw[<->,thick] (i2c) to (i2c -| fx2.east);
 		\end{scope}
-		
-		%hacer figura buscada
 	\end{tikzpicture}
 \end{document}

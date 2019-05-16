@@ -7,8 +7,71 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{siunitx}
+\usepackage{listings}
 \usepackage{tikz}
-\usetikzlibrary{backgrounds}
+\usetikzlibrary{backgrounds,fit,patterns,positioning,shapes}
+
+\tikzstyle{core}=[
+	rectangle,
+	rounded corners,
+	draw=black,
+	minimum size=40]
+
+\tikzstyle{perif}=[
+	core,
+	minimum height=20]
+
+\tikzstyle{contenedor}=[
+	rectangle,
+	draw=black]
+
+\tikzstyle{exterior}=[
+	rectangle,
+	draw=black,
+	minimum size=40]
+
+\tikzstyle{bloque}=[
+	exterior,
+	align=center,
+	minimum size=60,
+	text width=60]
+
+\tikzstyle{pid}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	pattern=north east lines,
+	pattern color=black!35]
+
+\tikzstyle{dir}=[
+	draw,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	align=center]
+
+\tikzstyle{data}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=120,
+	minimum height=110,
+	fill=black!05]
+
+\tikzstyle{crc}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	pattern=dots,
+	pattern color=black!25]
 
 \usetheme[secheader]{Boadilla}
 % diagramas temporales
@@ -101,13 +164,13 @@
 					Los objetivos perseguidos por norma son:
 
 				\begin{itemize}
-					\item Conexión de telefonos a la PC.
+					\item Conexión de teléfonos a la PC.
 					\item Facilidad de uso.
 					\item Proveer un puerto de expansión para periféricos.
 					\item<2-> \alert {Mayor rendimiento}
 					\item<2-> \alert {Mayor ancho de banda}
 %					\item Topológicamente, posee una estructura mestro-esclavo, en forma de árbol, donde el nodo principal es el Host, el resto de los nodos está implementado con Hubs y cada dispositivo es un esclavo.
-%					\item Mecánicamente, posee dos pares de conductores, uno de alimentación ($V_{BUS}$ y GROUND) y otro de datos diferenciales(D+ y D-). Además posee diferentes tipos de fichas de conexión.
+%					\item Mecánicamente, 
 				\end{itemize}
 				
 				\only <2-> {La respuesta a esta demanda fue agregar una nueva velocidad de 480 Mbit/s.}
@@ -121,21 +184,108 @@
 				\only<1>{\includegraphics[width=0.6\textwidth]{topofisica.png}}
 				\only<2>{\includegraphics[width=0.8\textwidth]{topologica.png}}
 			\end{frame}
-			\begin{frame}{USB - Flujo de Datos}
+			\begin{frame}{USB - Flujo de datos}
 				\centering
 				\includegraphics[width=0.8\textwidth]{complogicos.png}
 			\end{frame}
-			\begin{frame}{USB - Conexión mecánica}
-				\begin{figure}
-					\includegraphics[width=.9\textwidth]{usbcableb.png}
-				\end{figure}
+			\begin{frame}{USB - Tipos de paquetes}
+				\begin{itemize}
+					\item Paquetes Token
+					\item Paquetes de Datos
+					\item Paquetes de Handshake
+					\item Paquetes Especiales
+				\end{itemize}
+			\end{frame}
+			\begin{frame}{USB - Trama de paquetes}
+				\begin{itemize}
+					\item Entrada de Paquetes al Host
+						\begin{center}
+							\begin{tikzpicture}[scale=.6\textwidth/\paperwidth,>=latex]
+								\begin{scope}
+									\begin{scope}[transform shape,node distance=.15]
+										\node[pid]	(pidtok)	{\bf{I}\\\bf{N}\\\ \\T\\o\\k.};
+										\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
+										\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
+										\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
+									\end{scope}
+									\begin{scope}
+										\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
+										\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+										\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
+									\end{scope}
+									\begin{scope}[transform shape,node distance=.15]
+										\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\\P\\I\\D};
+										\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+										\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
+									\end{scope}
+									\begin{scope}
+										\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+										\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+									\end{scope}
+										\begin{scope}[transform shape,node distance=.15]
+										\node[pid,node distance=1.3]	(hspid)	[right=of crc16]%.north east,anchor=south east]
+										{H\\S\\\ \\P\\I\\D};
+									\end{scope}
+									\begin{scope}
+										\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+										\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+									\end{scope}
+								\end{scope}
+							\end{tikzpicture}
+						\end{center}
+					\item Salida de Paquetes hacia periféricos
+						\begin{center}
+							\begin{tikzpicture}[scale=.6\textwidth/\paperwidth,>=latex]
+								\begin{scope}
+									\begin{scope}[transform shape,node distance=.15]
+										\node[pid]	(pidtok)	{\bf{O}\\\bf{U}\\\bf{T}\\\ \\T\\o\\k.};
+										\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
+										\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
+										\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
+									\end{scope}
+									\begin{scope}
+										\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
+										\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+										\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
+									\end{scope}
+									\begin{scope}[transform shape,node distance=.15]
+										\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\\P\\I\\D};
+										\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+										\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
+									\end{scope}
+									\begin{scope}
+										\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+										\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+									\end{scope}
+									\begin{scope}[transform shape,node distance=.15]
+										\node[pid,node distance=1.3]	(hspid)	[right=of crc16]%.north east,anchor=south east]
+									{H\\S\\\ \\P\\I\\D};
+									\end{scope}
+									\begin{scope}
+										\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+										\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+									\end{scope}
+								\end{scope}
+							\end{tikzpicture}
+						\end{center}
+				\end{itemize}
 			\end{frame}
 			\begin{frame}{USB - Conexión mecánica}
-				\begin{figure}
-					\includegraphics[width=0.9\textwidth]{usbcablea.png}
-				\end{figure}
+				\only<1>{
+					\begin{itemize}
+						\item La conexión mecánica posee dos pares de conductores: uno de alimentación ($V_{BUS}$ y GROUND) y otro de datos diferenciales(D+ y D-). Además posee diferentes tipos de fichas de conexión.
+						\item Los conectores poseen diferencia en los extremos, a fin de identificar el extremo que va hacia el Host (tipo A) y el extremo que va hacia los dispositivos (tipo B, mini USB, micro USB)
+					\end{itemize}}
+				\only<2>{
+					\begin{figure}
+						\includegraphics[width=.9\textwidth]{usbcableb.png}
+					\end{figure}}
+				\only<3>{
+					\begin{figure}
+						\includegraphics[width=0.9\textwidth]{usbcablea.png}
+					\end{figure}}
 			\end{frame}
-			\begin{frame}{USB - Tipo de Transferencias}
+			\begin{frame}{USB - Tipo de transferencias}
 					Existen 4 tipos de transferencia los cuales difieren en cómo es transmitida la información, la dirección que posee, el tamaño máximo, acceso al bus, tiempos de latencia, manejo de errores y la secuencia de requerimiento de datos
 				\begin{itemize}
 					\item Transferencias de Control
@@ -145,27 +295,11 @@
 				\end{itemize}
 				%AQUI me quedé
 			\end{frame}
-			\begin{frame}{USB - Tipos de Paquetes}
-				\begin{itemize}
-					\item Paquetes Token
-					\item Paquetes de Datos
-					\item Paquetes de Handshake
-					\item Paquetes Especiales
-				\end{itemize}
-			\end{frame}
-			\begin{frame}{USB - Paquetes más comunes}
-				\begin{itemize}
-					\item Entrada de Paquetes al Host
-					\includegraphics[width=0.8\textwidth]{15inpkt}
-					\item Salida de Paquetes hacia periféricos
-					\includegraphics[width=0.8\textwidth]{16outpkt}
-				\end{itemize}
-			\end{frame}
 			\begin{frame}{USB - Especificaciones eléctricas}
 				\begin{itemize}
-					\item Existen 3 velocidades de señalización posibles:480 Mbit/s denominada high-speed, 12 Mbit/s para full-speed y 1.5 Mbit/s con low-speed.
+					\item Existen 3 velocidades de señalización posibles: 480 Mbit/s denominada high-speed, 12 Mbit/s para full-speed y 1.5 Mbit/s con low-speed.
 					\item Se utiliza señal diferencial con un esquema de codificación NRZI (inversión de no retorno a zero).
-					\item Los conductores de energía, $V_{BUS}$ y GROUND poseen \SI{5}{\volt} y \SI{0}{\volt} respectivamente.
+					\item Los conductores de energía, $V_{BUS}$ y GROUND poseen \si{5} y \SI{0}{\volt} respectivamente.
 					\item Los conductores de datos son diferenciales y están polarizados de forma tal que pueda ser identificada la velocidad de operación y la conexión/desconexión de dispositivos.
 				\end{itemize}
 			\end{frame}
@@ -214,25 +348,101 @@
 					\end{tikzpicture}
 				\end{figure}
 			\end{frame}
-%			\begin{frame}{USB - Bus Serial Universal}
-%				\begin{itemize}
-%					\item Lógicamente, cada dispositivo es visto desde el Host como un extremo.
-%					\item Cada extremo posee un ``tubo'' de comunicación unidireccional y una dirección única.
-%					\item Cada ``tubo'' tiene asignado en el Host un buffer específico.
-%					\item Cada extremo tiene una única forma de comunicación con el Host, con su forma de acceso al bus y su determinada cuota de ancho de banda permitida.
-%				\end{itemize}
-%			\end{frame}
 	\section{Implementación}
 		\subsection{Arquitectura del sistema}
-			\begin{frame}{Arquitectura del sistema propuesto}
-				
+			\begin{frame}{Arquitectura del sistema realizado}
+				\only<1>{
+					\begin{center}
+						\begin{tikzpicture}[scale=1.3\textwidth/\paperwidth,>=latex]
+							\begin{scope}
+								\begin{scope}[transform shape,node distance=2]
+									\node[bloque]	(fpga)	[]{FPGA};
+									\node[bloque]	(pc) 	[left=of fpga]	{PC};
+									\draw[->,thick] (pc.15) -- node (usbd+) [above]	{D+} (pc.15 -| fpga.west);
+									\draw[->,thick] (fpga.195) -- node (usbd-) [below]	{D-} (fpga.195 -| pc.east);
+									\node[node distance=.4] (usb text) [above=of usbd+] {USB};
+								\end{scope}
+								\begin{scope}
+									\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(fpga.south west)(pc.east)](usb){};
+								\end{scope}
+							\end{scope}
+						\end{tikzpicture}
+					\end{center}}
+				\only<2->{
+					\begin{center}
+						\begin{tikzpicture}[scale=1,>=latex]
+							\begin{scope}
+								\begin{scope}[transform shape,node distance=2]
+									\only<2>{\node[bloque]	(cy)				{Interfaz};}
+									\only<3->{\node[bloque]	(cy)				{Interfaz\\\alert{Cypress FX2LP}};}
+									\only<-3>{\node[bloque]	(fpga)	[right=of cy]{FPGA};}
+									\only<4->{\node[bloque]	(fpga)	[right=of cy]{FPGA\\\alert{Xilinx Spartan VI}};}
+									\only<-4>{\node[bloque]	(pc) 	[left=of cy]	{PC};}
+									\only<5->{\node[bloque]	(pc) 	[left=of cy]	{PC\\\alert{libusb}};}
+									\draw[->,thick] (pc.15) -- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+									\draw[->,thick] (cy.195) -- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+									\draw[<->,thick] (cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+									\draw[->,thick]  (fpga.195) -- node (ctrl) [below] {Control} (fpga.195 -| cy.east);
+									\node[node distance=.4] (usb text) [above=of usbd+] {USB};
+								\end{scope}
+								\begin{scope}
+									\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+								\end{scope}
+							\end{scope}
+						\end{tikzpicture}
+					\end{center}}
 			\end{frame}
 		\subsection{Configuración del puente}
-			\begin{frame}{Firmware de configuración de la interfaz}
-				
+			\begin{frame}{Placa de desarrollo utilizada para la interfaz}
+				\centering
+				\includegraphics[height=0.8\textheight]{cy3684}
+			\end{frame}
+			\begin{frame}{El circuito integrado FX2LP}
+				\begin{tikzpicture}[scale=1,>=latex]
+					\begin{scope}[align=center,transform shape]
+						\node	(aux1) {};
+						\node[core,minimum height=95] (mis)	[left=of aux1,anchor=north east] {MIS};
+						\node[core]	(ram) [right=of aux1,anchor=north west,text width=30] {16 kB RAM};
+						\node[perif,text width=60] (xcvr) [left=of mis]	{Transceptor USB};
+						\node[core,minimum size=60,text width=50] (uc) [above=of aux1] {8051 Mejorado};			
+						\node[perif,node distance=2.9] (pll) [left=of uc] {PLL};
+						\node	(aux2)	[right=of ram.south]{};				
+						\node[core]	(bus)	[right=of aux2,rotate=90,anchor=north west]	{Bus de datos y direcciones};
+						\node[perif]	(i2c)	[right=of bus.south east,anchor=north west]	{I2C};
+						\node[perif]	(gpif)	[right=of bus.south west,anchor=south west] {GPIF};
+						\node[perif,text width=40] (fifo) [below=of gpif] {4 kB FIFO};
+						\node 			(aux3)	[right=of fifo]	{};
+						\node 			(aux5) 	[left=of ram] {};
+						\draw[<->]	(mis) -- (xcvr);
+						\draw[<->]	(ram) -- (ram -| mis.east);
+						\draw[<->]	(fifo) -- (fifo -| mis.east);
+						\draw[<->]	(ram) to (ram -| bus.north);
+						\draw[<->]	(uc) to (uc -| bus.north);
+						\draw[<-]	(xcvr) to (xcvr |- pll.south);
+						\draw[->]	(pll) to (uc);
+						\draw[<->]	(i2c) to (i2c -| bus.south);
+						\draw[<->]	(gpif) to (gpif -| bus.south);
+						\draw[]		(fifo) -| (aux5.center);
+					\end{scope}
+					\begin{scope}[on background layer]
+						\node[contenedor] (fx2) [fit=(pll)(xcvr)(uc)(bus)(mis)(ram)(fifo)(gpif)(i2c)(aux3)]{};
+					\end{scope}
+					\begin{scope}[transform shape]
+						\node[text width=40,align=center]	(xtal)	[left=of pll]{Xtal \SI{24}{\mega\hertz}};
+						\node	(host)	[left=3of xcvr]	{PC};
+						\draw[<->,ultra thick] (host) -- node [above,text width=70,midway,align=center]{Comunicación USB} (xcvr);
+						\draw[->] (xtal) to (pll);
+						\draw[<->,ultra thick] (bus.240) -- node [above,align=center,text width=80] {Datos, direcciones y entradas adicionales}(bus.240 -| fx2.east);
+						\draw[<->,thick] (gpif) to (gpif -| fx2.east);
+						\draw[<->,thick] (fifo) to (fifo -| fx2.east);
+						\draw[<->,thick] (i2c) to (i2c -| fx2.east);
+					\end{scope}
+				\end{tikzpicture}
+			\end{frame}
+			\begin{frame}{Configuración de la interfaz}
 			\end{frame}
 		\subsection{Circuito sintetizado}
-			\begin{frame}{Interfaz puente - FPGA}
+			\begin{frame}{Interfaz - FPGA}
 				
 			\end{frame}
 		\subsection{Circuito de interconexión}
@@ -240,7 +450,7 @@
 				\begin{itemize}
 					\item Versión 1
 					\item Versión 2
-					\item Version 3
+					\item Versión 3
 				\end{itemize}
 			\end{frame}
 	\section{Evaluación y validación}
@@ -273,7 +483,7 @@
 				
 			\end{frame}
 		\subsection{Tasa máxima de Transferencia}
-			\begin{frame}{Resultados de la prueba de máxima transferéncia de datos}
+			\begin{frame}{Resultados de la prueba de máxima transferencia de datos}
 				TODO
 			\end{frame}
 		\subsection{Trabajo futuro}
@@ -292,4 +502,6 @@
 				\centering
 				Respaldo y cosas que no entren
 			\end{frame}
+			\scriptsize{
+			\lstinputlisting[language=C]{./codes/bridge.c}}
 \end{document}
