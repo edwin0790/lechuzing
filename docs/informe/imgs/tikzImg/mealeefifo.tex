@@ -1,0 +1,61 @@
+\documentclass[11pt]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=40,fill=white]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{buf}=[core, text width=55, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{mode text} = [midway,sloped,text width=200,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=85,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=15, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,node distance=1,>=latex]
+			\node[moore] (idle) {--idle:\\RE\_EN='0';};
+			\node[node distance=.6](aux0)[above=of idle]{};
+			\node[ask]	(pr1)	[below=of idle]{\small{SLWR='0'-$>$'1'}}
+				edge[<-] (idle);
+			\node[ask] (pr2) [below=of pr1]{\small{FIFO\_empty='1'}};
+			\node[node distance=.6](aux1)[left=of pr1]{};
+			\draw[->] (pr1) -- node[left] {Si} (pr2);
+			\draw[->] (pr1) -- node[above,near start]{No} (aux1.base);
+			\draw[->] (aux1.base) |- (aux0.base) -- (idle);
+
+			\node[moore](rden)[below=of pr2]{--read enable:\\RD\_EN='1'};
+			\node[node distance=.6] (aux2) [left=of pr2] {};
+			\draw[->] (pr2) -- node[above,near start]{Si} (aux2.base);
+			\draw[->] (pr2) -- node[left,near start] {No} (rden);
+			\draw[->] (aux2.base) -- (aux1.base);
+			
+			\node[node distance=.6] (aux3) [below=of rden]{};
+			\draw[->] (rden) -- (aux3) -| (aux2.base); 
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

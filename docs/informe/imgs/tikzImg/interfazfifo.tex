@@ -1,6 +1,5 @@
-\documentclass[11pt]{article}
+\documentclass[11pt]{standalone}
 
-\usepackage[a3paper]{geometry}
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -33,7 +32,7 @@
 
 
 \begin{document}
-	\begin{tikzpicture}[scale=1]
+	\begin{tikzpicture}[scale=.5]
 		\begin{scope}[transform shape,node distance=5,>=latex]
 			\node[simple]	(fifo)		[]	 			{FIFO Esclava};
 			\node[simple]	(master)	[right=of fifo]	{Maestro Externo};
@@ -49,6 +48,5 @@
 			\draw[<-,thick]	([yshift=-4*110/6]fifo.east) --node [above]{SLRD} ([yshift=-4*110/6]master.west);
 			\draw[<-,thick]	([yshift=-5*110/6]fifo.east) --node [above]{PKTEND} ([yshift=-5*110/6]master.west);
 		\end{scope}
-
 	\end{tikzpicture}
 \end{document}

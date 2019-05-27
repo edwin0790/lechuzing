@@ -327,7 +327,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 					next_state <= write_end;
 
 			when write_end =>
-				if(write_req = '1')then
+				if(write_req = '1' and read_empty_flag='0')then
 					next_state <= write_write;
 				else
 					next_state <= idle;

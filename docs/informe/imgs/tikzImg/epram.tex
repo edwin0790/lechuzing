@@ -1,6 +1,5 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,]{standalone}
 
-\usepackage[a3paper]{geometry}
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -37,7 +36,7 @@
 		exterior/.style={rectangle,draw=black,minimum size=40,},
 		mode text/.style={midway,sloped,text width=140,}]
 	
-		\begin{scope}[node distance=0.4]
+		\begin{scope}[node distance=0.4,transform shape]
 			\node[buf]	(ep2b1)	[anchor=north]		{\ep{1}{2}{512}};
 			\node[buf]	(ep2b2)	[below=of ep2b1]	{\ep{2}{2}{512}};
 			\node[obuf]	(ep4b1) [below=of ep2b2]	{\ep{1}{4}{512}};
@@ -48,7 +47,7 @@
 			\node[buf]	(ep8b2)	[below=of ep8b1]	{\ep{2}{8}{512}};
 		\end{scope}
 		
-		\begin{scope}[node distance=0.4, xshift=90]
+		\begin{scope}[node distance=0.4, xshift=90,transform shape]
 			\node[buf]	(ep2b3)	[anchor=north]		{\epg{1}{2}{1024}};
 			\node[obuf] (ep2b4)	[below=of ep2b3]	{\epg{2}{2}{1024}};
 			\node[obuf]	(ep2b5)	[below=of ep2b4]	{\epg{3}{2}{1024}};
@@ -69,6 +68,8 @@
 
 		\begin{scope}[]
 			\node[draw=black,inner sep=10,fit=(ep21)(ep82)](marco){};
+		\end{scope}
+		\begin{scope}[]
 			\draw (marco.north) to (marco.south);
 			\node[left=of ep2b1.north east,anchor=north east](add1)	{0xF000};
 			\node[left=of ep2b1.south east,anchor=south east](add2)	{0xF1FF};
