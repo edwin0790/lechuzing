@@ -849,49 +849,71 @@
 					\centering
 					\includegraphics[width=\textwidth]{54tbmea}}
 			\end{frame}
+		\subsection{Elementos de VHDL utilizados para depuración}
+			\begin{frame}{Depuración de la interfaz en VHDL}
+				\begin{itemize}
+					\item Se utilizó un registro para elaborar un eco de a dos bytes. Permitió corroborar el correcto funcionamiento de la lectura y escritura de las memorias FIFO de la interfaz de Cypress.
+					\item Se utilizó una memoria FIFO generada con el software ``Core Generator'' de Xilinx para lograr un correcto funcionamiento de las señales de la interfaz escrita en VHDL.
+				\end{itemize}
+			\end{frame}
 		\subsection{Depuración de firmware del puente}
 			\begin{frame}{Debug Cypress}
-				
+				\begin{itemize}
+					\item Se utilizó el framework provisto por Cypress para ser compilado con SDCC. No dió los frutos esperados.
+					\item Se utilizó el framework provisto por Cypress para ser compilado con C51 de Keil. No funcionó en primera instancia.
+					\item Se programó el puerto UART del 8051 para rastrear el error.
+					\item Se logró que el framework trabaje adecuadamente solo con el puerto UART funcionando.
+					\item Se utilizaron los LEDs indicadores para corroborar el llenado y vaciamiento de los extremos.
+					\item Se aprovecharon los botones indicadores para corroborar el correcto funcionamiento de los extremos.
+				\end{itemize}
 			\end{frame}
 		\subsection{Biblioteca de PC}
 			\begin{frame}{\texttt{libusb-1.0}}
-				
+				\begin{itemize}
+					\item Se utilizó la biblioteca \texttt{libusb-1.0} para la elaboración de un programa de computadoras, escrito en C, que permita leer y escribir paquetes de datos desde la PC.
+					\item Esta biblioteca es de código abierto y es soportada por todos los sistemas operativos actualmente en uso. Esto brinda la reutilización del código generado.
+				\end{itemize}
 			\end{frame}
 		\subsection{Programas de prueba}
 			\begin{frame}{Esquemas de prueba}
 				
 			\end{frame}
-		\subsection{Elementos de VHDL utilizados para depuración}
-			\begin{frame}{Flip-Flop para eco}
-				
-			\end{frame}
-			\begin{frame}{ROM con patrón de repetición infinita}
-				
-			\end{frame}
 	\section{Resultados y conclusiones}
-		\subsection{Robustez}
-			\begin{frame}{Resultados de la prueba de robustez\\de la comunicación}
-				
+		\subsection{Pruebas de robustez y resultados}
+			\begin{frame}{Resultados de la prueba de robustez de la comunicación}
+				\begin{itemize}
+	 				\item Se dejó correr el sistema por más de 24 horas logrando la correcta transmisión y recepción de 388.191.289 paquetes de 128 bytes cada uno.
+					\item Lo anterior equivale a una comunicación que cumple las especificaciones de robustez de la norma USB.
+					\item La tasa de transferencia de datos es de 12 Mbps, lo que equivale a una comunicación USB full-speed.
+					\item No obstante, esta prueba no mide en forma correcta el ancho de banda de entrada que se puede llegar a lograr
+				\end{itemize}
 			\end{frame}
-		\subsection{Tasa máxima de Transferencia}
-			\begin{frame}{Resultados de la prueba de máxima transferencia de datos}
-				TODO
+		\subsection{Conclusiones}
+			\begin{frame}{Concluiones}
+				\begin{itemize}
+					\item Se elaboró un sistema de comunicación USB que permite conectar una FPGA con una PC, mediante una interfaz comercial.
+					\item El sistema elaborado permite leer y escribir datos en forma robusta, es decir, sin perder datos.
+					\item El sistema elaborado alcanzó una tasa de transferencia de 12 Mbps.
+					\item Se aprendió sobre las técnicas y herramientas que permiten desarrollar y depurar sistemas en VHDL, C para microcontoladores y C para computadoras.
+					\item Se desarrollaron competencias sobre las formas de prueba y validación de los sistemas implementados y sus componentes.
+				\end{itemize}
 			\end{frame}
 		\subsection{Trabajo futuro}
 			\begin{frame}{Lo que falta...}
-				
+				\begin{itemize}
+					\item Realizar una prueba de máxima transferencia de datos.
+					\item Elaborar la documentación necesaria para que la interfaz de comunicación pueda ser utilizada por otros desarrolladores
+				\end{itemize}
 			\end{frame}
 			\begin{frame}{Consultas}
-				
+				Consultas y sugerencias.
 			\end{frame}
 			\begin{frame}[c]
 				\centering
-				\alert {Muchas gracias}
+				\alert {Muchas gracias.}
 			\end{frame}
 			
 			\begin{frame}{Material Adicional}
-				\centering
-				Respaldo y cosas que no entren
 			\end{frame}
 			\scriptsize{
 			\lstinputlisting[language=C]{./codes/bridge.c}}

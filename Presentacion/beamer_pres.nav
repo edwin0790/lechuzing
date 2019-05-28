@@ -90,54 +90,52 @@
 \headcommand {\beamer@framepages {51}{51}}
 \headcommand {\slideentry {3}{1}{2}{52/56}{Test benchs de VHDL}{0}}
 \headcommand {\beamer@framepages {52}{56}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{57}{Depuraci\IeC {\'o}n de firmware del puente}}\headcommand {\beamer@subsectionpages {51}{56}}
-\headcommand {\slideentry {3}{2}{1}{57/57}{Depuraci\IeC {\'o}n de firmware del puente}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{57}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}}\headcommand {\beamer@subsectionpages {51}{56}}
+\headcommand {\slideentry {3}{2}{1}{57/57}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}{0}}
 \headcommand {\beamer@framepages {57}{57}}
-\headcommand {\slideentry {3}{2}{2}{58/58}{Depuraci\IeC {\'o}n de firmware del puente}{0}}
+\headcommand {\slideentry {3}{2}{2}{58/58}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}{0}}
 \headcommand {\beamer@framepages {58}{58}}
-\headcommand {\beamer@subsectionentry {0}{3}{3}{59}{Biblioteca de PC}}\headcommand {\beamer@subsectionpages {57}{58}}
-\headcommand {\slideentry {3}{3}{1}{59/59}{Biblioteca de PC}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{59}{Depuraci\IeC {\'o}n de firmware del puente}}\headcommand {\beamer@subsectionpages {57}{58}}
+\headcommand {\slideentry {3}{3}{1}{59/59}{Depuraci\IeC {\'o}n de firmware del puente}{0}}
 \headcommand {\beamer@framepages {59}{59}}
-\headcommand {\slideentry {3}{3}{2}{60/60}{Biblioteca de PC}{0}}
+\headcommand {\slideentry {3}{3}{2}{60/60}{Depuraci\IeC {\'o}n de firmware del puente}{0}}
 \headcommand {\beamer@framepages {60}{60}}
-\headcommand {\beamer@subsectionentry {0}{3}{4}{61}{Programas de prueba}}\headcommand {\beamer@subsectionpages {59}{60}}
-\headcommand {\slideentry {3}{4}{1}{61/61}{Programas de prueba}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{4}{61}{Biblioteca de PC}}\headcommand {\beamer@subsectionpages {59}{60}}
+\headcommand {\slideentry {3}{4}{1}{61/61}{Biblioteca de PC}{0}}
 \headcommand {\beamer@framepages {61}{61}}
-\headcommand {\slideentry {3}{4}{2}{62/62}{Programas de prueba}{0}}
+\headcommand {\slideentry {3}{4}{2}{62/62}{Biblioteca de PC}{0}}
 \headcommand {\beamer@framepages {62}{62}}
-\headcommand {\beamer@subsectionentry {0}{3}{5}{63}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}}\headcommand {\beamer@subsectionpages {61}{62}}
-\headcommand {\slideentry {3}{5}{1}{63/63}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}{0}}
+\headcommand {\beamer@subsectionentry {0}{3}{5}{63}{Programas de prueba}}\headcommand {\beamer@subsectionpages {61}{62}}
+\headcommand {\slideentry {3}{5}{1}{63/63}{Programas de prueba}{0}}
 \headcommand {\beamer@framepages {63}{63}}
-\headcommand {\slideentry {3}{5}{2}{64/64}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}{0}}
+\headcommand {\slideentry {3}{5}{2}{64/64}{Programas de prueba}{0}}
 \headcommand {\beamer@framepages {64}{64}}
-\headcommand {\slideentry {3}{5}{3}{65/65}{Elementos de VHDL utilizados para depuraci\IeC {\'o}n}{0}}
+\headcommand {\sectionentry {4}{Resultados y conclusiones}{65}{Resultados y conclusiones}{0}}
+\headcommand {\beamer@sectionpages {51}{64}}
+\headcommand {\beamer@subsectionpages {63}{64}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{65}{Pruebas de robustez y resultados}}\headcommand {\beamer@subsectionpages {65}{64}}
+\headcommand {\slideentry {4}{1}{1}{65/65}{Pruebas de robustez y resultados}{0}}
 \headcommand {\beamer@framepages {65}{65}}
-\headcommand {\sectionentry {4}{Resultados y conclusiones}{66}{Resultados y conclusiones}{0}}
-\headcommand {\beamer@sectionpages {51}{65}}
-\headcommand {\beamer@subsectionpages {63}{65}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{66}{Robustez}}\headcommand {\beamer@subsectionpages {66}{65}}
-\headcommand {\slideentry {4}{1}{1}{66/66}{Robustez}{0}}
+\headcommand {\slideentry {4}{1}{2}{66/66}{Pruebas de robustez y resultados}{0}}
 \headcommand {\beamer@framepages {66}{66}}
-\headcommand {\slideentry {4}{1}{2}{67/67}{Robustez}{0}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{67}{Conclusiones}}\headcommand {\beamer@subsectionpages {65}{66}}
+\headcommand {\slideentry {4}{2}{1}{67/67}{Conclusiones}{0}}
 \headcommand {\beamer@framepages {67}{67}}
-\headcommand {\beamer@subsectionentry {0}{4}{2}{68}{Tasa m\IeC {\'a}xima de Transferencia}}\headcommand {\beamer@subsectionpages {66}{67}}
-\headcommand {\slideentry {4}{2}{1}{68/68}{Tasa m\IeC {\'a}xima de Transferencia}{0}}
+\headcommand {\slideentry {4}{2}{2}{68/68}{Conclusiones}{0}}
 \headcommand {\beamer@framepages {68}{68}}
-\headcommand {\slideentry {4}{2}{2}{69/69}{Tasa m\IeC {\'a}xima de Transferencia}{0}}
+\headcommand {\beamer@subsectionentry {0}{4}{3}{69}{Trabajo futuro}}\headcommand {\beamer@subsectionpages {67}{68}}
+\headcommand {\slideentry {4}{3}{1}{69/69}{Trabajo futuro}{0}}
 \headcommand {\beamer@framepages {69}{69}}
-\headcommand {\beamer@subsectionentry {0}{4}{3}{70}{Trabajo futuro}}\headcommand {\beamer@subsectionpages {68}{69}}
-\headcommand {\slideentry {4}{3}{1}{70/70}{Trabajo futuro}{0}}
+\headcommand {\slideentry {4}{3}{2}{70/70}{Trabajo futuro}{0}}
 \headcommand {\beamer@framepages {70}{70}}
-\headcommand {\slideentry {4}{3}{2}{71/71}{Trabajo futuro}{0}}
+\headcommand {\slideentry {4}{3}{3}{71/71}{Trabajo futuro}{0}}
 \headcommand {\beamer@framepages {71}{71}}
-\headcommand {\slideentry {4}{3}{3}{72/72}{Trabajo futuro}{0}}
+\headcommand {\slideentry {4}{3}{4}{72/72}{Trabajo futuro}{0}}
 \headcommand {\beamer@framepages {72}{72}}
-\headcommand {\slideentry {4}{3}{4}{73/73}{Trabajo futuro}{0}}
+\headcommand {\slideentry {4}{3}{5}{73/73}{Trabajo futuro}{0}}
 \headcommand {\beamer@framepages {73}{73}}
-\headcommand {\slideentry {4}{3}{5}{74/74}{Trabajo futuro}{0}}
-\headcommand {\beamer@framepages {74}{74}}
-\headcommand {\beamer@partpages {1}{89}}
-\headcommand {\beamer@subsectionpages {70}{89}}
-\headcommand {\beamer@sectionpages {66}{89}}
-\headcommand {\beamer@documentpages {89}}
-\headcommand {\def \inserttotalframenumber {55}}
+\headcommand {\beamer@partpages {1}{88}}
+\headcommand {\beamer@subsectionpages {69}{88}}
+\headcommand {\beamer@sectionpages {65}{88}}
+\headcommand {\beamer@documentpages {88}}
+\headcommand {\def \inserttotalframenumber {54}}
