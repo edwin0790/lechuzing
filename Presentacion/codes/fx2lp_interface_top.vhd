@@ -54,20 +54,20 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 
 	-- declaracion de componentes
 	COMPONENT fifo_generator_v9_3
-		PORT (
-			rst : IN STD_LOGIC;
-			wr_clk : IN STD_LOGIC;
-			rd_clk : IN STD_LOGIC;
-			din : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-			wr_en : IN STD_LOGIC;
-			rd_en : IN STD_LOGIC;
-			dout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-			full : OUT STD_LOGIC;
-			empty : OUT STD_LOGIC;
-			valid : OUT STD_LOGIC
-		);
+	  PORT (
+		 rst : IN STD_LOGIC;
+		 wr_clk : IN STD_LOGIC;
+		 rd_clk : IN STD_LOGIC;
+		 din : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		 wr_en : IN STD_LOGIC;
+		 rd_en : IN STD_LOGIC;
+		 dout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		 full : OUT STD_LOGIC;
+		 empty : OUT STD_LOGIC;
+		 valid : OUT STD_LOGIC
+	  );
 	END COMPONENT;
-
+	
 	component clk_wiz_v3_6
 	port(
 		CLK_IN1 : in  std_logic;
@@ -123,7 +123,7 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 
 	-- cables de dudosa utilidad
 	signal push_int, pop_int									: std_logic := '0';
-	signal write_req												: std_logic;
+	signal write_req												: std_logic := '0';
 
 --	-- cables de un registro, por las dudas
 --	signal d_reg, q_reg											: std_logic_vector(port_width-1 downto 0);
@@ -258,7 +258,22 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 --		tx_block => avr_rx_busy
 --	);
 
-	write_req <= not fifo_empty;
+--	write_req <= not fifo_empty;
+	write_en : process (sys_clk, curr_state, fifo_empty)
+	begin
+		if rising_edge(sys_clk) then
+			if fifo_empty = '0' then
+				write_req <= '1';
+			else
+				if curr_state = write_no_full then
+					write_req <= '0';
+				else
+					write_req <= write_req;
+				end if;
+			end if;
+		end if;
+	end process write_en;
+	
 	-- reloj
 	sys_clk <= pll_0;
 
@@ -307,7 +322,8 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	pktend_int <= (read_empty_flag or write_req);
 				
 	with curr_state select
-		sloe_int <=	'0' when read_read | read_no_empty,
+--		sloe_int <=	'0' when read_read | read_no_empty,
+		sloe_int <=	'0' when read_addr | read_read | read_no_empty,
 						'1' when others;
 
 -- debug
@@ -369,6 +385,11 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 
 			when read_read =>
 					next_state <= idle;
+--				if read_empty_flag = '1' then
+--					next_state <= read_read;
+--				else
+--					next_state <= idle;
+--				end if;
 
 			when write_addr =>
 					next_state <= write_no_full;
@@ -396,8 +417,8 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		end process interfaz_fsm;
 
 	-- maquina de estados avr serie
---	read_fifo_fsm : process(serial_send, fifo_empty, slwr_int, valid)
 	read_fifo_fsm : process(serial_send, fifo_empty, slwr_int)
+--	read_fifo_fsm : process(serial_send, fifo_empty, slwr_int, underflow)
 	begin
 		case serial_send is
 			when idle =>
@@ -412,13 +433,13 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 				end if;
 					
 			when read_en =>
---				serial_send_next <= idle;
 				serial_send_next <= avr_send;
 			
 			when avr_send =>
 				if slwr_int ='1' then
 					serial_send_next <= idle;
 				end if;
+
 				
 			when others =>
 				serial_send_next <= idle;
@@ -441,7 +462,6 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 				end if;
 			
 			when fifo_wren =>
---				fifo_wr_next <= idle;
 				fifo_wr_next <= fifo_nwren;
 				
 			when fifo_nwren =>
