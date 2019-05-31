@@ -29,30 +29,47 @@ entity fx2lp_interface_top is
     sloe    : out   std_logic;                              -- senal de habilitacion de salida
 
     pktend  : out   std_logic;
+
     -- reloj
-      -- se utiliza el reloj que	 provee el EZ-USB-FX2LP
-    clk_in  : in    std_logic;                              -- entrada de reloj
 	 clk_out	: out   std_logic;										-- salida de reloj
-
-    -- senales que se comunican desde y hacia el sistema
-    button  : in    std_logic;                              -- fundamentalmente para sincronizacion..activo en bajo
-    send_req: in    std_logic;                              -- pedido de envío de datos
-    data_out: out   std_logic_vector(port_width-1 downto 0);
-    data_in : in    std_logic_vector(port_width-1 downto 0);
 	 
-	 -- senales hacia mojo
+	 -- senales desde hacia mojo
+    clk_in  : in    std_logic;                              -- entrada de reloj
+    button  : in    std_logic;                              -- activo en bajo
 	 led		: out	std_logic_vector(7 downto 0)
-
---	 ;avr_tx	: in	std_logic;
---	 avr_rx_busy	: in	std_logic;
---	 avr_rx	: out	std_logic;
---	 cclk	:	in	std_logic
+	 
 	 );
 end fx2lp_interface_top;
 
 architecture fx2lp_interface_arq of fx2lp_interface_top is
 
 	-- declaracion de componentes
+	COMPONENT fx2lp_interface
+	GENERIC(
+		constant in_ep_addr:	std_logic_vector(1 downto 0) := "00";
+		constant out_ep_addr:std_logic_vector(1 downto 0) := "11";
+		constant port_width: integer := 16
+	);
+	PORT(
+		clk : IN std_logic;
+		reset : IN std_logic;
+		flaga : IN std_logic;
+		flagb : IN std_logic;
+		flagc : IN std_logic;
+		flagd : IN std_logic;
+		send_req : IN std_logic;
+		data_to_tx : IN std_logic_vector(15 downto 0);    
+		fdata : INOUT std_logic_vector(15 downto 0);      
+		faddr : OUT std_logic_vector(1 downto 0);
+		slrd : OUT std_logic;
+		slwr : OUT std_logic;
+		sloe : OUT std_logic;
+		pktend : OUT std_logic;
+		rx_data : OUT std_logic_vector(15 downto 0)
+		);
+	END COMPONENT;
+
+
 	COMPONENT fifo_generator_v9_3
 	  PORT (
 		 rst : IN STD_LOGIC;
@@ -80,71 +97,43 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	);
 	end component;
 
---	COMPONENT avr_interface
---	PORT(
---		clk : IN std_logic;
---		rst : IN std_logic;
---		cclk : IN std_logic;
---		spi_mosi : IN std_logic;
---		spi_sck : IN std_logic;
---		spi_ss : IN std_logic;
---		rx : IN std_logic;
---		channel : IN std_logic_vector(3 downto 0);
---		tx_data : IN std_logic_vector(7 downto 0);
---		new_tx_data : IN std_logic;
---		tx_block : IN std_logic;          
---		spi_miso : OUT std_logic;
---		spi_channel : OUT std_logic_vector(3 downto 0);
---		tx : OUT std_logic;
---		new_sample : OUT std_logic;
---		sample : OUT std_logic_vector(9 downto 0);
---		sample_channel : OUT std_logic_vector(3 downto 0);
---		tx_busy : OUT std_logic;
---		rx_data : OUT std_logic_vector(7 downto 0);
---		new_rx_data : OUT std_logic
---		);
---	END COMPONENT;
-
 	-- declaracion de segnales
 	-- relojes
 		-- reloj usado en el sistema
-	signal sys_clk													: std_logic := '0';
+	signal sys_clk	: std_logic := '0';
 		-- salidas de pll
-	signal pll_0, pll_90, pll_180, pll_270					: std_logic := '0';
-	signal locked													: std_logic := '0';
+	signal pll_0	: std_logic := '0';
+	signal pll_90	: std_logic := '0';
+	signal pll_180	: std_logic := '0';
+	signal pll_270	: std_logic := '0';
+	signal locked	: std_logic := '0';
 
-	-- cables hacia la interfaz
-	signal slwr_int, slrd_int, sloe_int						: std_logic := '1';
-	signal pktend_int												: std_logic := '1';
-	signal faddr_int												: std_logic_vector(1 downto 0) := "00";
-	signal fdata_out, fdata_in									: std_logic_vector(port_width-1 downto 0);
-	signal read_empty_flag, read_full_flag					: std_logic := '0';
-	signal write_empty_flag, write_full_flag				: std_logic := '0';
+	-- cables de utilidad
+	signal write_req	: std_logic := '0';
+	signal slwr_sig	: std_logic := '0';
+	signal slrd_sig	: std_logic := '0';
 
-	-- cables de dudosa utilidad
-	signal push_int, pop_int									: std_logic := '0';
-	signal write_req												: std_logic := '0';
-
---	-- cables de un registro, por las dudas
+--	-- cables para registro de eco
 --	signal d_reg, q_reg											: std_logic_vector(port_width-1 downto 0);
 --	signal c_reg, rst_reg, ce_reg								: std_logic;
-	--cables ffjk
-	signal q, q2													: std_logic := '1';
 
 	-- cables necesarios para la memoria fifo
-	signal fifo_full												: std_logic;
-	signal fifo_empty												: std_logic;
-	signal wr_en, rd_en											: std_logic;
-	signal valid													: std_logic;
-	signal dout														: std_logic_vector(port_width-1 downto 0);
-
+	signal fifo_full	: std_logic;
+	signal fifo_empty	: std_logic;
+	signal wr_en	: std_logic;
+	signal rd_en	: std_logic;
+	signal valid	: std_logic;
+	signal dout	: std_logic_vector(port_width-1 downto 0);
+	signal din	: std_logic_vector(port_width-1 downto 0);
 	-- segnales de sistema
 		--init
-	signal reset													: std_logic := '0';
+	signal reset	: std_logic := '0';
+
 		--para depuracion
 	signal debug_clk												: std_logic := '0';
 --	signal counter													: std_logic_vector(15 downto 0) := x"0000";
 --	signal checksum												: std_logic_vector(15 downto 0) := x"0000";
+
 		--temporizaciones
 	signal count3													: natural range 0 to 4 := 0;
 	signal count2													: natural range 0 to 3 := 0;
@@ -166,40 +155,25 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	--signal num_state												: std_logic_vector(3 downto 0) := x"0";
 	--debug
 	
-	type fifo_fsm is
+	type fifo_wr_states is
 	(
 		idle, fifo_wren, fifo_nwren
 	);
-	signal fifo_wr:	fifo_fsm := idle;
-	signal fifo_wr_next:	fifo_fsm := idle;
+	signal fifo_wr_cst:	fifo_wr_states := idle;
+	signal fifo_wr_nst:	fifo_wr_states := idle;
 	
-	type avr_fsm is
+	type fifo_rd_states is
 	(
-		idle, read_en, avr_send
+		idle, fifo_rden, fifo_nrden
 	);
-	signal serial_send:	avr_fsm := idle;
-	signal serial_send_next: avr_fsm := idle;
-	
--- comunicacion avr
---	signal tx_data	: std_logic_vector(7 downto 0);
-	signal new_tx_data:	std_logic;
---	signal tx_busy: std_logic;
-	
+	signal fifo_rd_cst:	fifo_rd_states := idle;
+	signal fifo_rd_nst:	fifo_rd_states := idle;
+		
 	begin
 
---	with curr_state select
---		num_state <= 	"1111" when idle,
---							"0101" when read_addr,
---							"0110" when read_no_empty,
---							"0111" when read_read,
---							"0001" when write_addr,
---							"0010" when write_no_full,
---							"0011" when write_write,
---							"0000" when write_end;
 	--debuggin leds
 		-- fisically connected. Don't comment!!!
-	led(7 downto 1) <= (others => '0');
-	led(0) <= fifo_empty;
+	led(7 downto 0) <= (others => '0');
 	
 	oddr_y : ODDR2 	                                           -- clk out buffer
 	port map
@@ -215,13 +189,32 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	);
 
 	--instanciaciones
-		--fifo
+	-- interfaz
+	interface: fx2lp_interface PORT MAP(
+		clk => sys_clk,
+		reset => reset,
+		fdata => fdata,
+		faddr => faddr,
+		slrd => slrd_sig,
+		slwr => slwr_sig,
+		flaga => flaga,
+		flagb => flagb,
+		flagc => flagc,
+		flagd => flagd,
+		sloe => sloe,
+		pktend => pktend,
+		send_req => write_req,
+		rx_data => din,
+		data_to_tx => dout
+	);
+
+	--fifo
 	fifo : fifo_generator_v9_3
 	  PORT MAP (
 		 rst => not reset,
 		 wr_clk => sys_clk,
 		 rd_clk => sys_clk,
-		 din => fdata_in,
+		 din => din,
 		 wr_en => wr_en,
 		 rd_en => rd_en,
 		 dout => dout,
@@ -241,320 +234,235 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 			LOCKED    => locked
 		);
 
---	-- com mojo
---	inst_avr_interface: avr_interface PORT MAP(
---		clk => sys_clk,
---		rst => '0',--not reset,
---		cclk => cclk,
---		spi_mosi => '0',
---		spi_sck => '0',
---		spi_ss => '0',
---		tx => avr_rx,
---		rx => avr_tx,
---		channel => "0000",
---		tx_data => tx_data,
---		new_tx_data => new_tx_data,
---		tx_busy => tx_busy,
---		tx_block => avr_rx_busy
---	);
-
---	write_req <= not fifo_empty;
-	write_en : process (sys_clk, curr_state, fifo_empty)
+	--REVISAR TODO ESTO
+	wr_req_ff : process (sys_clk, slwr_sig, fifo_empty)
 	begin
 		if rising_edge(sys_clk) then
 			if fifo_empty = '0' then
 				write_req <= '1';
 			else
-				if curr_state = write_no_full then
+				if slwr_sig = '1' then
 					write_req <= '0';
 				else
 					write_req <= write_req;
 				end if;
 			end if;
 		end if;
-	end process write_en;
+	end process wr_req_ff;
+	--REVISAR TODO ESTO
 	
 	-- reloj
 	sys_clk <= pll_0;
 
 	--conexiones de segnales internas hacia el exterior
-	slwr   <= slwr_int;
-	slrd   <= slrd_int;
-	sloe   <= sloe_int;
-	faddr  <= faddr_int;
-	pktend <= pktend_int;
-
-	write_full_flag  <= flaga;
-	write_empty_flag  <= flagd;
-	read_full_flag  <= flagc;
-	read_empty_flag  <= flagb;
-
---	with curr_state select
---		write_req <= '1' when read_read,
---						 '0' when write_end,
---						 write_req when others;
-
---	write_req <= not fifo_empty;
---	write_req <= '1';
---	tx_data(0) <= dout(0);
---	tx_data(1) <= dout(1);
---	tx_data(2) <= dout(2);
---	tx_data(3) <= dout(3);
---	tx_data(4) <= dout(4);
---	tx_data(5) <= dout(5);
---	tx_data(6) <= dout(6);
---	tx_data(7) <= dout(7);
+	slwr   <= slwr_sig;
+	slrd   <= slrd_sig;
+--	sloe   <= sloe_int;
+--	faddr  <= faddr_int;
+--	pktend <= pktend_int;
+--
+--	write_full_flag  <= flaga;
+--	write_empty_flag  <= flagd;
+--	read_full_flag  <= flagc;
+--	read_empty_flag  <= flagb;
 	
 	reset <= '1' when rst_cont = 0 else '0';
 	
 	-- control signaling
-	with curr_state select
-		faddr_int <=	out_ep_addr when read_addr | read_no_empty | read_read,-- | idle,--edwin,
-							in_ep_addr  when write_addr | write_no_full | write_write | write_end,
-							(others => 'Z') when others;
-
-	slwr_int <=	'0' when next_state = write_write else
-					'1';
-
-	slrd_int <= '0' when curr_state = read_no_empty else
-					'1';
-
-	pktend_int <= (read_empty_flag or write_req);
-				
-	with curr_state select
---		sloe_int <=	'0' when read_read | read_no_empty,
-		sloe_int <=	'0' when read_addr | read_read | read_no_empty,
-						'1' when others;
-
--- debug
---	fdata_out(15 downto 8) <= counter(7 downto 0);
---	fdata_out(7 downto 0) <= counter(15 downto 8);
--- debug
-
-	with curr_state select
-					--dout->fdata_out
-		fdata <=	dout        when write_no_full | write_write | write_end | write_addr,
-					(others => 'Z')  when others;
-
 --	with curr_state select
---					--dout->fdata_out
---		fdata(15 downto 8) <=	dout        when write_no_full | write_write | write_end | write_addr,
---					(others => 'Z')  when others;
+--		faddr_int <=	out_ep_addr when read_addr | read_no_empty | read_read,-- | idle,--edwin,
+--							in_ep_addr  when write_addr | write_no_full | write_write | write_end,
+--							(others => 'Z') when others;
+--
+--	slwr_int <=	'0' when next_state = write_write else
+--					'1';
+--
+--	slrd_int <= '0' when curr_state = read_no_empty else
+--					'1';
+--
+--	pktend_int <= (read_empty_flag or write_req);
+--				
+--	with curr_state select
+----		sloe_int <=	'0' when read_read | read_no_empty,
+--		sloe_int <=	'0' when read_addr | read_read | read_no_empty,
+--						'1' when others;
+--
+---- debug
+----	fdata_out(15 downto 8) <= counter(7 downto 0);
+----	fdata_out(7 downto 0) <= counter(15 downto 8);
+---- debug
 --
 --	with curr_state select
 --					--dout->fdata_out
---		fdata(7 downto 0) <=	dout        when write_no_full | write_write | write_end | write_addr,
+--		fdata <=	dout        when write_no_full | write_write | write_end | write_addr,
 --					(others => 'Z')  when others;
-
-	with curr_state select
-		fdata_in <=	fdata     when read_no_empty | read_read | read_addr,
-						fdata_in  when others;
-	--              (others => '0');
+--
+--	with curr_state select
+--		fdata_in <=	fdata     when read_no_empty | read_read | read_addr,
+--						fdata_in  when others;
 
 	-- fifo segnales
-	wr_en <= '1' when fifo_wr = fifo_wren else '0';
+	wr_en <= '1' when fifo_wr_cst = fifo_wren else '0';
 
-	rd_en <= '1' when serial_send = read_en else '0';
-	
-	--avr segnales
-	new_tx_data <= '1' when serial_send = avr_send else '0';
+	rd_en <= '1' when fifo_rd_cst = fifo_rden else '0';
 
 	-- Implementacion de las maquinas de estado de la interfaz
---	interfaz_fsm: process(curr_state, write_full_flag, read_empty_flag, write_req,valid)
-	interfaz_fsm: process(curr_state, write_full_flag, read_empty_flag, write_req)
-	begin
-		case curr_state is
-			when idle =>
-				if read_empty_flag = '1' then
-					next_state <= read_addr;
-				elsif write_req = '1' then
-					if write_full_flag = '1' then
-						next_state <= write_addr;
-					else
-						next_state <= idle;
-					end if;
-				else
-					next_state <= idle;
-				end if;
-
-			when read_addr =>
-					next_state <= read_no_empty;
-
-			when read_no_empty =>
-				next_state <= read_read;
-
-			when read_read =>
-					next_state <= idle;
+--	interfaz_fsm: process(curr_state, write_full_flag, read_empty_flag, write_req)
+--	begin
+--		case curr_state is
+--			when idle =>
 --				if read_empty_flag = '1' then
---					next_state <= read_read;
+--					next_state <= read_addr;
+--				elsif write_req = '1' then
+--					if write_full_flag = '1' then
+--						next_state <= write_addr;
+--					else
+--						next_state <= idle;
+--					end if;
 --				else
 --					next_state <= idle;
 --				end if;
-
-			when write_addr =>
-					next_state <= write_no_full;
-
-			when write_no_full =>
-				next_state <= write_write;
-
-			when write_write =>
-				next_state <= write_end;
-								
-			when write_end =>
-				if write_req = '1' then
-					if read_empty_flag = '0' then
-						next_state <= write_no_full;
-					else
-						next_state <= idle;
-					end if;
-				else
-					next_state <= idle;
-				end if;
-
-			when others =>
-				next_state <= idle;
-			end case;
-		end process interfaz_fsm;
-
-	-- maquina de estados avr serie
-	read_fifo_fsm : process(serial_send, fifo_empty, slwr_int)
---	read_fifo_fsm : process(serial_send, fifo_empty, slwr_int, underflow)
+--
+--			when read_addr =>
+--					next_state <= read_no_empty;
+--
+--			when read_no_empty =>
+--				next_state <= read_read;
+--
+--			when read_read =>
+--				if read_empty_flag = '1' then
+--					next_state <= read_addr;
+--				else
+--					next_state <= idle;
+--				end if;
+--
+--			when write_addr =>
+--					next_state <= write_no_full;
+--
+--			when write_no_full =>
+--				next_state <= write_write;
+--
+--			when write_write =>
+--				next_state <= write_end;
+--								
+--			when write_end =>
+--				if write_req = '1' then
+--					if read_empty_flag = '0' then
+--						next_state <= write_no_full;
+--					else
+--						next_state <= idle;
+--					end if;
+--				else
+--					next_state <= idle;
+--				end if;
+--
+--			when others =>
+--				next_state <= idle;
+--			end case;
+--		end process interfaz_fsm;
+--
+	-- maquina de estados de lectura fifo
+	read_fifo_fsm : process(fifo_rd_cst, fifo_empty, slwr_sig)
 	begin
-		case serial_send is
+		case fifo_rd_cst is
 			when idle =>
-				if slwr_int = '0' then
+				if slwr_sig = '0' then
 					if fifo_empty ='0' then
-						serial_send_next <= read_en;
+						fifo_rd_nst <= fifo_rden;
 					else
-						serial_send_next <= idle;
+						fifo_rd_nst <= idle;
 					end if;
 				else
-					serial_send_next <= idle;
+					fifo_rd_nst <= idle;
 				end if;
 					
-			when read_en =>
-				serial_send_next <= avr_send;
+			when fifo_rden =>
+				fifo_rd_nst <= fifo_nrden;
 			
-			when avr_send =>
-				if slwr_int ='1' then
-					serial_send_next <= idle;
+			when fifo_nrden =>
+				if slwr_sig ='1' then
+					fifo_rd_nst <= idle;
 				end if;
-
 				
 			when others =>
-				serial_send_next <= idle;
+				fifo_rd_nst <= idle;
 		end case;
 	end process read_fifo_fsm;
 
 	-- maquina de estados escritura fifo
-	write_fifo_fsm: process(fifo_wr,slrd_int,fifo_full)
+	write_fifo_fsm: process(fifo_wr_cst,slrd_sig,fifo_full)
 	begin
-		case fifo_wr is
+		case fifo_wr_cst is
 			when idle =>
-				if slrd_int = '0' then
+				if slrd_sig = '0' then
 					if fifo_full = '0' then
-						fifo_wr_next <= fifo_wren;
+						fifo_wr_nst <= fifo_wren;
 					else
-						fifo_wr_next <= idle;
+						fifo_wr_nst <= idle;
 					end if;
 				else
-					fifo_wr_next <= idle;
+					fifo_wr_nst <= idle;
 				end if;
 			
 			when fifo_wren =>
-				fifo_wr_next <= fifo_nwren;
+				fifo_wr_nst <= fifo_nwren;
 				
 			when fifo_nwren =>
-				if slrd_int = '1' then
-				fifo_wr_next <= idle;
+				if slrd_sig = '1' then
+				fifo_wr_nst <= idle;
 				end if;
 				
 			when others =>
-				fifo_wr_next <= idle;
+				fifo_wr_nst <= idle;
 		end case;
 	end process write_fifo_fsm;
 	
---	--flip-flop control
---	jkff: process(slrd_int, wr_en)
---	begin
---		if q = '1' then
---			if slrd_int = '0' then
---				q <= '0';
---			else
---				q <= q;
---			end if;
---		else
---			if wr_en = '0' then
---				q <= '1';
---			else
---				q <= q;
---			end if;
---		end if;
---	end process jkff;
---	
---	jkff2: process(slwr_int, rd_en)
---	begin
---		if q2 = '1' then
---			if slwr_int = '0' then
---				q2 <= '0';
---			else
---				q2 <= q2;
---			end if;
---		else
---			if rd_en = '0' then
---				q2 <= '1';
---			else
---				q2 <= q2;
---			end if;
---		end if;
---	end process jkff2;
 	-- temporizaciones
-
-	counter3: process(sys_clk, reset, trig3)
-	begin
-		if reset = '0' then
-			count3 <= 0;
-		elsif rising_edge(sys_clk) then
-			if count3 > 0 then
-				count3 <= count3 - 1;
-			elsif trig3 = '1' then
-				count3 <= 4;
-			end if;
-		end if;
-	end process counter3;
-
-	trig3 <= '1' when (next_state = write_write) else '0';
-
-	counter2: process(sys_clk, reset, trig2)
-	begin
-		if reset = '0' then
-			count2 <= 0;
-		elsif rising_edge(sys_clk)then
-			if count2 > 0 then
-				count2 <= count2 - 1;
-			elsif trig2 = '1' then
-				count2 <= 3;
-			end if;
-		end if;
-	end process counter2;
-		
-	with next_state select
-		trig2 <=	'1' when read_no_empty | read_read | write_no_full | write_end,
-					'0' when others;
+--	counter3: process(sys_clk, reset, trig3)
+--	begin
+--		if reset = '0' then
+--			count3 <= 0;
+--		elsif rising_edge(sys_clk) then
+--			if count3 > 0 then
+--				count3 <= count3 - 1;
+--			elsif trig3 = '1' then
+--				count3 <= 4;
+--			end if;
+--		end if;
+--	end process counter3;
+--
+--	trig3 <= '1' when (next_state = write_write) else '0';
+--
+--	counter2: process(sys_clk, reset, trig2)
+--	begin
+--		if reset = '0' then
+--			count2 <= 0;
+--		elsif rising_edge(sys_clk)then
+--			if count2 > 0 then
+--				count2 <= count2 - 1;
+--			elsif trig2 = '1' then
+--				count2 <= 3;
+--			end if;
+--		end if;
+--	end process counter2;
+--		
+--	with next_state select
+--		trig2 <=	'1' when read_no_empty | read_read | write_no_full | write_end,
+--					'0' when others;
 
 	 -- reloj fsm
 	global_fsm_clk: process (sys_clk, reset)
 	begin
 		if reset = '0' then
-			curr_state <= idle;
-			serial_send <= idle;
-			fifo_wr <= idle;
+--			curr_state <= idle;
+			fifo_rd_cst <= idle;
+			fifo_wr_cst <= idle;
 		elsif rising_edge(sys_clk) then
-			serial_send <= serial_send_next;
-			fifo_wr <= fifo_wr_next;
-			if count2 = 0 and count3 = 0 then
-				curr_state <= next_state;
-			end if;
+			fifo_rd_cst <= fifo_rd_nst;
+			fifo_wr_cst <= fifo_wr_nst;
+--			if count2 = 0 and count3 = 0 then
+--				curr_state <= next_state;
+--			end if;
 		end if;
 	end process global_fsm_clk;
 
@@ -577,27 +485,5 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 			end if;
 		end if;
 	end process init_rst;
-	
---	sum: process(curr_state, push_int)
---	variable suma : integer range 0 to 65535 := 0;
---	begin
---		if curr_state = write_addr then
---			checksum <= x"0000";
---		elsif rising_edge(push_int) then
---			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(7 downto 0)));
---			checksum <= std_logic_vector(unsigned(checksum) + unsigned(fdata_out(15 downto 8)));
---		end if;
---	end process sum;
---	
-	-- debug
---	contador_grande: process(button, pop_int)
---	begin
---		if button = '0' then
---			counter <= x"0000";
---		elsif falling_edge(pop_int) then
---			counter <= std_logic_vector(unsigned(counter) + 1);
---		end if;
---	end process contador_grande;
-	-- debug
 
 end fx2lp_interface_arq;

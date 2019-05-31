@@ -42,28 +42,26 @@ END interface_test_bench;
 
 ARCHITECTURE behavior OF interface_test_bench IS
 
-    -- Component Declaration for the Unit Under Test (UUT)
+	-- Component Declaration for the Unit Under Test (UUT)
 
-    COMPONENT fx2lp_interface_top
-    PORT(
-         fdata : INOUT  std_logic_vector(15 downto 0);
-         faddr : OUT  std_logic_vector(1 downto 0);
-         slrd : OUT  std_logic;
-         slwr : OUT  std_logic;
-         flaga : IN  std_logic;
-         flagb : IN  std_logic;
-         flagc : IN  std_logic;
-         flagd : IN  std_logic;
-         sloe : OUT  std_logic;
-         pktend : OUT  std_logic;
-         clk_in : IN  std_logic;
-         clk_out : OUT  std_logic;
-         button : IN  std_logic;
-         send_req : IN  std_logic;
-         data_out : OUT  std_logic_vector(15 downto 0);
-         data_in : IN  std_logic_vector(15 downto 0)
-        );
-    END COMPONENT;
+	COMPONENT fx2lp_interface_top
+	PORT(
+		fdata : INOUT  std_logic_vector(15 downto 0);
+		faddr : OUT  std_logic_vector(1 downto 0);
+		slrd : OUT  std_logic;
+		slwr : OUT  std_logic;
+		flaga : IN  std_logic;
+		flagb : IN  std_logic;
+		flagc : IN  std_logic;
+		flagd : IN  std_logic;
+		sloe : OUT  std_logic;
+		pktend : OUT  std_logic;
+		clk_in : IN  std_logic;
+		clk_out : OUT  std_logic;
+		button : IN  std_logic;
+		led : OUT std_logic_vector(7 downto 0)
+		);
+	END COMPONENT;
 
 
    --Inputs
@@ -73,8 +71,6 @@ ARCHITECTURE behavior OF interface_test_bench IS
    signal flagd : std_logic := '0';
    signal clk_in : std_logic := '0';
    signal button : std_logic := '0';
-   signal send_req : std_logic := '0';
-   signal data_in : std_logic_vector(15 downto 0) := (others => '0');
 
 	--BiDirs
    signal fdata : std_logic_vector(15 downto 0);
@@ -86,7 +82,7 @@ ARCHITECTURE behavior OF interface_test_bench IS
    signal sloe : std_logic;
    signal pktend : std_logic;
    signal clk_out : std_logic;
-   signal data_out : std_logic_vector(15 downto 0);
+	signal led : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
    constant clk_in_period : time := 21 ns;
@@ -112,9 +108,7 @@ BEGIN
           clk_in => clk_in,
           clk_out => clk_out,
           button => button,
-          send_req => send_req,
-          data_out => data_out,
-          data_in => data_in
+			 led => led			 
         );
 
    -- Clock process definitions
@@ -144,15 +138,16 @@ BEGIN
 		flagb <= '0'; -- ep8empty
 		flagc	<= '1'; -- ep8full
 		flagd <= '0'; -- ep2empty
-		wait until button = '1';
 		
-		wait until falling_edge(clk_in);
+		wait for 5 us;
 
 		flagb <= '1';
-		wait until counter = x"0060";
+		wait until counter = x"0200";
 		wait until falling_edge(clk_in);
 		
 		flagb <= '0';
+		wait until fdata = x"0200";
+		flaga <= '0';
 		wait until pktend = '0';
 	end process;
 	

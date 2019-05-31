@@ -1,4 +1,5 @@
-
+#ERROR IN WARNING
+PIN "pll/clkout2_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
 #Created by Constraints Editor (xc6slx9-tqg144-2) - 2017/11/24
 NET "clk_in" TNM_NET = "clk_in";
 TIMESPEC TS_clk_in = PERIOD "clk_in" 50 MHz HIGH 50 %;
@@ -98,7 +99,7 @@ NET "led[7]" IOSTANDARD = LVTTL;
 #NET "spi_channel<1>" LOC = P61 | IOSTANDARD = LVTTL;
 #NET "spi_channel<2>" LOC = P62 | IOSTANDARD = LVTTL;
 #NET "spi_channel<3>" LOC = P65 | IOSTANDARD = LVTTL;
-#
+
 #NET "avr_tx" LOC = P55 | IOSTANDARD = LVTTL;
 #NET "avr_rx" LOC = P59 | IOSTANDARD = LVTTL;
 #NET "avr_rx_busy" LOC = P39 | IOSTANDARD = LVTTL;
