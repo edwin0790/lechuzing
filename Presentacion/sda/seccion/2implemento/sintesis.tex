@@ -77,8 +77,12 @@
 		\end{scope}
 	\end{tikzpicture}
 \end{frame}
-\begin{frame}{Operaciones con la FIFO - Lectura}
-	contenidos...
+\begin{frame}{Operaciones en la FIFO - Lectura asíncrona}
+	\only<1>{\includegraphics[width=.95\textwidth]{rdop_time}}
+	\only<2>{\includegraphics[width=.95\textwidth]{pktend_time}}
+\end{frame}
+\begin{frame}{Operaciones en la FIFO - Escritura asíncrona}
+	\includegraphics[width=.95\textwidth]{wrop_time}
 \end{frame}
 \begin{frame}{Máquina de estados algorítmica de la interfaz}
 	\centering
@@ -110,18 +114,11 @@
 			
 			\node[moore](wnfull)[below=of wadr] {--write no full:\\SLRD='1';\\SLOE='1';\\SLWR='0';\\FIFOADR="11";}
 			edge[<-] (wadr);
-			\node[node distance=.5](aux3)[left=of wnfull]{};
-			\draw[->] (wnfull) -- (aux3.base);
-			\node[moore,node distance=.5](wwrite)[left=of aux3] {--write write:\\SLRD='1';\\SLOE='1';\\SLWR='1';\\FIFOADR="11";}
-			edge[<-] (aux3.base);
+			\node[moore,](wwrite)[left=of wnfull] {--write write:\\SLRD='1';\\SLOE='1';\\SLWR='1';\\FIFOADR="11";}
+			edge[<-] (wnfull);
 			
-			\node[ask](pr4)[below=of wwrite] {fifo\_valid='1'}
-			edge[<-] (wwrite);
-			\node[moore](wend)[left=of pr4] {--write end:\\SLRD='1';\\SLOE='1';\\SLWR='1';\\FIFOADR="11";};
-			\node[node distance=.7] (aux4) [right=of pr4]{}; 
-			\draw[->]	(pr4) -- node[above,near start]{Si} (wend);
-			\draw[->](pr4) -- node[above] {No} (aux4.base);
-			\draw[->](aux4.base) -- (aux3.base);
+			\node[moore](wend)[left=of wwrite] {--write end:\\SLRD='1';\\SLOE='1';\\SLWR='1';\\FIFOADR="11";}
+				edge[<-] (wwrite);
 			
 			\node[ask](pr5)[below=of wend] {write\_req='1'}
 			edge[<-] (wend);
