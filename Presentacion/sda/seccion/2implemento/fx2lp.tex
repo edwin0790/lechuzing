@@ -118,44 +118,44 @@
 		\end{column}
 	\end{columns}
 \end{frame}
-\begin{frame}{Cypress Software Development Kit}
-	\begin{columns}
-		\begin{column}{.2\textwidth}
-			\begin{tikzpicture}[scale=.42]
-				\begin{scope}[transform shape,node distance=1,>=latex]
-					\node[mealy]	(start)	[]	{Iniciar: Reset \\ \verb~main();~ };
-					\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
-						edge[<-,thick] (start);
-					\node[moore]	(us1)	[below=of init]		{ \verb~TD\_Init();~ }
-						edge[<-,thick]	(init);
-					\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
-						edge[<-,thick](us1);
-					\node[node distance=0.7]			(aux1)	[below=of EI] 	{};
-					\draw[<-,thick](aux1.base) to (EI);
-					\node[moore,node distance=.5]	(poll)	[below=of aux1]	{\verb~TD\_Poll();~ }
-						edge[<-,thick](aux1.base);
-					\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
-						edge[<-,thick](poll);
-					\node[moore]	(setup)	[right=of pr1]	{\verb~SetupComand();~ };
-					\draw[->,thick] (setup) |- (aux1.base);
-					\node[]			(aux2)	[below=of pr1]	{};
-					\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
-					\draw[thick]	(pr1) -- node[left,near start]{No}	(aux2.base);
-					\node[node distance=2.5](aux3)	[left=of aux2] {};
-					\draw[thick]	(aux2.base) -- (aux3.base);
-					\draw[->,thick]	(aux3.base)	|-	(aux1.base);
-				\end{scope}
-			\end{tikzpicture}
-		\end{column}
-		\begin{column}{.6\textwidth}
-			\begin{itemize}
-				\item El programa inicia al comienzo del main();
-				\item Inicia todas las variables de estado
-				\item TD\_Init ejecuta la configuración del usuario
-				\item El usuario debe configurar las interrupciones que desea habilitar. Al salir de TD\_Init, el programa habilita todas (\verb~EA=1~)
-				\item Finalmente, se ejecuta las instrucciones que el usuario programa de manera específica
-				\item Además, se ejecutan las funciones que controlan el USB.
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
+%\begin{frame}{Cypress Software Development Kit}
+%	\begin{columns}
+%		\begin{column}{.2\textwidth}
+%			\begin{tikzpicture}[scale=.42]
+%				\begin{scope}[transform shape,node distance=1,>=latex]
+%					\node[mealy]	(start)	[]	{Iniciar: Reset \\ \verb~main();~ };
+%					\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
+%						edge[<-,thick] (start);
+%					\node[moore]	(us1)	[below=of init]		{ \verb~TD\_Init();~ }
+%						edge[<-,thick]	(init);
+%					\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
+%						edge[<-,thick](us1);
+%					\node[node distance=0.7]			(aux1)	[below=of EI] 	{};
+%					\draw[<-,thick](aux1.base) to (EI);
+%					\node[moore,node distance=.5]	(poll)	[below=of aux1]	{\verb~TD\_Poll();~ }
+%						edge[<-,thick](aux1.base);
+%					\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
+%						edge[<-,thick](poll);
+%					\node[moore]	(setup)	[right=of pr1]	{\verb~SetupComand();~ };
+%					\draw[->,thick] (setup) |- (aux1.base);
+%					\node[]			(aux2)	[below=of pr1]	{};
+%					\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
+%					\draw[thick]	(pr1) -- node[left,near start]{No}	(aux2.base);
+%					\node[node distance=2.5](aux3)	[left=of aux2] {};
+%					\draw[thick]	(aux2.base) -- (aux3.base);
+%					\draw[->,thick]	(aux3.base)	|-	(aux1.base);
+%				\end{scope}
+%			\end{tikzpicture}
+%		\end{column}
+%		\begin{column}{.6\textwidth}
+%			\begin{itemize}
+%				\item El programa inicia al comienzo del main();
+%				\item Inicia todas las variables de estado
+%				\item TD\_Init ejecuta la configuración del usuario
+%				\item El usuario debe configurar las interrupciones que desea habilitar. Al salir de TD\_Init, el programa habilita todas (\verb~EA=1~)
+%				\item Finalmente, se ejecuta las instrucciones que el usuario programa de manera específica
+%				\item Además, se ejecutan las funciones que controlan el USB.
+%			\end{itemize}
+%		\end{column}
+%	\end{columns}
+%\end{frame}

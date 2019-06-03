@@ -142,57 +142,119 @@
 		\end{scope}
 	\end{tikzpicture}
 \end{frame}
-\begin{frame}{Maquinas de estado hacia la memoria FIFO interna}
-	\begin{columns}
-		\begin{column}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}[scale=.53]
-				\begin{scope}[transform shape,node distance=1,>=latex]
-					\node[moore] (idle) {--idle:\\RE\_EN='0';};
-					\node[node distance=.6](aux0)[above=of idle]{};
-					\node[ask]	(pr1)	[below=of idle]{\tiny{SLWR='0'-$>$'1'}}
-						edge[<-] (idle);
-					\node[ask] (pr2) [below=of pr1]{\scriptsize{FIFO\_empty='1'}};
-					\node[node distance=.8](aux1)[left=of pr1]{};
-					\draw[->] (pr1) -- node[left] {Si} (pr2);
-					\draw[->] (pr1) -- node[above,near start]{No} (aux1.base);
-					\draw[->] (aux1.base) |- (aux0.base) -- (idle);
-					
-					\node[moore](rden)[below=of pr2]{--read enable:\\RD\_EN='1'};
-					\node[node distance=.8] (aux2) [left=of pr2] {};
-					\draw[->] (pr2) -- node[above,near start]{Si} (aux2.base);
-					\draw[->] (pr2) -- node[left,near start] {No} (rden);
-					\draw[->] (aux2.base) -- (aux1.base);
-					
-					\node[node distance=.8] (aux3) [below=of rden]{};
-					\draw[->] (rden) -- (aux3.base) -| (aux2.base); 
-				\end{scope}
-			\end{tikzpicture}
-		\end{column}
-		\begin{column}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}[scale=.5]
-				\begin{scope}[transform shape,node distance=1,>=latex]
-					\node[moore] (idle) {--idle:\\WR\_EN='0';};
-					\node[node distance=.6](aux0)[above=of idle]{};
-					\node[ask]	(pr1)	[below=of idle]{\tiny{SLRD='0'-$>$'1'}}
-						edge[<-] (idle);
-					\node[ask] (pr2) [below=of pr1]{\scriptsize{FIFO\_FULL='1'}};
-					\node[node distance=.8](aux1)[left=of pr1]{};
-					\draw[->] (pr1) -- node[left] {Si} (pr2);
-					\draw[->] (pr1) -- node[above,near start]{No} (aux1.base);
-					\draw[->] (aux1.base) |- (aux0.base) -- (idle);
-					
-					\node[moore](rden)[below=of pr2]{--write enable:\\WR\_EN='1'};
-					\node[node distance=.8] (aux2) [left=of pr2] {};
-					\draw[->] (pr2) -- node[above,near start]{Si} (aux2.base);
-					\draw[->] (pr2) -- node[left,near start] {No} (rden);
-					\draw[->] (aux2.base) -- (aux1.base);
-					
-					\node[node distance=.8] (aux3) [below=of rden]{};
-					\draw[->] (rden) -- (aux3.base) -| (aux2.base); 
-				\end{scope}
-			\end{tikzpicture}
-		\end{column}
-	\end{columns}
+\begin{frame}{Implementación de la máquina de estados de la interfaz}
+	\scriptsize{
+		\only<1>{
+			\lstinputlisting[language=VHDL,firstline=20,lastline=28]{./codes/fx2lp_interface.vhd}
+			}
+		\only<2>{
+			\lstinputlisting[language=VHDL,firstline=29,lastline=48]{./codes/fx2lp_interface.vhd}
+		}
+		\only<3>{
+			\lstinputlisting[language=VHDL,firstline=50,lastline=67]{./codes/fx2lp_interface.vhd}
+		}
+		\only<4>{
+			\lstinputlisting[language=VHDL,firstline=69,lastline=76]{./codes/fx2lp_interface.vhd}
+		}
+		\only<5>{
+			\lstinputlisting[language=VHDL,firstline=78,lastline=92]{./codes/fx2lp_interface.vhd}
+		}
+		\only<6>{
+			\lstinputlisting[language=VHDL,firstline=94,lastline=113]{./codes/fx2lp_interface.vhd}
+		}
+		\only<7-8>{
+			\lstinputlisting[language=VHDL,firstline=115,lastline=118]{./codes/fx2lp_interface.vhd}}
+		\only<7>{
+			\begin{columns}[t]
+				\begin{column}{.5\textwidth}
+					\lstinputlisting[language=VHDL,firstline=119,lastline=134]{./codes/fx2lp_interface.vhd}
+				\end{column}				\begin{column}{.5\textwidth}
+					\lstinputlisting[language=VHDL,firstline=135,lastline=146]{./codes/fx2lp_interface.vhd}
+				\end{column}
+			\end{columns}
+		}
+		\only<8>{
+			\begin{columns}[t]
+				\begin{column}{.5\textwidth}
+					\lstinputlisting[language=VHDL,firstline=147,lastline=158]{./codes/fx2lp_interface.vhd}
+				\end{column}
+				\begin{column}{.5\textwidth}
+				\end{column}
+			\end{columns}
+			\lstinputlisting[language=VHDL,firstline=159,lastline=160]{./codes/fx2lp_interface.vhd}
+		}
+		\only<9>{
+			\lstinputlisting[language=VHDL,firstline=162,lastline=176]{./codes/fx2lp_interface.vhd}
+		}
+		\only<10>{
+			\lstinputlisting[language=VHDL,firstline=178,lastline=193]{./codes/fx2lp_interface.vhd}
+		}		
+		\only<11>{
+			\lstinputlisting[language=VHDL,firstline=195,lastline=206]{./codes/fx2lp_interface.vhd}
+		}
+	}
 \end{frame}
+\begin{frame}{Instanciación de la interfaz en el top}
+	\tiny{
+		\only<1>{
+			\lstinputlisting[language=VHDL,firstline=7,lastline=34]{./codes/fx2lp_interface_top.vhd}
+		}
+		\only<2>{
+			\lstinputlisting[language=VHDL,firstline=36,lastline=61]{./codes/fx2lp_interface_top.vhd}
+		}
+	}
+\end{frame}
+%\begin{frame}{Maquinas de estado hacia la memoria FIFO interna}
+%	\begin{columns}
+%		\begin{column}{.5\textwidth}
+%			\centering
+%			\begin{tikzpicture}[scale=.53]
+%				\begin{scope}[transform shape,node distance=1,>=latex]
+%					\node[moore] (idle) {--idle:\\RE\_EN='0';};
+%					\node[node distance=.6](aux0)[above=of idle]{};
+%					\node[ask]	(pr1)	[below=of idle]{\tiny{SLWR='0'-$>$'1'}}
+%						edge[<-] (idle);
+%					\node[ask] (pr2) [below=of pr1]{\scriptsize{FIFO\_empty='1'}};
+%					\node[node distance=.8](aux1)[left=of pr1]{};
+%					\draw[->] (pr1) -- node[left] {Si} (pr2);
+%					\draw[->] (pr1) -- node[above,near start]{No} (aux1.base);
+%					\draw[->] (aux1.base) |- (aux0.base) -- (idle);
+%					
+%					\node[moore](rden)[below=of pr2]{--read enable:\\RD\_EN='1'};
+%					\node[node distance=.8] (aux2) [left=of pr2] {};
+%					\draw[->] (pr2) -- node[above,near start]{Si} (aux2.base);
+%					\draw[->] (pr2) -- node[left,near start] {No} (rden);
+%					\draw[->] (aux2.base) -- (aux1.base);
+%					
+%					\node[node distance=.8] (aux3) [below=of rden]{};
+%					\draw[->] (rden) -- (aux3.base) -| (aux2.base); 
+%				\end{scope}
+%			\end{tikzpicture}
+%		\end{column}
+%		\begin{column}{.5\textwidth}
+%			\centering
+%			\begin{tikzpicture}[scale=.5]
+%				\begin{scope}[transform shape,node distance=1,>=latex]
+%					\node[moore] (idle) {--idle:\\WR\_EN='0';};
+%					\node[node distance=.6](aux0)[above=of idle]{};
+%					\node[ask]	(pr1)	[below=of idle]{\tiny{SLRD='0'-$>$'1'}}
+%						edge[<-] (idle);
+%					\node[ask] (pr2) [below=of pr1]{\scriptsize{FIFO\_FULL='1'}};
+%					\node[node distance=.8](aux1)[left=of pr1]{};
+%					\draw[->] (pr1) -- node[left] {Si} (pr2);
+%					\draw[->] (pr1) -- node[above,near start]{No} (aux1.base);
+%					\draw[->] (aux1.base) |- (aux0.base) -- (idle);
+%					
+%					\node[moore](rden)[below=of pr2]{--write enable:\\WR\_EN='1'};
+%					\node[node distance=.8] (aux2) [left=of pr2] {};
+%					\draw[->] (pr2) -- node[above,near start]{Si} (aux2.base);
+%					\draw[->] (pr2) -- node[left,near start] {No} (rden);
+%					\draw[->] (aux2.base) -- (aux1.base);
+%					
+%					\node[node distance=.8] (aux3) [below=of rden]{};
+%					\draw[->] (rden) -- (aux3.base) -| (aux2.base); 
+%				\end{scope}
+%			\end{tikzpicture}
+%		\end{column}
+%	\end{columns}
+%\end{frame}

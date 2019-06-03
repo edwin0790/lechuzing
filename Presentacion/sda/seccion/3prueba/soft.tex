@@ -1,3 +1,16 @@
 \begin{frame}{Esquemas de prueba}
-	
+	\centering
+	\begin{tikzpicture}[scale=.8,>=latex]
+		\begin{scope}[transform shape,node distance=1]
+			\node[mealy]	(init)	[]{Inicializacion;};
+			\node[mealy] (snd) [below=of init]{Enviar Datos;}
+				edge[<-] (init);
+			\node[mealy] (rcv) [below=of snd]{Recibir Datos;}
+				edge[<-] (snd);
+			\draw[<-] (rcv) to [in=0,loop,looseness=5] (rcv);
+			\node[mealy](cmpr)[below=of rcv]{Comparar;\\Guardar\\en archivo;}
+				edge[<-] (rcv);
+			\draw[->] (cmpr) to [in=180,out=180,loop,looseness=1] (snd);
+		\end{scope}
+	\end{tikzpicture}
 \end{frame}
