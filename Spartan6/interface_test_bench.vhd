@@ -142,13 +142,14 @@ BEGIN
 		wait for 5 us;
 
 		flagb <= '1';
-		wait until counter = x"0200";
+		wait until counter = x"0100";
 		wait until falling_edge(clk_in);
 		
 		flagb <= '0';
-		wait until fdata = x"0200";
+		wait until fdata = x"00f0";
 		flaga <= '0';
 		wait until pktend = '0';
+		wait;
 	end process;
 	
 	-- Data counter
