@@ -119,6 +119,13 @@ I.~{Micron Technology}, ``{1 / 2-Inch Megapixel CMOS Digital Image Sensor
 {IEEE Computer Society}, {\em {IEEE Standard for Ethernet}}, vol.~2018.
 \newblock 2018.
 
+\bibitem{wifi2016}
+{IEEE Computer Society}, {\em {Part 11 : Wireless LAN Medium Access Control (
+  MAC ) and Physical Layer ( PHY ) Specifications IEEE Computer Society
+  Specific requirements Part 11 : Wireless LAN Medium Access Control ( MAC )
+  and Physical Layer ( PHY ) Specifications}}, vol.~2012.
+\newblock 2016.
+
 \bibitem{USBspec}
 Compaq, Hewlett-Packard, Intel, Lucent, Microsoft, NEC, and Philips, {\em
   {Universal Seral Bus Specification}}, vol.~Revision 2.0.
