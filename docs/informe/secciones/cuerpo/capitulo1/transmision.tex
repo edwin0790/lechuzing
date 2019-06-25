@@ -6,9 +6,9 @@
 
 Pero, ¿Cuántos datos son suficientes para el propósito de trasmitir imágenes? ¿Y cuál es el protocolo que mejor se ajusta a la necesidad de disponibilidad? Para responder la primera pregunta, se toma como base de diseño el sensor que utiliza Pérez en su Tesis de Maestría \cite{Perez2018}, una cámara para adquirir imágenes monocromáticas de código MT9M001C12STM, comercializado por Actina Imaging \cite{MicronTechnology2004} que transmite datos a una tasa de \SI{48}{\mega\bit\per\second}.\\
 
-Además, pensando en que la implementación sea compatible con equipos convencionales, es decir, se encuentren fácilmente en el mercado y no posean especificaciones que escapen al uso de oficina. Esto se cumple hoy en día con tres tipos de puertos: Ethernet, dedicado principalmente a conexión de redes mediante cables; Wi-Fi, utilizado para el accesos a la red de forma inalámbrica; y USB, especializado en periféricos.\\
+Además, pensando en que la implementación sea compatible con equipos informáticos convencionales, es decir, se encuentren fácilmente en el mercado y no posean especificaciones que escapen al uso de oficina. Esto se cumple hoy en día con tres tipos de puertos: Ethernet, dedicado principalmente a conexión de redes mediante cables; Wi-Fi, utilizado para el accesos a la red de forma inalámbrica; y USB, dirigido a la comunicación de periféricos con la PC.\\
 
-Al hablar de Ethernet o Wi-Fi, se hace referencia a dos formas diferentes de conectarse a una misma cosa: una red de computadoras. En otras palabras, se habla de dos o más nodos, compuestos por PC's o cualquier aparato electrónico con capacidad de realizar cálculo binario, que pueden intercambiar datos a través de una trama bastante compleja de componentes diferentes. Ambos protocolos hacen referencia solo a la conexión física de los dispositivos y el control de acceso de cada uno de ellos a la conexión. Quedando a cargo de otros sistemas, con sus protocolos, que los datos enviados puedan ser correctamente recibidos por el usuario de la PC. La gran diferencia entre ellos radica en el medio físico que utilizan: Wi-Fi emplea ondas electromagnéticas emitidas mediante radiofrecuencia, mientras que en Ethernet, estas ondas son acarreadas por uno o más conductores, como ser cable coaxial, cables de par trenzado o fibra óptica.\\
+Al hablar de Ethernet o Wi-Fi, se hace referencia a dos formas diferentes de conectarse a una misma cosa: una red de computadoras. En otras palabras, se habla de dos o más nodos, compuestos por PCs o cualquier aparato electrónico con capacidad de realizar cálculo binario, que pueden intercambiar datos a través de una trama bastante compleja de componentes diferentes. Ambos protocolos hacen referencia solo a la conexión física de los dispositivos y el control de acceso de cada uno de ellos a la conexión. Quedando a cargo de otros sistemas, con sus protocolos, que los datos enviados puedan ser correctamente recibidos por el usuario de la PC. La gran diferencia entre ellos radica en el medio físico que utilizan: Wi-Fi emplea ondas electromagnéticas emitidas mediante radiofrecuencia, mientras que en Ethernet, estas ondas son acarreadas por uno o más conductores, como ser cable coaxial, cables de par trenzado o fibra óptica.\\
 
 \begin{figure}
 	\centering
@@ -18,11 +18,104 @@ Al hablar de Ethernet o Wi-Fi, se hace referencia a dos formas diferentes de con
 	\label{fig:utp}
 \end{figure}
 
-En particular, el estandar Ethernet, también conocido como IEEE 802.3, es un protocolo que define cómo se deben conectar nodos a través de conductores para conformar red de área local (LAN o {\it Local Area Network}), es decir, un red pequeña, como ser doméstica, oficina o de una empresa definida, de forma que puedan transmitir información a velocidades a elegir entre \SI{1}{\mega\bit\slash\second} y \SI{400}{\giga\bit\slash\second} \cite{Ethernet2018}. Utiliza una tecnología denominada Acceso Múltiple Sensando la Portadora con Detección de Colisiones (CSMA/CD del inglés {\it Carrier Sense Multiple Access with Collision Detection}), la cual antes de transmitir, corrobora que no exista una señal portadora y, si ésta está presente, espera para retransmitir. Dependiendo de la frecuencia de trabajo y la tasa de transferencia a la que transporta el mensaje, la norma especifica el conector y la distancia máxima a la que debe conectarse una repetidora, es decir, un aparato que reconstruya y emita la señal. Estos conectores pueden ser cable coaxial, fibra optica o cable de par trenzado. Este último es el más usual en las PCs comerciales y se muestra, junto a su ficha característica en la Figura \ref{fig:utp}.\\
+En particular, el estandar Ethernet, también conocido como IEEE 802.3, es un protocolo que define cómo se deben conectar nodos a través de conductores para conformar redes de área local (LAN o {\it Local Area Network}), es decir, redes pequeñas, como ser domésticas, de oficinas o de pequeñas empresas, de forma que puedan transmitir información a velocidades a elegir entre \SI{1}{\mega\bit\slash\second} y \SI{400}{\giga\bit\slash\second} \cite{Ethernet2018}. Utiliza una tecnología denominada Acceso Múltiple Sensando la Portadora con Detección de Colisiones (CSMA/CD del inglés {\it Carrier Sense Multiple Access with Collision Detection}). Esta tecnología se caracteriza por la escucha activa de todos los dispositivos conectados a la red. Solo cuando la dirección del paquete que viaja corresponde al dispositivo, este realiza una función. A la hora de transmitir, corrobora que no exista una señal portadora y, si ésta está presente, espera para retransmitir.\\
 
-La norma IEEE 802.3 también especifica cómo debe ser el formato de la información que se transmite, de forma tal que todas las velocidades, conectores y conductores sean compatibles entre si. Indica así que la información debe estar contenida en paquetes que, a su vez, deben tener una estructura que permita la comunicación entre muchos nodos de la red. Así, la trama enviada contiene \SI{7}{\byte} de preámbulo que sirve para sincronizar los extremos de la conexión, un byte de inicio, 12 de direcciones, que corresponden 6 al nodo emisor y 6 al destinatario respectivamente, dos que indican la longitud del mensaje, entre 46 y \SI{1500}{\byte} de datos y, finalmente, 4 de verificación. Otra definición importante de la norma, son las características eléctricas de las señales, pero no se detallan en este trabajo porque varían en función de la velocidad del puerto.\\
+Dependiendo de la frecuencia de la portadora y la tasa de transferencia a la que transporta el mensaje, la norma especifica el conector y la distancia máxima a la que debe conectarse una repetidora, es decir, un dispositivos que reciba, reconstruya y emita la señal recibida. Estos conectores pueden ser cable coaxial, fibra optica o cable de par trenzado. Este último es el más usual en las PCs comerciales y se muestra, junto a su ficha característica en la Figura \ref{fig:utp}.\\
 
-Por su parte Wi-Fi, perteneciente a la asociación de compañías denominada Wi-Fi Aliance, se rige por la norma que estableció esta última. Existe una norma equivalente, encuadrada en la especificación IEEE 802.11, referida a las redes de area local inalámbrica, o WLAN (siglas del ingles {\it Wireless Local Area Network}). Wi-Fi se enfoca en las que se refieren a las comunicaciones de radiofrecuencia con portadora de \SI{2,4}{\giga\hertz}, que se incorporan en las revisiones b, g y n de la norma IEEE. IEEE 802.11 está pensado especialmente para dispositivos portátiles y móviles, que según la norma, los primeros aparatos, si bien pueden moverse con facilidad, operan estáticos, y los segundos trabajan en movimiento \cite{wifi2016}. La principal característica que posee es la falta de conductores para la elaboración de la red, más que las conexiones entre los transceptores (emisores y receptores de radiofrecuencias) y los nodos. En cuanto a la trama que utiliza para enviar y recibir datos es muy similar a la de un puerto Ethernet.\\
+\begin{figure}
+	\centering
+	\begin{adjustbox}{width=0.6\textwidth}
+		\begin{tikzpicture}
+		\begin{scope}[transform shape,node distance=.05,>=latex]
+		\node[field](pa){PA};
+		\node[field](init)[right=of pa]{IP};
+		\node[field](dest)[right=of init]{DD};
+		\node[field](emit)[right=of dest]{DE};
+		\node[field](long)[right=of emit]{LM};
+		\node[field](msj)[right=of long]{Mensaje};
+		\node[field](crc)[right=of msj]{SCP};
+		\end{scope}
+		\begin{scope}[transform shape, node distance=.01]
+		\node[](patx)[below=of pa]{7};
+		\node[node distance=.2](bytes)[left=of patx] {\bf Bytes};
+		\node[](inittx)[below=of init]{2};
+		\node[](desttx)[below=of dest]{6};
+		\node[](emittx)[below=of emit]{6};
+		\node[](longtx)[below=of long]{2};
+		\node[text width=50](patx)[below=of msj]{46 a 1500};
+		\node[](msjtx)[below=of crc]{4};
+		\node[node distance = 1](addtx)[below=of dest.east |- emit.west] {Direcciones};
+		\draw[decoration={brace,mirror,raise=14pt},decorate](dest.south west) to (emit.south east);
+		\end{scope}
+		\begin{scope}[transform shape,node distance=.4,text width = 210]
+		\node[below=of desttx](ref){
+			{\bf Referencias}\\
+			{\bf PA:}Pre{\'a}mbulo\\
+			{\bf IP:} Inicio de Paquete\\
+			{\bf DD:} Direcci{\'o}n de Destino\\
+			{\bf DE:} Direcci{\'o} de Emisi{\'o}n\\
+			{\bf LM:} Longitud del Mensaje\\
+			{\bf SCP:} Secuencia de chequeo del paquete
+		};
+		\end{scope}
+		\end{tikzpicture}
+	\end{adjustbox}
+	\caption{Estructura de un paquete Ethernet}
+	\label{fig:eth}
+\end{figure}
+
+%La norma IEEE 802.3 también especifica cómo debe ser el formato de la información que se transmite, de forma tal que todas las velocidades, conectores y conductores sean compatibles entre si. Indica así que l
+La información se estructura en paquetes para permitir la comunicación entre muchos nodos de la red. Un paquete, como se observa en la Figura \ref{fig:eth}, se compone de un preámbulo con \SI{7}{\byte} que sirve para sincronizar los dispositivos en cada extremo de la conexión, \SI{1}{\byte} de inicio, \SI{12}{\byte} de direcciones, que corresponden 6 al nodo destinatario y 6 al emisor respectivamente, \SI{2}{\byte} que indican la longitud del mensaje, entre 46 y \SI{1500}{\byte} de datos y \SI{4}{\byte} para la verificación de la transmisión. Otra definición importante de la norma, son las características eléctricas de las señales, pero no se detallan en este trabajo porque varían en función de la velocidad del puerto.\\
+
+\begin{figure}
+	\centering
+	\begin{adjustbox}{width=0.7\textwidth}
+		\begin{tikzpicture}[]
+			\begin{scope}[transform shape,node distance=.05,>=latex]
+				\node[field](cp){CP};
+				\node[field](dcid)[right=of cp]{Dur/CID};
+				\node[field](routd)[right=of dcid]{DED};
+				\node[field](dest)[right=of routd]{DD};
+				\node[field](emit)[right=of dest]{DE};
+				\node[field](cseq)[right=of emit]{CS};
+				\node[field](route)[right=of cseq]{DEE};
+				\node[field](msj)[right=of route]{Mensaje};
+				\node[field](crc)[right=of msj]{SCP};
+			\end{scope}
+			\begin{scope}[transform shape, node distance=.01]
+				\node[](cptx)[below=of cp]{2};
+				\node[node distance=.2](bytes)[left=of cptx] {\bf Bytes};
+				\node[](dcidtx)[below=of dcid]{2};
+				\node[](routdtx)[below=of routd]{6};
+				\node[](desttx)[below=of dest]{6};
+				\node[](emittx)[below=of emit]{6};
+				\node[](cseqtx)[below=of cseq]{2};
+				\node[](routetx)[below=of route]{6};
+				\node[text width=50](patx)[below=of msj]{variable};
+				\node[](msjtx)[below=of crc]{4};
+				\node[node distance = .5](addtx)[below=of dest] {Direcciones};
+				\draw[decoration={brace,mirror,raise=14pt},decorate](routd.south west) to (emit.south east);
+			\end{scope}
+			\begin{scope}[transform shape,node distance=.4,text width = 320]
+				\node[below=of desttx](ref){
+					{\bf Referencias}\\
+					{\bf CP:} Control de Paquete\\
+					{\bf Dur/CID:} Duraci{\'o}n del paquete/Identificaci{\'o}n de conexi{\'o}n\\
+					{\bf DED*:} Direcci{\'o}n de Enrutador de Destino\\
+					{\bf DD*:} Direcci{\'o}n de Destino\\
+					{\bf DE:} Direcci{\'o}n de Emisi{\'o}n\\
+					{\bf CS*:} Control de Secuecia\\
+					{\bf DEE*:} Direcci{\'o}n de Enrutador de Emisión\\
+					{\bf SCP:} Secuencia de chequeo del paquete\\
+					{\scriptsize *Pueden no estar dependiendo del tipo de mensaje}
+				};
+			\end{scope}
+		\end{tikzpicture}
+	\end{adjustbox}
+	\caption{Estructura de un paquete Wi-Fi}
+	\label{fig:wifi}
+\end{figure}
+Por su parte Wi-Fi, perteneciente a la asociación de compañías denominada Wi-Fi Alliance, se rige por la norma que estableció esta última. Existe una norma equivalente, encuadrada en la especificación IEEE 802.11, referida a las redes de area local inalámbrica, o WLAN (siglas del ingles {\it Wireless Local Area Network}). Wi-Fi se enfoca en las que se refieren a las comunicaciones de radiofrecuencia con portadora de \SI{2,4}{\giga\hertz}, que se incorporan en las revisiones b, g y n de la norma IEEE. IEEE 802.11 está pensado especialmente para dispositivos portátiles y móviles, que según la norma, los primeros, si bien pueden ser trasladados con facilidad, operan estáticos y los segundos trabajan en movimiento \cite{wifi2016}. La principal característica que posee este tipo de comunicación es la falta de conductores para la elaboración de la red, sin contar las conexiones entre los transceptores que emiten y reciben las señales de radiofrecuencias y los nodos, en donde la información es producida y/o consumida. En cuanto al formato del paquete de datos, el cuál se muestra en la Figura \ref{fig:wifi}, es bastante similar al de Ethernet. En primer lugar, se envían dos bytes de control que indican el tipo de paquete a enviar. Luego siguen dos bytes que, dependiendo de la etapa de la comunicación puede indicar la duración del mensaje a transmitir o un identificador de una conexión establecida previamente. Siguen entre 6 y 18 bytes de direcciones del enrutador que recibe los datos, el nodo emisor y el destinatario. Continúan, dos bytes de control de secuencia se utilizan para fragmentar transmisiones largas. Continua un campo más para dirección que corresponde a la red emisora de 6 bytes. Todos los campos de dirección pueden variar en función del tipo de mensaje que se envía. Los últimos dos campos de la trama corresponden a la información que se quiere comunicar (hasta 2312 bytes) y un código de chequeo por redundancia cíclica de 32 bits (4 bytes).\\
 
 Existen múltiples ventajas de utilizar radiofrecuencias para conectarse a la red, tales como la libertad de mover el punto de trabajo y la economía a la hora de armar redes con muchos nodos. Sin embargo, posee algunas desventajas notorias, propias del medio de propagación, que lo hacen no tan óptimo para los fines del presente trabajo. Las redes inalámbricas tiene la característica de que no es del todo confiable: posee múltiples fuentes de interferencia, ya que varias tecnologías que utilizan la misma frecuencia (Bluetooth, Zig-Bee, WUSB, microondas). Esto hace que la señal por momentos presente cierta interferencia. A su vez, suele presentar variaciones temporales y asimetrías en las propiedades de propagación, lo que puede provocar interrupciones en la comunicación.\\
 
@@ -34,7 +127,7 @@ A pesar de lo anterior, es posible establecer comunicaciones punto a punto con a
 Por su parte el protocolo USB (acrónimo de {\it Universal Serial Bus}), es una norma desarrollada por seis de las empresas más grandes de la industria informática, pensada y desarrollada para la conexión de teléfonos y periféricos a PCs \cite{USBspec}. En la versión original, USB poseía conectores cableados de 4 conductores, y presenta una topología de bus (todos los dispositivos conectados a una misma conexión física), que es manejada por una PC. Actualmente, este tipo de conexión es incorporada por defecto y necesaria a la hora de comprar e instalar periféricos.\\
 %Si bien se puede implementar la comunicación vía Ethernet, cumpliendo con las especificaciones propuestas, es muy probable que el único puerto que posea la PC se encuentre conectado a la red y se necesitará una infraestructura mayor para lograr una efectiva comunicación. Por tanto, USB se observa como una solución óptima.\\
 
-USB presenta diferentes versiones de su norma, cada cual con una o más tasas de transmisión y señalización. La versión 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. La primera alcanza una tasa máxima de \SI{1.5}{\mega\bit\per\second} y la segunda hasta \SI{12}{\mega\bit\per\second}. USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir a \SI{480}{\mega\bit\per\second}. La tercera versión, USB 3.0, fue lanzada al mercado en 2011 y transmite \SI{5}{\giga\bit\per\second}. Esta última versión fue revisada en julio de 2013 y en septiembre de 2017, ofreciendo la primera de ella \SI{10}{\giga\bit\per\second} y \SI{20}{\giga\bit\per\second} la segunda. Resulta suficiente para el propósito del siguiente trabajo, la implementación de una comunicación USB 2.0, con tasa de transferencia de \SI{480}{\mega\bit\per\second}.\\
+USB presenta diferentes versiones de su norma, cada cual con una o más tasas de transmisión y señalización. La versión 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. La primera alcanza una tasa máxima de \SI{1.5}{\mega\bit\per\second} y la segunda hasta \SI{12}{\mega\bit\per\second}. USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir a \SI{480}{\mega\bit\per\second}. La tercera versión, USB 3.0, fue lanzada al mercado en 2011 y transmite \SI{5}{\giga\bit\per\second}. Esta última versión fue revisada en julio de 2013 y en septiembre de 2017, ofreciendo la primera de ella \SI{10}{\giga\bit\per\second} y \SI{20}{\giga\bit\per\second} la segunda. Resulta suficiente para el propósito del siguiente trabajo, la implementación de una comunicación USB 2.0, con tasa de transferencia de \SI{480}{\mega\bit\per\second}.En el Capítulo \ref{cap:usb} se profundizarán en conceptos específicos de la norma USB.\\
 
 \begin{figure}[t]
 	\centering
