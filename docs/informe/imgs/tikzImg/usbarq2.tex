@@ -1,0 +1,182 @@
+\documentclass[12pt]{standalone}
+%\usepackage[a3paper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{calc}
+
+\usepackage{tikz,pgf}
+\usetikzlibrary{calc,arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,trees}%shapes.gates.logic}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[
+	rectangle,
+	rounded corners,
+	draw=black,
+	minimum size=40,
+	fill=white]
+\tikzstyle{core}=[
+	interior]
+\tikzstyle{perif}=[
+	interior,
+	minimum height=20]
+\tikzstyle{exterior}=[
+	rectangle,
+	draw=black,
+	minimum size=40]
+\tikzstyle{contenedor}=[
+	rectangle,
+	draw=black]
+\tikzstyle{buf}=[
+	core,
+	text width=55,
+	align=center]
+\tikzstyle{obuf}=[
+	buf,
+	node distance=.7]
+\tikzstyle{env}=[
+	fill=black!20]
+\tikzstyle{simple}=[
+	rectangle,
+	draw=black,
+	minimum height=220,
+	text width=65,
+	align=center]
+\tikzstyle{mode text}=[midway,sloped,text width=200,align=center]
+\tikzstyle{moore}=[
+	rectangle,
+	draw=black,
+	minimum height= 30,
+	text width=80,
+	align=left]
+\tikzstyle{mealy}=[rectangle,
+	rounded corners=15,
+	draw=black,
+	text width=80,
+	align=left,
+	minimum height=40]
+\tikzstyle{ask}=[
+	diamond,
+	text width=50,
+	draw=black,
+	align=center]
+\tikzstyle{bloque}=[
+	exterior,
+	align=center,
+	minimum size=60,
+	text width=60]
+
+\tikzstyle{hub}=[
+	draw=black,
+	anchor=north,
+%	inner sep = 1,
+%	growth parent anchor=bottom side,
+	circle]
+
+\tikzstyle{dev}=[
+	draw=black,
+	anchor=north,
+	rectangle,
+	rounded corners,
+%	inner sep=6,
+%	text width=50,
+	align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+	Buffer {#1}\\
+	[8pt]EP{#2}\\
+	[8pt]{#3} Bytes}
+
+\newcounter{wavecount}
+
+\newcommand{\newwave}[1]{
+	\path (0,\value{wavecount}) node[text width=70,anchor=east,align=right]{#1} node[coordinate](t_cur){};
+	\draw (0,\value{wavecount}+.3) --++(.2,0);
+	\draw (0,\value{wavecount}-.3) --++(.2,0);
+	\path (t_cur) --++(.3,0)node[coordinate](t_cur){};
+	\addtocounter{wavecount}{-1}}
+
+\newcommand*{\bit}[2]{
+	\draw (t_cur) -- ++(0.1,.6*#1-.3) -- ++(#2-.2,0) -- ++(+.1,.3-.6*#1)
+	node[coordinate] (t_cur) {};}
+
+\newcommand*{\bitvector}[2]{
+	\draw[] (t_cur) -- ++( .1, .3) -- ++(#2-.2,0) -- ++(.1, -.3)
+	-- ++(-.1,-.3) -- ++(.2-#2,0) -- cycle;
+	\path (t_cur) -- node[align=center] {#1} ++(#2,0) node[coordinate] (t_cur) {};}
+
+\begin{document}
+	\begin{tikzpicture}[scale=1,>=latex,level 1/.append style={level distance = 2ex},level 2/.append style={level distance = 40}]
+		\begin{scope}
+			\begin{scope}[transform shape,grow = down]
+				\node[] (host) {\it HOST} [
+				sibling distance=60,
+%				growth parent anchor=south, 
+				edge from parent fork down,
+				]
+					child{node[](l1r){Raíz}edge from parent[draw=none]
+						child{node[](l2h1){Hub}
+							child{node[](l3f1){Función}
+								}
+							child{node[](l3h1){Hub}
+								child{node[](l4h1){Hub}
+									child{node[](l5h1){Hub}
+										child{node[](l6f1){Función}
+											}
+										child{node[](l6h1){Hub}
+											child{node[](l7f1){Función}
+												}
+											}
+										}
+									child{node[](l5f1){Función}
+										}
+									}
+								}
+							child{node[] (l3f2) {Función}}
+								}
+						child{node[](l2f1){Función}}
+						child{node[](l2h2){Hub}
+							child{node[](l3h2){Hub}
+								child{node[](l4f1){Función}
+									}
+								child{node[](l4f2){Función}
+									}
+								}
+							}
+						};
+				\node[](l6)[left=of l6f1]{Grada 6};
+				\node[](l7)at(l6|-l7f1){Grada 7};
+				\node[](l5)at(l6|-l5h1){Grada 5};
+				\node[](l4)at(l5|-l4h1){Grada 4};
+				\node[](l3)at(l4|-l3f1){Grada 3};
+				\node[](l2)at(l3|-l2h1){Grada 2};
+				\node[](l1)at(l2|-l1r){Grada 1};
+			\end{scope}
+			\begin{scope}[dashed]
+				\draw (l7) -| (l7f1.west);
+				\draw (l6) -| (l6f1.west);
+%					\draw(l6f1)--(l6h1);
+				\draw (l5) -| (l5h1.west);
+%					\draw(l5h1)--(l5h1);
+				\draw (l4) -| (l4h1.west);
+%					\draw(l4h1)--(l4f1);
+%					\draw(l4f1)--(l4f2);
+				\draw (l3) -| (l3f1.west);
+%					\draw(l3f1)--(l3h1);
+%					\draw(l3h1)--(l3f2);
+%					\draw(l3f2)--(l3h2);
+				\draw (l2) -| (l2h1.west);
+%					\draw(l2h1)--(l2f1);
+%					\draw(l2f1)--(l2h2);
+				\draw (l1) -| (l1r.west);
+			\end{scope}
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

@@ -1,0 +1,31 @@
+Dentro de un sistema USB existen tres tipos diferentes de dispositivos: el host, los hubs y las funciones. Cada uno de ellos tiene asignado un rol específico dentro de la comunicación. Se detallan a continuación las tareas pertinentes a cada uno de ellos.\\
+
+\subsection{Host USB}
+	El host es quien comanda las comunicaciones. Este dispositivo debe tener la capacidad de memoria y de procesamiento necesario para almacenar y ejecutar el software de control. A su vez, debe tener un hardware necesario que le permita hacer un monitoreo y control de los eventos que suceden en el bus.\\
+	
+	Entre las tareas que debe llevar a cabo, se encuentran:
+	
+	\begin{itemize}
+		\item Detectar la conexión y desconexión de dispositivos.
+		\item Administrar el flujo de los comandos de control con los diferentes dispositivos.
+		\item Administrar el flujo de la información entre él (el Host) y los diferentes dispositivos.
+		\item Registrar la estadística de la actividad y el estado del bus.
+		\item Proveer potencia a los dispositivos conectados, cuando estos así lo requieran.
+	\end{itemize}
+	
+	Debido a que las funciones del host necesitan una cantidad mínima de recursos de almacenamiento y procesamiento, lo más normal es que el dispositivo que cumpla esta función sea una PC, o posea algún sistema de cómputo incorporado.\\
+	
+	El host es quien inicia, siempre, la comunicación con las funciones. Las funciones, a su vez, responden a lo que fue solicitado por el host, cuando él lo indique.\\
+	
+\subsection{Hubs USB}
+	Un hub USB tiene la función de proveer puertos al bus. El primer hub esta incorporado en el host y camino abajo, cada vez que se requieran más puertos a los cuales incorporar periféricos, se pueden ir agregando más hubs.\\
+	
+	Una función importante llevada a cabo por un hub, para la norma USB, es la de servir como interfaz entre dispositivos con diferentes velocidades, optimizando así el ancho de banda disponible para la comunicación.\\
+	
+\subsection{Funciones USB}
+	Se nombra como función a todos los periféricos que se conectan al bus. Estos periféricos son los que brindan una funcionalidad extra al host. Por ejemplo, un teclado le brinda un método de entrada a la PC, Un mouse permite manejar un puntero de la interfaz gráfica, un parlante otorga la posibilidad de emitir sonidos y un micrófono para ingresarlos. Cada una de estas utilidades, componen una función USB.\\
+	
+	Cada función debe informar, al momento de su conexión al bus, una descripción de sus características y sus requerimientos al host. De esta forma, el host conoce qué tipo de dispositivo es, cómo puede ser configurado y cuál es la forma de comunicarse. La descripción se lleva a cabo a través de una secuencia de datos, denominados descriptores.\\
+	
+	Desde el punto de vista lógico, cada periférico posee canales únicos de comunicación con el host, llamados tuberías ({\it pipes} en el idioma inglés de la norma). Existen dos tipos de tuberías, las de control, por donde circulan mensajes propios del protocolo y sirven para la administración, configuración y gestión de las comunicaciones ; y las tuberías de ``chorro'' ({\it stream}) a través de las cuales circulan los mensajes con la información que se desea transmitir de un dispositivo a otro. El final de la tubería se llama extremo ({\it endpoint}) en el periférico y conectan cada extremo a un buffer en el host. Los periféricos poseen uno o más extremos. Cada extremo de un periférico, posee un tipo de transferencia asociado con una dirección de la información determinada. Esto quiere decir que un dispositivo de entrada y salida, debe poseer al menos dos extremos lógicos diferentes, uno para enviar datos al host y otro para recibirlos. Los tipos de transferencia, a su vez, determinan el ancho de bus asignado por el protocolo, la latencia, la tolerancia a errores en los datos enviados y el tamaño de los paquetes a enviar.\\
+	

@@ -1,0 +1,21 @@
+Cada extremo presente en un dispositivo USB, puede estar configurado, en simultaneo, con un solo tipo de transferencias. Es importante, para el diseñador del dispositivo, entender y seleccionar el tipo de transferencia adecuada para cada uso debido a que, de ello depende las características que poseerán las comunicaciones que se efectúen.\\
+
+Existen cuatro tipos de transferencias definidas por la norma USB: Transferencias de Control, transferencias en, transferencias isocrónicas y transferencias de interrupción. Cada una de ellas tiene un propósito y características diferentes, las que se detallan a continuación.\\
+
+\subsection{Transferencias de control}
+	Las transferencias de control son utilizadas por el host para comunicaciones de configurar, emitir comandos y conocer el estado de los distintos dispositivos acoplados al bus. Se caracteríza por ser una comunicación de rafagas, es decir, de corta duración y de alta prioridad, no periódica de tipo, pregunta-respuesta, es decir, el host solicita y el dipositivo responde en función a la solicitud.\\
+	
+	Habitualmente, este tipo de comunicaciones se utiliza solamente para emitir comandos hacia los dispositivos, o bien, para conocer su estado.\\
+	
+\subsection{Transferencias en masa}
+	Este tipo de transferencias son usadas para transferir paquetes grandes en forma ráfagas no periódicas. Su utilidad consiste en que permite aprovechar al máximo cualquier espacio de ancho de banda disponible.\\
+	
+	Gracias al sistema de chequeo de errores, es posible solicitar retransmisiones, de forma de asegurar la integridad del mensaje transmitido. Esta transferencia es ideal para comunicar paquetes de datos que no son crítico en tiempo pero que requieren una comunicación fidedigna.\\
+
+\subsection{Transferencias isocrónicas}
+	Este tipo de transferencias son periódicas y continuas entre el host y los dispositivos. Son muy interesantes para información que pierde validez cuando no es entregada en un tiempo establecido.\\
+	
+	Debido a la criticidad del tiempo de entrega de los datos comunicacdos con este método, no se prevee una retransmisión de los datos enviados por este sistema.\\
+	
+\subsection{Transferencias de interrupción}
+	Cuando se requiere de una comunicación con latencia asegurada pero con baja probabilidad de eventos, el tipo de transferencia óptimo para utilizar, son las transferencias de interrupción.
