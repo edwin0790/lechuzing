@@ -1,0 +1,14 @@
+Cuando un dispositivo es conectado al bus, debe informar sus características al host. Para ello, este último inicia una transferencia de control, requiriendo los atributos de la nueva función. Este informe, se realiza a través de un tipo especial de mensajes, con una estructura y formato determinado, que se denominan descriptores. Existen siete descriptores USB standard:
+
+\begin{itemize}
+	\item Dispositivo: contiene información sobre, la versión de USB que cumple, la clase de dispositivo conectada, el fabricante, el número de identificación del producto, numero de serie y la cantidad de diferentes configuraciones que posee.
+	\item Calificador de Dispositivo: En dispositivos que son capaces de operar a Alta Velocidad, informa sobre atributos que cambian cuando opera a otra velocidad.
+	\item Configuración: 
+	\item Configuración a otra velocidad
+	\item Interfaz
+	\item Extremo
+	\item Cadena de caracteres
+
+\end{itemize}%Los descriptores dan cuenta al host de que clase de dispositivo se conecta, cuales son sus posibles configuraciones, que interfaces tiene cada una de ellas, las velocidades a las que puede operar, los extremos que posee, etc. Existen varios tipos de descriptores que informan diferentes atributos o características. Lo que tienen en común unos y otros, es que al momento de la conexión al bus, estos deben ser informados al host.\\
+
+

@@ -155,4 +155,9 @@ Compaq, Hewlett-Packard, Intel, Lucent, Microsoft, NEC, and Philips, {\em
 ``Usb hardware.'' \url{https://en.wikipedia.org/wiki/USB_hardware}.
 \newblock Ingreso: 8 de agosto del 2019.
 
+\bibitem{Riihonen2015}
+T.~Riihonen, {\em {Desing and analysis of duplexing Modes and Forwarding
+  Protocols for OFDM(A) Relay Links}}.
+\newblock PhD thesis, 2015.
+
 \end{thebibliography}

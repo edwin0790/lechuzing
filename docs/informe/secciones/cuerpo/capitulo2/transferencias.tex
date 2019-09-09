@@ -3,19 +3,39 @@ Cada extremo presente en un dispositivo USB, puede estar configurado, en simulta
 Existen cuatro tipos de transferencias definidas por la norma USB: Transferencias de Control, transferencias en, transferencias isocrónicas y transferencias de interrupción. Cada una de ellas tiene un propósito y características diferentes, las que se detallan a continuación.\\
 
 \subsection{Transferencias de control}
-	Las transferencias de control son utilizadas por el host para comunicaciones de configurar, emitir comandos y conocer el estado de los distintos dispositivos acoplados al bus. Se caracteríza por ser una comunicación de rafagas, es decir, de corta duración y de alta prioridad, no periódica de tipo, pregunta-respuesta, es decir, el host solicita y el dipositivo responde en función a la solicitud.\\
+	Las transferencias de control son utilizadas por el host para comunicaciones de configurar, emitir comandos y conocer el estado de los distintos dispositivos acoplados al bus. Se caracteríza por ser una comunicación de rafagas, es decir, de corta duración, alta prioridad y no periódica.\\
 	
-	Habitualmente, este tipo de comunicaciones se utiliza solamente para emitir comandos hacia los dispositivos, o bien, para conocer su estado.\\
+	Habitualmente, este tipo de comunicaciones se utiliza solamente para emitir comandos hacia los dispositivos, o bien, para conocer su estado. Sin embargo, esto no quiere decir que pueda ser empleada para transmitir mensajes que no sean específicamente de comunicación.\\
+	
+	Debido a la sensibilidad que los mensajes de control poseen para el sistema USB, estos están dotados del protocolo más estricto de chequeo, corrección y/o retransmisión de datos.\\
+	
+	Las transferencias de control poseen dos o tres etapas en su ejecución. En la primera de ellas, el host debe enviar un Paquete Token que indique SETUP, luego envía un paquete Data con \SI{8}{\byte} y esto es respondido por el dipositivo con un paquete Handshake indicando la recepción.\\
+	
+	Ocasionalmente, si hiciese falta enviar más información, en una segunda etapa, el host mandara un paquete Token que indique que enviará mas información, luego mandará un paquete Data con hasta \SI{64}{\byte} más y el extremo responderá con un paquete Handshake.\\
+	
+	Finalmente, en la última etapa, se le permite al dispositivo informar su estado. Para ello, el host le envía un paquete Token de solicitud de datos, luego la función responderá con un paquete Data y el host le responderá con un paquete Handshake, indicandole si recibió la la información.\\
 	
 \subsection{Transferencias en masa}
 	Este tipo de transferencias son usadas para transferir paquetes grandes en forma ráfagas no periódicas. Su utilidad consiste en que permite aprovechar al máximo cualquier espacio de ancho de banda disponible.\\
 	
-	Gracias al sistema de chequeo de errores, es posible solicitar retransmisiones, de forma de asegurar la integridad del mensaje transmitido. Esta transferencia es ideal para comunicar paquetes de datos que no son crítico en tiempo pero que requieren una comunicación fidedigna.\\
+	Gracias al sistema de chequeo de errores, es posible solicitar retransmisiones, de forma de asegurar la integridad del mensaje transmitido. Esta transferencia es ideal para comunicar cantidades relativamente grandes de datos que requieren una comunicación fidedigna pero no es crítico que entregada en forma veloz, por ejemplo, una impresora. En un bus que no posee un gran uso, los mensajes alcanzarán el destino en tiempos cortos. Sin embrago, cuando exista una gran cantidad de dispositivos conectados y el ancho del bus se encuentre congestionado, un mensaje largo puede verse demorado en su entrega.\\
 
+	Cuando se lleva a cabo una operación de este tipo, el host envía un paquete Token hacia el bus un PID OUT cuando desea enviar datos o IN si desea recibirlos, la dirección de la función y su extremo. Luego, el emisor un paquete Data, y finalmente, el receptor de la transferencia responde con un paquete Handshake.\\
+	
+	Una transferencia en masa ({\it bulk transfer}) puede poseer un tamaño máximo de \SI{512}{\byte} de datos por paquete transmitido.\\
+	
 \subsection{Transferencias isocrónicas}
 	Este tipo de transferencias son periódicas y continuas entre el host y los dispositivos. Son muy interesantes para información que pierde validez cuando no es entregada en un tiempo establecido.\\
 	
-	Debido a la criticidad del tiempo de entrega de los datos comunicacdos con este método, no se prevee una retransmisión de los datos enviados por este sistema.\\
+	Debido a la criticidad del tiempo en la entrega de los datos comunicados con este método, no se prevee una retransmisión de los datos enviados por este sistema.\\
+	
+	La ejecución de una transferencia isocrónica se da cuando el host envía un paquete Token con la dirección de un extremo de este tipo de transferencias. Luego, el emisor envía un paquete Data cuyo campo de datos puede poseer hasta \SI{1024}{\byte} y un CRC-16. Finalmente el receptor envía un paquete Handshake.\\
+	
+	Si, dado el caso, el receptor envía un Handshake indicando que el paquete no pudo ser recibido en forma correcta, el mensaje es descartado, sin existir una retransmisión posterior del mismo paquete.\\
+	
+	La característica sobresaliente de este tipo de trasnferencias tiene que ver con la asignación específica sobre el ancho de banda. por cada cuadro (\SI{1}{\milli\second}), se reserva una porción de datos para un extremo que necesite comunicaciones asíncronas.\\
 	
 \subsection{Transferencias de interrupción}
-	Cuando se requiere de una comunicación con latencia asegurada pero con baja probabilidad de eventos, el tipo de transferencia óptimo para utilizar, son las transferencias de interrupción.
+	Cuando se requiere de una comunicación con latencia asegurada pero con baja probabilidad de eventos, el tipo de transferencia óptimo para utilizar, son las transferencias de interrupción.\\
+	
+	En este tipo de trasferencias, el host consulta cada un periodo de tiempo determinado el estado del extremo que posee este tipo de trasnferencias. Para ello, envía un paquete Token, luego el emisor transmite un paquete Data con hasta \SI{64}{\byte} si se trata de dispositivos de velocidad completa y \SI{1024}{\byte} en el caso de una comunicación de alta velocidad. Finalmente, el receptor responderá con un paquete Handshake.\\

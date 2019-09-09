@@ -85,4 +85,14 @@ La topología del bus, cómo se observa en la Figura \ref{fig:top}, posee forma 
 	\label{fig:con}
 \end{figure}
 
-Cada uno de estos dispositivos diferentes, se inteconectan entre sí a través de cables y conductores específicos, diseñados en forma tal que no sea posible conectarlos en forma equivocada. Para cumplir con la norma, el Host debe tener siempre un zócalo compatible con conectores tipo A y los periféricos para enchufes de tipo B. Se observan las diferencias entre uno y otro en la Figura \ref{fig:con}
+Cada uno de estos dispositivos diferentes, se inteconectan entre sí a través de cables y conductores específicos, diseñados en forma tal que no sea posible conectarlos en forma equivocada. Para cumplir con la norma, el Host debe tener siempre un zócalo compatible con conectores tipo A y los periféricos para enchufes de tipo B. Se observan las diferencias entre uno y otro en la Figura \ref{fig:con}. Los cables de conexión poseen dos pares de conductores: uno para la señal de alimentación de \SI{5}{\volt} ($V_{BUS}$ y $GND$) y otro para el flujo de datos ($D+$ y $D-$).\\
+
+%TODO velociades (interconexión eléctrica)
+A nivel eléctrico, la interconexión de datos en los dispositivos se lleva a cabo a través de una codificación de inversión sin retorno a cero, es decir, el cambio de nivel de tensión representa un '0' y el no cambio representa un '1'. Además, la señal de datos es diferencial. Esto implica que cuando $D+$ es positivo, $D-$ debe ser negativo y viceversa.\\
+
+Cabe destacar que, al tener una señal diferencial, la norma USB es {half-dulpex \it}, es decir, puede transmitir en los dos sentidos (de host a funciones y al contrario), pero no puede hacerlo en simultáneo\cite{Riihonen2015}, sino que primero debe transmitir un dispositivo y, al finalizar este, el otro es el que tiene acceso al bus.\\
+
+La velocidad del cambio de variables puede darse a diferentes valores, dando lugar a tres tipos de tasa de bit: Alta-velocidad implica una tasa de bit de \SI{480}{\mega\bit\per\second}, Velocidad-completa posee una tasa de bit de \SI{12}{\mega\bit\per\second} y baja-velocidad transmite a una tasa de bit de \SI{1.5}{\mega\bit\per\second}.\\
+
+%TODO revisar lo siguiente(paquetes)
+Cuando el host se comunica con las diferentes funciones, lo realiza a través de paquetes. Los paquetes implican que la información que se transmite a través del bus está encapsulada en un formato establecido. Cada vez que un dispositivo accede al bus, lo debe hacer de una manera particular definido por el tipo de transferencia, por su rol (host, hub o función) y por el estado de la transmisión dentro del protocolo establecido.\\
