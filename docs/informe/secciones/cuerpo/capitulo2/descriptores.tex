@@ -1,11 +1,14 @@
-Cuando un dispositivo es conectado al bus, debe informar sus características al host. Para ello, este último inicia una transferencia de control, requiriendo los atributos de la nueva función. Este informe, se realiza a través de un tipo especial de mensajes, con una estructura y formato determinado, que se denominan descriptores. Existen siete descriptores USB standard:
+Un mismo dispositivo puede tener multiples configuraciones conforme a la disponibilidad del sistema que lo aloja, la disponibilidad de ancho de banda, entre otras características. Incluso, dependiendo del uso del dispositivo este puede operar a diferentes velocidades y rquerir diferentes tipos de ancho de banda.
+El dispositivo puede tener uno o más extremos, los cuales pueden designarse en una o mas interfaces. A su vez, las interfaces se agrupan en configuraciones y se subdividen en alternativas.Estas múltiples configuraciones, deben ser comunicadas al host a traves de un tipo especial de mensajes, con estructura y formato establecido, denominado descriptores.
+
+Cuando un dispositivo es conectado al bus, debe informar sus características al host. Para ello, este último inicia una transferencia de control, requiriendo los atributos de la nueva función. Este informe, se realiza a través de un tipo especial de mensajes, con una estructura y formato determinado, que se denominan descriptores. Los descriptores son muy importantes porque es a través de ellos que el host y los dispositivos determinan las formas en que va a operar y comunicarse una función determinada. Existen siete descriptores USB standard:
 
 \begin{itemize}
-	\item Dispositivo: contiene información sobre, la versión de USB que cumple, la clase de dispositivo conectada, el fabricante, el número de identificación del producto, numero de serie y la cantidad de diferentes configuraciones que posee.
-	\item Calificador de Dispositivo: En dispositivos que son capaces de operar a Alta Velocidad, informa sobre atributos que cambian cuando opera a otra velocidad.
-	\item Configuración: 
-	\item Configuración a otra velocidad
-	\item Interfaz
+	\item Device: contiene información sobre, la versión de USB que cumple, la clase de dispositivo conectada, el fabricante, el número de identificación del producto, numero de serie y la cantidad de diferentes configuraciones que posee.
+	\item Device\_Qualifier: En dispositivos que son capaces de operar a Alta Velocidad, informa sobre atributos que cambian cuando opera a otra velocidad.
+	\item Configuration: Contiene información sobre la configuración específica del dispositivo. Cada descriptor de dispositivos informa el número de interfaces diferentes que contiene esa configuración. Cada interfaz, a su vez, puede contener distinta cantidad de extremos, conforme a la necesidad.
+	\item Other\_Speed\_Configuration: indica configuraciones de un dispositivo que puede operar a alta velocidad cuando está operando a otra velocidad posible.
+	\item Interface: 
 	\item Extremo
 	\item Cadena de caracteres
 
