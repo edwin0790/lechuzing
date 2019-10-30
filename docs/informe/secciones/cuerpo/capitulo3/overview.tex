@@ -1,3 +1,15 @@
+%Hasta el momento se detallaron las motivaciones del trabajo. Es decir, la necasidad de una comunicación de mayor ancho de banda que UART y que sea facil de transferir a una PC.
+%Además de esto, se desarrolló la norma USB, seleccionada para implementar la comunicación
+La implementación de la comunicación entre le FPGA y la PC, en este trabajo, se efectúa a través de USB 2.0. Para establecer esta comunicación, como se menciona en la Sección \ref{int:pro}, se utiliza una interfaz que ejecute las tareas relativas al protocolo, la transmisión y recepción de los datos.\\
+
+Se puede descomponer la implementación en tres partes bien definidas: La comunicación entre el FPGA y la interfaz intermedia, la configuración de la interfaz misma, y la conexión entre la PC y la interfaz. El desarrollo de cada una de estas etapas contará con herramientas específicas.\\
+%TODO: agregar una figura que muestre lo dicho en estos dos párrafos
+Durante el desarrollo de 
+
+
+
+
+
 El objetivo que persigue el presente trabajo es el desarrollo e implementación de una comunicación entre una PC y desarrollos científicos basados en FPGA mediante el protocolo USB 2.0 de alta velocidad.\\
 
 Todo sistema USB puede se dividido en, al menos, tres etapas fundamentales que cumplen funciones específicas a lo que el protocolo se refiere. Estas tres etapas se observan en la Figura \ref{usbDeviceScheme}.\\
