@@ -4,52 +4,51 @@ The top-level auxiliary file: informe final.aux
 The style file: ieeetr.bst
 Database file #1: extras/bibliography.bib
 Warning--empty journal in PerezGarcia2008
-Warning--empty school in Perez2018
 Warning--empty journal in MicronTechnology2004
 Warning--empty publisher in Ethernet2018
 Warning--empty publisher in wifi2016
 Warning--can't use both volume and number fields in USBspec
 Warning--empty publisher in USBspec
 Warning--empty school in Riihonen2015
-You've used 30 entries,
+You've used 29 entries,
             1876 wiz_defined-function locations,
-            672 strings with 10130 characters,
-and the built_in function-call counts, 7508 in all, are:
-= -- 664
-> -- 435
+            668 strings with 10006 characters,
+and the built_in function-call counts, 7383 in all, are:
+= -- 650
+> -- 431
 < -- 0
-+ -- 160
-- -- 130
-* -- 557
-:= -- 1134
-add.period$ -- 45
-call.type$ -- 30
++ -- 158
+- -- 129
+* -- 550
+:= -- 1112
+add.period$ -- 43
+call.type$ -- 29
 change.case$ -- 17
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 342
-empty$ -- 677
-format.name$ -- 130
-if$ -- 1764
+cite$ -- 36
+duplicate$ -- 335
+empty$ -- 666
+format.name$ -- 129
+if$ -- 1737
 int.to.chr$ -- 0
-int.to.str$ -- 30
+int.to.str$ -- 29
 missing$ -- 35
-newline$ -- 108
-num.names$ -- 29
-pop$ -- 134
+newline$ -- 104
+num.names$ -- 28
+pop$ -- 131
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 207
+skip$ -- 205
 stack$ -- 0
 substring$ -- 341
-swap$ -- 118
+swap$ -- 117
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 8
-while$ -- 64
-width$ -- 32
-write$ -- 278
-(There were 8 warnings)
+warning$ -- 7
+while$ -- 63
+width$ -- 31
+write$ -- 269
+(There were 7 warnings)

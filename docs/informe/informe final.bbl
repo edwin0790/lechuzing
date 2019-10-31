@@ -121,19 +121,14 @@ H.~H. Goldstine and A.~Goldstine, ``{The Electronic Numerical Integrator and
   Computer (ENIAC)},'' {\em Mathematical Tables and Other Aids to Computation},
   vol.~2, p.~97, jul 1946.
 
-\bibitem{Perez2018}
-M.~Perez, {\em {DETECCI{\'{O}}N DE RADIACI{\'{O}}N IONIZANTE UTILIZANDO
-  SENSORES DE IMAGEN CMOS COMERCIALES}}.
-\newblock PhD thesis, 2018.
-
-\bibitem{MicronTechnology2004}
-I.~{Micron Technology}, ``{1 / 2-Inch Megapixel CMOS Digital Image Sensor
-  MT9M001C12STM (Monochrome)},'' pp.~1--35, 2004.
-
 \bibitem{SocietyofCableTelecommuniocationsEngineers2006}
 S.~of~Cable Telecommuniocations~Engineers, {\em {American National Standard
   ANSI/SCTE 07 2006. Digital Tansmission Standard for Cable Television}}.
 \newblock Society of Cable Telecommunications Engineers, Inc., 2006.
+
+\bibitem{MicronTechnology2004}
+I.~{Micron Technology}, ``{1 / 2-Inch Megapixel CMOS Digital Image Sensor
+  MT9M001C12STM (Monochrome)},'' pp.~1--35, 2004.
 
 \bibitem{Ethernet2018}
 {IEEE Computer Society}, {\em {IEEE Standard for Ethernet}}, vol.~2018.
