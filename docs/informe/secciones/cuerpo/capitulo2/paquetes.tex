@@ -4,11 +4,11 @@ Los dispositivo transmiten información a través del bus con formato particular
 \subsection{Campos de paquetes}
 
 	\subsubsection*{Identificador de paquete}
-		El campo identificador de paquete (PID del ingles {\it Packet Identifier})le da a conocer a los distintos dispositivos el tipo de información que contiene el paquete. Por ejemplo, indica si el Host solicita envío o recibo de datos, si envía un comando o si un dispositivo está transmitiendo los datos. Se compone de un campo de 8 bits, de los cuales 4 corresponden al identificador propiamente dicho y los otros cuatro es el complemento a uno de los mismos datos, permitiendo corroborar que no hubo una pérdida de información.\\
+		El campo identificador de paquete (PID del ingles {\it Packet Identifier})le da a conocer a los distintos dispositivos el tipo de información que contiene el paquete. Por ejemplo, indica si el Host solicita envío o recibo de datos, si envía un comando o si un dispositivo está transmitiendo los datos. Se compone de un campo de 8 bits, de los cuales 4 corresponden al identificador propiamente dicho y los otros cuatro es el complemento a uno de los mismos datos, permitiendo corroborar que no hubo una pérdida de información.%\\
 		
-		Existen 4 tipos de PID: Token, que antecede a cualquier transmisión y es emitido por el host; Data, indica paquetes que contienen datos transmitidos; Handshake, a través del cual los componentes del sistema se enteran si la comunicación fue efectiva o no y Special, cuya función no es de interés para este trabajo.\\
+		Existen 4 tipos de PID: Token, que antecede a cualquier transmisión y es emitido por el host; Data, indica paquetes que contienen datos transmitidos; Handshake, a través del cual los componentes del sistema se enteran si la comunicación fue efectiva o no y Special, cuya función no es de interés para este trabajo.%\\
 	
-		A su vez, los PID Token se dividen en 4 tipos: IN, para indicar que se va a realizar una envío de datos desde un extremo al Host; OUT, antecede a una transmisión de datos en el sentido contrario, es decir del Host a un extremo; SETUP, que señala una secuencia de comandos y SOF (del inglés {Start of Frame)} que da una señal de sincronismo y control.\\
+		A su vez, los PID Token se dividen en 4 tipos: IN, para indicar que se va a realizar una envío de datos desde un extremo al Host; OUT, antecede a una transmisión de datos en el sentido contrario, es decir del Host a un extremo; SETUP, que señala una secuencia de comandos y SOF (del inglés {Start of Frame)} que da una señal de sincronismo y control.%\\
 	
 		Dentro de los PID Data, solo existen diferentes etiquetas que se usan dependiendo del tipo de transmisión. Los PID de Handshake contienen 4 mensajes diferentes: ACK para indicar que el mensaje fue recibido satisfactoriamente y NAK señala que no se pudo enviar o recibir, STALL significa que el extremo se detuvo y NYET de cuenta sobre demoras en la respuesta del receptor.
 	
@@ -29,7 +29,7 @@ Los dispositivo transmiten información a través del bus con formato particular
 		\end{center}
 	
 \subsection{Formato de paquetes}
-	Cada uno de los paquetes que intervienen en la comunicación USB utilizan diferentes tipos de campos, dando lugar a distintos tipos de paquetes. La figura \ref{fig:paq} muestra como se conforman algunos de ellos.\\ 
+	Cada uno de los paquetes que intervienen en la comunicación USB utilizan diferentes tipos de campos, dando lugar a distintos tipos de paquetes. La figura \ref{fig:paq} muestra como se conforman algunos de ellos.%\\ 
 
 	\begin{figure}
 		\centering
@@ -69,10 +69,10 @@ Los dispositivo transmiten información a través del bus con formato particular
 		\label{fig:paq}
 	\end{figure}	
 
-	Un paquete de tipo Token está conformado por los campos PID, Dirección y CRC-5 (CRC de 5 bits). Un paquete Token que indica SOF en su campo PID, lleva un formato un poco diferente. En lugar de la dirección, se envía un contador de 11 bits que señala la cantidad de cuadros que han transcurrido desde la puesta en marcha del sistema, seguido de un código CRC-5.\\
+	Un paquete de tipo Token está conformado por los campos PID, Dirección y CRC-5 (CRC de 5 bits). Un paquete Token que indica SOF en su campo PID, lleva un formato un poco diferente. En lugar de la dirección, se envía un contador de 11 bits que señala la cantidad de cuadros que han transcurrido desde la puesta en marcha del sistema, seguido de un código CRC-5.%\\
 		
-	Cada \SI{1}{\milli\second} el host transmite un SOF e incrementar el contador de cuadros. En sistemas USB 2.0 de Alta velocidad, además, se transmiten 8 subcuadros de \SI{125}{\micro\second} por cada cuadro. Cada uno de estos subcuadros inicia con un paquete SOF. Sin embargo, el host no actualizará el número de cuadros hasta pasado \SI{1}{\milli\second}.\\
+	Cada \SI{1}{\milli\second} el host transmite un SOF e incrementar el contador de cuadros. En sistemas USB 2.0 de Alta velocidad, además, se transmiten 8 subcuadros de \SI{125}{\micro\second} por cada cuadro. Cada uno de estos subcuadros inicia con un paquete SOF. Sin embargo, el host no actualizará el número de cuadros hasta pasado \SI{1}{\milli\second}.%\\
 		
-	El paquete de datos iniciará con un PID que indique que es un paquete de este tipo, luego enviará los datos desde el LSb hasa el MSb y, finalmente, enviará un código CRC-16 (CRC de 16 bits de longitud).\\
+	El paquete de datos iniciará con un PID que indique que es un paquete de este tipo, luego enviará los datos desde el LSb hasa el MSb y, finalmente, enviará un código CRC-16 (CRC de 16 bits de longitud).%\\
 		
 	Los paquetes de tipo Handshake (Hs) solo envía un PID con información sobre si el mensaje fue recibido en forma correcta o no.
