@@ -1,32 +1,4 @@
 #pragma noiv               // Do not generate interrupt vectors
-//-----------------------------------------------------------------------------
-//   File:      CYStream.c
-//   Contents:   USB Bulk and Isoc streaming example code.
-//
-// Copyright (c) 2011, Cypress Semiconductor Corporation All rights reserved
-//
-// This software is owned by Cypress Semiconductor Corporation
-// (Cypress) and is protected by United States copyright laws and
-// international treaty provisions.  Therefore, unless otherwise specified in a
-// separate license agreement, you must treat this
-// software like any other copyrighted material.  Reproduction, modification, translation,
-// compilation, or representation of this software in any other form
-// (e.g., paper, magnetic, optical, silicon, etc.) is prohibited
-// without the express written permission of Cypress.
-//
-// Disclaimer: Cypress makes no warranty of any kind, express or implied, with
-// regard to this material, including, but not limited to, the implied warranties
-// of merchantability and fitness for a particular purpose. Cypress reserves the
-// right to make changes without further notice to the materials described
-// herein. Cypress does not assume any liability arising out of the application
-// or use of any product or circuit described herein. Cypress? products described
-// herein are not authorized for use as components in life-support devices.
-//
-// This software is protected by and subject to worldwide patent
-// coverage, including U.S. and foreign patents. Use may be limited by
-// and subject to the Cypress Software License Agreement.
-//
-//-----------------------------------------------------------------------------
 #include "fx2.h"
 #include "fx2regs.h"
 #include "syncdly.h"            // SYNCDELAY macro
@@ -39,21 +11,6 @@ extern BOOL   Sleep;
 extern BOOL   Rwuen;
 extern BOOL   Selfpwr;
 
-#define BTN_ADDR		0x20
-#define LED_ADDR		0x21
-
-BYTE xdata Digit[] = { 0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x98, 0x88, 0x83, 0xc6, 0xa1, 0x86, 0x8e };
-
-// Dummy-Read these values to turn LED's on and off
-//xdata volatile const BYTE D2ON		_at_ 0x8800;
-//xdata volatile const BYTE D2OFF	_at_ 0x8000;
-//xdata volatile const BYTE D3ON		_at_ 0x9800;
-//xdata volatile const BYTE D3OFF	_at_ 0x9000;
-//xdata volatile const BYTE D4ON		_at_ 0xA800;
-//xdata volatile const BYTE D4OFF	_at_ 0xA000;
-//xdata volatile const BYTE D5ON		_at_ 0xB800;
-//xdata volatile const BYTE D5OFF	_at_ 0xB000;
-
 BYTE    Configuration;      // Current configuration
 BYTE    AlternateSetting = 0;   // Alternate settings
 
@@ -62,13 +19,10 @@ BYTE    AlternateSetting = 0;   // Alternate settings
 //   The following hooks are called by the task dispatcher.
 //-----------------------------------------------------------------------------
 
-WORD mycount = 0;
 WORD blinktime = 0;
 BYTE inblink = 0x00;
 BYTE outblink = 0x00;
 WORD blinkmask = 0;			// HS/FS blink rate
-
-BYTE refresh = 0;
 
 void TD_Init(void)             // Called once at startup
 {
@@ -92,16 +46,6 @@ void TD_Init(void)             // Called once at startup
    		//set s-fifo to internal clk, no_output, no_inverted clk, no_async, no_gstate, slavefifo(11) = 0xC3
 	IFCONFIG = 0xcb;/*/0xCB; *///para hacerlo async. Error de diseño. Corregir en VHDL previamente
 
-	SYNCDELAY; // IFCONFIG@ef01.... REVCTL writing needs SYNCDELAY
-
-	REVCTL = 0x01; /*Chip Revision Control Register: poniendo esto en 0x01 me deja manipular los paquetes, pero debo mover paquete por paquete a 
-										cada buffer... no logro tomar ningún tipo de flag y mucho menos pude mover el buffer a la memoria fifo
-										Por otro lado, poniendo el bit 0x02 logro desactivar el auto-armado de los endopints y puedo cambiar de modo autoout a manualout
-										sin necesidad de perder datos.
-										En mi caso puntual, no quiero modificar los paquetes que recibo ni voy a cambiar de modo automático o manual.
-										Se pueden guardar la recomendación fuerte de activar ambos bits (Cypress higly recommends to set both bits).*/
-
-//	PORTACFG = 0x80;
 	SYNCDELAY; //PORTACFG@e670
 
 
@@ -150,31 +94,6 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 	EP2FIFOCFG = 0x0D;
 	SYNCDELAY;
-
-
-	//being sure that auto mode is off;
-
-//	EP2BCH = 0x00;
-//	SYNCDELAY;
-//	EP2BCH = 0x00;
-//	SYNCDELAY;
-//	EP2BCH = 0x00;
-//	SYNCDELAY;
-//	EP2BCL = 0x00;
-//	SYNCDELAY;
-//	EP2BCL = 0x00;
-//	SYNCDELAY;
-//	EP2BCL = 0x00;
-//	SYNCDELAY;
-
-
-//		EP8BCH = 0x02;
-//		SYNCDELAY;
-//		EP8BCL = 0x00;
-//		SYNCDELAY;
-
-
-	REVCTL = 0x00;
 	// We want to get SOF interrupts
 	USBIE |= bmSOF;
 	EIEX4 = 1;
@@ -187,62 +106,39 @@ void TD_Init(void)             // Called once at startup
 
 void TD_Poll(void)             // Called repeatedly while the device is idle  
 {
-	BYTE dum;
-	WORD i;
-	
-	if(!mycount)
-	{
-// debug2
-//		FX2LPSerial_XmitString("INTERRUPT: ");
-//		FX2LPSerial_XmitHex1(EP8FIFOIRQ);
-//		FX2LPSerial_XmitString(" INT4IVEC: ");
-//		FX2LPSerial_XmitHex2(INT4IVEC);
-//		FX2LPSerial_XmitChar('\n');
-		//debug2
-		//debug1
-//		FX2LPSerial_XmitString("Buffer:\n");
-//		for(i = 0; i < 512; i++)
+//	BYTE dum;
+//	
+//		if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
 //		{
-//			FX2LPSerial_XmitHex2(EP8FIFOBUF[i]);
-//			FX2LPSerial_XmitString("  ");
+//			dum = D4ON;
 //		}
-//		FX2LPSerial_XmitString("\n-----------------\n\n");
-		//debug1
-	}
-	
-	mycount++;
-	
-		if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
-		{
-			dum = D4ON;
-		}
-		else
-		{
-			dum = D4OFF;
-		}
+//		else
+//		{
+//			dum = D4OFF;
+//		}
 
-		//if(EXIF & bmBIT6)// for debug. InT4 flag
-		if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full//(EP2468STAT & bmBIT6)//ep8 empty
-		{
-			//FX2LPSerial_XmitString("Estoy Aqui y sigo aqui\n\n");
-			dum = D3ON;
-		}
-		else
-		{
-			dum = D3OFF;
-		}
+//		//if(EXIF & bmBIT6)// for debug. InT4 flag
+//		if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full//(EP2468STAT & bmBIT6)//ep8 empty
+//		{
+//			//FX2LPSerial_XmitString("Estoy Aqui y sigo aqui\n\n");
+//			dum = D3ON;
+//		}
+//		else
+//		{
+//			dum = D3OFF;
+//		}
 
-		if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
-		{
-			dum = D2ON;
-		}
-		else
-		{
-			dum = D2OFF;
-		}
+//		if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
+//		{
+//			dum = D2ON;
+//		}
+//		else
+//		{
+//			dum = D2OFF;
+//		}
 
-//	EZUSB_WriteI2C(LED_ADDR, 0x01, &(Digit[EP8BCL]));
-//	EZUSB_WaitForEEPROMWrite(LED_ADDR);
+////	EZUSB_WriteI2C(LED_ADDR, 0x01, &(Digit[EP8BCL]));
+////	EZUSB_WaitForEEPROMWrite(LED_ADDR);
 
 }
 
@@ -381,7 +277,6 @@ void ISR_Ures(void) interrupt 0
    USBIRQ = bmURES;         // Clear URES IRQ
    dum = D2OFF;				// Turn off high-speed LED
    blinkmask = 0x0400;		// 2 sec period for FS
-//	FX2LPSerial_XmitString("reset done\n");
 }
 
 void ISR_Susp(void) interrupt 0
@@ -393,7 +288,6 @@ void ISR_Susp(void) interrupt 0
 
 void ISR_Highspeed(void) interrupt 0
 {
-//	FX2LPSerial_XmitString("Setting HighSpeed...\n\n");
    blinkmask = 0x1000;		// 1 sec period for HS
    if (EZUSB_HIGHSPEED())
    {
@@ -404,11 +298,8 @@ void ISR_Highspeed(void) interrupt 0
 
       // This register sets the number of Isoc packets to send per
       // uFrame.  This register is only valid in high speed.
-//      EP2ISOINPKTS = 0x83;	// 3 packets per microframe, AADJ=1
-//			EA = 0;
-//			SYNCDELAY;
-//			EA = 1;
-//	  dum = D2ON;		// Turn on high-speed LED
+      EP2ISOINPKTS = 0x81;//0x83;	// 3 packets per microframe, AADJ=1
+			SYNCDELAY;
    }
    else
    {
@@ -437,21 +328,8 @@ void ISR_Ep1in(void) interrupt 0
 void ISR_Ep1out(void) interrupt 0
 {
 }
-
-// ISR_Ep2inout is called on every OUT packet receieved.
-// We don't do anything with the data.  We just indicate we are done with the buffer.
 void ISR_Ep2inout(void) interrupt 0
 {
-	FX2LPSerial_XmitString("EndPoint ISR");
-    // Perform USB activity based upon the Alt. Interface selected
-           // check EP8 EMPTY(busy) bit in EP2468STAT (SFR), core set's this bit when FIFO is empty
-	if(!(EP2468STAT & bmEP2EMPTY))
-	{
-		EA = 0;
-		EP2BCL = 0x80;          // re(arm) EP2OUT
-		SYNCDELAY;
-		EA = 1;
-	}
 }
 void ISR_Ep4inout(void) interrupt 0
 {
@@ -461,17 +339,6 @@ void ISR_Ep6inout(void) interrupt 0
 }
 void ISR_Ep8inout(void) interrupt 0
 {
-	FX2LPSerial_XmitString("EP8: Atendiendo ISR IN/OUT\n");
-    // Perform USB activity based upon the Alt. Interface selected
-           // check EP8 EMPTY(busy) bit in EP2468STAT (SFR), core set's this bit when FIFO is empty
-//	if(!(EP2468STAT & bmEP8EMPTY))
-//	{
-//		EP8BCL = 0x80;          // re(arm) EP2OUT
-//		SYNCDELAY;
-
-//		EP8FIFOBCL=0x80;
-//		SYNCDELAY;
-//	}
 }
 void ISR_Ibn(void) interrupt 0
 {
@@ -534,11 +401,7 @@ void ISR_Ep8eflag(void) interrupt 0
 {
 	EXIF &= ~bmBIT6;
 	EP8FIFOIRQ = 0x02;
-	FX2LPSerial_XmitHex2(EP8BCH);
-	FX2LPSerial_XmitHex2(EP8BCL);
 	FX2LPSerial_XmitString("\nEP8: Estoy vacío\n");
-
-
 }
 void ISR_Ep2fflag(void) interrupt 0
 {
