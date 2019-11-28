@@ -12,7 +12,7 @@
 \usepackage[binary-units]{siunitx}
 \usepackage{titling}
 \usepackage{soul}
-
+\usepackage{adjustbox}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -25,7 +25,7 @@
 }
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
+\usetikzlibrary{arrows,backgrounds,decorations.pathreplacing,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
 
 %\tikzstyle{style} = [definition]
 \tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
@@ -44,10 +44,11 @@
 \tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
 \tikzstyle{hub}=[draw=black,anchor=west,circle]
 \tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
-\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=north east lines,pattern color=black!35]
-\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=120,align=center]
-\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=120,minimum height=120,fill=black!05]
-\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=dots,pattern color=black!25]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=75,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=75,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=80,minimum height=75,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=75,pattern=dots,pattern color=black!25]
+\tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
 
 \newcommand{\epg}[3]{
 	Buffer {#1}\\

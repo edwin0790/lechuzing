@@ -1,55 +1,54 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: informe final.aux
 The style file: ieeetr.bst
 Database file #1: extras/bibliography.bib
-Warning--I didn't find a database entry for "Compaq2000"
 Warning--empty journal in PerezGarcia2008
-Warning--empty school in Perez2018
 Warning--empty journal in MicronTechnology2004
 Warning--empty publisher in Ethernet2018
 Warning--empty publisher in wifi2016
 Warning--can't use both volume and number fields in USBspec
 Warning--empty publisher in USBspec
-You've used 23 entries,
+Warning--empty school in Riihonen2015
+You've used 29 entries,
             1876 wiz_defined-function locations,
-            628 strings with 8947 characters,
-and the built_in function-call counts, 6548 in all, are:
-= -- 573
-> -- 403
+            668 strings with 10006 characters,
+and the built_in function-call counts, 7383 in all, are:
+= -- 650
+> -- 431
 < -- 0
-+ -- 145
-- -- 122
-* -- 514
-:= -- 996
-add.period$ -- 33
-call.type$ -- 23
-change.case$ -- 13
++ -- 158
+- -- 129
+* -- 550
+:= -- 1112
+add.period$ -- 43
+call.type$ -- 29
+change.case$ -- 17
 chr.to.int$ -- 0
-cite$ -- 30
-duplicate$ -- 297
-empty$ -- 552
-format.name$ -- 122
-if$ -- 1521
+cite$ -- 36
+duplicate$ -- 335
+empty$ -- 666
+format.name$ -- 129
+if$ -- 1737
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 29
-newline$ -- 82
-num.names$ -- 23
-pop$ -- 93
+int.to.str$ -- 29
+missing$ -- 35
+newline$ -- 104
+num.names$ -- 28
+pop$ -- 131
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 190
+skip$ -- 205
 stack$ -- 0
 substring$ -- 341
-swap$ -- 114
+swap$ -- 117
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 7
-while$ -- 58
-width$ -- 25
-write$ -- 218
-(There were 8 warnings)
+while$ -- 63
+width$ -- 31
+write$ -- 269
+(There were 7 warnings)

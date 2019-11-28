@@ -1,11 +1,11 @@
-A continuación se desarrollan los aspectos más relevantes del código final elaborado, compuestos por la función de inicialización y los descriptores del dispositivo USB.\\
+A continuación se desarrollan los aspectos más relevantes del código final elaborado, compuestos por la función de inicialización y los descriptores del dispositivo USB.%\\
 
-Al establecer el modo automático de funcionamiento, la función \verb|TD_Poll()| se encuentra vacía.\\
+Al establecer el modo automático de funcionamiento, la función \verb|TD_Poll()| se encuentra vacía.%\\
 
-Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para la depuración del presente código, tales como la conexión del puerto serie y la utilización de algunas interrupciones específicas.\\
+Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para la depuración del presente código, tales como la conexión del puerto serie y la utilización de algunas interrupciones específicas.
 
 \subsection{Inicialización del dispositivo}
-	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.\\
+	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.%\\
 	
 	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{48}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
 	
@@ -70,9 +70,9 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	\end{figure}
 
 	
-	Luego se debe configurar el funcionamiento del reloj de la interfaz. El esquema de la Figura \ref{ifclk} muestra la configuración del hardware. Cómo se observa, La interfaz puede funcionar con frecuencias de \SI{48}{\mega\hertz} o \SI{30}{\mega\hertz} provistas por el FX2LP. Además, la señal puede ser dirigida al exterior, o bien, ser provista por un periférico. Los inversores se programan de forma tal que la interfaz sea activa en el flanco positivo o negativo del reloj fuente. En este trabajo, el registro se programa para tomar como reloj la señal de \SI{48}{\mega\hertz} provisto por el mismo chip, la polaridad es de flanco ascendente y no se posee señal de reloj en el pin externo IFCKL. Además, se programa de modo asíncrono y en modo FIFO esclavo, a cuya configuración se accede por este puerto.\\
+	Luego se debe configurar el funcionamiento del reloj de la interfaz. El esquema de la Figura \ref{ifclk} muestra la configuración del hardware. Cómo se observa, La interfaz puede funcionar con frecuencias de \SI{48}{\mega\hertz} o \SI{30}{\mega\hertz} provistas por el FX2LP. Además, la señal puede ser dirigida al exterior, o bien, ser provista por un periférico. Los inversores se programan de forma tal que la interfaz sea activa en el flanco positivo o negativo del reloj fuente. En este trabajo, el registro se programa para tomar como reloj la señal de \SI{48}{\mega\hertz} provisto por el mismo chip, la polaridad es de flanco ascendente y no se posee señal de reloj en el pin externo IFCKL. Además, se programa de modo asíncrono y en modo FIFO esclavo, a cuya configuración se accede por este puerto.%\\
 	
-	El autor entiende sobre la posibilidad y conveniencia de utilizar el modo sincrónico para conectar la interfaz. Más aún, es factible proveer la señal necesaria de reloj desde la FPGA y evitar así problemas de desajustes y fallas de sincronismo. Sin embargo, por error del alumno en el diseño del impreso de interconexión, la entrada de reloj no quedó conectada al chip de la FPGA. Durante la escritura de este informe, se encuentra en viaje el impreso con las correcciones pertinentes y espera ser implementado en trabajos futuros.\\
+	El autor entiende sobre la posibilidad y conveniencia de utilizar el modo sincrónico para conectar la interfaz. Más aún, es factible proveer la señal necesaria de reloj desde la FPGA y evitar así problemas de desajustes y fallas de sincronismo. Sin embargo, por error del alumno en el diseño del impreso de interconexión, la entrada de reloj no quedó conectada al chip de la FPGA. Durante la escritura de este informe, se encuentra en viaje el impreso con las correcciones pertinentes y espera ser implementado en trabajos futuros.%\\
 	
 	La configuración, entonces, queda definida por la sentencia de código:
 	
@@ -98,7 +98,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 						// FLAGB <- EP8 Empty Flag
 	\end{lstlisting}
 	
-	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).\\
+	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).%\\
 	
 	La programación de este trabajo es con una entrada isocrónica de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
 	
@@ -158,7 +158,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	USBIE |= bmSOF;
 	\end{lstlisting}
 
-	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.\\
+	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.
 	
 \subsection{Encabezado y declaraciones importantes}
 	Para el correcto funcionamiento de este código, es necesario incorporar el encabezado que se observa a continuación.
@@ -171,7 +171,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	#include "leds.h"
 	\end{lstlisting}
 	
-	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través del archivo objeto {\it usbjmptb.obj}.\\
+	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través del archivo objeto {\it usbjmptb.obj}.%\\
 	
 	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar las luces de la placa de desarrollo. Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
 	
@@ -208,11 +208,11 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 	\end{lstlisting}
 	
 \subsection{Descriptores USB}	
-	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.\\
+	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
 	
-	El framework de Cypress coloca toda la información sobre los descriptores de el dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}.\\
+	El framework de Cypress coloca toda la información sobre los descriptores de el dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}.%\\
 	
-	Se observa a continuación los descriptores usados en el presente trabajo.\\%TODO ref al anexo.
+	Se observa a continuación los descriptores usados en el presente trabajo.%TODO ref al anexo.
 
 
 

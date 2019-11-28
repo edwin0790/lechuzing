@@ -1,0 +1,36 @@
+%INTENTO 2
+%Un mismo dispositivo puede tener multiples configuraciones conforme a la disponibilidad del sistema que lo aloja, la disponibilidad de ancho de banda, entre otras características. Incluso, dependiendo del uso del dispositivo, este puede operar a diferentes velocidades y requerir diferentes tipos de ancho de banda.
+%
+%El dispositivo puede tener uno o más extremos, los cuales pueden designarse en una o mas interfaces. A su vez, las interfaces se agrupan en configuraciones y se subdividen en alternativas.Estas múltiples configuraciones, deben ser comunicadas al host a traves de un tipo especial de mensajes, con estructura y formato establecido, denominado descriptores.
+
+%INTENTO 3
+Cuando un dispositivo es conectado al bus, debe informar sus características al Host a través de descriptores. Un descriptor es un estructura de datos con formato definido. De esta forma, el sistema conoce las diferentes configuraciones que puede tener cada una de las Funciones conectadas. El conocimiento detallado de estos descriptores por parte de los diseñadores de dispositivos, facilita luego la tarea de selección de cada uno de los atributos que tendrá, como así también, la elaboracion de software de control en la PC.%\\
+
+Cada uno de los descriptores comienzan con su longitud en bytes y el tipo de descriptor que se está enviando. En orden jerárquico, se utilizan categorías de descriptores que van desde los atributos generales a los particulares. En primer lugar, se envía el descriptor DEVICE que informa la versión de la norma USB que cumple el dispositivo, un numero que identifica al fabricante y otro que corresponde al producto, es decir al dispositivo. Esto le permite saber al host que software de control debe utilizar para comunicarse con el dispositivo. A su vez, comunica la cantidad de posibles configuraciones. Luego, si el dispositivo cumple con la norma 2.0 (o más moderna) envía un descriptor de tipo DEVICE\_QUALIFIER con información sobre otras velocidades de comunicación soportadas.%\\
+
+USB diferencia una configuración de otra dependiendo de las necesidades de energía. Un dispositivo podría operar conectado a una fuente de energía externa, o bien, ser potenciado por el mismo bus. Si las potencias de la fuente y del bus son diferentes, podrían verse limitadas las utilidades que ejecutaría la Función. Entonces, cuando el dispositivo funcione con la fuente podría tener una configuración pero cuando se desconecta, deberá informar esta situación al Host, indicando que se debe cambiar la configuración. Esta comunicación se lleva a cabo a través del descriptor de tipo CONFIGURATION. Debe haber tantos descriptores de este tipo como se indicó en el descriptor DEVICE.%\\
+
+Debido a que cada configuración puede tener diferentes limitaciones en sus funciones dependiendo de la potencia que consuma, se establece que cada configuración tenga a su vez diferentes interfaces. La cantidad de interfaces que tiene una configuración, también debe estar informada en el descriptor CONFIGURATION.%\\
+
+Una interfaz puede verse como el conjunto de extremos que son utilizados por un dispositivo para realizar una función específica. Por ejemplo, se podría pensar en una impresora multifunción. Se puede tener una interfaz para la parte que imprime y otra para el scanner. A su vez, cada interfaz puede variar el ancho de banda requerido a través de los denominados AlternateSettings. Las interfaces y sus diferentes alternativas, se comunican al Host a través del descriptor de tipo INTERFACE.%\\
+
+A su vez, un extremo define la dirección de la comunicación, es decir, si es desde o hacia el Host, un tipo de transferencia, si la comunicación es sincrónica o no, el tamaño máximo de paquete y el ancho de banda necesario. Los extremos se describen a través del descriptor ENDPOINT.%\\
+
+En resumen, la comunicación entre los dispositivos y el Host se efectúa a través de los extremos. Los extremos, a su vez, se agrupan en interfaces y un grupo de interfaces conforman una configuración. Una característica a tener en cuenta es que un dispositivo puede tener diferentes interfaces activas a la vez y las interfaces pueden cambiar durante la operación de características alternativas (AlternateSetings). Sin embargo, para cambiar de configuración, todos los extremos y las interfaces se desactivan.%\\
+
+También existe un tipo de descriptores, denominados STRING, que sirven para colocar a cada uno de los atributos una forma legible por el usuario, aunque puede no ser utilizada. 
+%INTENTO 1
+%Para ello, este último inicia una transferencia de control, requiriendo los atributos de la nueva función. Este informe, se realiza a través de un tipo especial de mensajes, con una estructura y formato determinado, que se denominan descriptores. Los descriptores son muy importantes porque es a través de ellos que el host y los dispositivos determinan las formas en que va a operar y comunicarse una función determinada. Existen siete descriptores USB standard:
+
+%\begin{itemize}
+%	\item Device: contiene información sobre, la versión de USB que cumple, la clase de dispositivo conectada, el fabricante, el número de identificación del producto, numero de serie y la cantidad de diferentes configuraciones que posee.
+%	\item Device\_Qualifier: En dispositivos que son capaces de operar a Alta Velocidad, informa sobre atributos que cambian cuando opera a otra velocidad.
+%	\item Configuration: Contiene información sobre la configuración específica del dispositivo. Cada descriptor de dispositivos informa el número de interfaces diferentes que contiene esa configuración. Cada interfaz, a su vez, puede contener distinta cantidad de extremos, conforme a la necesidad.
+%	\item Other\_Speed\_Configuration: indica configuraciones de un dispositivo que puede operar a alta velocidad cuando está operando a otra velocidad posible.
+%	\item Interface: 
+%	\item Endpoint
+%	\item String
+%
+%\end{itemize}%Los descriptores dan cuenta al host de que clase de dispositivo se conecta, cuales son sus posibles configuraciones, que interfaces tiene cada una de ellas, las velocidades a las que puede operar, los extremos que posee, etc. Existen varios tipos de descriptores que informan diferentes atributos o características. Lo que tienen en común unos y otros, es que al momento de la conexión al bus, estos deben ser informados al host.\\
+
+
