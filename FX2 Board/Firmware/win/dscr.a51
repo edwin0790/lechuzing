@@ -73,7 +73,7 @@ HighSpeedConfigDscr:
       db   (HighSpeedConfigDscr_End-HighSpeedConfigDscr)  /  256 ;; Total Length (MSB)
       db   1      ;; Number of interfaces
       db   1      ;; Configuration number
-      db   0      ;; Configuration string
+      db   3     ;; Configuration string
       db   80H   ;; Attributes (b7 - buspwr, b6 - selfpwr, b5 - rwu)
       db   50      ;; Power requirement (div 2 ma)
 
@@ -118,8 +118,8 @@ FullSpeedConfigDscr:
       db   (FullSpeedConfigDscr_End-FullSpeedConfigDscr)  /  256 ;; Total Length (MSB)
       db   1      ;; Number of interfaces
       db   1      ;; Configuration number
-      db   0      ;; Configuration string
-      db   10100000B   ;; Attributes (b7 - buspwr, b6 - selfpwr, b5 - rwu)
+      db   3      ;; Configuration string
+      db   80h   ;; Attributes (b7 - buspwr, b6 - selfpwr, b5 - rwu)
       db   50      ;; Power requirement (div 2 ma)
 
 ;; Interface Descriptor
@@ -139,7 +139,7 @@ FullSpeedConfigDscr:
       db   82H               ;; Endpoint number, and direction
       db   ET_ISO            ;; Endpoint type
       db   0FFH               ;; Maximun packet size (LSB)
-      db   03H               ;; Max packect size (MSB) 1023 byte packets/Frame
+      db   02H               ;; Max packect size (MSB) 1023 byte packets/Frame
       db   01H               ;; Polling interval
 
 ;; Endpoint Descriptor
@@ -165,42 +165,48 @@ StringDscr0_End:
 StringDscr1:
       db   StringDscr1_End-StringDscr1      ;; String descriptor length
       db   DSCR_STRING
-      db   'C',00
-      db   'y',00
-      db   'p',00
-      db   'r',00
-      db   'e',00
-      db   's',00
-      db   's',00
+      db   'E',00
+      db   'd',00
+      db   'w',00
+      db   'i',00
+      db   'n',00
+      db   ' ',00
+      db   'B',00
+	  db   'a',00	
+	  db   'r',00
+	  db   'r',00
+	  db   'a',00
+	  db   'g',00
+	  db   'a',00
+	  db   'n',00
 StringDscr1_End:
 
 StringDscr2:
       db   StringDscr2_End-StringDscr2      ;; Descriptor length
       db   DSCR_STRING
-      db   'C',00
-      db   'Y',00
-      db   '-',00
-      db   'S',00
-      db   't',00
-      db   'r',00
-      db   'e',00
+      db   'L',00
       db   'a',00
-      db   'm',00
+      db   '-',00
+      db   'T',00
+      db   'e',00
+      db   's',00
+      db   'i',00
+      db   's',00
 StringDscr2_End:
 
-StringDscr3:
-      db   StringDscr3_End-StringDscr3      ;; Descriptor length
-      db   DSCR_STRING
-      db   'B',00
-      db   'u',00
-      db   'l',00
-      db   'k',00
-      db   '-',00
-      db   'I',00
-      db   'N',00
-StringDscr3_End:
+;StringDscr3:
+      ;db   StringDscr3_End-StringDscr3      ;; Descriptor length
+      ;db   DSCR_STRING
+      ;db   'B',00
+      ;db   'u',00
+      ;db   'l',00
+      ;db   'k',00
+      ;db   '-',00
+      ;db   'I',00
+      ;db   'N',00
+;StringDscr3_End:
 
 UserDscr:
-      dw   0000
-	end
+	db 00
+end
       
