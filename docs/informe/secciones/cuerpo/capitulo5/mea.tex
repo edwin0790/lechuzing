@@ -1,0 +1,35 @@
+A modo conceptual, la maquina de estados algorítmica (MAE) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer y escribir datos desde y en la memoria FIFO. En la Figura \ref{fpga:mea:concepto} se muestra que cuando la memoria FIFO señala que no está vacía, se ejecuta la tarea de lectura de datos. Si la memoria FIFO se encuentra vacía y está activa la salida de datos, estos datos serán escritos en la memoria FIFO correspondiente.
+
+Se puede notar que la implementación de estas tareas le otorga mayor prioridad a la operación de lectura que a la de escritura. Es decir, siempre que existan datos para leer en la memoria FIFO, serán leídos, aún cuando hayan datos para ser escritos.
+Esta prioridad, viene dada en función de que se prevé que la comunicación sea utilizada por sensores que adquieren datos y los transmiten en forma inmediata a la PC y, a su vez, desde la PC se envía en forma ocasional datos que permitan configurar parámetros del sensor en particular. Por este motivo, se espera que los datos que provengan de la PC sean menos probables que los de los datos que está adquiriendo el sensor.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\begin{scope}[transform shape,node distance=3,>=latex,looseness=1.2]
+			\node[chart](inicio){En espera};
+			\node[chart](lectura)[below left=of inicio]{Leer datos};
+			\node[chart](escritura)[below right=of inicio]{Escribir datos};
+			\draw[->] (escritura.120) to [bend left](inicio.330);
+			\draw[->] (lectura.60) to [bend right](inicio.210);
+			\draw[->] (inicio.160) to [bend right] node [above,sloped] {FIFO Vacía=0} (lectura.110);
+			\draw[->] (inicio.20) to [bend left] node [above,sloped,text width=80] {FIFO Vacía=1\\Salida datos=1} (escritura.70);
+			\draw[->] (inicio.135) to [out=90,in=100,looseness=1.5] node [above,text width=80] {FIFO Vacía=1\\Salida datos=0} (inicio.45);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Diagrama conceptual de la MEA}
+	\label{fpga:mea:concepto}
+\end{figure}
+
+A los efectos de simplificar el problema, el diseño de la MEA se divide en dos a los fines de simplificar la tarea: Lectura y escritura. Las variables de entrada para la operación de lectura son el bus de datos {FD[15:0]\it} y el {\it FLAG Vacío}, conforme al diagrama temporal de la Figura \ref{fpga:lecfifo}. Las de salida son los puertos de dirección {\it FIFOADR[1:0]}, SLRD y SLOE. Con base en el diagrama temporal y las variables anteriormente mencionadas, se plantea la maquina de estados de la operación de lectura:
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{scope}[transform shape, node distance=1 >=latex]
+			\node[moore] (inicio) {FIFOADR="ZZ"\\SLOE='0'\\SLRD='0'};
+			\node[ask] (vacio) [below=of inicio]{};%[below=of inicio]{FLAG Vacío = '1'};
+			\node[moore] (lecdir) [below=of vacio] {FIFOADR=entrada}; 
+		\end{scope}
+	\end{tikzpicture}
+\end{figure}
