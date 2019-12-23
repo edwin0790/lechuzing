@@ -93,7 +93,7 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 	\begin{figure}[ht]%TODO hacer con tikz para que quede prolija
 		\centering
 		\includegraphics[width=.8\textwidth]{usbxcvr}
-		\caption{Implementación del enlace USB realizado por el EZ-USB }%TODO(\hl{se copiaria con tikz para mejorar prolijidad})}
+		\caption{Implementación del enlace USB realizado por el EZ-USB\cite{CypressSemiconductor2014fx2lp}}%TODO(\hl{se copiaria con tikz para mejorar prolijidad})}
 		\label{usbxcvr}
 	\end{figure}
 	
@@ -179,7 +179,8 @@ Este trabajo utiliza particularmente las memorias FIFO en modo esclavo, que resp
 	
 	Un detalle importante de los buffers múltiples es que, a la vista del controlador y/o de un periférico, el buffer posee una sola y única dirección y, es la propia interfaz FX2LP quien se encarga de seleccionar el buffer que corresponde en cada caso. Esto quiere decir que, por ejemplo, teniendo 4 buffers de \SI{512}{\byte} cada uno, el 8051 verá solo uno de \SI{512}{\byte}, sin necesidad de identificar a traves de su firmware con cuál de los cuatro está trabajando.
 	
-\subsection{Memorias FIFO esclavas}		
+\subsection{Memorias FIFO esclavas}
+	\label{cy:fifo}
 	Desde el punto de vista de la electrónica digital, el MIS es un dispositivo que recibe y envía datos desde y hacia el puerto USB utilizando una señal de reloj de \SI{24}{\mega\hertz}. Esta señal, es provista por un cristal de cuarzo incorporado en el circuito impreso del Kit de Desarrollo CY3684 EZ-USB FX2LP. Por su parte, un sistema externo puede o no proveer una señal de reloj y manejo de datos propio cuy a fuente de reloj es a priori desconocida por quien configura el circuito integrado. El controlador USB incorpora memorias FIFO que se encargan de proveer una interfaz entre el MIS y un dispositivo externo, salvando el problema de poseer dos relojes diferentes e independientes.%\\
 	
 	Estas memorias funcionan en modo esclavo, es decir, se debe conectar un dispositivo capaz de proveer una lógica maestra externa que comande la entrada y salida de datos desde una memoria FIFO hacia o desde el exterior. Para los fines del presente trabajo, este modo de funcionamiento es óptimo ya que, dotando al FPGA de una máquina de estados, se logra la transferencia de datos en los tiempos requeridos.%\\

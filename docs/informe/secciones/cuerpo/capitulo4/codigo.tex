@@ -391,9 +391,50 @@ FullSpeedConfigDscr_End:
 
 	Finalmente, el diseñador puede escribir todos los mensajes en formato de cadena de caracteres, para una lectura más sencilla por parte del usuario. En este trabajo solo se usan dos que sirven como ejemplo pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos.
 	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+org (($ / 2) +1) * 2	
+StringDscr:
+	
+StringDscr0:
+	db   StringDscr0_End-StringDscr0    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   09H,04H
+StringDscr0_End:
+	
+StringDscr1:
+	db   StringDscr1_End-StringDscr1    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   'E',00							;; Mensaje
+	db   'd',00
+	db   'w',00
+	db   'i',00
+	db   'n',00
+	db   ' ',00
+	db   'B',00
+	db   'a',00	
+	db   'r',00
+	db   'r',00
+	db   'a',00
+	db   'g',00
+	db   'a',00
+	db   'n',00
+StringDscr1_End:
+	
+StringDscr2:
+	db   StringDscr2_End-StringDscr2    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   'L',00							;; Mensaje
+	db   'a',00
+	db   '-',00
+	db   'T',00
+	db   'e',00
+	db   's',00
+	db   'i',00
+	db   's',00
+StringDscr2_End:
+	\end{lstlisting}
 	
 	
-	%TODO hace los descriptores string y probarlos con éxito
 %	\linenumbers*
 %	\lstinputlisting[language=asm,lastline=186]{\bridge}
 %	\nolinenumbers
