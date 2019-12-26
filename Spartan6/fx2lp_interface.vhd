@@ -160,7 +160,7 @@ begin
 
 			when read_read =>
 				if rd_eflag = '0' then
-					next_state <= read_addr;
+					next_state <= read_no_empty;
 				else
 					next_state <= idle;
 				end if;
@@ -176,7 +176,7 @@ begin
 								
 			when write_end =>
 				if send_req = '1' then
-					if rd_eflag = '1' then
+					if rd_eflag = '1' and wr_fflag = '0' then
 						next_state <= write_no_full;
 					else
 						next_state <= idle;
