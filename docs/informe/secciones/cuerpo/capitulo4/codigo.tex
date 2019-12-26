@@ -210,12 +210,231 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 \subsection{Descriptores USB}	
 	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
 	
-	El framework de Cypress coloca toda la información sobre los descriptores de el dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}.%\\
+	El framework de Cypress coloca toda la información sobre los descriptores de el dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al host comunicando las características del sistema desarrollado.%\\
 	
-	Se observa a continuación los descriptores usados en el presente trabajo.%TODO ref al anexo.
+	En primer lugar, posee un encabezado en donde se establecen etiquetas que hacen más legible el código para el programador:
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+	DSCR_DEVICE   equ   1   ;; Descriptor type: Device
+	DSCR_CONFIG   equ   2   ;; Descriptor type: Configuration
+	DSCR_STRING   equ   3   ;; Descriptor type: String
+	DSCR_INTRFC   equ   4   ;; Descriptor type: Interface
+	DSCR_ENDPNT   equ   5   ;; Descriptor type: Endpoint
+	DSCR_DEVQUAL  equ   6   ;; Descriptor type: Device Qualifier
+	
+	DSCR_DEVICE_LEN   equ   18
+	DSCR_CONFIG_LEN   equ    9
+	DSCR_INTRFC_LEN   equ    9
+	DSCR_ENDPNT_LEN   equ    7
+	DSCR_DEVQUAL_LEN  equ   10
+	
+	ET_CONTROL   equ   0   ;; Endpoint type: Control
+	ET_ISO       equ   1   ;; Endpoint type: Isochronous
+	ET_BULK      equ   2   ;; Endpoint type: Bulk
+	ET_INT       equ   3   ;; Endpoint type: Interrupt
+	\end{lstlisting}
 
+	Luego, el programador se debe asegurar que el código se guarda en un lugar de memoria adecuado.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+DSCR   SEGMENT   CODE PAGE
 
+;;-----------------------------------------------------------------------------
+;; Global Variables
+;;-----------------------------------------------------------------------------
+	rseg DSCR      ;; locate the descriptor table in on-part memory.
+	\end{lstlisting}
+	
+	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress,la memoria debe contener en primer lugar el descriptor de dispositivo.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+DeviceDscr:
+	db   DSCR_DEVICE_LEN      ;; Largo del descriptor
+	db   DSCR_DEVICE   ;; Typo de descriptor
+	dw   0002H      ;; Versión de la norma (BCD)
+	db   00H        ;; Clase de Dispositivo
+	db   00H         ;; Sub-Clase de Dispositivo
+	db   00H         ;; Sub-sub-Clase de dispositivo
+	db   64         ;; Tamaño máximo de paquete
+	dw   0B404H      ;; Identificador de Vendedor (Cypress) 
+	dw   0310H      ;; Identificador de Producto (Sample Device)
+	dw   0000H      ;; Identificador de versión del producto
+	db   1         ;; Indice de Fabricante en string
+	db   2         ;; Indice de Producto en string
+	db   0         ;; Indice de número de serie en string
+	db   1         ;; Número de configuraciones
+	\end{lstlisting}
+	
+	El descriptor de tamaño máximo de paquete está referido especialmente al EP0, es decir, al extremo que el host y el dispositivo utilizan para intercambiar mensajes de control.
+	
+	Se debe notar que los penúltimos tres parámetros mostrados corresponden a una descripción realizada en cadena de caracteres al final del archivo, a fin de poder mostrar un mensaje que pueda ser leído por un usuario humano.
+	
+	El último parámetro está relacionado con el número de configuraciones que posee este dispositivo. Esto determina también la cantidad de descriptores de configuración que debe tener el archivo de descripción. No obstante, antes de comenzar con el descriptor de configuración, se debe especificar el descriptor Calificador de Dispositivo, el cual dá información sobre otras velocidades de operación. Este descriptor es necesario debido a que el sistema implementado cumple con la versión 2.0 de la norma USB.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+org (($ / 2) +1) * 2
+DeviceQualDscr:
+	db   DSCR_DEVQUAL_LEN   ;; Largo del descriptor
+	db   DSCR_DEVQUAL   ;; Tipo de descriptor
+	dw   0002H      ;; Versión de la norma (BCD)
+	db   00H        ;; Clase de dispositivo
+	db   00H         ;; Sub-clase de dispositivo
+	db   00H         ;; Sub-sub-clase de dispositivo
+	db   64         ;; Tamaño máximo de paquetes
+	db   1         ;; Número de comunicaciones
+	db   0         ;; Reservado
+	\end{lstlisting}
+	
+	Debido a la implementación hecha por Cypress, cada descriptor debe encontrarse en una dirección de memoria par. Por ello se recurre al comando de la línea 1 del código de la sección anterior. A continuación, se especifica el descriptor de Calificador de Dispositivo, con información muy similar al descriptor de Dispositivo.
+	
+	Luego, se procede a detallar cada una de las configuraciones y sus Interfaces que se indicaron en los descriptores anteriores. En este caso, se deben especificar dos: una de alta velocidad, indicada en el Descriptor de Dispositivo y otra de velocidad completa, indicada en el Calificador de Dispositivo. Se muestra en seguida el Descriptor de la configuración de alta velocidad, unido al Descriptor de Interfaz (línea 16 en adelante) y los Descriptores de Extremos a partir de la línea 27, que determinan la configuración total de Alta Velocidad.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+org (($ / 2) +1) * 2
+HighSpeedConfigDscr:
+	db   DSCR_CONFIG_LEN	;; Largo del descriptor
+	db   DSCR_CONFIG        ;; Tipo de descriptor
+	db   (HighSpeedConfigDscr_End-HighSpeedConfigDscr) mod 256
+							;; Largo total (LSB)
+	db   (HighSpeedConfigDscr_End-HighSpeedConfigDscr)  /  256 
+							;; Largo total (MSB)
+	db   1      ;; Número de interfaces
+	db   1      ;; Indice de configuración
+	db   0		;; String de configuración
+	db   80H	;; Atributos (b7->1, b6 - selfpwr, b5 - rwu)
+	db   50		;; Consumo de potencia (div 2 ma)
+	
+	;; Alt Interface 0 Descriptor - Bulk IN
+	db   DSCR_INTRFC_LEN   ;; Largo del descriptor
+	db   DSCR_INTRFC       ;; Tipo de decriptor
+	db   0                 ;; Indice de interfaz
+	db   0                 ;; Indice de ajuste alternativo
+	db   2                 ;; Número de extremos
+	db   0ffH              ;; Clase de interfaz
+	db   00H               ;; Sub-clsae de interfaz
+	db   00H               ;; Sub-sub-clase de interfaz
+	db   0                 ;; Indice de string descriptr de interfaz
+	
+	;; Isoc IN Endpoint Descriptor 
+	db   DSCR_ENDPNT_LEN   ;; Largo del descriptor
+	db   DSCR_ENDPNT       ;; Tipo de descriptor
+	db   82H               ;; Extremo de entrada EP2
+						   ;; b7 -> IN/OUT, b[4:0] -> dir
+	db   ET_ISO            ;; Tipo de trasferencia
+	db   00H               ;; Tamaño máximo de paquete (LSB)
+	db   02H               ;; Tamaño máximo de paquete (MSB) 
+	db   01H               ;; Intervalo de consulta
+	
+	;; Bulk OUT Endpoint Descriptor
+	db   DSCR_ENDPNT_LEN   ;; Largo del descriptor
+	db   DSCR_ENDPNT       ;; Tipo de descriptor
+	db   08H               ;; Extremo de salida EP8
+	db   ET_BULK           ;; Tipo de transferencia
+	db   00H               ;; Tamaño máximo de paquete (LSB)
+	db   02H               ;; Tamaño máximo de paquete (MSB)
+	db   00H               ;; Intervalo de consulta
+	
+HighSpeedConfigDscr_End:
+	\end{lstlisting}
+	
+	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivos, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit7 debe estar siempre establecido a 1 por razones históricas de la norma USB\cite{USBspec}. El bit6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
+	
+	El último campo del descriptor de extremo, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isocrónicas.
+	
+	Luego de enviar la configuración de Alta Velocidad, se informa de la misma manera el descriptor de Velocidad Completa, cuyo código se observa a continuación.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+org (($ / 2) +1) * 2
+FullSpeedConfigDscr:
+	db   DSCR_CONFIG_LEN	;; Largo del descriptor
+	db   DSCR_CONFIG        ;; Tipo de descriptor
+	db   (FullSpeedConfigDscr_End-FullSpeedConfigDscr) mod 256
+							;; Largo total (LSB)
+	db   (FullSpeedConfigDscr_End-FullSpeedConfigDscr)  /  256 
+							;; Largo total (MSB)
+	db   1      ;; Número de interface
+	db   1      ;; Numero de configuraciones
+	db   0      ;; Indice de string de configuración
+	db   80H    ;; Atributos (b7 -<'1', b6 - selfpwr, b5 - rwu)
+	db   50     ;; Requerimiento de pontencia(div 2 ma)
+	
+	;; Interface Descriptor
+	db   DSCR_INTRFC_LEN ;; Largo del descriptor
+	db   DSCR_INTRFC     ;; tipo de descriptor
+	db   0               ;; Indice de interfaz
+	db   0               ;; Indice de ajuste alternativo
+	db   2               ;; Número de extremos
+	db   0ffH            ;; Clase de interfaz
+	db   00H             ;; Sub-clase de interfaz
+	db   00H             ;; Sub-sub-clase de interfaz
+	db   0               ;; Indice de string de interfaz
+	
+	;; Endpoint Descriptor
+	db   DSCR_ENDPNT_LEN   ;; Largo del descriptor
+	db   DSCR_ENDPNT       ;; Tipo de descriptor
+	db   82H               ;; Dirección y sentido de extremo
+	db   ET_ISO            ;; Tipo de extremo
+	db   0FFH              ;; Tamaño máximo de paquete(LSB)
+	db   03H               ;; Tamaño máximo de paquete(MSB)
+	db   01H               ;; Intervalo de consulta
+	
+	;; Endpoint Descriptor
+	db   DSCR_ENDPNT_LEN   ;; Largo del descriptor
+	db   DSCR_ENDPNT       ;; tipo de descriptor
+	db   08H               ;; Dirección y sentido de extremo
+	db   ET_BULK           ;; Tipo de extremo
+	db   040H              ;; Tamaño máximo de paquete (LSB)
+	db   00H               ;; Tamaño máximo de paquete (MSB)
+	db   01H               ;; Intervalo de consulta
+	
+FullSpeedConfigDscr_End:
+	\end{lstlisting}
 
+	Finalmente, el diseñador puede escribir todos los mensajes en formato de cadena de caracteres, para una lectura más sencilla por parte del usuario. En este trabajo solo se usan dos que sirven como ejemplo pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos.
+	
+	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
+org (($ / 2) +1) * 2	
+StringDscr:
+	
+StringDscr0:
+	db   StringDscr0_End-StringDscr0    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   09H,04H
+StringDscr0_End:
+	
+StringDscr1:
+	db   StringDscr1_End-StringDscr1    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   'E',00							;; Mensaje
+	db   'd',00
+	db   'w',00
+	db   'i',00
+	db   'n',00
+	db   ' ',00
+	db   'B',00
+	db   'a',00	
+	db   'r',00
+	db   'r',00
+	db   'a',00
+	db   'g',00
+	db   'a',00
+	db   'n',00
+StringDscr1_End:
+	
+StringDscr2:
+	db   StringDscr2_End-StringDscr2    ;; Largo del descriptor
+	db   DSCR_STRING					;; Tipo de descriptor
+	db   'L',00							;; Mensaje
+	db   'a',00
+	db   '-',00
+	db   'T',00
+	db   'e',00
+	db   's',00
+	db   'i',00
+	db   's',00
+StringDscr2_End:
+	\end{lstlisting}
+	
+	
 %	\linenumbers*
 %	\lstinputlisting[language=asm,lastline=186]{\bridge}
 %	\nolinenumbers

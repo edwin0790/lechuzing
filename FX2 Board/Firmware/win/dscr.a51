@@ -172,13 +172,13 @@ StringDscr1:
       db   'n',00
       db   ' ',00
       db   'B',00
-	  db   'a',00	
-	  db   'r',00
-	  db   'r',00
-	  db   'a',00
-	  db   'g',00
-	  db   'a',00
-	  db   'n',00
+      db   'a',00	
+      db   'r',00
+      db   'r',00
+      db   'a',00
+      db   'g',00
+      db   'a',00
+      db   'n',00
 StringDscr1_End:
 
 StringDscr2:
