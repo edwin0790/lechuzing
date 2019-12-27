@@ -102,10 +102,10 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		-- reloj usado en el sistema
 	signal sys_clk	: std_logic := '0';
 		-- salidas de pll
-	signal pll_0	: std_logic := '0';
-	signal pll_90	: std_logic := '0';
-	signal pll_180	: std_logic := '0';
-	signal pll_270	: std_logic := '0';
+	signal pll_50	: std_logic := '0';
+	signal pll_48	: std_logic := '0';
+	signal pll_40	: std_logic := '0';
+	signal pll_35	: std_logic := '0';
 	signal locked	: std_logic := '0';
 
 	-- cables de utilidad
@@ -130,31 +130,15 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	signal reset	: std_logic := '0';
 
 		--para depuracion
-	signal debug_clk												: std_logic := '0';
+--	signal debug_clk												: std_logic := '0';
 --	signal counter													: std_logic_vector(15 downto 0) := x"0000";
 --	signal checksum												: std_logic_vector(15 downto 0) := x"0000";
 
 		--temporizaciones
-	signal count3													: natural range 0 to 4 := 0;
-	signal count2													: natural range 0 to 3 := 0;
-	signal cont														: natural range 0 to 16777215 := 10000000;
+--	signal cont														: natural range 0 to 16777215 := 10000000;
 	signal rst_cont												: natural range 0 to 1023 := 1023;
-	signal trig3, trig2											: std_logic := '0';
-
-	-- Maquinas de Estados: xc6slx9-2tqg144
-		--maquina de estados de la interfaz
-	type if_fsm is
-	(
-		idle,
-		read_addr, read_no_empty, read_read,
-		write_addr, write_no_full, write_write, write_end
-	);
-	signal curr_state, next_state								: if_fsm := idle;
-
-	--debug
-	--signal num_state												: std_logic_vector(3 downto 0) := x"0";
-	--debug
 	
+	-- Maquinas de Estados: xc6slx9-2tqg144	
 	type fifo_wr_states is
 	(
 		idle, fifo_wren, fifo_nwren
@@ -181,8 +165,8 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		D0 	=> '1',
 		D1 	=> '0',
 		CE 	=> '1',
-		C0	=> pll_180,
-		C1	=> (not pll_180),
+		C0	=> pll_50,
+		C1	=> (not pll_50),
 		R  	=> '0',
 		S  	=> '0',
 		Q  	=> clk_out
@@ -226,10 +210,10 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	pll : clk_wiz_v3_6 
 		port map(
 			CLK_IN1   => clk_in,
-			CLK_OUT1  => pll_0,
-			CLK_OUT2  => pll_90,
-			CLK_OUT3  => pll_180,
-			CLK_OUT4  => pll_270,
+			CLK_OUT1  => pll_50,
+			CLK_OUT2  => pll_48,
+			CLK_OUT3  => pll_40,
+			CLK_OUT4  => pll_35,
 			RESET     => '0',
 			LOCKED    => locked
 		);
@@ -252,115 +236,19 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 	--REVISAR TODO ESTO
 	
 	-- reloj
-	sys_clk <= pll_0;
-
+	sys_clk <= pll_50;
+	
 	--conexiones de segnales internas hacia el exterior
-	slwr   <= slwr_sig;
-	slrd   <= slrd_sig;
---	sloe   <= sloe_int;
---	faddr  <= faddr_int;
---	pktend <= pktend_int;
---
---	write_full_flag  <= flaga;
---	write_empty_flag  <= flagd;
---	read_full_flag  <= flagc;
---	read_empty_flag  <= flagb;
+	slwr <= slwr_sig;
+	slrd <= slrd_sig;
 	
 	reset <= '1' when rst_cont = 0 else '0';
 	
-	-- control signaling
---	with curr_state select
---		faddr_int <=	out_ep_addr when read_addr | read_no_empty | read_read,-- | idle,--edwin,
---							in_ep_addr  when write_addr | write_no_full | write_write | write_end,
---							(others => 'Z') when others;
---
---	slwr_int <=	'0' when next_state = write_write else
---					'1';
---
---	slrd_int <= '0' when curr_state = read_no_empty else
---					'1';
---
---	pktend_int <= (read_empty_flag or write_req);
---				
---	with curr_state select
-----		sloe_int <=	'0' when read_read | read_no_empty,
---		sloe_int <=	'0' when read_addr | read_read | read_no_empty,
---						'1' when others;
---
----- debug
-----	fdata_out(15 downto 8) <= counter(7 downto 0);
-----	fdata_out(7 downto 0) <= counter(15 downto 8);
----- debug
---
---	with curr_state select
---					--dout->fdata_out
---		fdata <=	dout        when write_no_full | write_write | write_end | write_addr,
---					(others => 'Z')  when others;
---
---	with curr_state select
---		fdata_in <=	fdata     when read_no_empty | read_read | read_addr,
---						fdata_in  when others;
-
 	-- fifo segnales
 	wr_en <= '1' when fifo_wr_cst = fifo_wren else '0';
 
 	rd_en <= '1' when fifo_rd_cst = fifo_rden else '0';
 
-	-- Implementacion de las maquinas de estado de la interfaz
---	interfaz_fsm: process(curr_state, write_full_flag, read_empty_flag, write_req)
---	begin
---		case curr_state is
---			when idle =>
---				if read_empty_flag = '1' then
---					next_state <= read_addr;
---				elsif write_req = '1' then
---					if write_full_flag = '1' then
---						next_state <= write_addr;
---					else
---						next_state <= idle;
---					end if;
---				else
---					next_state <= idle;
---				end if;
---
---			when read_addr =>
---					next_state <= read_no_empty;
---
---			when read_no_empty =>
---				next_state <= read_read;
---
---			when read_read =>
---				if read_empty_flag = '1' then
---					next_state <= read_addr;
---				else
---					next_state <= idle;
---				end if;
---
---			when write_addr =>
---					next_state <= write_no_full;
---
---			when write_no_full =>
---				next_state <= write_write;
---
---			when write_write =>
---				next_state <= write_end;
---								
---			when write_end =>
---				if write_req = '1' then
---					if read_empty_flag = '0' then
---						next_state <= write_no_full;
---					else
---						next_state <= idle;
---					end if;
---				else
---					next_state <= idle;
---				end if;
---
---			when others =>
---				next_state <= idle;
---			end case;
---		end process interfaz_fsm;
---
 	-- maquina de estados de lectura fifo
 	read_fifo_fsm : process(fifo_rd_cst, fifo_empty, slwr_sig)
 	begin
@@ -417,52 +305,15 @@ architecture fx2lp_interface_arq of fx2lp_interface_top is
 		end case;
 	end process write_fifo_fsm;
 	
-	-- temporizaciones
---	counter3: process(sys_clk, reset, trig3)
---	begin
---		if reset = '0' then
---			count3 <= 0;
---		elsif rising_edge(sys_clk) then
---			if count3 > 0 then
---				count3 <= count3 - 1;
---			elsif trig3 = '1' then
---				count3 <= 4;
---			end if;
---		end if;
---	end process counter3;
---
---	trig3 <= '1' when (next_state = write_write) else '0';
---
---	counter2: process(sys_clk, reset, trig2)
---	begin
---		if reset = '0' then
---			count2 <= 0;
---		elsif rising_edge(sys_clk)then
---			if count2 > 0 then
---				count2 <= count2 - 1;
---			elsif trig2 = '1' then
---				count2 <= 3;
---			end if;
---		end if;
---	end process counter2;
---		
---	with next_state select
---		trig2 <=	'1' when read_no_empty | read_read | write_no_full | write_end,
---					'0' when others;
-
 	 -- reloj fsm
 	global_fsm_clk: process (sys_clk, reset)
 	begin
 		if reset = '0' then
---			curr_state <= idle;
 			fifo_rd_cst <= idle;
 			fifo_wr_cst <= idle;
 		elsif rising_edge(sys_clk) then
 			fifo_rd_cst <= fifo_rd_nst;
 			fifo_wr_cst <= fifo_wr_nst;
---			if count2 = 0 and count3 = 0 then
---				curr_state <= next_state;
---			end if;
 		end if;
 	end process global_fsm_clk;
 

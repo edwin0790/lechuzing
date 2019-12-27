@@ -87,8 +87,8 @@ architecture Behavioral of fx2lp_interface is
 	type if_fsm is
 	(
 		idle,
-		read_addr, read_read, read_end,
-		write_addr, write_write, write_end
+		read_read, read_end,
+		write_write, write_end
 	);
 	signal curr_state, next_state								: if_fsm := idle;
 
@@ -110,8 +110,8 @@ begin
 	
 	-- segnalizacion
 	with curr_state select
-		faddr_int <=	out_ep_addr when read_addr | read_read | read_end,
-							in_ep_addr  when write_addr | write_write | write_end,
+		faddr_int <=	out_ep_addr when read_read | read_end,
+							in_ep_addr  when write_write | write_end,
 							(others => 'Z') when others;
 
 	slwr_int <=	'0' when next_state = write_write else
@@ -123,16 +123,16 @@ begin
 	pktend_int <= ((not rd_eflag) or send_req);
 				
 	with curr_state select
-		sloe_int <=	'0' when read_addr | read_end | read_read,
+		sloe_int <=	'0' when read_end | read_read,
 						'1' when others;
 
 	with curr_state select
 					--dout->fdata_out
-		fdata <=	fdata_out        when write_end | write_write | write_addr,
+		fdata <=	fdata_out        when write_end | write_write,
 					(others => 'Z')  when others;
 
 	with curr_state select
-		fdata_in <=	fdata     when read_end | read_read | read_addr,
+		fdata_in <=	fdata     when read_end | read_read,
 						fdata_in  when others;
 	
 	--implementacion de la maquina de estados
@@ -141,19 +141,16 @@ begin
 		case curr_state is
 			when idle =>
 				if rd_eflag = '0' then
-					next_state <= read_addr;
+					next_state <= read_end;
 				elsif send_req = '1' then
 					if wr_fflag = '0' then
-						next_state <= write_addr;
+						next_state <= write_end;
 					else
 						next_state <= idle;
 					end if;
 				else
 					next_state <= idle;
 				end if;
-
-			when read_addr =>
-					next_state <= read_read;
 
 			when read_read =>
 				next_state <= read_end;
@@ -164,9 +161,6 @@ begin
 				else
 					next_state <= idle;
 				end if;
-
-			when write_addr =>
-				next_state <= write_write;
 
 			when write_write =>
 				next_state <= write_end;
@@ -217,7 +211,7 @@ begin
 	end process counter2;
 		
 	with next_state select
-		trig2 <=	'1' when read_end | read_read | write_addr | write_end,
+		trig2 <=	'1' when read_end | read_read | write_end,
 					'0' when others;
 
 	global_fsm_clk: process (sys_clk, reset)
