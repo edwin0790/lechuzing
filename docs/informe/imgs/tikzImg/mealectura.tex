@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{standalone}
+\documentclass[11pt]{standalone}
 %CORREGIR VHDL ORIGINAL
 
 \usepackage[spanish]{babel}
@@ -21,8 +21,7 @@
 \tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
 \tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
 \tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
-\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,aspect=2]
-%\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
 \tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
 \tikzstyle{hub}=[draw=black,anchor=west,circle]
 \tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
@@ -46,20 +45,23 @@
 
 \begin{document}
 	\begin{tikzpicture}[scale=1]
-		\begin{scope}[transform shape,node distance=4,>=latex,]
-			\node[simple](fx2lp){FX2LP FIFO};
-			\node[simple](mea)[right=of fx2lp]{Maquina de Estados Algorítmica};
-			
-			\draw[double,<->] ([yshift=3*110/4]fx2lp.east)-- node [above]{FDATA[0:15]} ([yshift=3*110/4]mea.west);
-			\draw[double,<->] ([yshift=2*110/4]fx2lp.east)-- node [above]{FADDR[0:1]} ([yshift=2*110/4]mea.west);
-			\draw[->] ([yshift=1*110/4]fx2lp.east)--node[above]{FLAG\_Vacío} ([yshift=1*110/4]mea.west);
-			\draw[->]([yshift=0*110/4]fx2lp.east)--node[above]{FLAG\_Lleno}([yshift=0*110/4]mea.west);
-			\draw[<-]([yshift=-1*110/4]fx2lp.east)--node[above]{SLWR}([yshift=-1*110/4]mea.west);
-			\draw[<-]([yshift=-2*110/4]fx2lp.east)--node[above]{SLRD}([yshift=-2*110/4]mea.west);
-			\draw[<-]([yshift=-3*110/4]fx2lp.east)--node[above]{SLOE}([yshift=-3*110/4]mea.west);
-			
-			\node[simple](interno)[right=of mea]{Sistema Interno};
-			\draw[->]
+		\begin{scope}[transform shape,node distance=1,>=latex,]
+			\node[moore,text width=100] (inicio) [label=above right:inicio]{FIFOADR="ZZ"\\SLOE='1'\\SLRD='1'};
+			\node[ask,text width=100] (vacio1) [below=of inicio]{FLAG Vacío};
+			\draw[->] (inicio.south) -| (vacio1);
+			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE='1'\\SLRD='1'};
+			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
+			\draw[->] ($(vacio1.east)+(1,0)$) |- ($(inicio.north)+(0,1)$) -- (inicio.north);
+			\draw[->] (vacio1.south) -| (lecdir);
+			\node[moore,text width=100] (lecoe) [below=of lecdir,label=above right:habilitación] {FIFOADR=entrada\\SLOE='0'\\SLRD='1'};
+			\draw[->](lecdir.south) -- ($(lecdir)!0.5!(lecoe)$);
+			\draw[->]($(lecdir)!0.5!(lecoe)$) -- (lecoe);
+			\node[moore,text width=100,node distance=1](lecrd)[below=of lecoe,label=above right:lectura]{FIFOADR=entrada\\SLOE='0'\\SLRD='0'};
+			\draw[->](lecoe) -- (lecrd);
+			\node[ask,text width=100] (vacio2)[below=of lecrd]{FLAG Vacío};
+			\draw[->](lecrd) -- (vacio2);
+			\draw[->](vacio2.west) -- ++(-1,0)  |- ($(lecoe.north)!0.5!(lecdir.south)$);
+			\draw[o->](vacio2.east) -- ++(1,0) -- ($(vacio1.east)+(1,0)$);
 		\end{scope}
 	\end{tikzpicture}
 \end{document}
