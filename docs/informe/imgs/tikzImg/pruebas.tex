@@ -58,8 +58,14 @@
 			\draw[<-]([yshift=-2*110/4]fx2lp.east)--node[above]{SLRD}([yshift=-2*110/4]mea.west);
 			\draw[<-]([yshift=-3*110/4]fx2lp.east)--node[above]{SLOE}([yshift=-3*110/4]mea.west);
 			
-			\node[simple](interno)[right=of mea]{Sistema Interno};
-			\draw[->]
+			\node[simple,minimum height=150,minimum width=80](interno)[right=of mea]{Sistema\\Interno};
+			\draw[double,->]([yshift=1*110/2]mea.east)--node[above]{Dato enviado} ([yshift=1*110/2]interno.west);
+			\draw[double,<-](mea)--node[above]{Dato a enviar}(interno);
+			\draw[<-]([yshift=-1*110/2]mea.east)--node[above]{Enviar datos}([yshift=-1*110/2]interno.west);
+			
+		\end{scope}
+		\begin{scope}[]
+			\node[draw=black,rectangle,fit={(mea)(interno)},label=north:FPGA]{};
 		\end{scope}
 	\end{tikzpicture}
 \end{document}

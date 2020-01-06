@@ -10,36 +10,39 @@ Warning--empty publisher in wifi2016
 Warning--can't use both volume and number fields in USBspec
 Warning--empty publisher in USBspec
 Warning--empty school in Riihonen2015
-You've used 29 entries,
+Warning--empty institution in CypressSemiconductor2014fx2lp
+Warning--empty institution in CypressSemiconductor2014cy3684
+Warning--empty journal in Cypress2017
+You've used 33 entries,
             1876 wiz_defined-function locations,
-            668 strings with 10006 characters,
-and the built_in function-call counts, 7383 in all, are:
-= -- 650
-> -- 431
+            683 strings with 10473 characters,
+and the built_in function-call counts, 7863 in all, are:
+= -- 690
+> -- 447
 < -- 0
-+ -- 158
-- -- 129
-* -- 550
-:= -- 1112
-add.period$ -- 43
-call.type$ -- 29
-change.case$ -- 17
++ -- 166
+- -- 133
+* -- 576
+:= -- 1192
+add.period$ -- 46
+call.type$ -- 33
+change.case$ -- 23
 chr.to.int$ -- 0
-cite$ -- 36
-duplicate$ -- 335
-empty$ -- 666
-format.name$ -- 129
-if$ -- 1737
+cite$ -- 43
+duplicate$ -- 360
+empty$ -- 725
+format.name$ -- 133
+if$ -- 1846
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 35
-newline$ -- 104
-num.names$ -- 28
-pop$ -- 131
+int.to.str$ -- 33
+missing$ -- 36
+newline$ -- 116
+num.names$ -- 32
+pop$ -- 148
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 205
+skip$ -- 216
 stack$ -- 0
 substring$ -- 341
 swap$ -- 117
@@ -47,8 +50,8 @@ text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 7
-while$ -- 63
-width$ -- 31
-write$ -- 269
-(There were 7 warnings)
+warning$ -- 10
+while$ -- 67
+width$ -- 35
+write$ -- 298
+(There were 10 warnings)

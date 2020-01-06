@@ -155,4 +155,19 @@ T.~Riihonen, {\em {Desing and analysis of duplexing Modes and Forwarding
   Protocols for OFDM(A) Relay Links}}.
 \newblock PhD thesis, 2015.
 
+\bibitem{CypressSemiconductor2014fx2lp}
+{Cypress Semiconductor}, ``{EZ-USB {\textregistered} Technical Reference
+  Manual},'' tech. rep., 2014.
+
+\bibitem{CypressSemiconductor2014cy3684}
+{Cypress Semiconductor}, ``{CY3684/CY3684 EZ-USB Development Kit User Guide},''
+  tech. rep., 2014.
+
+\bibitem{libusb}
+libusb, ``libusb 1.0 https://libusb.info/ - acceso: 04/11/2019.''
+
+\bibitem{Cypress2017}
+Cypress, ``{CY7C68013A, CY7C68014A, CY7C68015A, CY7C68016A, EZ-USB(R) FX2LP(TM)
+  USB Microcontroller High-Speed USB Peripheral Controller},'' 2017.
+
 \end{thebibliography}

@@ -21,15 +21,14 @@
 	\label{fpga:interfaz}
 \end{figure}
 
-La Figura \ref{fpga:interfaz} muestra los puertos a través de los cuales se conectan el controlador FX2LP con el FPGA Spartan-IV. La función de cada uno de estos puertos está detallada en la Sección \ref{cy:fifo} del presente informe. A continuación se explica el protocolo que debe seguir el sistema para poder leer y escribir datos. Este protocolo permite comprender de una forma más acabada las señales de control que debe proveer la MEA.
-
-Las señales FIFOADR[1:0] se utilizan para seleccionar la memoria FIFO sobre la que se escriben o leen los datos. Estas memorias, que poseen dirección hexadecimal 02, 04, 06 y 08 para el controlador 8051 incorporado en el integrado FX2LP, tienen dirección binaria $''00'', ''01'', ''10''$ y $''11''$ en los puertos FIFOADR[1:0], respectivamente, como se muestra en la Tabla \ref{tab:fifoadr}. Se destaca que $'0'$ y $'1'$ en cada puerto FIFOADR equivale a niveles de tensión bajo y alto, respectivamente.
+La Figura \ref{fpga:interfaz} muestra los puertos a través de los cuales se conectan el controlador FX2LP con el FPGA Spartan-IV. Como se detalla en la Sección \ref{cy:fifo}, %La función de cada uno de estos puertos está detallada en la Sección \ref{cy:fifo} del presente informe. A continuación se explica el protocolo que debe seguir el sistema para poder leer y escribir datos. Este protocolo permite comprender de una forma más acabada las señales de control que debe proveer la MEA.
+Las señales FIFOADR[1:0] se utilizan para seleccionar la memoria FIFO sobre la que se escriben o leen los datos. Cada una de estas memorias está asociada a un extremo (EP) determinado, que poseen dirección hexadecimal 02, 04, 06 y 08 para el sistema USB comandado por el $\mu$C 8051 incorporado en el integrado FX2LP, tienen dirección binaria $''00'', ''01'', ''10''$ y $''11''$ en los puertos FIFOADR[1:0], respectivamente, como se muestra en la Tabla \ref{tab:fifoadr}. Se destaca que $'0'$ y $'1'$ en cada puerto FIFOADR equivale a niveles de tensión bajo y alto, respectivamente.
 
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{cc}
 		\hline
-		FIFOADR[1:0] & FIFO\\
+		FIFOADR[1:0] & EP (USB)\\
 		\hline
 		00 & 0x02\\
 		01 & 0x04\\
@@ -41,7 +40,7 @@ Las señales FIFOADR[1:0] se utilizan para seleccionar la memoria FIFO sobre la 
 	\label{tab:fifoadr}
 \end{table}
 
-Las señales que señalan la ocurrencia de algún evento particular con las memorias, como ser el alcance de la capacidad mínima o la inexistencia de datos, son programables. Es decir, al momento de realizar la configuración del controlador FX2LP, el desarrollador puede seleccionar que señales estarán presentes en los puertos FLAGA, FLAGB, FLAGC y FLAGD.
+Los puertos que indican la ocurrencia de eventos particular en las memorias, como ser el alcance de la capacidad mínima o la inexistencia de datos, son programables. Es decir, al momento de realizar la configuración del controlador FX2LP, el desarrollador puede seleccionar que señales estarán presentes en los puertos FLAGA, FLAGB, FLAGC y FLAGD.
 
 La configuración que se implementa en este trabajo, tal como se menciona en el Capítulo \ref{cap:cy}, dispone a la memoria FIFO 02 como puerto de entrada USB (es decir, salida desde el FPGA) y al puerto 08 como salida USB (o sea, entrada para el FPGA). A su vez, el puerto FLAGA señala que la memoria FIFO 02 está llena y el FLAGB indica que la memoria FIFO 08 está vacía.
 
@@ -55,18 +54,20 @@ El lector puede notar que no se detalla en ninguno de los diagramas temporales p
 			\begin{scope}[transform shape,node distance=1,text width=60]
 				\setcounter{wavecount}{0}
 				\newwave{FIFOADR[1]}
-					\bit{1}{7}
+					\bit{1}{9}
 				\newwave{FIFOADR[0]}
-					\bit{1}{7}
+					\bit{1}{9}
 				\newwave{FLAG Vac\'io}
 					\bit{1}{5}
-					\bit{0}{2}
+					\bit{0}{4}
 				\newwave{SLOE}
 					\bit{1}{1}
-					\bit{0}{5}
+					\bit{0}{7}
 					\bit{1}{1}
 				\newwave{SLRD}
 					\bit{1}{2}
+					\bit{0}{1}
+					\bit{1}{1}
 					\bit{0}{1}
 					\bit{1}{1}
 					\bit{0}{1}
@@ -75,11 +76,11 @@ El lector puede notar que no se detalla en ninguno de los diagramas temporales p
 					\bitvector{Z}{1}
 					\bitvector{N-1}{2}
 					\bitvector{N}{2}
-					\bitvector{X}{1}
+					\graybitvector{No válido}{3}
 					\bitvector{Z}{1}
 			\end{scope}
 			\begin{scope}[on background layer]
-				\foreach \x in {1,2,...,7}{
+				\foreach \x in {1,2,...,9}{
 					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
 			\end{scope}
 		\end{tikzpicture}
@@ -93,7 +94,6 @@ El lector puede notar que no se detalla en ninguno de los diagramas temporales p
 	
 \subsection{Escritura de datos en la memoria FIFO}
 
-%TODO el diagrama temporal
 	\begin{figure}[ht]
 		\centering
 		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
@@ -114,6 +114,8 @@ El lector puede notar que no se detalla en ninguno de los diagramas temporales p
 					\bit{1}{1}
 					\bit{0}{1}
 					\bit{1}{1}
+				\newwave{PKTEND}
+					\bit{1}{9}
 				\newwave{FD[15:0]}
 					\bitvector{N-2}{3}
 					\bitvector{N-1}{2}
@@ -129,6 +131,47 @@ El lector puede notar que no se detalla en ninguno de los diagramas temporales p
 		\label{fpga:escfifo}
 	\end{figure}
 
-	Las señales que intervienen en el proceso de escritra de datos en la memoria FIFO, se encuentran detalladas en el diagrama temporal de la Figura \ref{fpga:escfifo}. Para escribir datos en una memoria FIFO, el FPGA debe seleccionar la memoria a través de FIFOADR en primer lugar. Luego, se coloca en el bus de datos, donde se encuentran conectados los puertos FD[15:0], el dato a escribir. Se debe tener en cuenta que SLOE debe estar no asertivo, de modo tal que el bus FD se encuentre en modo de alta impedancia y no interfiera con la escritura.
-	
+	Las señales que intervienen en el proceso de escritura de datos en la memoria FIFO, se encuentran detalladas en el diagrama temporal de la Figura \ref{fpga:escfifo}. Para escribir datos en una memoria FIFO, el FPGA debe seleccionar la memoria a través de FIFOADR en primer lugar. Luego, se coloca en el bus de datos, donde se encuentran conectados los puertos FD[15:0], el dato a escribir. Se debe tener en cuenta que SLOE debe estar no asertivo, de modo tal que el bus FD se encuentre en modo de alta impedancia y no interfiera con la escritura.
+
 	Una vez colocado el dato en el bus, se debe activar la señal SLWR. En el flanco asertivo de SLWR, el controlador incrementa el contador que indica la dirección de memoria en donde será almacenado el dato siguiente y deja guardado el dato que leyó en los puertos del bus FD. Como se observa en el diagrama de la Figura \ref{fpga:escfifo}, SLWR es activo en bajo.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,text width=60]
+				\setcounter{wavecount}{0}
+				\newwave{FIFOADR[1]}
+					\bit{0}{9}
+				\newwave{FIFOADR[0]}
+					\bit{0}{9}
+				\newwave{FLAG Lleno}
+					\bit{1}{5}
+					\bit{0}{4}
+				\newwave{SLWR}
+					\bit{1}{3}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+				\newwave{PKTEND}
+					\bit{1}{3}
+					\bit{0}{1}
+					\bit{1}{5}
+				\newwave{FD[15:0]}
+					\bitvector{N-20}{3}
+					\bitvector{N-19}{2}
+					\graybitvector{No leído}{4}
+			\end{scope}
+
+			\begin{scope}[on background layer]
+				\foreach \x in {1,2,...,9}{
+					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama temporal del funcionamiento del finalizado manual de mensajes}
+		\label{fpga:pktend}
+	\end{figure}
+
+La interfaz FX2LP espera siempre un número determinado de datos, señalizado como N en los diagramas de la Figura \ref{fpga:escfifo} y la Figura \ref{fpga:pktend}. Una vez alcanzado dicho número, el paquete queda listo para ser enviado cuando el host lo solicite. Sin embargo, puede ser enviado un número menor de datos en forma manual. Este funcionamiento es provisto a través de la señal PKTEND. Como se observa en la Figura \ref{fpga:pktend}, cuando PKTEND es asertiva (activa en bajo), la señal {\it FLAG\_Lleno} se activa y la memoria FIFO ignora cualquier dato que se envíe a continuación.

@@ -47,43 +47,43 @@
 \begin{document}
 	\begin{tikzpicture}[scale=1]
 		\begin{scope}[transform shape,node distance=1,>=latex,]
-			\node[moore,text width=100] (inicio) [label=above right:inicio]{FIFOADR=$''$ZZ$''$\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+			\node[moore,text width=100] (inicio) [label=above right:inicio]{FIFOADR=$''$ZZ$''$\\FDATA=$''$ZZ$''$\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
 
-			\node[ask] (vacio1) [below=of inicio]{FLAG Vacío};
+			\node[ask] (vacio1) [below=of inicio]{FLAG\_Vacío};
 			\draw[->] (inicio.south) -| (vacio1);
 %			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
 %			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
 
-			\node[moore,text width=100] (lecoe) [right=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+			\node[moore,text width=100] (lecoe) [right=of vacio1,label=above right:dirección] {FIFOADR=$''1''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
 			\draw[->] (vacio1.east) -- ($(vacio1.east)!0.5!(lecoe.west)$);
 			\draw[->]($(vacio1.east)!0.5!(lecoe.west)$) |- ($(lecoe.north)+(0,0.5)$) -- (lecoe.north);
 
-			\node[moore,text width=100](lecrd)[below=of lecoe,label=above right:lectura]{FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'0'$\\SLWR=$'1'$};
+			\node[moore,text width=100](lecrd)[below=of lecoe,label=above right:lectura]{FIFOADR=$'11''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'0'$\\SLWR=$'1'$};
 			\draw[->](lecoe) -- (lecrd);
 
-			\node[ask] (vacio2)[below=of lecrd]{FLAG Vacío};
+			\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
 			\draw[->](lecrd) -- (vacio2);
 
 			\draw[o->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
 			\draw[->](vacio2.east) -- ++(.8,0) |- ($(inicio.north)+(0,.6)$);
 			\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
 
-			\node[ask](enviar1)[below=of vacio1]{Enviar datos};
+			\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
 			\draw[o->](vacio1.south) --(enviar1.north);
 
 
-			\node[ask] (lleno1) [below=of enviar1]{FLAG Lleno};
+			\node[ask] (lleno1) [below=of enviar1]{FLAG\_Lleno};
 			\draw[->](enviar1) -- (lleno1);
 
-			\node[moore,text width=100](escdir)[below=of lleno1,label=above left:dirección]{FIFOADR=salida\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+			\node[moore,text width=100](escdir)[below=of lleno1,label=above left:dirección]{FIFOADR=$''00''$\\D\_recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
 			\draw[->](lleno1) -- ($(lleno1.south)!0.5!(escdir.north)$);
 			\draw[->]($(lleno1.south)!0.5!(escdir.north)$) -- (escdir);
 
 
-			\node[ask](vacio3)[left=2 of vacio1]{FLAG Vacío};
+			\node[ask](vacio3)[left=2 of vacio1]{FLAG\_Vacío};
 			\draw[->](escdir.south)--($(escdir.south)+(0,-.5)$) -| ($(vacio3.east)+(.5,0)$) |- ($(vacio3.north)+(0,.5)$)-|(vacio3.north);
 
-			\node[ask](enviar2)[below=of vacio3]{Enviar datos};
+			\node[ask](enviar2)[below=of vacio3]{Enviar\_datos};
 			\draw[o->](vacio3) -- (enviar2);
 
 			\draw[o->] (enviar1.west) -- ($(enviar1.west)+(-.5,0)$);
@@ -94,8 +94,8 @@
 			\draw[->](vacio3.west) -- ($(vacio3.west)+(-.5,0)$);
 			\draw[->]($(vacio3.west)+(-.5,0)$) |- ($(inicio.north -| enviar1.west)+(-.5,.6)$);
 
-			\node[ask](lleno2)[below=of enviar2]{FLAG Lleno};
-			\node[moore,text width=100](escwr)[below=of lleno2,label=above left:escribir]{FIFOADR=salida\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'0'$};
+			\node[ask](lleno2)[below=of enviar2]{FLAG\_Lleno};
+			\node[moore,text width=100](escwr)[below=of lleno2,label=above left:escribir]{FIFOADR=$''00''$\\D\_Recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'0'$};
 			\draw[->](lleno2) -- (escwr);
 			\draw[o->](lleno2.west) -| ($(enviar2.west)+(-.5,0)$);
 			\draw[->](enviar2)--(lleno2);
