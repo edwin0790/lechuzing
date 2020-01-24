@@ -1,14 +1,15 @@
 %TODO descripcion de paquetes y campos de los paquetes
-Los dispositivo transmiten información a través del bus con formato particular, establecido por el protocolo que dicta la norma USB. Los fragmentos de información que envía un dispositivo se denominan paquetes. Un paquete está compuesto por diferentes campos. El sistema reconoce cada campo, decodifica su información e identificar cada paquete, su emisor, el tipo de datos que envía, el sentido de circulación. Luego, corrobora que los datos transmitidos llegaron a destino en forma satisfactoria. No existe un número infinito de campos y todos pueden resumirse en el presente documento. Sin embargo, solo se detallan a continuación los que el autor considera más relevantes para el objetivo de este trabajo, quedando de lado algunos comandos, por ejemplo, inherentes a los hubs que conectan dispositivos de diferentes velocidades.
+Los dispositivos transmiten información a través del bus con un formato particular, establecido por el protocolo que dicta la norma USB. Cada \SI{1}{\milli\second}, el Host debe emitir una señal de sincronismo. El intervalo que transcurre entre una señal y la siguiente, se denomina cuadro. El Host asigna una porción de cuadro a cada uno de los dispositivos, asignando ancho de banda y tiempos de retardo a cada uno, según los requerimientos. A su vez, en comunicaciones de Alta-Velocidad, cada cuadro se subdivide en 8 microcuadros de \SI{125}{\micro\second} cada uno. Los fragmentos de información que envían los dispositivo mientras transcurre un cuadro, se denominan paquetes. Un paquete está compuesto por diferentes campos. El sistema reconoce cada campo, decodifica su información e identifica cada paquete, su emisor, el tipo de datos que envía, el sentido de circulación. Luego, corrobora que los datos transmitidos llegaron a destino en forma satisfactoria. 
 
 \subsection{Campos de paquetes}
+	Existe un número finito de campos y todos pueden resumirse en el presente documento. Sin embargo, se detallan a continuación los que el autor considera más relevantes para el objetivo de este trabajo, quedando de lado algunos comandos, por ejemplo, inherentes a los hubs que conectan dispositivos de diferentes velocidades.
 
 	\subsubsection*{Identificador de paquete}
-		El campo identificador de paquete (PID del ingles {\it Packet Identifier})le da a conocer a los distintos dispositivos el tipo de información que contiene el paquete. Por ejemplo, indica si el Host solicita envío o recibo de datos, si envía un comando o si un dispositivo está transmitiendo los datos. Se compone de un campo de 8 bits, de los cuales 4 corresponden al identificador propiamente dicho y los otros cuatro es el complemento a uno de los mismos datos, permitiendo corroborar que no hubo una pérdida de información.%\\
+		El campo identificador de paquete (PID del ingles {\it Packet Identifier}) le da a conocer a los distintos dispositivos el tipo de información que contiene el paquete. Por ejemplo, indica si el Host solicita envío o recibo de datos, si envía un comando o si un dispositivo está transmitiendo los datos. Se compone de un campo de 8 bits, de los cuales 4 corresponden al identificador propiamente dicho y los otros cuatro son el complemento a uno de los mismos datos, permitiendo corroborar que no hubo una pérdida de información.%\\
 		
 		Existen 4 tipos de PID: Token, que antecede a cualquier transmisión y es emitido por el host; Data, indica paquetes que contienen datos transmitidos; Handshake, a través del cual los componentes del sistema se enteran si la comunicación fue efectiva o no y Special, cuya función no es de interés para este trabajo.%\\
 	
-		A su vez, los PID Token se dividen en 4 tipos: IN, para indicar que se va a realizar una envío de datos desde un extremo al Host; OUT, antecede a una transmisión de datos en el sentido contrario, es decir del Host a un extremo; SETUP, que señala una secuencia de comandos y SOF (del inglés {Start of Frame)} que da una señal de sincronismo y control.%\\
+		A su vez, los PID Token se dividen en 4 tipos: IN, para indicar que se va a realizar una envío de datos desde un extremo al Host; OUT, antecede a una transmisión de datos en el sentido contrario, es decir del Host a un extremo; SETUP, que señala una secuencia de comandos y SOF (del inglés {Start of Frame)} que emite una señal de inicio de cuadro, utilizada para sincronismo y control.%\\
 	
 		Dentro de los PID Data, solo existen diferentes etiquetas que se usan dependiendo del tipo de transmisión. Los PID de Handshake contienen 4 mensajes diferentes: ACK para indicar que el mensaje fue recibido satisfactoriamente y NAK señala que no se pudo enviar o recibir, STALL significa que el extremo se detuvo y NYET de cuenta sobre demoras en la respuesta del receptor.
 	
@@ -19,14 +20,15 @@ Los dispositivo transmiten información a través del bus con formato particular
 		Es el campo que contiene la información útil transferida. Puede tener un largo de hasta 1024 bytes. Cada byte enviado se ordena con el bit menos significativo (LSb del inglés {\it Less Significative bit}) primero y el bit mas significativo (MSb por sus siglas en inglés) al final.
 
 	\subsubsection*{Chequeos de redundancia cíclica}
-		El campo de chequeo de redundancia cíclica (CRC) contiene verificadores para corroborar que no hubo pérdida de información. Dependiendo de que tipo de paquete se esté transmitiendo, el CRC puede tener 5 o 16 bits. Los códigos generadores son representados por las ecuaciones 2.1 y 2.2 respectivamente:
-	
-		\begin{center}
-			\begin{align}
-				G(X)&=X^5+X^2+1\\
-				G(X)&=X^16+X^15+X^2+1
-			\end{align}
-		\end{center}
+		El campo de chequeo de redundancia cíclica (CRC) contiene verificadores para corroborar que no hubo pérdida de información. Dependiendo de que tipo de paquete se esté transmitiendo, el CRC puede tener 5 o 16 bits. 
+%		Los códigos generadores son representados por las ecuaciones 2.1 y 2.2 respectivamente:
+%	
+%		\begin{center}
+%			\begin{align}
+%				G(X)&=X^5+X^2+1\\
+%				G(X)&=X^{16}+X^{15}+X^2+1
+%			\end{align}
+%		\end{center}
 	
 \subsection{Formato de paquetes}
 	Cada uno de los paquetes que intervienen en la comunicación USB utilizan diferentes tipos de campos, dando lugar a distintos tipos de paquetes. La figura \ref{fig:paq} muestra como se conforman algunos de ellos.%\\ 

@@ -1,37 +1,41 @@
 %Hasta el momento se detallaron las motivaciones del trabajo. Es decir, la necasidad de una comunicación de mayor ancho de banda que UART y que sea facil de transferir a una PC.
 %Además de esto, se desarrolló la norma USB, seleccionada para implementar la comunicación
-La implementación de la comunicación entre le FPGA y la PC, en este trabajo, se efectúa a través de USB 2.0. Para establecer esta comunicación, como se menciona en la Sección \ref{int:pro}, se utiliza una interfaz que ejecute las tareas relativas al protocolo, la transmisión y recepción de los datos.%\\
+En el Capítulo \ref{cap:int} se justificó la elección del protocolo más conveniente, conforme a los objetivos perseguidos. Luego, se llegó a la conclusión de que la norma USB 2.0 es el más apropiado para la implementación de la comunicación entre un FPGA y la PC. Para establecer dicha comunicación, como se menciona en la Sección \ref{int:pro}, se utiliza una interfaz que ejecute las tareas relativas al protocolo, la transmisión y recepción de los datos.%\\
 
-La figura \ref{fig:etp} muesta en lineas de trazos tres partes principales en las que este trabajo descompone el problema: La comunicación entre el FPGA y la interfaz, la configuración de la interfaz misma y la conexión entre la PC y la interfaz. El desarrollo de cada etapa cuenta con herramientas específicas que facilitan en gran medida la tarea que se realiza. En este capítulo se detalla por separado las características de cada una de estas herramientas.
-%Se puede descomponer la implementación en tres partes bien definidas: La comunicación entre el FPGA y la interfaz intermedia, la configuración de la interfaz misma, y la conexión entre la PC y la interfaz. El desarrollo de cada una de estas etapas contará con herramientas específicas.\\
-%TODO: agregar una figura que muestre lo dicho en estos dos párrafos
-\begin{figure}
-	\centering
-		\begin{tikzpicture}[]
-			\begin{scope}[transform shape,node distance=1,>=latex]
-				\node[rectangle, rounded corners,draw=black,minimum size=40](memo){Memoria};
-				\node[](aux01)[right=of memo]{};
-				\node[align=center,](comFIFO)[above=of aux01]{Comunicacion\\Interfaz - FPGA};
-				\node[exterior](fpga)[right=of aux01]{FPGA};
-				\node[rectangle, rounded corners, draw=black, minimum size=40,align=center](trans)[left=of memo]{Transceptor\\USB};
-				\node[node distance=.5](aux02)[left=of memo]{};
-				\node[](interfaz)[below=of aux02]{Interfaz};
-				\node[](aux03)[left=of trans]{};
-				\node[align=center](comPC)[above=of aux03]{Comunicación\\PC - Interfaz};
-				\node[exterior](pc)[left=of aux03]{PC};
-				\draw[thick,<->] (fpga) to (memo);
-				\draw[thick,<->] (pc) to (trans);
-			\end{scope}
-			\begin{scope}[]
-				\node[rectangle, dashed, draw=black, rounded corners, fit={(fpga)(memo)(comFIFO)}] (parte1) {};
-				\node[exterior,fit={(trans)(interfaz)(memo)}](bridge){};
-				\node[rectangle, rounded corners, dashed,draw=black, fit={(trans)(pc)(comPC)}](parte3){};
-				\node[rectangle, rounded corners, dashed,draw=black, fit={(interfaz)(bridge)}](){};
-			\end{scope}
-		\end{tikzpicture}
-		\caption{Partes en que se desglosa el trabajo}
-		\label{fig:etp}
-\end{figure}
+La implementación de la comunicación que se describe en el presente informe consta de tres etapas. La etapa principal esta compuesta por una interfaz que efectúa todas las tareas relativas a la comunicación USB 20.0 propiamente dicha. Luego, se utiliza una FPGA para corroborar que dicha comunicación se lleva a cabo conforme a los requerimientos. Finalmente, se realiza un programa de PC que envía y recibe datos, efectuando una prueba completa del sistema desarrollado.
+
+En este Capítulo se detallan las características de cada una de las herramientas utilizadas durante el desarrollo de la comunicación y se brinda una breve justificación de la elección y la utilizaciójn de las mismas.
+
+%La comunicación entre la PC y el FPGA se realiza mediante tres bloques, los que se pueden apreciar en la Figura \ref{fig:etp}: la comunicación entre el FPGA y la interfaz, la configuración de la interfaz misma y la conexión entre la PC y la interfaz. El desarrollo de cada etapa cuenta con herramientas específicas que facilitan en gran medida la tarea que se realiza. En este capítulo se detalla por separado las características de cada una de estas herramientas.
+%%Se puede descomponer la implementación en tres partes bien definidas: La comunicación entre el FPGA y la interfaz intermedia, la configuración de la interfaz misma, y la conexión entre la PC y la interfaz. El desarrollo de cada una de estas etapas contará con herramientas específicas.\\
+%
+%\begin{figure}
+%	\centering
+%		\begin{tikzpicture}[]
+%			\begin{scope}[transform shape,node distance=1,>=latex]
+%				\node[rectangle, rounded corners,draw=black,minimum size=40](memo){Memoria};
+%				\node[](aux01)[right=of memo]{};
+%				\node[align=center,](comFIFO)[above=of aux01]{Comunicacion\\Interfaz - FPGA};
+%				\node[exterior](fpga)[right=of aux01]{FPGA};
+%				\node[rectangle, rounded corners, draw=black, minimum size=40,align=center](trans)[left=of memo]{Transceptor\\USB};
+%				\node[node distance=.5](aux02)[left=of memo]{};
+%				\node[](interfaz)[below=of aux02]{Interfaz};
+%				\node[](aux03)[left=of trans]{};
+%				\node[align=center](comPC)[above=of aux03]{Comunicación\\PC - Interfaz};
+%				\node[exterior](pc)[left=of aux03]{PC};
+%				\draw[thick,<->] (fpga) to (memo);
+%				\draw[thick,<->] (pc) to (trans);
+%			\end{scope}
+%			\begin{scope}[]
+%				\node[rectangle, dashed, draw=black, rounded corners, fit={(fpga)(memo)(comFIFO)}] (parte1) {};
+%				\node[exterior,fit={(trans)(interfaz)(memo)}](bridge){};
+%				\node[rectangle, rounded corners, dashed,draw=black, fit={(trans)(pc)(comPC)}](parte3){};
+%				\node[rectangle, rounded corners, dashed,draw=black, fit={(interfaz)(bridge)}](){};
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Partes en que se desglosa el trabajo}
+%		\label{fig:etp}
+%\end{figure}
 
 %El objetivo que persigue el presente trabajo es el desarrollo e implementación de una comunicación entre una PC y desarrollos científicos basados en FPGA mediante el protocolo USB 2.0 de alta velocidad.\\
 %
