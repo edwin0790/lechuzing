@@ -133,28 +133,59 @@ Por su parte el protocolo USB (acrónimo de {\it Universal Serial Bus}), es una 
 
 USB presenta diferentes versiones de su norma, cada cual con una o más tasas de transmisión y señalización. La versión 1 posee dos revisiones, 1.0 fue lanzada al mercado en el año 1996 y 1.1 que se presentó en Agosto de 1998. La primera alcanza una tasa máxima de \SI{1.5}{\mega\bit\per\second} y la segunda hasta \SI{12}{\mega\bit\per\second}. USB 2.0 fue presentado en Septiembre del 2000 y es capaz de transmitir a \SI{480}{\mega\bit\per\second}. La tercera versión, USB 3.0, fue lanzada al mercado en 2011 y transmite a una tasa de \SI{5}{\giga\bit\per\second}. Esta última versión fue revisada en julio de 2013 y en septiembre de 2017, ofreciendo \SI{10}{\giga\bit\per\second} y \SI{20}{\giga\bit\per\second} respectivamente.%
 
-\begin{figure}[t]
+\begin{figure}
 	\centering
-	\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
-	\begin{scope}
-	\begin{scope}[transform shape,node distance=2]
-	\node[bloque]	(cy)					{Interfaz};
-	\node[bloque]	(fpga)	[right=of cy]	{FPGA};
-	\node[bloque]	(pc) 	[left=of cy]	{PC};
-	\draw[->,thick]	(pc.15)	-- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
-	\draw[->,thick]	(cy.195)-- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
-	\draw[<->,thick](cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
-	\draw[->,thick]	(fpga.195)	-- node (ctrl) [below]	{Control} (fpga.195 -| cy.east);
-	\node[node distance=.4]	(usb text) [above=of usbd+]	{USB};
-	\end{scope}
-	\begin{scope}
-	\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
-	\end{scope}
-	\end{scope}
+	\begin{tikzpicture}[]
+		\begin{scope}[transform shape,node distance=1,>=latex]
+			\node[rectangle, rounded corners,draw=black,minimum size=40](memo){Memoria};
+			\node[](aux01)[right=of memo]{};
+			\node[align=center,](comFIFO)[above=of aux01]{Comunicacion\\Interfaz - FPGA};
+			\node[exterior](fpga)[right=of aux01]{FPGA};
+			\node[rectangle, rounded corners, draw=black, minimum size=40,align=center](trans)[left=of memo]{Transceptor\\USB};
+			\node[node distance=.5](aux02)[left=of memo]{};
+			\node[](interfaz)[below=of aux02]{Interfaz};
+			\node[](aux03)[left=of trans]{};
+			\node[align=center](comPC)[above=of aux03]{Comunicación\\PC - Interfaz (USB)};
+			\node[exterior](pc)[left=of aux03]{PC};
+			\draw[thick,<->] (fpga) to (memo);
+			\draw[thick,<->] ([yshift=3*40/4]pc.south east) -- node (dp)[above]{D+} ([yshift=3*40/4]trans.south west);
+			\draw[thick,<->] ([yshift=1*40/4]pc.south east) -- node (dm)[above]{D-} ([yshift=1*40/4]trans.south west);
+%			\node[node distance=.5](usb)[below=of dm]{USB};
+		\end{scope}
+		\begin{scope}[]
+			\node[rectangle, dashed, draw=black, rounded corners, fit={(fpga)(memo)(comFIFO)}] (parte1) {};
+			\node[exterior,fit={(trans)(interfaz)(memo)}](bridge){};
+			\node[rectangle, rounded corners, dashed,draw=black, fit={(trans)(pc)(comPC)}](parte3){};
+			\node[rectangle, rounded corners, dashed,draw=black, fit={(interfaz)(bridge)}](){};
+%			\node[rectangle,rounded corners, dashed,draw=black, fit={(dp)(dm)(usb)(pc.east)(trans.west)}](){};
+		\end{scope}
 	\end{tikzpicture}
-	\caption{Esquema propuesto para implementar la comunicación}
+	\caption{Partes en que se desglosa el trabajo}
 	\label{fig:esq}
 \end{figure}
+
+%\begin{figure}[t]
+%	\centering
+%	\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
+%	\begin{scope}
+%	\begin{scope}[transform shape,node distance=2]
+%	\node[bloque]	(cy)					{Interfaz};
+%	\node[bloque]	(fpga)	[right=of cy]	{FPGA};
+%	\node[bloque]	(pc) 	[left=of cy]	{PC};
+%	\draw[->,thick]	(pc.15)	-- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+%	\draw[->,thick]	(cy.195)-- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+%	\draw[<->,thick](cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+%	\draw[->,thick]	(fpga.195)	-- node (ctrl) [below]	{Control} (fpga.195 -| cy.east);
+%	\node[node distance=.4]	(usb text) [above=of usbd+]	{USB};
+%	\end{scope}
+%	\begin{scope}
+%	\node[rectangle,rounded corners,draw=black,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+%	\end{scope}
+%	\end{scope}
+%	\end{tikzpicture}
+%	\caption{Esquema propuesto para implementar la comunicación}
+%	\label{fig:esq}
+%\end{figure}
 
 Se elige para el desarrollo de este trabajo la norma ya que USB 2.0 presenta una tasa de transferencia de datos suficiente para la transmisión de imágenes. A su vez, resulta ideal para los objetivos buscados debido a encontrarse presente en la mayoría de las computadoras y no interferir en la conexión a internet de las mismas. En el Capítulo \ref{cap:usb} se profundizarán en conceptos específicos de la norma USB.%\\
 
