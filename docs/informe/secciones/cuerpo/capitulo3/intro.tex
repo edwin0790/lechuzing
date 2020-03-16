@@ -1,19 +1,19 @@
-Hasta el momento, se posee una comunicación que intercambia datos entre una PC y el controlador FX2LP de Cypress. Sin embargo, esto sólo no es suficiente, ya que el sistema debe estar dotado, además, de un dispositivo que sea emisor y receptor de los datos que el controlador intercambia con la PC. Se desprende de los objetivos de este trabajo, que el dispositivo que cumple el rol de suministrar y usar los datos con los que opera el controlador, está compuesto por un FPGA.
+Hasta el momento, se ha descripto una comunicación que intercambia datos entre una PC y el controlador FX2LP de Cypress. Sin embargo, esto sólo no es suficiente, ya que el sistema debe estar dotado, además, de un dispositivo que sea emisor y receptor de los datos que el controlador intercambia con la PC.
 
-Como se menciona en la Sección \ref{mats:fpga}, el FPGA que se utiliza en la implementación de este trabajo es un Spartan-VI de Xilinx, provisto en la placa de desarrollo Mojo v3, desarrollada por Embedded Micro. 
+Para el desarrollo de una comunicación funcional de sistemas basado en FPGA es necesario implementar un módulo de comunicación dentro de la lógica que se implementa en el FPGA mismo. Por este motivo es mandante la utilización de un FPGA. Luego, es necesario identificar cuales son los mecanismos para la lectura y escritura de datos, las señales que intervienen y los puertos con los que debe interactuar el FPGA.
 
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[scale=1.35*\textwidth/\paperwidth,>=latex,node distance=3]
 	\begin{scope}[transform shape,node distance=1.5,align=center]
-	\node[interior,text width=60](mea)	{M\'aquina de Estados Algorítmica};
-	\node	(aux1)	[right=of mea]	{};
+	\node[interior,text width=60](mef)	{M\'aquina de Estados Finitos};
+	\node	(aux1)	[right=of mef]	{};
 	\node[interior,text width=80](dev)		[right=of aux1]	{Desarrollo implementado en FPGA};
-	\draw[<->] (mea.east) -- node[above]{Flujo de Datos} (dev.west);
+	\draw[<->] (mef.east) -- node[above]{Flujo de Datos} (dev.west);
 	\node[node distance = .5]	(texto fpga) [below=of aux1] {FPGA};
 	\end{scope}
 	\begin{scope}[on background layer]
-	\node[fit=(mea)(dev)(texto fpga),rectangle,draw](fpga){};
+	\node[fit=(mef)(dev)(texto fpga),rectangle,draw](fpga){};
 	\end{scope}
 	\begin{scope}[transform shape,]
 	\node[exterior,text width=70,align=center,minimum height=65] (cy)	[left=of fpga]{Controlador FX2LP};
@@ -29,6 +29,9 @@ Como se menciona en la Sección \ref{mats:fpga}, el FPGA que se utiliza en la im
 	\label{fpga:concepto}
 \end{figure}
 
-La Figura \ref{fpga:concepto} muestra un esquema en el cual se observa, como productor y consumidor de datos, un desarrollo genérico, implementado dentro del FPGA. Los datos fluyen desde el FPGA al controlador FX2LP a través de una máquina de estados algorítmica (MEA), que también provee las señales de control.
+La Figura \ref{fpga:concepto} muestra un esquema en el cual se observa, como productor y consumidor de datos, un desarrollo genérico, implementado dentro del FPGA. Los datos fluyen desde el FPGA al controlador FX2LP a través de una máquina de estados finitos (MEF), que también provee las señales de control.
 
-A lo largo de este capítulo se explica en detalle el protocolo que debe seguir el dispositivo maestro que comanda la lectura y escritura de datos en los buffers disponibles en la memoria FIFO esclava que posee el controlador de Cypress. Luego, se desarrolla la máquina de estados que comanda ese intercambio de datos y el código escrito en VHDL que la describe para ser sintetizada en el FPGA. Finalmente se explica el desarrollo de un circuito desarrollado como interconexión entre las distintas placas de desarrollo que se utilizan en este trabajo.
+A continuación, se justifica la elección del FPGA y la placa de desarrollo utilizados, se detallarán las señales que intervienen en el funcionamiento de la interfaz y los protocolos de lectura y escritura de modo asíncrono. Esto dará lugar a la elaboración de una máquina de estados que luego podrá ser plasmada en un código que será sintetizado en el FPGA. Para la elaboración del código de síntesis se utiliza el lenguaje de descripción de hardware VHDL.
+
+Además, se explica el desarrollo de un circuito desarrollado como interconexión entre las distintas placas de desarrollo que se utilizan en este trabajo.
+%A lo largo de este capítulo se explica en detalle el protocolo que debe seguir el dispositivo maestro que comanda la lectura y escritura de datos en los buffers disponibles en la memoria FIFO esclava que posee el controlador de Cypress. Luego, se desarrolla la máquina de estados que comanda ese intercambio de datos y el código escrito en VHDL que la describe para ser sintetizada en el FPGA. Finalmente se explica el desarrollo de un circuito desarrollado como interconexión entre las distintas placas de desarrollo que se utilizan en este trabajo.

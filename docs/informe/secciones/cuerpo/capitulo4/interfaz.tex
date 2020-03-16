@@ -1,0 +1,8 @@
+%Durante el desarrollo de este trabajo, se halló un problema importante sobre la compilación y ejecución del código escrito en C para microcontroladores. Dicho problema consiste en 
+
+Durante la compilación y ejecución de las tareas provista por Cyress a traves de su framework, sucedió que de forma inesperada, el controldaor FX2LP no lograra inicializar en forma correcta su funcionamiento. Se dice que sucedía en forma inesperada ya que no había causa aparente para este comportamiento anómalo: el compilador no informaba error alguno y el código desarrollado no tenía nada de malo luego de diversa revisiones.
+
+Cypress, en su framework provee un programa monitor precompilado. Este monitor permite al desarrollador acceder a operaciones de debug, tales como el chequeo de variables, el pausa y reanudado de ejecuciones, etc. Con este programa monitor ejecutado, la configuración desarrollada se implementó sin problemas aparentes.
+
+A fin de depurar este error se procedió a utilizar la biblioteca FX2LPSerial\cite{Kumar2017}. Esta biblioteca es un conjunto de funciones de C para microcontroladores que se sirven para configurar los puertos UART y de las rutinas asociada a la recepción y envío de datos por ellos.
+

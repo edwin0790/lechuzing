@@ -1,167 +1,167 @@
-A continuación se desarrollan los aspectos más relevantes del código final elaborado, compuestos por la función de inicialización y los descriptores del dispositivo USB.%\\
-
-Al establecer el modo automático de funcionamiento, la función \verb|TD_Poll()| se encuentra vacía.%\\
-
-Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para la depuración del presente código, tales como la conexión del puerto serie y la utilización de algunas interrupciones específicas.
-
-\subsection{Inicialización del dispositivo}
-	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.%\\
-	
-	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{48}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
-	
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); // 48 MHz
-	\end{lstlisting}
-
-	\begin{figure}[ht]
-		\centering
-		\begin{tikzpicture}[circuit logic US, node distance=1,shape border uses incircle]
-			\begin{scope}[transform shape]
-				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg4){};
-				\node[buffer gate] (ifcfg5) [right=of ifcfg4] {};
-				\node[not gate]	(a)		[left=of ifcfg4.input 2]	{};
-				\node[node distance=2](aux a)	[left=of ifcfg4.input 1]	{};
-				\node[] (aux 1) [left=of aux a] {};
-				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg6) [left=of aux 1]{};
-				\node[mux, inputs={nn},info={[text width=10]center:1\\0},point left,node distance=4] (ifcfg7) [below=of ifcfg6]{};
-				\node[mux,inputs={nn},info={[text width=10]center:0\\1},node distance=2,point left] (ifcfg4bis) [right=of ifcfg7.input 1]{};
-				\node[not gate,node distance=1.7] (b) [right=of ifcfg4bis.input 1,point left] {};
-				\node[node distance=3] (aux b) [right=of ifcfg4bis.input 2] {};
-				\node[buffer gate,point left] (c)	[right=of aux b]	{};
-				
-				\node[]	(sel4)	[below=of ifcfg4]	{IFCFG.4};
-				%	\node[node distance=1.5] (sel4bis) [above=of ifcfg4bis] {IFCFG.4};
-				\node[]	(sel5)	[above=of ifcfg5]	{IFCFG.5};
-				\node[] (sel6)	[below=of ifcfg6]	{IFCFG.6};
-				\node[node distance=1.5]	(sel7)	[above=of ifcfg7]	{IFCFG.7};
-				\node[] (aux 2) [right=of ifcfg5]		{};
-				\node[node distance=1.5] (aux 3)  [below=of aux 2] {};
-				\node[align=center] (output) [right=of aux 3] {Pin\\IFCLK};
-				\node[] (freq1)	[left=of ifcfg6.input 1]	{30 MHz};
-				\node[]	(freq2) [left=of ifcfg6.input 2]	{48 MHz};
-				\node[align=center] (clkin) [left=of ifcfg7]	{Entrada\\IFCLK\\Interna};
-				
-				\draw (ifcfg4) to (ifcfg5);
-				\draw (aux a.base) to (ifcfg4.input 1);
-				\draw (aux a.base) |- (a.input);
-				\draw (ifcfg6) to (aux a.base);
-				\draw (aux 1.base) |- (ifcfg7.input 2);
-				\draw (ifcfg4bis) to (ifcfg7.input 1);
-				\draw (c) to (ifcfg4bis.input 2);
-				\draw (b) to (ifcfg4bis.input 1);
-				\draw (aux b.base) |- (b.input);
-				\draw (a) to (ifcfg4.input 2);
-				\draw (ifcfg5) to (aux 2.base);
-				\draw (aux 2.base) |- (c);
-				\draw (aux 3.base) -- (output);
-				
-				\draw (clkin) to (ifcfg7);
-				\draw (freq1) to (ifcfg6.input 1);
-				\draw (freq2) to (ifcfg6.input 2);
-				\draw (sel5) to (ifcfg5.north);
-				\draw (sel4) to (ifcfg4.select);
-				\draw (sel4) -| (ifcfg4bis.select);
-				\draw (sel6) to (ifcfg6.select);
-				\draw (sel7) to (ifcfg7.select);	
-			\end{scope}
-		\end{tikzpicture}
-		\caption{Esquema funcional para la entrada de reloj de la Interfaz}
-		\label{ifclk};
-	\end{figure}
-
-	
-	Luego se debe configurar el funcionamiento del reloj de la interfaz. El esquema de la Figura \ref{ifclk} muestra la configuración del hardware. Cómo se observa, La interfaz puede funcionar con frecuencias de \SI{48}{\mega\hertz} o \SI{30}{\mega\hertz} provistas por el FX2LP. Además, la señal puede ser dirigida al exterior, o bien, ser provista por un periférico. Los inversores se programan de forma tal que la interfaz sea activa en el flanco positivo o negativo del reloj fuente. En este trabajo, el registro se programa para tomar como reloj la señal de \SI{48}{\mega\hertz} provisto por el mismo chip, la polaridad es de flanco ascendente y no se posee señal de reloj en el pin externo IFCKL. Además, se programa de modo asíncrono y en modo FIFO esclavo, a cuya configuración se accede por este puerto.%\\
-	
-	El autor entiende sobre la posibilidad y conveniencia de utilizar el modo sincrónico para conectar la interfaz. Más aún, es factible proveer la señal necesaria de reloj desde la FPGA y evitar así problemas de desajustes y fallas de sincronismo. Sin embargo, por error del alumno en el diseño del impreso de interconexión, la entrada de reloj no quedó conectada al chip de la FPGA. Durante la escritura de este informe, se encuentra en viaje el impreso con las correcciones pertinentes y espera ser implementado en trabajos futuros.%\\
-	
-	La configuración, entonces, queda definida por la sentencia de código:
-	
-%	\lstinputlisting[language=C,firstline=91,lastline=95]{\bridge}
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	//colocar Interfaz FIFO esclava a 48MHz
-	//clk interno, no_salida, no_invertir clk, no_asincr
-	//fifoesclava(11) = 0xC3
-	//0xCB; para asincr.
-	IFCONFIG = 0xCB;
-	SYNCDELAY;
-	\end{lstlisting}
-		
-	A continuación, se debe establecer el funcionamiento de los pines bandera. Estos avisan cuando un EP está vacío, completo o a un nivel programable. Para este trabajo, son necesarios solo una bandera que señale el nivel vacío del puerto por el que entran los datos a la FPGA y otra que señale el nivel completo del EP donde escribe los datos a enviar. Si bien no son leídos en ningún momento, para evitar problemas se configuran las banderas vacías y completas para ambos EP's:
-	
-%	\lstinputlisting[language=C,firstline=108,lastline=113]{\bridge}
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	//Pin Flags Configuratión
-	PINFLAGSAB = 0xBC;	// FLAGA <- EP2 Full Flag
-						// FLAGD <- EP2 Empty Flag
-	SYNCDELAY;
-	PINFLAGSCD = 0x8F;	// FLAGC <- EP8 Full Flag
-						// FLAGB <- EP8 Empty Flag
-	\end{lstlisting}
-	
-	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).%\\
-	
-	La programación de este trabajo es con una entrada isocrónica de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
-	
-%	\lstinputlisting[language=C,firstline=117,lastline=128]{\bridge}
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	EP1OUTCFG = 0xA0;
-	SYNCDELAY;
-	EP1INCFG = 0xA0;
-	SYNCDELAY;
-	EP4CFG &= 0x7F;
-	SYNCDELAY;
-	EP6CFG &= 0x7F;
-	SYNCDELAY;
-	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
-	SYNCDELAY;
-	EP2CFG = 0xD2;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=512, BUF=2x
-	SYNCDELAY;
-	\end{lstlisting}
-	
-	Como siguiente paso, se limpian las memorias FIFO de cualquier dato espúreo que contengan al momento del inicio del programa.
-	
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	FIFORESET = 0x80;
-	SYNCDELAY;
-	FIFORESET = 0x02;
-	SYNCDELAY;
-	FIFORESET = 0x04;
-	SYNCDELAY;
-	FIFORESET = 0x06;
-	SYNCDELAY;
-	FIFORESET = 0x08;
-	SYNCDELAY;
-	FIFORESET = 0x00;
-	SYNCDELAY;
-	\end{lstlisting}
-	
-	De esta forma, el controlador se encuentra listo para configurar las memorias asignadas a cada uno de los EP's. Se debe notar que en primer lugar se coloca 0x00 y luego el valor estipulado. Esto se basa en que el modo automático se prepara para transmitir ante un flanco ascendente del registro que lo habilita.
-	
-%	\lstinputlisting[language=C,firstline=143,lastline=152]{\bridge}
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	EP8FIFOCFG = 0x00;
-	SYNCDELAY;
-	EP2FIFOCFG = 0x00;
-	SYNCDELAY;
-	
-	//setting on auto mode. rising edge is necessary
-	EP8FIFOCFG = 0x11;
-	SYNCDELAY;
-	EP2FIFOCFG = 0x0D;
-	SYNCDELAY;
-	\end{lstlisting}
-
-	Finalmente, se habilitan las interrupciones necesarias.
-	
-%	\lstinputlisting[language=C,firstline=179,lastline=183]{\bridge}
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	USBIE |= bmSOF;
-	\end{lstlisting}
-
-	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.
+%A continuación se desarrollan los aspectos más relevantes del código final elaborado, compuestos por la función de inicialización y los descriptores del dispositivo USB.%\\
+%
+%Al establecer el modo automático de funcionamiento, la función \verb|TD_Poll()| se encuentra vacía.%\\
+%
+%Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para la depuración del presente código, tales como la conexión del puerto serie y la utilización de algunas interrupciones específicas.
+%
+%\subsection{Inicialización del dispositivo}
+%	La inicialización del dispositivo se realiza a través de la función \verb|TD_Init()|. Ésta es invocada solo una vez en el código, antes de ejecutar el loop principal, donde el programa ejecuta tareas específicas una y otra vez.%\\
+%	
+%	En primer lugar, se debe configurar la frecuencia a la que corre el reloj principal. Esta puede ser de \SI{12}{\mega\hertz}, \SI{24}{\mega\hertz} o de \SI{48}{\mega\hertz}. Para ello se deben colocar los registros CPUCS.4=1 y CPUCS.3=0. A través del framwork de Cypress, esto puede ser escrito de la siguiente forma:
+%	
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	CPUCS = ((CPUCS & ~bmCLKSPD) | bmCLKSPD1); // 48 MHz
+%	\end{lstlisting}
+%
+%	\begin{figure}[ht]
+%		\centering
+%		\begin{tikzpicture}[circuit logic US, node distance=1,shape border uses incircle]
+%			\begin{scope}[transform shape]
+%				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg4){};
+%				\node[buffer gate] (ifcfg5) [right=of ifcfg4] {};
+%				\node[not gate]	(a)		[left=of ifcfg4.input 2]	{};
+%				\node[node distance=2](aux a)	[left=of ifcfg4.input 1]	{};
+%				\node[] (aux 1) [left=of aux a] {};
+%				\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg6) [left=of aux 1]{};
+%				\node[mux, inputs={nn},info={[text width=10]center:1\\0},point left,node distance=4] (ifcfg7) [below=of ifcfg6]{};
+%				\node[mux,inputs={nn},info={[text width=10]center:0\\1},node distance=2,point left] (ifcfg4bis) [right=of ifcfg7.input 1]{};
+%				\node[not gate,node distance=1.7] (b) [right=of ifcfg4bis.input 1,point left] {};
+%				\node[node distance=3] (aux b) [right=of ifcfg4bis.input 2] {};
+%				\node[buffer gate,point left] (c)	[right=of aux b]	{};
+%				
+%				\node[]	(sel4)	[below=of ifcfg4]	{IFCFG.4};
+%				%	\node[node distance=1.5] (sel4bis) [above=of ifcfg4bis] {IFCFG.4};
+%				\node[]	(sel5)	[above=of ifcfg5]	{IFCFG.5};
+%				\node[] (sel6)	[below=of ifcfg6]	{IFCFG.6};
+%				\node[node distance=1.5]	(sel7)	[above=of ifcfg7]	{IFCFG.7};
+%				\node[] (aux 2) [right=of ifcfg5]		{};
+%				\node[node distance=1.5] (aux 3)  [below=of aux 2] {};
+%				\node[align=center] (output) [right=of aux 3] {Pin\\IFCLK};
+%				\node[] (freq1)	[left=of ifcfg6.input 1]	{30 MHz};
+%				\node[]	(freq2) [left=of ifcfg6.input 2]	{48 MHz};
+%				\node[align=center] (clkin) [left=of ifcfg7]	{Entrada\\IFCLK\\Interna};
+%				
+%				\draw (ifcfg4) to (ifcfg5);
+%				\draw (aux a.base) to (ifcfg4.input 1);
+%				\draw (aux a.base) |- (a.input);
+%				\draw (ifcfg6) to (aux a.base);
+%				\draw (aux 1.base) |- (ifcfg7.input 2);
+%				\draw (ifcfg4bis) to (ifcfg7.input 1);
+%				\draw (c) to (ifcfg4bis.input 2);
+%				\draw (b) to (ifcfg4bis.input 1);
+%				\draw (aux b.base) |- (b.input);
+%				\draw (a) to (ifcfg4.input 2);
+%				\draw (ifcfg5) to (aux 2.base);
+%				\draw (aux 2.base) |- (c);
+%				\draw (aux 3.base) -- (output);
+%				
+%				\draw (clkin) to (ifcfg7);
+%				\draw (freq1) to (ifcfg6.input 1);
+%				\draw (freq2) to (ifcfg6.input 2);
+%				\draw (sel5) to (ifcfg5.north);
+%				\draw (sel4) to (ifcfg4.select);
+%				\draw (sel4) -| (ifcfg4bis.select);
+%				\draw (sel6) to (ifcfg6.select);
+%				\draw (sel7) to (ifcfg7.select);	
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Esquema funcional para la entrada de reloj de la Interfaz}
+%		\label{ifclk};
+%	\end{figure}
+%
+%	
+%	Luego se debe configurar el funcionamiento del reloj de la interfaz. El esquema de la Figura \ref{ifclk} muestra la configuración del hardware. Cómo se observa, La interfaz puede funcionar con frecuencias de \SI{48}{\mega\hertz} o \SI{30}{\mega\hertz} provistas por el FX2LP. Además, la señal puede ser dirigida al exterior, o bien, ser provista por un periférico. Los inversores se programan de forma tal que la interfaz sea activa en el flanco positivo o negativo del reloj fuente. En este trabajo, el registro se programa para tomar como reloj la señal de \SI{48}{\mega\hertz} provisto por el mismo chip, la polaridad es de flanco ascendente y no se posee señal de reloj en el pin externo IFCKL. Además, se programa de modo asíncrono y en modo FIFO esclavo, a cuya configuración se accede por este puerto.%\\
+%	
+%	El autor entiende sobre la posibilidad y conveniencia de utilizar el modo sincrónico para conectar la interfaz. Más aún, es factible proveer la señal necesaria de reloj desde la FPGA y evitar así problemas de desajustes y fallas de sincronismo. Sin embargo, por error del alumno en el diseño del impreso de interconexión, la entrada de reloj no quedó conectada al chip de la FPGA. Durante la escritura de este informe, se encuentra en viaje el impreso con las correcciones pertinentes y espera ser implementado en trabajos futuros.%\\
+%	
+%	La configuración, entonces, queda definida por la sentencia de código:
+%	
+%%	\lstinputlisting[language=C,firstline=91,lastline=95]{\bridge}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	//colocar Interfaz FIFO esclava a 48MHz
+%	//clk interno, no_salida, no_invertir clk, no_asincr
+%	//fifoesclava(11) = 0xC3
+%	//0xCB; para asincr.
+%	IFCONFIG = 0xCB;
+%	SYNCDELAY;
+%	\end{lstlisting}
+%		
+%	A continuación, se debe establecer el funcionamiento de los pines bandera. Estos avisan cuando un EP está vacío, completo o a un nivel programable. Para este trabajo, son necesarios solo una bandera que señale el nivel vacío del puerto por el que entran los datos a la FPGA y otra que señale el nivel completo del EP donde escribe los datos a enviar. Si bien no son leídos en ningún momento, para evitar problemas se configuran las banderas vacías y completas para ambos EP's:
+%	
+%%	\lstinputlisting[language=C,firstline=108,lastline=113]{\bridge}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	//Pin Flags Configuratión
+%	PINFLAGSAB = 0xBC;	// FLAGA <- EP2 Full Flag
+%						// FLAGD <- EP2 Empty Flag
+%	SYNCDELAY;
+%	PINFLAGSCD = 0x8F;	// FLAGC <- EP8 Full Flag
+%						// FLAGB <- EP8 Empty Flag
+%	\end{lstlisting}
+%	
+%	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).%\\
+%	
+%	La programación de este trabajo es con una entrada isocrónica de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
+%	
+%%	\lstinputlisting[language=C,firstline=117,lastline=128]{\bridge}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	EP1OUTCFG = 0xA0;
+%	SYNCDELAY;
+%	EP1INCFG = 0xA0;
+%	SYNCDELAY;
+%	EP4CFG &= 0x7F;
+%	SYNCDELAY;
+%	EP6CFG &= 0x7F;
+%	SYNCDELAY;
+%	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
+%	SYNCDELAY;
+%	EP2CFG = 0xD2;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=512, BUF=2x
+%	SYNCDELAY;
+%	\end{lstlisting}
+%	
+%	Como siguiente paso, se limpian las memorias FIFO de cualquier dato espúreo que contengan al momento del inicio del programa.
+%	
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	FIFORESET = 0x80;
+%	SYNCDELAY;
+%	FIFORESET = 0x02;
+%	SYNCDELAY;
+%	FIFORESET = 0x04;
+%	SYNCDELAY;
+%	FIFORESET = 0x06;
+%	SYNCDELAY;
+%	FIFORESET = 0x08;
+%	SYNCDELAY;
+%	FIFORESET = 0x00;
+%	SYNCDELAY;
+%	\end{lstlisting}
+%	
+%	De esta forma, el controlador se encuentra listo para configurar las memorias asignadas a cada uno de los EP's. Se debe notar que en primer lugar se coloca 0x00 y luego el valor estipulado. Esto se basa en que el modo automático se prepara para transmitir ante un flanco ascendente del registro que lo habilita.
+%	
+%%	\lstinputlisting[language=C,firstline=143,lastline=152]{\bridge}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	EP8FIFOCFG = 0x00;
+%	SYNCDELAY;
+%	EP2FIFOCFG = 0x00;
+%	SYNCDELAY;
+%	
+%	//setting on auto mode. rising edge is necessary
+%	EP8FIFOCFG = 0x11;
+%	SYNCDELAY;
+%	EP2FIFOCFG = 0x0D;
+%	SYNCDELAY;
+%	\end{lstlisting}
+%
+%	Finalmente, se habilitan las interrupciones necesarias.
+%	
+%%	\lstinputlisting[language=C,firstline=179,lastline=183]{\bridge}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	USBIE |= bmSOF;
+%	\end{lstlisting}
+%
+%	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.
 	
 \subsection{Encabezado y declaraciones importantes}
-	Para el correcto funcionamiento de este código, es necesario incorporar el encabezado que se observa a continuación.
+	Para el correcto funcionamiento del código que se describe a lo largo de esta sección, es necesario incorporar el encabezado que se observa a continuación.
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 	#pragma noiv               // No generar vectores de interrupción
@@ -210,7 +210,7 @@ Luego, en el Capitulo 5 se abordará nuevamente algunos detalles realizados para
 \subsection{Descriptores USB}	
 	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
 	
-	El framework de Cypress coloca toda la información sobre los descriptores de el dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al host comunicando las características del sistema desarrollado.%\\
+	El framework de Cypress coloca toda la información sobre los descriptores del dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al host comunicando las características del sistema desarrollado.%\\
 	
 	En primer lugar, posee un encabezado en donde se establecen etiquetas que hacen más legible el código para el programador:
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
@@ -244,7 +244,7 @@ DSCR   SEGMENT   CODE PAGE
 	rseg DSCR      ;; locate the descriptor table in on-part memory.
 	\end{lstlisting}
 	
-	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress,la memoria debe contener en primer lugar el descriptor de dispositivo.
+	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress,la memoria debe contener en primer lugar el descriptor DEVICE, el cual se muestra a continuación.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 DeviceDscr:
@@ -268,7 +268,7 @@ DeviceDscr:
 	
 	Se debe notar que los penúltimos tres parámetros mostrados corresponden a una descripción realizada en cadena de caracteres al final del archivo, a fin de poder mostrar un mensaje que pueda ser leído por un usuario humano.
 	
-	El último parámetro está relacionado con el número de configuraciones que posee este dispositivo. Esto determina también la cantidad de descriptores de configuración que debe tener el archivo de descripción. No obstante, antes de comenzar con el descriptor de configuración, se debe especificar el descriptor Calificador de Dispositivo, el cual dá información sobre otras velocidades de operación. Este descriptor es necesario debido a que el sistema implementado cumple con la versión 2.0 de la norma USB.
+	El último parámetro está relacionado con el número de configuraciones que posee este dispositivo. Esto determina también la cantidad de descriptores de tipo CONFIGURATION que debe tener el archivo de descripción. No obstante, antes de comenzar con los descriptores CONFIGURATION, se debe especificar el descriptor DEVICE\_QUALIFIER, el cual dá información sobre otras velocidades de operación. Este descriptor es necesario debido a que el sistema implementado cumple con la versión 2.0 de la norma USB.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2
@@ -284,9 +284,11 @@ DeviceQualDscr:
 	db   0         ;; Reservado
 	\end{lstlisting}
 	
-	Debido a la implementación hecha por Cypress, cada descriptor debe encontrarse en una dirección de memoria par. Por ello se recurre al comando de la línea 1 del código de la sección anterior. A continuación, se especifica el descriptor de Calificador de Dispositivo, con información muy similar al descriptor de Dispositivo.
+	La norma USB especifica que la información que poseen los descriptores debe estar alineada por palabra (dos bytes), es decir, agrupada cada dos bytes y almacenada en direcciones de memoria par. Para asegurar esta condición, se recurre a la sentencia \verb|org (($/2)+1)*2|, la que se puede leer en la primera líneas del código mostrado anteriormente. La directiva \verb|org| le ordena al ensamblador la dirección específica de memoria en la que debe colocar las instrucciones precedentes. El símbolo (\$) representa al puntero que contiene el valor de memoria de la última instrucción ensamblada. Considerando que las direcciones de memoria son enteros y que las operaciones de ensamblador truncan decimales (no los redondean), la ecuación indicada entrega, como resultado, el entero par siguiente a la dirección actual. 
+
+	Luego de esta directiva, se especifica el descriptor de tipo DEVICE\_QUALIFIER asegurando que se encontrará en una dirección par de memoria.
 	
-	Luego, se procede a detallar cada una de las configuraciones y sus Interfaces que se indicaron en los descriptores anteriores. En este caso, se deben especificar dos: una de alta velocidad, indicada en el Descriptor de Dispositivo y otra de velocidad completa, indicada en el Calificador de Dispositivo. Se muestra en seguida el Descriptor de la configuración de alta velocidad, unido al Descriptor de Interfaz (línea 16 en adelante) y los Descriptores de Extremos a partir de la línea 27, que determinan la configuración total de Alta Velocidad.
+	Seguidamente, el protocolo indica que se debe detallar cada una de las configuraciones y las interfaces que se indican en los descriptores DEVICE y DEVICE\_QUALIFIER. En este caso, se especifican dos configuraciones: una de alta velocidad, indicada en el descriptor DEVICE y otra de velocidad completa ({\it Full-Speed}), que es especifica en el descriptor DEVICE\_QUALIFIER. Se muestran el descriptor CONFIGURATION de alta velocidad, unido al descriptor INTERFACE (línea 16 en adelante) y los descriptores ENDPOINT a partir de la línea 27, que determinan en forma completa la configuración de Alta Velocidad.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2
@@ -336,11 +338,11 @@ HighSpeedConfigDscr:
 HighSpeedConfigDscr_End:
 	\end{lstlisting}
 	
-	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivos, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit7 debe estar siempre establecido a 1 por razones históricas de la norma USB\cite{USBspec}. El bit6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
+	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
 	
-	El último campo del descriptor de extremo, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isocrónicas.
+	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isocrónicas.
 	
-	Luego de enviar la configuración de Alta Velocidad, se informa de la misma manera el descriptor de Velocidad Completa, cuyo código se observa a continuación.
+	Luego de enviar la configuración de Alta Velocidad, se informa de la misma manera los descriptores que detallan la configuración del dispositivo, cuando trabaja con Velocidad Completa, cuyo código se observa a continuación.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2

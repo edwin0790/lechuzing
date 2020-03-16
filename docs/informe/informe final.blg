@@ -10,42 +10,42 @@ Warning--empty publisher in wifi2016
 Warning--can't use both volume and number fields in USBspec
 Warning--empty publisher in USBspec
 Warning--empty school in Riihonen2015
+Warning--empty publisher in Sklar2001
 Warning--empty institution in CypressSemiconductor2014fx2lp
-Warning--empty institution in CypressSemiconductor2014cy3684
 Warning--empty journal in Cypress2017
 You've used 33 entries,
             1876 wiz_defined-function locations,
-            683 strings with 10473 characters,
-and the built_in function-call counts, 7863 in all, are:
-= -- 690
+            684 strings with 10450 characters,
+and the built_in function-call counts, 7889 in all, are:
+= -- 692
 > -- 447
 < -- 0
 + -- 166
 - -- 133
-* -- 576
-:= -- 1192
-add.period$ -- 46
+* -- 574
+:= -- 1190
+add.period$ -- 47
 call.type$ -- 33
-change.case$ -- 23
+change.case$ -- 21
 chr.to.int$ -- 0
 cite$ -- 43
-duplicate$ -- 360
-empty$ -- 725
+duplicate$ -- 363
+empty$ -- 732
 format.name$ -- 133
-if$ -- 1846
+if$ -- 1857
 int.to.chr$ -- 0
 int.to.str$ -- 33
-missing$ -- 36
-newline$ -- 116
+missing$ -- 38
+newline$ -- 117
 num.names$ -- 32
-pop$ -- 148
+pop$ -- 152
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
 skip$ -- 216
 stack$ -- 0
 substring$ -- 341
-swap$ -- 117
+swap$ -- 118
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
