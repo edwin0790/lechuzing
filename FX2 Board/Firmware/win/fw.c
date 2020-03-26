@@ -119,8 +119,8 @@ void main(void)
 
    // Initialize user device
    TD_Init();
-
-	FX2LPSerial_XmitString("Initializated\n\n");
+	
+	 FX2LPSerial_XmitString("Initializated\n\n");
    // The following section of code is used to relocate the descriptor table. 
    // Since the SUDPTRH and SUDPTRL are assigned the address of the descriptor 
    // table, the descriptor table must be located in on-part memory.
