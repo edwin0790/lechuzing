@@ -1,8 +1,107 @@
 %Durante el desarrollo de este trabajo, se halló un problema importante sobre la compilación y ejecución del código escrito en C para microcontroladores. Dicho problema consiste en 
 
-Durante la compilación y ejecución de las tareas provista por Cyress a traves de su framework, sucedió que de forma inesperada, el controldaor FX2LP no lograra inicializar en forma correcta su funcionamiento. Se dice que sucedía en forma inesperada ya que no había causa aparente para este comportamiento anómalo: el compilador no informaba error alguno y el código desarrollado no tenía nada de malo luego de diversa revisiones.
+%Durante el desarrollo del código precedentemente explicado, 
+Se realizaron diversas pruebas y versiones tanto para resolver problemas como para verificar el correcto funcionamiento de la interfaz.
 
-Cypress, en su framework provee un programa monitor precompilado. Este monitor permite al desarrollador acceder a operaciones de debug, tales como el chequeo de variables, el pausa y reanudado de ejecuciones, etc. Con este programa monitor ejecutado, la configuración desarrollada se implementó sin problemas aparentes.
+El primer problema que se presentó fue una inestabilidad en la ejecución del código, la cual se mostraba en forma intermitente al cargar el código compilado. La inestabilidad hacía que el código repentinamente se detuviera en la ejecución de la inicialización del dispositivo. A fin de salvar dicho problema, se recurrió al envío de mensajes de seguimiento a través de los puertos UART que prevee el controlador FX2LP.
 
-A fin de depurar este error se procedió a utilizar la biblioteca FX2LPSerial\cite{Kumar2017}. Esta biblioteca es un conjunto de funciones de C para microcontroladores que se sirven para configurar los puertos UART y de las rutinas asociada a la recepción y envío de datos por ellos.
+También se realizaron pruebas de robustez en la comunicación, pudiendo enviar y recibir datos por el mismo puerto UART, aprovechando la configuración establecida. Para la recepcion de datos en la PC se utilizó el programa Hercules\cite{HWGroup}. Dicho programa es una desarrollo cuya descarga es libre y permite configurar y recibir mensajes a través de diferentes puertos.
 
+Como testigo del funcionamiento de los flags, se asociaron sus valores a los LED de propósito general, de forma tal que se pueda corroborar que los endpoint usados recibian y enviaban los datos cuando se emitía la orden desde el Host.
+
+\subsection{Biblioteca FX2LPSerial}
+Para la configuración y utilización del puerto UART 0 se recurrió a la biblioteca FX2LPSerial\cite{Kumar2017}. Esta biblioteca es un conjunto de funciones de C para microcontroladores que resuelven la configuración los puertos UART y de las rutinas asociada a la recepción y envío de datos por dichos puertos. 
+
+La configuración del puerto UART se realizó a través de la función \verb|FX2LPSerial_Init()|. Esta función configura los registros de los contadores para establecer una tasa de transmión de 38400 baudios. Luego, asegura que el reloj que utiliza el puerto UART se encuentre configurado. Esto se realiza a través del Registro de Configuración de la Interfaz (IFCONFIG), el cual se setea para correr a \SI{48}{\mega\hertz}, la misma a la cual funciona el sistema desarrollado, por lo que no presenta problemas de compatibilidad. Si bien es posible cambiar la velocidad de transmisión, esta configuración posee una desviación del 0,16\%\cite{CypressSemiconductor2014fx2lp} entre la tasa nominal y la tasa real de transferencia. Esta diferencia de tasas es suficiente para asegurar que funcione en cualquier dispositivo. Por lo tanto, se decidió utilizar la configuración con los valores por defecto.
+
+%Durante la compilación y ejecución de las tareas provista por Cyress a traves de su framework, sucedió que de forma inesperada, el controldaor FX2LP no lograra inicializar en forma correcta su funcionamiento. Se dice que sucedía en forma inesperada ya que no había causa aparente para este comportamiento anómalo: el compilador no informaba error alguno y el código desarrollado no tenía nada de malo luego de diversa revisiones.
+
+%Para verificar el código desarrollado, se utilizó un programa monitor precompilado, el cual es provisto por Cypress. Este monitor permite al desarrollador acceder a operaciones de depuración, tales como el chequeo de variables, el pausado y reanudado de ejecuciones, etc. El desarrollo realizado funcionó sin inconvenientes a través de este monitor.
+
+%Luego, se buscó correr el programa con alguna función que permitiese seguir la ejecución de la rutina implementada. Para ello, se utilizó la biblioteca FX2LPSerial\cite{Kumar2017}. Esta biblioteca es un conjunto de funciones de C para microcontroladores que se sirven para configurar los puertos UART y de las rutinas asociada a la recepción y envío de datos por dichos puertos. Así, se configuró el envió de mensajes por UART y que luego se recibieron en una PC.
+
+%La configuración del puerto UART se realizó a través de la función \verb|FX2LPSerial_Init()|. Esta función configura los registros de los contadores para establecer una tasa de transmión de 38400 baudios. Luego, asegura que el reloj que utiliza el puerto UART se encuentre configurado. Esto se realiza a través del Registro de Configuración de la Interfaz (IFCONFIG), el cual se setea para correr a \SI{48}{\mega\hertz}, la misma a la cual funciona el sistema desarrollado, por lo que no presenta problemas de compatibilidad.Si bien es posible cambiar la velocidad de transmisión, esta configuración posee un diferencia del 0,16\%\cite{CypressSemiconductor2014fx2lp}, lo que asegura que funcione en cualquier dispositivo, por lo tanto, se decidió dejarla tal cual está.
+
+Para la recepcion de datos en la PC se utilizó el programa Hercules\cite{HWGroup}. Dicho programa es de descarga libre y permite configurar y recibir mensajes a través de protocolo Ethernet o por puerto Serie. Se configuró el puerto UART, en la pestaña destinada al monitoreo del puerto Serie, con una tasa de transmisión de 38400 baudios, 8 bit, sin paridad y sin handshaking. A través de esta configuración recibie cualquier dato enviado a través de los puertos UART del controlador FX2PL y los muestra en formato ASCII.
+
+Una vez configurado el envío de datos a través del puerto UART, se procedió a enviar mensajes de control para poder corroborar la funcionalidad y comprobar si efectivamente el controlador efectuaba sus tareas y en que momento dejaba de hacerlo.
+
+Se pudo determinar que en la función \verb|main()|, luego de realizar la inicialización de todos los modulos, procede a la desconexión del controlador con el puerto USB, a través de una rutina que Cypress denomina ReNumertion\cite{CypressSemiconductor2014fx2lp}. Durante la reconexión ocurre algún efecto, aún no identificado, que hace que el programa se detenga cuando debe reconectarse. Este desperfecto fue solucionado con el agregado de una línea de comunicación después de el activado del reconcetado. Esto demostró ser lo suficientemente robusto ya que eliminando todas las  líneas que envían datos de monitoreo no aparació nuevamente la detención del programa, más sí, eliminando solo esa línea de código. De esta manera, el código queda de la siguiente forma en donde la línea 190 es la agregada en este trabajo:
+
+\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30},numbers=left,firstnumber=189,basicstyle=\footnotesize]
+	 USBCS &=~bmDISCON;
+	 FX2LPSerial_XmitString("Reconectando...\n\n");
+\end{lstlisting}
+
+\subsection{Testigos LED}
+Los LED multipropósito incorporados en la placa de desarrollo CY3684, fueron programados para que repliquen el estado de los flags de vaciado y de llenado de los EP. De esta forma, se pudo monitorear la carga de datos en el controlador y la descarga a través del puerto USB y vicersa.
+
+Los LED se encuentran conectados a través de un decodificador. Para su encendido, es necesario la lectura de las direcciones hexadecimales de memoria 80xx, 90xx, A0xx y B0xx, mientras que para su apagado, las direcciones a leer son  88xx, 98xx, A8xx y B8xx\cite{CypressSemiconductor2014cy3648}. Por ello, se elaboró el encabezado {\it leds.h}, el que se observa a continuación.
+	
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+	xdata volatile const BYTE D2ON	_at_ 0x8800;
+	xdata volatile const BYTE D2OFF	_at_ 0x8000;
+	xdata volatile const BYTE D3ON	_at_ 0x9800;
+	xdata volatile const BYTE D3OFF	_at_ 0x9000;
+	xdata volatile const BYTE D4ON	_at_ 0xA800;
+	xdata volatile const BYTE D4OFF	_at_ 0xA000;
+	xdata volatile const BYTE D5ON	_at_ 0xB800;
+	xdata volatile const BYTE D5OFF	_at_ 0xB000;	\end{lstlisting}
+	
+Luego, con el propósito de enceder o apagar los diodos emisores de luz, es necesario declarar una variable auxiliar y asignarle los punteros declarados. Así, a través de la función \verb|TD_Poll()|, que es la función que se ejecuta en el loop infinito del controlodaro FX2LP, se colocó la el siguiente código:
+
+	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+void TD_Poll(void)             // Called repeatedly while the device is idle  
+{
+	BYTE dum;
+	
+	if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
+	{
+		dum = D4ON;
+	}
+	else
+	{
+		dum = D4OFF;
+	}
+
+	if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full
+	{
+		dum = D3ON;
+	}
+	else
+	{
+		dum = D3OFF;
+	}
+	if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
+	{
+		dum = D2ON;
+	}
+	else
+	{
+		dum = D2OFF;
+	}
+}
+	\end{lstlisting}
+
+A través de los registros EPxFIFOFLGS se puede conocer el estado de cada uno. Aplicando una máscara bit a bit, se obtiene el estado de cada uno de los flags. Así, dependiendo del estado de cada uno de ellos, se enciende o se apagan las luces.
+Esta rutina resultó de mucha utilidad a la hora de realizar las diferentes pruebas, tanto del funcionamiento de la interfaz, como de la conexión entre la itnterfaz y el FPGA.
+
+\subsection{Prueba de envío y recepcion de datos}
+	Para la verificación de la conexión entre la PC y la interfaz, a través del protocolo USB, se utilizó el programa {\it Cypress USB Control Center}, provisto por Cypress dentro del kit de desarrollo CY3684, con el cual se desarrolló este trabajo. Dicho software permite cagar el firmware desarrollado en la interfaz y, a su vez, detalla la información recibida a través de los descriptores y posibilita el envío y recepción de mensajes.
+	
+	Para corroborar que el envío de datos fue existoso, se procedió a enviar datos a través del {\it Cypress USB Control Center}. Así, en primer lugar, corroborando que el LED que indica que el EP8 se encuentra vacío se apaga, se infirió que los datos estaban llegando. A continuación, se enviaron más datos hasta lograr que el LED asociado al límite de capacidad del EP8 se encendiese. Luego, a través de un pulsador, se activa una rutina de envío de los datos guardados en el EP8 a través del puerto UART. Para ello, fue necesario realizar unos pequeños ajustes en la configuración.
+	
+	El controlador FX2LP de Cypress permite manipular los datos de los paquetes USB. Sin embargo, la configuración por defecto, no permite realizar esta tarea. Para ello es necesario, en primer lugar, desactivar lo que Cypress llama el armado automático de paquetes y habilitar la manipulación avanzada de paquetes\cite{CypressSemiconductor2014fx2lp}.
+	
+	A medida que los datos van ingresando al controlador FX2LP a través del puerto USB, el Motor de Interfaz Serial (MIS) los coloca en el espacio de memoria asignado y va incrementando un contador por cada byte recibido. De esta forma, la interfaz puede saber cuantos datos, efectivamente, posee almacenados. Sin embargo, cuando los datos ingresan a través de la memoria FIFO, es otro el contador incrementado. El armado automático de paquetes realiza la tarea de emparejar estos contadores, de forma tal que no se deba destinar tiempo de ejecución de $\mu$C para esta tarea.
+	
+	Para poder escribir datos en la memoria y informarle al MIS que se agregaron datos, es necesario que este armado autmático está desactivado. Esto implica que cuando lleguen datos, el controlador debe poder realizar esta operación. A su vez, por defecto los paquetes que llegan desde la PC no pueden ser modificados. Para realizar esto, es necesario hablitar el manejo mejorado de paquetes. Tanto la manipulación avanzada de paquetes como el armado automático se encuentran los dos bits menos significativos del Registro de Control de Revisión (REVCTL).
+	
+	Una vez activados ambos bits del registro REVCTL, se debe efectuar la rutina que armará los paquetes en forma ``manual''. Para este propósito, se activó una interrupción que se dispara cada vez que llegan mensajes a un EP determinado, en este caso, el EP8. Toda esta configuración se realizó en las últimas líneas de la función \verb|TV_Init()|, la cual quedó de la siguiente forma:
+	
+	\begin{lstlisting}[language=C,backgroundcolor={gray!30}]
+	
+	\end{lstlisting}
+	%Uso de Interrupciones
+	%Uso de pulsasdores
+	%Sobre RevCtl 

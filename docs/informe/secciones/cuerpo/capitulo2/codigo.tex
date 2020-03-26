@@ -173,17 +173,17 @@
 	
 	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través del archivo objeto {\it usbjmptb.obj}.%\\
 	
-	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar las luces de la placa de desarrollo. Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
+	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar las luces de la placa de desarrollo. Los LED fueron utilizado para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
 	
-	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	xdata volatile const BYTE D2ON	_at_ 0x8800;
-	xdata volatile const BYTE D2OFF	_at_ 0x8000;
-	xdata volatile const BYTE D3ON	_at_ 0x9800;
-	xdata volatile const BYTE D3OFF	_at_ 0x9000;
-	xdata volatile const BYTE D4ON	_at_ 0xA800;
-	xdata volatile const BYTE D4OFF	_at_ 0xA000;
-	xdata volatile const BYTE D5ON	_at_ 0xB800;
-	xdata volatile const BYTE D5OFF	_at_ 0xB000;	\end{lstlisting}
+%	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
+%	xdata volatile const BYTE D2ON	_at_ 0x8800;
+%	xdata volatile const BYTE D2OFF	_at_ 0x8000;
+%	xdata volatile const BYTE D3ON	_at_ 0x9800;
+%	xdata volatile const BYTE D3OFF	_at_ 0x9000;
+%	xdata volatile const BYTE D4ON	_at_ 0xA800;
+%	xdata volatile const BYTE D4OFF	_at_ 0xA000;
+%	xdata volatile const BYTE D5ON	_at_ 0xB800;
+%	xdata volatile const BYTE D5OFF	_at_ 0xB000;	\end{lstlisting}
 	
 	Luego, el framework define algunas variables globales que utiliza en las funciones implementadas para el manejo de las tareas relacionadas al protocolo USB. Se listan estas variables a continuación.
 	
