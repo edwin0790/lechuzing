@@ -14,7 +14,47 @@
 	\label{fpga:pcb:v2}
 \end{figure}
 
-Hasta aquí, se tiene cada una de las partes que componen el desarrollo trabajando correctamente en forma individual. Sin embargo, previo a realizar pruebas del sistema en su totalidad, se debe conectar cada una de las partes en forma física. Los circuitos integrados utilizados para la implementación de la comunicación USB, estos son el controlador FX2LP de Cypress y el FPGA Spartan VI de Xilinx, vienen incorporados en sendas placas de desarrollo. Para la conexión eléctrica de estos dos chips, se desarrolló una placa de interconexión, es decir, un circuito impreso (PCB, del ingles {\it Printed Circuit Board}) que conecta en forma eléctrica dos o más dispositivos. Esto brinda una conexión mucho más robusta y prolija que si fuese realizada mediante cables cintas o alambres individuales. La Figura \ref{fpga:pcb:v2} muestra el circuito impreso desarrollado. El plano esquemático utilizado para su fabricación se puede consultar en el Anexo \ref{an:pcb}.
+Hasta aquí, se tiene cada una de las partes que componen el desarrollo trabajando correctamente en forma individual. Sin embargo, previo a realizar pruebas del sistema en su totalidad, se debe conectar cada una de las partes en forma física. Los circuitos integrados utilizados para la implementación de la comunicación USB, estos son el controlador FX2LP de Cypress y el FPGA Spartan VI de Xilinx, vienen incorporados en sendas placas de desarrollo. Para la conexión eléctrica de estos dos chips, se desarrolló una placa de interconexión, es decir, un circuito impreso (PCB, del ingles {\it Printed Circuit Board}) que conecta en forma eléctrica dos o más dispositivos. Esto brinda una conexión mucho más robusta y prolija que si fuese realizada mediante cables cintas o alambres individuales. La Figura \ref{fpga:pcb:v2} muestra el circuito impreso desarrollado. El plano esquemático y el dibujo utilizado para su fabricación se puede consultar en el Anexo \ref{an:pcb}.
+
+El cirucito impreso desarrollado determina en forma definita los puertos que se conectan entre la placa de desarrollo de la interfaz y la del FPGA. En la Tabla \ref{tab:fpga:conexion} se puede observar la correspondencia de cada una de las señales de interés del controlador FX2LP con los puertos del FPGA Spartan 6.
+
+\begin{table}[ht]
+	\centering
+\begin{tabular}{|c|c|}
+	\hline
+	\textbf{FX2LP} & \textbf{Spartan 6}\\
+	\hline
+	FD15 & P50\\
+	FD14 & P51\\
+	FD13 & P40\\
+	FD12 & P41\\
+	FD11 & P34\\
+	FD10 & P35\\
+	FD9 & P32\\
+	FD8 & P33\\
+	FD7 & P29\\
+	FD6 & P30\\
+	FD5 & P26\\
+	FD4 & P27\\
+	FD3 & P23\\
+	FD2 & P24\\
+	FD1 & P21\\
+	FD0 & P22\\
+	SLWR & P17\\
+	SLRD & P16\\
+	SLOE & P6\\
+	FLAGA & P12\\
+	FLAGB & P14\\
+	FLAGC & P15\\
+	FLAGD & P11\\
+	PKTEND & P10\\
+	FIFOADR1 & P9\\
+	FIFOADR0 & P8\\
+	\hline
+\end{tabular}
+	\caption{Correspondecia entre las señales del controlador FX2LP y el FPGA Spartan 6 fijada por el PCB.}
+	\label{tab:fpga:conexion}
+\end{table}
 
 %\begin{figure}[ht]
 %	\centering
