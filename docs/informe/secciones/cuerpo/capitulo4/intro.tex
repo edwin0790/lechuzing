@@ -1,13 +1,26 @@
+%INTENTO 1
 %El sistema desarrollado pretende ser una implementación que transmita datos desde una PC hacia un FPGA y viceversa. Una vez configurada la interfaz y diseñada y sintetizada la maquina de estados, se posee un sistema capaz de establecer la comunicación.
 %
 %Sin embargo, aún resta verificar y validar que dicha comunicación es funcional, es decir, que efectivamente puede transmitir datos de un punto a otro y cumple con las especificaciones de velocidad.
 %
 %Durante el proceso, se encontraron varios problemas relativos tanto al desarrollo de la configuración de la interfaz como al de la maqui
 
-Configurada la interfaz, desarrollada la máquina de estado y conectados los circuitos integrados a través del circuito impreso, resta probar el sistema, transfiriendo datos desde la PC hacia el FPGA y viceversa.
+%INTENTO 2
+%Configurada la interfaz, desarrollada la máquina de estado y conectados los circuitos integrados a través del circuito impreso, resta probar el sistema, transfiriendo datos desde la PC hacia el FPGA y viceversa.
+%
+%Para lograr esto,fue neceasario montar el sistema emulando las condiciones esperadas de uso. Es decir, se procedió a conectar las placas de desarrollo entre sí y la interfaz con la PC. También se incorporó un sistema genérico dentro del FPGA que almacene los datos ingresados a través de la PC y que los escriba, luego, en la interfaz para su posterior recepción por el Host. Para ello, se implemento un sistema tipo eco a través de una memoria FIFO sintetizada en el FPGA.
+%
+%Además, se realizó un código en C para enviar y recibir datos en forma automática. De esta manera se pudo comprobar el desempeño del sistema desarrollado.
+%
+%A lo largo de este capítulo se desarrolla la implementación de la memoria FIFO en VHDL, se detalla el código desarrollado para las pruebas y, finalmente, se expondrán los resultados y conclusiones obtenidas durante el desarrollo del trabajo que se informa en este documento.
 
-Para lograr esto, se probó en primer lugar la conexión USB desde la interfaz hacia la PC y luego se incorporó el FPGA. Este capítulo tratará cada una de estas etapas de desarrollo. Es decir, en primer lugar se hablará sobre las pruebas y depuración necesaria de la configuración de la interfaz. Seguidamente, se abordarán los test bench realizados a la MEF y los módulos utilizados para verificar su funcionamiento.
 
-Luego, se procede a explicar las pruebas realizadas al sistema desde la PC en un software específico, escrito en C.
+% Otra vez INTENTO 3
 
-Finalmente, se detallarán los resultados y conclusiones obtenidas durante el desarrollo del trabajo que se informa en este documento.
+Hasta el momento, se explicaron aspectos varios de la norma USB, se seleccionaron las herramientas a utilizar para cumplir con los objetivos del trabajo, se configuraron las distintas partes que componen el sistema y se realizó un circuito que conecte a cada una de ellas.
+
+Con lo anterior, podría esperarse que el sistema desarrollado sea funcional. Sin embargo, esto no puede aseverarse hasta probar que la comunicación entre una PC y el FPGA es efectiva. Por lo tanto es necesario realizar una verificación del sistema.
+
+Para ello, es necesario implementar el sistema como se espera que funcione. Es decir, se debe implementar un sistema en FPGA que pueda enviar y recibir datos desde una PC. A continuación, se desarrollará la implementación sistema de tipo eco, que recibe datos desde una PC y los transmite, luego, en el sentido inverso.
+
+Con este propósito se explicarán los sistemas implementados dentro del FPGA, como así también el programa de computadora realizado con el fin de probar esto y se expondrán los resultados y las conclusiones del trabajo realizado.
