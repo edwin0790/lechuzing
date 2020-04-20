@@ -16,141 +16,170 @@
 %	\label{fpga:mea:concepto}
 %\end{figure}
 
-A modo conceptual, la máquina de estados finitos (MEF) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el host). Resulta entonces del interés de este trabajo, comprender los protocolos de lectura y escritura que debe seguir el sistema, los que se detallan en las secciones siguientes.
+% Intento 2
 
-Luego de ello, se abordará una descripción narrativa de las señales y, a su vez, se la reforzará con el diagrama de flujo con el funcionamiento de la máquina de estados finitos. Lo que dará lugar a proceder con la descripción de la misma.
+\begin{figure}[t]
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,>=latex,node distance=1.5]
+			\node[bloque](prEs){Función Estado Próximo};
+			\node[bloque](acEs)[right=of prEs]{Estado Actual};
+			\node[bloque](sal)[right=of acEs]{Función de Salida};
+			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
+			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
+			
+			\draw[lineaExt](prEs)to(acEs);
+			\draw[lineaExt](acEs)to(sal);
+			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](prEs)to(acEs);
+			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](acEs)to(sal);
+			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
+			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Estructura de una máquina de estados finitos}
+	\label{fpga:mef:concepto}
+\end{figure}
 
-\subsection{Lectura de datos desde la memoria FIFO}
+Una Máquina de Estados Finitos (MEF) es un tipo de dispositivo lógico secuencial que puede estar en uno de un conjunto finito de elementos. Tal como se observa en la Figura \ref{fpga:mef:concepto}, el estado siguiente que adoptará la MEF será función de una combinación lógica entre el estado actual y las entradas del sistema. A su vez, las salidas dependen del estado actual, configurando la denominada máquina de Moore, aunque también pueden variar en función del estado de las entradas, lo que se conoce como máquina de Mealy\cite{Wakerly1999}. Se podría decir que una máquina de Moore es una particularidad de la máquina de Mealy, en la cual las salidas no varían en función de las entradas.
 
-	\begin{figure}[ht]
-		\centering
-		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
-			\begin{scope}[transform shape,node distance=1,text width=60]
-				\setcounter{wavecount}{0}
-				\newwave{FIFOADR[1]}
-					\bit{1}{9}
-				\newwave{FIFOADR[0]}
-					\bit{1}{9}
-				\newwave{FLAG\_Vac\'io}
-					\bit{1}{5}
-					\bit{0}{4}
-				\newwave{SLOE}
-					\bit{1}{1}
-					\bit{0}{7}
-					\bit{1}{1}
-				\newwave{SLRD}
-					\bit{1}{2}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{2}
-				\newwave{FDATA[15:0]}
-					\bitvector{Z}{1}
-					\bitvector{N-1}{2}
-					\bitvector{N}{2}
-					\graybitvector{No válido}{3}
-					\bitvector{Z}{1}
-			\end{scope}
-			\begin{scope}[on background layer]
-				\foreach \x in {1,2,...,9}{
-					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
-			\end{scope}
-		\end{tikzpicture}
-		\caption{Diagrama temporal de la lectura de datos desde la memoria FIFO por un FPGA}
-		\label{fpga:lecfifo}
-	\end{figure}
+A modo conceptual, la máquina de estados finitos (MEF) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el host). 
+Para el diseño de cada una de la operaciones de la MEF implementada en el presente trabajo, se recurrió a la confección del diagrama de flujo para un máquina de estados algorítmica.
 
-	Para efectuar operaciones de lectura en régimen asíncrono, como se muestra en la Figura \ref{fpga:lecfifo}, en primer lugar, el FPGA debe colocar en los puertos FIFOADR[1:0] la dirección de la memoria sobre la que desea efectuar esta operación. En el caso de la configuración realizada en este trabajo, $''11''$, la que corresponde al EP8. Luego, debe ser activada la señal SLOE, la cual coloca en los puertos FDATA[15:0] los datos almacenados en la memoria FIFO apuntada por FIFOADR[1:0]. El dato disponible en la salida de la memoria FIFO siempre será el más antiguo, es decir, el que se almacenó antes. En el cambio de asertiva a negativa de la señal SLRD, la memoria FIFO aumenta un contador que selecciona la dirección del próximo dato, y coloca este dato en el puerto FDATA[15:0]. Cuando el contador es aumentado, los datos antiguos se descartan y no pueden ser recuperados luego.
-	
-	Una vez que todos los datos fueron leídos, es decir, que el contador de la memoria ha alcanzado un valor N de datos, iguales a los almacenados, se activa la señal {FLAG\_Vacío} (para este trabajo, FLAGB). Mientras SLOE no está activo, el puerto FDATA[15:0] permanece en estado de alta impedancia. En la Figura \ref{fpga:lecfifo} se puede observar también que tanto las señales {FLAG\_Vacío}, SLOE y SLRD son asertivas en $'0'$. En otras palabras,dichas señales son activas cuando tienen un bajo nivel de tensión.
 
-\subsection{Escritura de datos en la memoria FIFO}
+%Resulta entonces del interés de este trabajo, comprender los protocolos de lectura y escritura que debe seguir el sistema, los que se detallan en las secciones siguientes.
 
-	\begin{figure}[ht]
-		\centering
-		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
-			\begin{scope}[transform shape,node distance=1,text width=60]
-				\setcounter{wavecount}{0}
-				\newwave{FIFOADR[1]}
-					\bit{0}{9}
-				\newwave{FIFOADR[0]}
-					\bit{0}{9}
-				\newwave{FLAG Lleno}
-					\bit{1}{7}
-					\bit{0}{2}
-				\newwave{SLWR}
-					\bit{1}{3}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{1}
-				\newwave{PKTEND}
-					\bit{1}{9}
-				\newwave{FDATA[15:0]}
-					\bitvector{N-2}{3}
-					\bitvector{N-1}{2}
-					\bitvector{N}{2}
-					\graybitvector{No leído}{2}
-			\end{scope}
-			\begin{scope}[on background layer]
-				\foreach \x in {1,2,...,9}{
-					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
-			\end{scope}
-		\end{tikzpicture}
-		\caption{Diagrama temporal de la escritura de datos en la memoria FIFO desde un FPGA}
-		\label{fpga:escfifo}
-	\end{figure}
+%Luego de ello, se abordará una descripción narrativa de las señales y, a su vez, se la reforzará con el diagrama de flujo con el funcionamiento de la máquina de estados finitos. Lo que dará lugar a proceder con la descripción de la misma.
 
-	Las señales que intervienen en el proceso de escritura de datos en la memoria FIFO, se encuentran detalladas en el diagrama temporal de la Figura \ref{fpga:escfifo}. Para escribir datos en una memoria FIFO, el FPGA debe seleccionar la memoria a través de FIFOADR[1:0] en primer lugar. Para la configuración de este trabajo, esto es $''00''$, correspondiente al EP2. Luego, se coloca en el bus de datos, donde se encuentran conectados los puertos FDATA[15:0], el dato a escribir. Se debe tener en cuenta que SLOE debe estar no asertivo, de modo tal que el bus FDATA[15:0] se encuentre en modo de alta impedancia por parte del controlador FX2LP y no interfiera con la escritura.
-
-	Una vez colocado el dato en el bus, se debe activar la señal SLWR. En el flanco asertivo de SLWR, el controlador incrementa el contador que indica la dirección de memoria en donde será almacenado el dato siguiente y deja guardado el dato que leyó en los puertos del bus FD. Como se observa en el diagrama de la Figura \ref{fpga:escfifo}, SLWR es activo en bajo.
-	
-	\begin{figure}[ht]
-		\centering
-		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
-			\begin{scope}[transform shape,node distance=1,text width=60]
-				\setcounter{wavecount}{0}
-				\newwave{FIFOADR[1]}
-					\bit{0}{9}
-				\newwave{FIFOADR[0]}
-					\bit{0}{9}
-				\newwave{FLAG Lleno}
-					\bit{1}{5}
-					\bit{0}{4}
-				\newwave{SLWR}
-					\bit{1}{3}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{1}
-					\bit{0}{1}
-					\bit{1}{1}
-				\newwave{PKTEND}
-					\bit{1}{3}
-					\bit{0}{1}
-					\bit{1}{5}
-				\newwave{FDATA[15:0]}
-					\bitvector{N-20}{3}
-					\bitvector{N-19}{2}
-					\graybitvector{No leído}{4}
-			\end{scope}
-
-			\begin{scope}[on background layer]
-				\foreach \x in {1,2,...,9}{
-					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
-			\end{scope}
-		\end{tikzpicture}
-		\caption{Diagrama temporal del funcionamiento del finalizado manual de mensajes}
-		\label{fpga:pktend}
-	\end{figure}
-
-	La interfaz FX2LP espera siempre un número determinado de datos, señalizado como N en los diagramas de la Figura \ref{fpga:escfifo} y la Figura \ref{fpga:pktend}. Una vez alcanzado dicho número, el paquete queda listo para ser enviado cuando el host lo solicite. Sin embargo, puede ser enviado un número menor de datos en forma manual. Este funcionamiento es provisto a través de la señal PKTEND. Como se observa en la Figura \ref{fpga:pktend}, cuando PKTEND es asertiva (activa en bajo), la señal {FLAG\_Lleno} se activa y la memoria FIFO ignora cualquier dato que se envíe a continuación.
-
-\subsection{Diagrama de Flujo de la MEF}
+%\subsection{Lectura de datos desde la memoria FIFO}
+%
+%	\begin{figure}[ht]
+%		\centering
+%		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+%			\begin{scope}[transform shape,node distance=1,text width=60]
+%				\setcounter{wavecount}{0}
+%				\newwave{FIFOADR[1]}
+%					\bit{1}{9}
+%				\newwave{FIFOADR[0]}
+%					\bit{1}{9}
+%				\newwave{FLAG\_Vac\'io}
+%					\bit{1}{5}
+%					\bit{0}{4}
+%				\newwave{SLOE}
+%					\bit{1}{1}
+%					\bit{0}{7}
+%					\bit{1}{1}
+%				\newwave{SLRD}
+%					\bit{1}{2}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{2}
+%				\newwave{FDATA[15:0]}
+%					\bitvector{Z}{1}
+%					\bitvector{N-1}{2}
+%					\bitvector{N}{2}
+%					\graybitvector{No válido}{3}
+%					\bitvector{Z}{1}
+%			\end{scope}
+%			\begin{scope}[on background layer]
+%				\foreach \x in {1,2,...,9}{
+%					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Diagrama temporal de la lectura de datos desde la memoria FIFO por un FPGA}
+%		\label{fpga:lecfifo}
+%	\end{figure}
+%
+%	Para efectuar operaciones de lectura en régimen asíncrono, como se muestra en la Figura \ref{fpga:lecfifo}, en primer lugar, el FPGA debe colocar en los puertos FIFOADR[1:0] la dirección de la memoria sobre la que desea efectuar esta operación. En el caso de la configuración realizada en este trabajo, $''11''$, la que corresponde al EP8. Luego, debe ser activada la señal SLOE, la cual coloca en los puertos FDATA[15:0] los datos almacenados en la memoria FIFO apuntada por FIFOADR[1:0]. El dato disponible en la salida de la memoria FIFO siempre será el más antiguo, es decir, el que se almacenó antes. En el cambio de asertiva a negativa de la señal SLRD, la memoria FIFO aumenta un contador que selecciona la dirección del próximo dato, y coloca este dato en el puerto FDATA[15:0]. Cuando el contador es aumentado, los datos antiguos se descartan y no pueden ser recuperados luego.
+%	
+%	Una vez que todos los datos fueron leídos, es decir, que el contador de la memoria ha alcanzado un valor N de datos, iguales a los almacenados, se activa la señal {FLAG\_Vacío} (para este trabajo, FLAGB). Mientras SLOE no está activo, el puerto FDATA[15:0] permanece en estado de alta impedancia. En la Figura \ref{fpga:lecfifo} se puede observar también que tanto las señales {FLAG\_Vacío}, SLOE y SLRD son asertivas en $'0'$. En otras palabras,dichas señales son activas cuando tienen un bajo nivel de tensión.
+%
+%\subsection{Escritura de datos en la memoria FIFO}
+%
+%	\begin{figure}[ht]
+%		\centering
+%		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+%			\begin{scope}[transform shape,node distance=1,text width=60]
+%				\setcounter{wavecount}{0}
+%				\newwave{FIFOADR[1]}
+%					\bit{0}{9}
+%				\newwave{FIFOADR[0]}
+%					\bit{0}{9}
+%				\newwave{FLAG Lleno}
+%					\bit{1}{7}
+%					\bit{0}{2}
+%				\newwave{SLWR}
+%					\bit{1}{3}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%				\newwave{PKTEND}
+%					\bit{1}{9}
+%				\newwave{FDATA[15:0]}
+%					\bitvector{N-2}{3}
+%					\bitvector{N-1}{2}
+%					\bitvector{N}{2}
+%					\graybitvector{No leído}{2}
+%			\end{scope}
+%			\begin{scope}[on background layer]
+%				\foreach \x in {1,2,...,9}{
+%					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Diagrama temporal de la escritura de datos en la memoria FIFO desde un FPGA}
+%		\label{fpga:escfifo}
+%	\end{figure}
+%
+%	Las señales que intervienen en el proceso de escritura de datos en la memoria FIFO, se encuentran detalladas en el diagrama temporal de la Figura \ref{fpga:escfifo}. Para escribir datos en una memoria FIFO, el FPGA debe seleccionar la memoria a través de FIFOADR[1:0] en primer lugar. Para la configuración de este trabajo, esto es $''00''$, correspondiente al EP2. Luego, se coloca en el bus de datos, donde se encuentran conectados los puertos FDATA[15:0], el dato a escribir. Se debe tener en cuenta que SLOE debe estar no asertivo, de modo tal que el bus FDATA[15:0] se encuentre en modo de alta impedancia por parte del controlador FX2LP y no interfiera con la escritura.
+%
+%	Una vez colocado el dato en el bus, se debe activar la señal SLWR. En el flanco asertivo de SLWR, el controlador incrementa el contador que indica la dirección de memoria en donde será almacenado el dato siguiente y deja guardado el dato que leyó en los puertos del bus FD. Como se observa en el diagrama de la Figura \ref{fpga:escfifo}, SLWR es activo en bajo.
+%	
+%	\begin{figure}[ht]
+%		\centering
+%		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+%			\begin{scope}[transform shape,node distance=1,text width=60]
+%				\setcounter{wavecount}{0}
+%				\newwave{FIFOADR[1]}
+%					\bit{0}{9}
+%				\newwave{FIFOADR[0]}
+%					\bit{0}{9}
+%				\newwave{FLAG Lleno}
+%					\bit{1}{5}
+%					\bit{0}{4}
+%				\newwave{SLWR}
+%					\bit{1}{3}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%					\bit{0}{1}
+%					\bit{1}{1}
+%				\newwave{PKTEND}
+%					\bit{1}{3}
+%					\bit{0}{1}
+%					\bit{1}{5}
+%				\newwave{FDATA[15:0]}
+%					\bitvector{N-20}{3}
+%					\bitvector{N-19}{2}
+%					\graybitvector{No leído}{4}
+%			\end{scope}
+%
+%			\begin{scope}[on background layer]
+%				\foreach \x in {1,2,...,9}{
+%					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Diagrama temporal del funcionamiento del finalizado manual de mensajes}
+%		\label{fpga:pktend}
+%	\end{figure}
+%
+%	La interfaz FX2LP espera siempre un número determinado de datos, señalizado como N en los diagramas de la Figura \ref{fpga:escfifo} y la Figura \ref{fpga:pktend}. Una vez alcanzado dicho número, el paquete queda listo para ser enviado cuando el host lo solicite. Sin embargo, puede ser enviado un número menor de datos en forma manual. Este funcionamiento es provisto a través de la señal PKTEND. Como se observa en la Figura \ref{fpga:pktend}, cuando PKTEND es asertiva (activa en bajo), la señal {FLAG\_Lleno} se activa y la memoria FIFO ignora cualquier dato que se envíe a continuación.
 
 \begin{figure}[t]
 	\centering
@@ -215,20 +244,20 @@ Luego de ello, se abordará una descripción narrativa de las señales y, a su v
 		\end{scope}
 	\end{tikzpicture}
 	\caption{Diagrama de flujo de la máquina de estados desarrollada}
-	\label{fpga:mef}
+	\label{fpga:mef:diag}
 \end{figure}
 %En la Figura \ref{fpga:mea:concepto} se muestra que cuando la memoria FIFO de salida del host señala que no está vacía, se ejecuta la tarea de lectura de datos. Si la memoria FIFO asignada a la salida del host se encuentra vacía y está activa la salida de datos del FPGA, estos datos serán escritos en la memoria FIFO correspondiente.
-Como se indica en la Sección \ref{fpga:sigs}, las señales de salida de la MEF que se diseña son, {\it FIFOADR}, {\it SLOE}, {\it SLRD}, {\it SLWR} y {\it  PKTEND}. La bus de comunicación de datos hacia el interior del FPGA, {\it dato\_recibido[15:0]} también es una salida del sistema desarrollado en este trabajo. Si bien {\it FDATA[15:0]} es un puerto de entrada y salida, se maneja también como puerto de salida, cuidando que, cuando funciona como puerto de entrada, se encuentre en alta impedancia el buffer que maneja la salida. Por su parte, los puertos de entrada son {\it FLAG\_Vacío}, {\it Enviar\_Datos} y {\it Flag\_Lleno}.
+Como se indica en la Sección \ref{fpga:sigs}, las señales de salida de la MEF diseñada que se comunican con el controlador FX2LP son {\it FIFOADR}, {\it SLOE}, {\it SLRD}, {\it SLWR} y {\it  PKTEND}. El bus de comunicación de datos hacia el interior del FPGA, {\it dato\_recibido[15:0]} también es una salida del sistema desarrollado en este trabajo. Si bien {\it FDATA[15:0]} es un puerto de entrada y salida, se maneja también como puerto de salida, cuidando que, cuando funciona como puerto de entrada, se encuentre en alta impedancia el buffer que maneja la salida. Por su parte, los puertos de entrada son {\it FLAG\_Vacío}, {\it Enviar\_Datos} y {\it Flag\_Lleno}.
 
-Una consideración que se hizo en la implementación de este trabajo es que la lectura de las memorias FIFO es prioritaria con respecto a su escritura. Esto se basa en que se espera que este desarrollo sirva de manera fundamental para la lectura de sensores. Dichos sensores serán configurados a través de los datos que lleguen al FPGA y, una vez configurados, deberán trasmitir los datos que adquieran del medio en que se encuentre. Se espera entonces, que la información que contienen los datos de configuración posea mayor importancia, ya que podría tener ordenes que detengan los sensores o cambien su funcionamiento. Así mismo, los datos deben ser enviados durante todo el tiempo que el sensor esté adquiriendo, por lo que se espera que los datos de entrada al FPGA sean menos proba bles que los datos que se envíen.
+Una consideración que se hizo en la implementación de este trabajo es que la lectura de las memorias FIFO es prioritaria con respecto a su escritura. Esto se basa en que se espera que este desarrollo sirva de manera fundamental para la lectura de sensores. Dichos sensores serán configurados a través de los datos que lleguen al FPGA y, una vez configurados, deberán trasmitir los datos que adquieran del medio en que se encuentre. Se espera entonces, que la información que contienen los datos de configuración posea mayor importancia, ya que podría tener ordenes que detengan los sensores o cambien su funcionamiento. Así mismo, los datos deben ser enviados durante todo el tiempo que el sensor esté adquiriendo, por lo que se espera que los datos de entrada al FPGA sean menos probables que los datos que se envíen.
 
-Así, se diseña la MEF que se observa en el diagrama de flujo de la Figura \ref{fpga:mef}. En un estado inicial, todos las salidas se encuentran no asertivas. En el caso de salidas que se conectan a un bus ({\it FIFOADR[1:0]} y {\it FDATA[15:0]}) se colocan en estado de alta impedancia. El puerto {\it dato\_recibido}, señalado en el diagrama de la Figura \ref{fpga:mef} como {\it d\_recibido}, retiene su propio valor.
+Con las consideraciones mencionadas, se confeccionó la maquina de estados algorítmica que se observa en el diagrama de flujo de la Figura \ref{fpga:mef:diag}. En un estado inicial, todos las salidas se encuentran inactivas (en alto, dado que son activas en bajo). En el caso de salidas que se conectan a un bus ({\it FIFOADR[1:0]} y {\it FDATA[15:0]}) se colocan en estado de alta impedancia. El puerto {\it dato\_recibido}, señalado en el diagrama de la Figura \ref{fpga:mef:diag} como {\it d\_recibido}, retiene su propio valor.
 
-Cuando el {\it FLAG\_Vacío} se activa, se procede a la operación de lectura. Si, en cambio, {\it FLAG\_Vacío} es no asertivo, se debe conocer si el sistema genérico indica que envía datos, a través de {\it Enviar\_datos}. Si esto ocurre, el sistema de comunicación debe corroborar que la memoria FIFO se encuentra en condiciones de recibir los datos, es decir, que no se encuentre {\it FLAG\_Lleno} asertivo. Si estas condiciones ocurren, se debe proceder a la operación de escritura.
+Cuando el {\it FLAG\_Vacío} se activa, se procede a la operación de lectura. Si, en cambio, {\it FLAG\_Vacío} esta inactivo, se debe conocer si el sistema genérico indica que envía datos, a través de {\it Enviar\_datos}. Si esto ocurre, el sistema de comunicación debe corroborar que la memoria FIFO se encuentra en condiciones de recibir los datos, es decir, que no se encuentre {\it FLAG\_Lleno} activo. Si estas condiciones ocurren, se debe proceder a la operación de escritura.
 
-La operación de lectura coloca la dirección de la memoria FIFO relacionada al EP de salida (desde el Host), es decir $''00''$. A su vez, se debe activar la salida de la memoria FIFO, activando la señal {\it SLOE}. El buffer de salida del bus {\it FDATA[15:0]} debe encontrarse en modo de alta impedancia, para no interferir con la lectura y un registro debe almacenar el valor que se indica en el buffer de entrada. El registro utilizado para almacenar la información leída es {\it d\_recibido}. Luego, se debe activar la señal {\it SLRD}, lo que incrementa el dato de la memoria FIFO. De esta manera, se puede volver a leer la señal de {\it FLAG\_Vacío} y determinar si se vuelve a implementar una operacion de lectura, o bien, se vuelve al inicio del programa.
+La operación de lectura coloca la dirección de la memoria FIFO relacionada al EP de salida (desde el Host), es decir $''00''$. A su vez, se debe activar la salida de la memoria FIFO, activando la señal {\it SLOE}. El buffer de salida del bus {\it FDATA[15:0]} debe encontrarse en modo de alta impedancia, para no interferir con la lectura y un registro debe almacenar el valor que se indica en el buffer de entrada. El registro utilizado para almacenar la información leída es {\it d\_recibido}. Luego, se activa la señal {\it SLRD}, lo que incrementa el dato de la memoria FIFO. De esta manera, se puede volver a leer la señal de {\it FLAG\_Vacío} y determinar si se vuelve a implementar una operacion de lectura, o bien, se vuelve al inicio del programa.
  
-Para efectuar la operación de escritura, en primer lugar se debe colocar la dirección de memoria FIFO que apunte al EP de entrada (hacia el Host). La dirección de la memoria FIFO en donde este trabajo escribe datos es $''11''$.  El bus de datos se conecta con el puerto interno {\it dato\_a\_enviar}, representado en el diagrama de la Figura \ref{fpga:mef} por {\it d\_a\_enviar}. Si las variables de entrada no se ven alteradas, el estado siguiente activará la señal {\it SLWR}, de forma tal que los datos colocados en el bus {\it FDATA }queden almacenados en la memoria FIFO. Luego, el estado siguiente desactiva {\it SLWR} y vuelve a consultar las variables de entrada.
+Para efectuar la operación de escritura, en primer lugar se debe colocar la dirección de memoria FIFO que apunte al EP de entrada (hacia el Host). La dirección de la memoria FIFO en donde este trabajo escribe datos es $''11''$.  El bus de datos se conecta con el puerto interno {\it dato\_a\_enviar}, representado en el diagrama de la Figura \ref{fpga:mef:diag} por {\it d\_a\_enviar}. Si las variables de entrada no se ven alteradas, el estado siguiente activará la señal {\it SLWR}, de forma tal que los datos colocados en el bus {\it FDATA} queden almacenados en la memoria FIFO. Luego, el estado siguiente desactiva {\it SLWR} y vuelve a consultar las variables de entrada.
 
 %Se puede notar que la implementación de la MEA le otorga mayor prioridad a la operación de lectura que a la de escritura de datos. Es decir, siempre que existan datos para leer en la memoria FIFO, serán leídos, aún cuando hayan datos para ser escritos.
 %Se otorga esta prioridad con el objetivo de que la comunicación sea utilizada por sensores que adquieran datos y los transmitan en forma inmediata a la PC y, a su vez, desde la PC se envíe datos que permitan configurar parámetros del sensor en particular de manera esporádica. Así, se prevé que los datos que provengan de la PC sean más distanciados en el tiempo que los de los datos que estuviesen siendo adquiridos por el sensor.
