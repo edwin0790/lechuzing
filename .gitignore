@@ -19,18 +19,23 @@
 *xlnx*
 *xst*
 *log
+*.bgn
 *.bld
 *.cmd
 *.csv
+*.drc
 *.exe
 *.gise
 *.lco
+*.lso
 *.map
 *.mrp
 *.ncd
 *.ngc
 *.ngd
 *.ngm
+*.ngr
+*.ut
 *.o
 *.pad
 *.par
@@ -43,11 +48,14 @@
 *.twx
 *.unroutes
 *.wdb
+*.xdl
 *.xise
 *.xpi
 *.xrpt
 *.xst
+*.xwbt
 *xilinxsim.ini
+
 
 ## auxiliar miktex files
 *.nav
