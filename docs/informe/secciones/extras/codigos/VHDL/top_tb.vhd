@@ -92,7 +92,7 @@ BEGIN
 		flagb <= '0'; -- ep8empty
 		flagc <= '1'; -- ep8full
 		flagd <= '0'; -- ep2empty
-		wait for 5 us;
+		wait for 23 us;
 
 		flagb <= '1';
 		wait until counter = x"0100";
@@ -101,6 +101,8 @@ BEGIN
 		flagb <= '0';
 		wait until fdata = x"00f0";
 		flaga <= '0';
+		wait for 1 us;
+		flaga <= '1';
 		wait until pktend = '0';
 		wait;
 	end process;

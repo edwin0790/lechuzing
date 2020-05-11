@@ -1,15 +1,19 @@
-\chapter{Códigos de descripción escritos en VHDL}
+\chapter{Códigos para implementaciónes en FPGA}
 \label{ap:vhdl}
-	\section{Código de implementación de la MEF que controla la interfaz FX2LP}
-	\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,language=VHDL,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface.vhd}
+	\section*{Código de implementación de la MEF que controla la interfaz FX2LP}
+	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,language=VHDL,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface.vhd}
 	
-	\section{Código de validación de la MEF}
-	\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/mef_tb.vhd}
+	\section*{Código de validación de la MEF}
+	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/mef_tb.vhd}
 	
-	\section{Código de síntesis del sistema de prueba}
-	\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface_top.vhd}
+	\section*{Código de síntesis del sistema de prueba}
+	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface_top.vhd}
 
 
-	\section{Código de validación del sistema de prueba}
-	\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/top_tb.vhd}
+	\section*{Código de validación del sistema de prueba}
+	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/top_tb.vhd}
 	
+	\section*{Archivo de restricciones de usuario}
+		Este archivo es en donde se detalla a que pin físico del FPGA se corresponde cada puerto. Este archivo fue utilizado para la implementación del sistema de pruebas.
+		
+		\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/UCF/fx2lp_interface_top.ucf}

@@ -178,8 +178,7 @@ begin
 	fifo : fifo_generator_v9_3
 	PORT MAP(
 		rst => not reset,
-		wr_clk => reloj_sistema,
-		rd_clk => reloj_sistema,
+		clk => reloj_sistema,
 		din => din,
 		wr_en => wr_en,
 		rd_en => rd_en,
