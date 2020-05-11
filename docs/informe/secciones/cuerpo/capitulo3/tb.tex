@@ -196,7 +196,7 @@ También se comprueba que el estado actual en cada uno de los momentos es el ade
 	\label{tb:escr}
 \end{figure}
 
-Una vez que la MEF alcanzó el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de alli, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encunetra en el bus de envío de datos {\it DATA\_TO\_TX}.
+Una vez que la MEF alcanzó el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de allí, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encuentra en el bus de envío de datos {\it DATA\_TO\_TX}.
 
 \begin{figure}[ht]
 	\centering
@@ -209,4 +209,4 @@ La Figura \ref{tb:inter} muestra cómo el sistema finaliza la operación de escr
  
 Una vez realizada la simulación y verificación funcional de la síntesis desarrollada, se está en condiciones de grabar dicha síntesis en el FPGA y se puede proceder a realizar pruebas de funcionamiento más avanzadas. Las pruebas del sistema realizadas se detallan en el capítulo siguiente.
 
-El código completo de la simulación, se pueden leer en el Anexo \ref{an:vhdl}.
+El código completo de la simulación, se pueden leer en el Anexo \ref{ap:vhdl}.

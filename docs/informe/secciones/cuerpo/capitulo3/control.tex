@@ -46,7 +46,7 @@ Un protocolo es una secuencia estructurada de pasos a seguir para efectuar un pr
 	%Como se detalla en la Sección \ref{cy:fifo}, %La función de cada uno de estos puertos está detallada en la Sección \ref{cy:fifo} del presente informe. A continuación se explica el protocolo que debe seguir el sistema para poder leer y escribir datos. Este protocolo permite comprender de una forma más acabada las señales de control que debe proveer la MEA.
 	Las señales FIFOADR[1:0] se utilizan para seleccionar la memoria FIFO sobre la que se escriben o leen los datos. Cada una de estas memorias está asociada a un extremo (EP) determinado. Estos extremos poseen dirección hexadecimal 02, 04, 06 y 08 para el sistema USB comandado por el $\mu$C 8051 incorporado en el circuito integrado FX2LP. Las memorias FIFO tienen dirección binaria $''00'', ''01'', ''10''$ y $''11''$ en los puertos FIFOADR[1:0]. Se muestra en la Tabla \ref{tab:fifoadr} las direcciones asociadas entre cada una de las memorias FIFO y los EP. Se destaca que $'0'$ y $'1'$ en cada puerto FIFOADR equivalen a niveles de tensión bajo y alto, respectivamente.
 	
-	\begin{table}[]
+	\begin{table}[ht]
 		\centering
 		\begin{tabular}{cc}
 			\hline
@@ -74,7 +74,7 @@ Un protocolo es una secuencia estructurada de pasos a seguir para efectuar un pr
 
 \subsubsection{Lectura de datos desde la memoria FIFO}
 
-	\begin{figure}[t]
+	\begin{figure}[hb]
 		\centering
 		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
 			\begin{scope}[transform shape,node distance=1,text width=60]
