@@ -100,7 +100,7 @@
 %	
 %	Luego, se deben programar los EP's. La configuración por defecto define a todos los EP como transferencias por bultos con doble buffer de \SI{512}{\byte}. El EP2 y EP4 son salidas (desde la PC). El EP6 y EP8 son entradas (hacia la PC).%\\
 %	
-%	La programación de este trabajo es con una entrada isocrónica de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
+%	La programación de este trabajo es con una entrada isócrona de dos buffers con \SI{512}{\byte} de capacidad, cada uno, definida en el EP2 y una salida por bultos de dos buffers de \SI{512}{\byte} configurada en el EP8. Los otros EP's son deshabilitados. Sin embargo, EP1IN y EP1OUT se dejan configurados por defecto, ya que no interfieren en nada con el presente trabajo.
 %	
 %%	\lstinputlisting[language=C,firstline=117,lastline=128]{\bridge}
 %	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
@@ -340,7 +340,7 @@ HighSpeedConfigDscr_End:
 	
 	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
 	
-	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isocrónicas.
+	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isócronas.
 	
 	Luego de enviar la configuración de Alta Velocidad, se informa de la misma manera los descriptores que detallan la configuración del dispositivo, cuando trabaja con Velocidad Completa, cuyo código se observa a continuación.
 	

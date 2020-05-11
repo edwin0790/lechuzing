@@ -36,7 +36,7 @@ Se pudo determinar que en la función \verb|main()|, luego de realizar la inicia
 \subsection{Testigos LED}
 Los LED multipropósito incorporados en la placa de desarrollo CY3684, fueron programados para que repliquen el estado de los flags de vaciado y de llenado de los EP. De esta forma, se pudo monitorear la carga de datos en el controlador y la descarga a través del puerto USB y vicersa.
 
-Los LED se encuentran conectados a través de un decodificador. Para su encendido, es necesario la lectura de las direcciones hexadecimales de memoria 80xx, 90xx, A0xx y B0xx, mientras que para su apagado, las direcciones a leer son  88xx, 98xx, A8xx y B8xx\cite{CypressSemiconductor2014cy3648}. Por ello, se elaboró el encabezado {\it leds.h}, el que se observa a continuación.
+Los LED se encuentran conectados a través de un decodificador. Para su encendido, es necesario la lectura de las direcciones hexadecimales de memoria 80xx, 90xx, A0xx y B0xx, mientras que para su apagado, las direcciones a leer son  88xx, 98xx, A8xx y B8xx\cite{CypressSemiconductor2014cy3684}. Por ello, se elaboró el encabezado {\it leds.h}, el que se observa a continuación.
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 	xdata volatile const BYTE D2ON	_at_ 0x8800;
