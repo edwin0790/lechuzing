@@ -1,11 +1,13 @@
 Un sistema USB posee un esquema %de bus maestro-esclavo 
-en forma de árbol cuyo nodo principal es el host. Es decir, la comunicación se realiza siempre a través de una única línea a la que se conectan todos los dispositivos (bus). Dado el campo de direcciones provisto por la norma, un sistema USB puede conectar hasta 128 dispositivos. El acceso al bus es administrado por un maestro. El maestro se encarga de solicitar a cada uno de los dispositivos su intervención. Posteriormente, el dispositivo debe responder al pedido del maestro. Este esquema es lo que se conoce como maestro-esclavo. De esta forma, el sistema se asegura que el bus sea utilizado por un dispositivo a la vez para enviar o recibir datos.%\\
+en forma de árbol cuyo nodo principal es denominado Host. Es decir, la comunicación se realiza siempre a través de una única línea a la que se conectan todos los dispositivos. Dicha configuración recibe el nombre de bus. 
 
-En un sistema USB no cualquier dispositivo puede ser maestro. Este rol lo cumple solo uno: una PC, o cualquier dispositivo con capacidad de llevar a cabo las tareas asignadas (que se detallan más adelante); denominado Host por la norma. La palabra {\it HOST} proviene del habla inglesa y se traduce como anfitrión, aunque en la jerga se conoce comunmente por su nombre en inglés.%\\
+Dado el campo de direcciones provisto por la norma, un sistema USB puede conectar hasta 128 dispositivos. El acceso al bus es administrado por un sistema maestro. El maestro se encarga de solicitar a cada dispositivo su intervención. Posteriormente, el dispositivo indicado debe responder al pedido del maestro. Este esquema es conocido como maestro-esclavo. De esta forma, la comunicación USB asegura que el bus sea utilizado por un dispositivo a la vez para enviar o recibir datos.%\\
 
-\begin{figure}[]
+En un sistema USB solo un dispositivo puede ser maestro. Este rol lo ejerce generalmente una PC, pero podría ser cualquier dispositivo con capacidad de llevar a cabo las tareas asignadas (que se detallan más adelante); denominado Host por la norma. La palabra {\it HOST} proviene del habla inglesa y se traduce como anfitrión, aunque en la jerga se conoce comúnmente por su nombre en inglés.%\\
+
+\begin{figure}[ht]
 	\centering
-	\begin{tikzpicture}[scale=.87,>=latex,level 1/.append style={level distance = 2ex},level 2/.append style={level distance = 40}]
+	\begin{tikzpicture}[scale=.85,>=latex,level 1/.append style={level distance = 2ex},level 2/.append style={level distance = 40}]
 		\begin{scope}
 			\begin{scope}[transform shape,grow = down]
 				\node[] (host) {\it HOST} [
@@ -77,7 +79,7 @@ En un sistema USB no cualquier dispositivo puede ser maestro. Este rol lo cumple
 
 La topología del bus, que se observa en la Figura \ref{fig:top}, posee forma de árbol, es decir, puede ser pensada como una comunicación vertical, donde en el punto más alto se encuentra el Host. Siguiendo hacia abajo, el bus puede encontrar dos tipos diferentes de dispositivos: Funciones, cuyo rol es el de proveer una utilidad al sistema, como ser la de captura de imagen, reproducción de audio o el ingreso de comandos; y Hubs (concentradores o distribuidores), que se encargan de conectar una o más funciones al sistema. La norma USB establece gradas, en donde cada Hub introduce una nueva grada que contiene a las Funciones conectadas. En otras palabras, las gradas configuran una suerte de distancia lógica entre las Funciones y el Host, separada por Hubs. Por cuestiones de restricciones temporales y tiempos de propagación en los cables, no se permiten más de 7 gradas, incluyendo al Host en la primera. Es decir, no se puede conectar más de 5 Hubs en cascada. La grada 7 sólo puede contener Funciones\cite{USBspec}.%\\
 
-\begin{figure}[]
+\begin{figure}[hb]
 	\centering
 	\includegraphics[width=0.28\textwidth]{usbconector}
 	\caption{Tipos de conectores USB. Los tipo A deben ser usados en el extremo del Host y los tipo B hacia los periféricos\cite{USBHardwareWiki}}
@@ -91,6 +93,6 @@ A nivel eléctrico, la interconexión de datos en los dispositivos se lleva a ca
 
 Cabe destacar que, al tener una señal diferencial, la norma USB es {half-dulpex \it}, es decir, puede transmitir en los dos sentidos (desde Host hacia Funciones y viceversa), pero no puede hacerlo en simultáneo\cite{Riihonen2015}, sino que primero debe transmitir un dispositivo y, al finalizar este, el bus queda liberado para que otros dispositivos puedan transmitir.%\\
 
-La velocidad de conmutación en los niveles de tensión de la señal de comunicación puede darse a diferentes valores, dando lugar a tres tipos de tasa de bit: Alta-velocidad ({\it High-Speed}) implica una tasa de bit de \SI{480}{\mega\bit\per\second}, Velocidad-completa ({\it Full-Speed}) posee una tasa de bit de \SI{12}{\mega\bit\per\second} y baja-velocidad ({\it Low-Speed}) transmite a una tasa de bit de \SI{1.5}{\mega\bit\per\second}.%\\
+La velocidad de conmutación en los niveles de tensión de la señal de comunicación puede darse a diferentes valores, dando lugar a tres tipos de tasa de bit: alta velocidad ({\it High-Speed}) implica una tasa de bit de \SI{480}{\mega\bit\per\second}, toda velocidad ({\it Full-Speed}) posee una tasa de bit de \SI{12}{\mega\bit\per\second} y baja velocidad ({\it Low-Speed}) transmite a una tasa de bit de \SI{1.5}{\mega\bit\per\second}.%\\
 
 Cuando el Host se comunica con las diferentes Funciones, lo realiza a través de paquetes. Los paquetes implican que la información que se transmite a través del bus está encapsulada en un formato establecido. Cada vez que un dispositivo accede al bus, lo debe hacer de una manera particular, definida por el tipo de transferencia, por su rol (Host, Hub o Función) y por el estado de la transmisión dentro del protocolo establecido.

@@ -4,8 +4,8 @@ Dentro del bloque referido al desarrollo del sistema, se encuentran los primeros
 
 \begin{enumerate}
 	\item {\bf \nameref{cap:int}:} En este capítulo se intenta exponer lo que motiva el presente trabajo, la propuesta que da solución a la motivación, el objetivo y alcance que el trabajo busca y la estructura del mismo. Se brindan, además, conceptos importantes de la norma USB que son significativos para los objetivos de este trabajo.
-	\item {\bf \nameref{cap:mats}:} Se describe aquí todas las herramientas de las que se vale este trabajo para cumplir con os objetivos propuestos.
-	\item {\bf \nameref{cap:cy}:} Se presenta la arquitectura, configuración y código desarrollado para el presente trabajo, como así también las herramientas específicas provistas por el fabricante, que facilitan el desarrollo. 
-	\item {\bf \nameref{cap:fpga}:} Este capítulo detalla lo desarrollado para implementar la comunicación entre la FPGA y la interfaz. Se expone una máquina de estados descrita en VHDL y sintetizada en FPGA. También se describe un circuito impreso realizado para conectar ambas partes.
-	\item {\bf \nameref{cap:verif}:} Se desarrolla las tareas desarrolladas a fin de realizar las depuraciones del sistema y la verificación del cumplimiento de las especificaciones.
+%	\item {\bf \nameref{cap:mats}:} Se describe aquí todas las herramientas de las que se vale este trabajo para cumplir con os objetivos propuestos.
+	\item {\bf \nameref{cap:cy}:} Se justifica la elección de la interfaz USB, compuesta por el controlador FX2LP EZ-USB comercializado por Cypress Semiconductor. Se presenta la arquitectura, configuración y código desarrollado para el presente trabajo. 
+	\item {\bf \nameref{cap:fpga}:} Este capítulo detalla el desarrollo de una Máquina de Estados Finita para implementar la comunicación entre la FPGA y la interfaz USB. Se justifica la elección del FPGA Spartan 6 fabricado por Xilinx Inc., utilizado en este trabajo.La Máquina de Estados Finita es descripta en VHDL y sintetizada en un FPGA. También se describe un circuito impreso realizado para conectar el FPGA con la Interfaz USB.
+	\item {\bf \nameref{cap:verif}:} Se detalla el desarrollo de un sistema de pruebas que conecta el FPGA con la interfaz, y a través de una memoria FIFO sintetizada en FPGA, se envían y se reciben paquetes en y desde una PC, respectivamente. Los paquetes son generados y transmitidos desde la PC a través de un programa elaborado para este trabajo. Finalmente se exponen las pruebas, los resultados de ellas y las conclusiones de este trabajo.
 \end{enumerate}
