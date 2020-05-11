@@ -4,6 +4,11 @@
 *.out
 *.synctex.gz
 *.toc
+*.bbl
+*.acn
+*.blg
+*.glo
+*.ist
 
 ## axiliar ise files
 *ngo*
