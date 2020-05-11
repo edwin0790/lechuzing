@@ -1,15 +1,94 @@
-	%TODO falta una introducción para esta sección que la relacione con el objetivo del trabajo
-	La tercer parte en la que se divide el trabajo es relativa a la comunicación entre la interfaz y una PC. Ya que la interfaz se encarga en gran medida de lo relativo al empaquetamiento, codificación y decodificación y que las PC, por su parte, vienen equipadas con el hardware necesario, este trabajo debe implementar el software que comande y gestione, desde el sistema operativo el correcto acceso a los datos que se envían y reciben. Para la elaboración de software que permita el manejo de los puertos USB, se utiliza la biblioteca \verb|libusb|.%\\
+%TODO falta una introducción para esta sección que la relacione con el objetivo del trabajo
+
+La prueba del sistema consintió en el envío de una trama de datos desde la PC. La trama debe arribar al FPGA, atravesando la interfaz FX2LP.
+El FPGA, por su parte, almacena la trama de datos y, una vez finalizada la recepción, procede a la transmisión de la trama en el camino de regreso. 
+
+Se generó un programa de computadoras, escrito en C++, con el objetivo de poder crear tramas con datos aleatorios y repetir la prueba en forma automática.
+
+La prueba fue realizada repetidamente durante 24 horas con el objetivo de probar la robustez en la comunicación y calcular la tasa de datos transmitida por el bus.
+
+Los datos fueron generados en forma aleatoria para que el ruido no sea enmascarado por una trama invariable en el bus de datos.
+
+Para elaborar el programa que se encarga de enviar y recibir los datos se utilizó la biblioteca \verb|libusb-1.0|.
+
+En esta Sección se justificará la elección de la biblioteca \verb|libusb-1.0| y se detallará la secuencia del programa desarrollado.
+
+El código completo con la implementación del programa se encuentra en el Apéndice \ref{ap:cpp}
+
+\subsection{Elección de la biblioteca libusb-1.0}
+	La elaboración de un programa en lenguaje C++ que pueda controlar en forma adecuada los puerto USB de una PC es una tarea que escapa a los objetivos de este trabajo. En su lugar, se recurrió al uso de una biblioteca ya definida y bien conocida, que permita obtener acceso a los puertos USB, y con ella, poder realizar el envío y la recepción de datos necesaria para las pruebas del sistema desarrollado.
 	
-	\verb|libusb| es una biblioteca de código abierto, muy bien documentada, escrita en C, que brinda acceso genérico a dispositivos USB. Las características de diseño que persigue el equipo de desarrollo que mantiene la biblioteca es que sea multiplataforma, modo usuario y agnóstico de versión\cite{libusb}.%\\
-		
-	\begin{itemize}
-		\item{Multiplataforma:} Se apunta a que cualquier software que contenga esta biblioteca pueda ser compilado y ejecutado en la mayor cantidad de plataformas posibles, dotando al software de portabilidad, es decir, esta biblioteca puede ser ejecutada en Windows, Linux, OS X, Android y otras plataformas sin necesidad de realizar cambios en el código.
-		\item{Modo usuario:} No se requiere acceso privilegiado de ningún tipo para poder ejecutar programas escritos con esta biblioteca.
-		\item{Agnótisco de versión:} Sin importar la versión de la norma USB que se utilice, el programa se podrá comunicar siempre con el dispositivo USB que se requiera.
-	\end{itemize}
+	Se eligió la biblioteca \verb|libusb-1.0| para la realización del programa debido a que es una biblioteca de código abierto, es decir,  que sus archivos fuente pueden ser leídos, modificados y/o utilizados por cualquier persona sin la necesidad de pagar una licencia. 
+
+	Otro motivo para su adopción es su característica de multiplataforma, es decir que puede ser realizado y compilado código que funcione en sistemas operativos tan diversos como Windows, Linux, Mac Os, Android, entre otros. Lo que no puede ser logrado con el uso de bibliotecas privativas como WinUSB.
 	
-	La biblioteca \verb|libusb| no posee un autor formal. Es decir, no hay una persona, empresa u organización formal que se encargue de la creación y el mantenimiento del software. Existe una comunidad de más de 130 desarrolladores que en forma voluntaria cooperan en el mantenimiento y desarrollo de esta biblioteca. Se garantiza así que el proyecto esté documentado en forma detallada, existiendo amplios ejemplos y tutoriales de su uso.%\\
+	Adicionalmente, la biblioteca \verb|libusb-1.0| no tiene un autor específico, sino que existe una gran comunidad que contribuye al crecimiento del proyecto, como así también otros proyectos que utilizan esta biblioteca. Así, existe una gran variedad de ejemplos y foros que facilitan el aprendizaje en su utilización y adaptaciones para diferentes lenguajes de programación, que se adapte a los conocimientos previos de la persona que desarrolla programas.
+
+\subsection{Programa de PC desarrollado}
+	El programa de PC desarrollado para el envío y recepción de datos desde la PC hasta el FPGA consta de tres etapas. La primera de ellos se encarga de inicializar la biblioteca, identificar que el dispositivo USB conectado se corresponda con la comunicación con el FPGA y solicitar al sistema operativo el acceso a la comunicación.
+	El segundo módulo se encarga de generar la trama de datos, enviarla hacia el FPGA y esperar su recepción. La trama de datos generados es almacenada para la tercera etapa del programa que, una vez recibida la transferencia desde el FPGA, corrobora que los datos recibidos en la PC sean iguales a los enviados.
 	
-	Se elige esta biblioteca para la realización del software que gestionara el envío y la recepción de datos debido a su amplio soporte, la factibilidad de ejecutarlo en diferentes sistemas operativos y por ser totalmente gratuito.%\\
-%	Otra ventaja que posee la biblioteca libusb es que, al ser de código abierto, posee una gran comunidad que contribuye al crecimiento del proyecto, como así también otros proyectos que utilizan esta biblioteca. Así, existe una gran variedad de ejemplos que facilitan el aprendizaje en su utilización y adaptaciones para diferentes lenguajes de programación, que se adapte a los conocimientos previos de la persona que desarrolla programas.
+	Durante la primera etapa del programa, se inicializa la biblioteca \verb|libusb-1.0| y se identifica el dispositivo. Para ello es necesario generar una lista con todos los dispositivos USB conectados.
+	La lista de los dispositivos es informada por el sistema operativo a través de los identificadores contenidos en los descriptores del dispositivo. Si en la lista de dispositivos se encuentra el sistema desarrollado, se solicita acceso al sistema operativo. En caso contrario, el programa finaliza informando la situación.
+	
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=.7]
+			\begin{scope}[transform shape,node distance=.2,>=latex,]
+				\draw[step=1] (.1,.1) grid (3.9,3.9);
+				\node (a11) at (0.5,3.5){0};
+				\node (a12) at (1.5,3.5){0};
+				\node (a13) at (2.5,3.5){1};
+				\node[color=red] (a18) at (3.5,3.5){1};
+				\node [left=of a11,anchor=east] {\small{Fila 1}};
+				\node[above=of a18,align=center]{Paridad\\columna};
+				
+				\node (a21) at (0.5,2.5){1};
+				\node (a22) at (1.5,2.5){1};
+				\node (a23) at (2.5,2.5){0};
+				\node[color=red] (a28) at (3.5,2.5){0};
+				\node [left=of a21,anchor=east] {\small{Fila 2}};
+				
+				\node (a31) at (0.5,1.5){0};
+				\node (a32) at (1.5,1.5){1};
+				\node (a33) at (2.5,1.5){0};
+				\node[color=red] (a38) at (3.5,1.5){1};
+				\node [left=of a31,anchor=east] {\small{Fila 3}};
+								
+				\node[color=red] (a81) at (0.5,0.5){1};
+				\node[color=red] (a82) at (1.5,0.5){0};
+				\node[color=red] (a83) at (2.5,0.5){1};
+				\node[color=red] (a84) at (3.5,0.5){0};
+				\node [left=of a81,anchor=east] {Paridad fila};
+			\end{scope}
+			\begin{scope}[on background layer]
+				\node[rounded corners,rectangle,fit={(a18)(a84)},fill=gray!20] {};
+				\node[rounded corners,rectangle,fit={(a81)(a84)},fill=gray!20] {};
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Esquema de paridad par bidimensional de 4x4 bits.}
+		\label{test:2dimpar}
+	\end{figure}
+
+	Durante el segundo módulo del programa, se generan datos en forma aleatoria. Con el objetivo de obtener información adicional en caso de que existan errores en la información transmitida, se agregan bits de paridad par bidimensional (ver Figura \ref{test:2dimpar}), en tramas de 8x8 bits. Es decir, se genera un número aleatorio de 7 bits. Luego, se agrega un bit adicional, de forma tal que la cantidad de unos existentes en la palabra enviada sea par. Finalmente, se calcula la paridad de los bits con igual significancia en grupos de 7 números y se agrega el número resultante en el octavo lugar del grupo. Una vez generados los datos, estos son transmitidos hacia el FPGA. Los datos generados suman \SI{128}{\byte} para cada una de las transferencias realizadas.
+	
+	En la tercera etapa, el programa espera hasta la recepción del mensaje reenviado. Una vez que este arriba, se procede a corroborar que los datos recibido sean iguales a los enviados.	La función encargada de verificar los datos corrobora que los bits de paridad sean correctos y, en caso de haber un error, informa cuál fue el dato erróneo.
+	
+	Tanto los datos enviados como los recibidos son almacenados en un archivo mientras el programa es ejecutado para un análisis posterior de los resultados.
+	
+	El código completo del programa desarrollado, escrito en C++, se puede observar en el Apéndice \ref{ap:cpp}
+%La tercer parte en la que se divide el trabajo es relativa a la comunicación entre la interfaz y una PC. Ya que la interfaz se encarga en gran medida de lo relativo al empaquetamiento, codificación y decodificación y que las PC, por su parte, vienen equipadas con el hardware necesario, este trabajo debe implementar el software que comande y gestione, desde el sistema operativo el correcto acceso a los datos que se envían y reciben. Para la elaboración de software que permita el manejo de los puertos USB, se utiliza la biblioteca \verb|libusb|.%\\
+%	
+%\verb|libusb| es una biblioteca de código abierto, muy bien documentada, escrita en C, que brinda acceso genérico a dispositivos USB. Las características de diseño que persigue el equipo de desarrollo que mantiene la biblioteca es que sea multiplataforma, modo usuario y agnóstico de versión\cite{libusb}.%\\
+%		
+%\begin{itemize}
+%	\item{Multiplataforma:} Se apunta a que cualquier software que contenga esta biblioteca pueda ser compilado y ejecutado en la mayor cantidad de plataformas posibles, dotando al software de portabilidad, es decir, esta biblioteca puede ser ejecutada en Windows, Linux, OS X, Android y otras plataformas sin necesidad de realizar cambios en el código.
+%	\item{Modo usuario:} No se requiere acceso privilegiado de ningún tipo para poder ejecutar programas escritos con esta biblioteca.
+%	\item{Agnótisco de versión:} Sin importar la versión de la norma USB que se utilice, el programa se podrá comunicar siempre con el dispositivo USB que se requiera.
+%\end{itemize}
+%	
+%La biblioteca \verb|libusb| no posee un autor formal. Es decir, no hay una persona, empresa u organización formal que se encargue de la creación y el mantenimiento del software. Existe una comunidad de más de 130 desarrolladores que en forma voluntaria cooperan en el mantenimiento y desarrollo de esta biblioteca. Se garantiza así que el proyecto esté documentado en forma detallada, existiendo amplios ejemplos y tutoriales de su uso.%\\
+%	
+%Se elige esta biblioteca para la realización del software que gestionara el envío y la recepción de datos debido a su amplio soporte, la factibilidad de ejecutarlo en diferentes sistemas operativos y por ser totalmente gratuito.%\\
+%
+%%Otra ventaja que posee la biblioteca libusb es que, al ser de código abierto, posee una gran comunidad que contribuye al crecimiento del proyecto, como así también otros proyectos que utilizan esta biblioteca. Así, existe una gran variedad de ejemplos que facilitan el aprendizaje en su utilización y adaptaciones para diferentes lenguajes de programación, que se adapte a los conocimientos previos de la persona que desarrolla programas.
