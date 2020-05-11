@@ -1,0 +1,17 @@
+Resultados de la prueba de validación
+
+
+Listo!
+388.191.289 paquetes de 128 bytes cada uno
+49.688.484.992 bytes
+397.507.879.936 bits
+3.98 *10^11.. me falta un orden de magnitud..
+87134 segundos
+
+Hice un cálculo nuevo.
+Yo mandé 388191289 paquetes, sin embargo, en el cálculo no consideré ni los bytes extra del encabezado y la cola que agrega el protocolo, ni los bytes que volvieron.
+En la calculadora de la imagen está todo el cálculo hecho en base a lo que dice la especificación USB 2.0.
+Me termina dando que mandé 1.08 x10¹² bits en total, por lo que el protocolo si cumple la norma en cuanto a robustez de los datos, ya que no perdió ninguno.
+Por otro lado, en cuanto a los datos útiles de ida y de vuelta, el programa estuvo corriendo 87134 segundos. Todo eso me dá una tasa útil de un poco mas de 9 Mbps entre subida y bajada (12 Mbps en total).
+Si mejoramos un poco el tema de la sincronización, creo que podemos llegar a la mejor configuración, que es mandar de a 1023 bytes por transferencia, con una tasa útil de 7MB cada 125us, que dá los 480 Mbps esperados, pero estamos lejos aún de eso.
+De todas formas, a mi prueba le falta mucho para medir el ancho de banda real. Mi programa manda datos, espera que vuelva el handshake, de ahí manda el pedido de que los retrasmita y espera la respuesta. Eso hace que la latencia, incluso te diría que independiente de la demora misma de las placas, sea bastante alta.
