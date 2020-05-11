@@ -1,0 +1,74 @@
+\documentclass[11pt]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=40,fill=white]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{buf}=[core, text width=55, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{mode text} = [midway,sloped,text width=200,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=85,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=15, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,node distance=5,>=latex,thick]
+			\node[simple]	(cypress)		[]	 			{FIFO Esclava};
+			\node[simple]	(master)	[right=of cypress]	{Maestro Externo};
+			\node[simple,minimum size=70]	(leer)		[right=of master.north west,anchor=north west] {Leer FIFO};
+			\node[simple,minimum size=70]	(escribir)	[right=of master.south west,anchor=south west]	{Escribir FIFO};
+			\node[simple,node distance=8]	(fifo)		[right=of master]	{FIFO Interna (XLNX core generator)};
+			
+			\draw[<->]	([yshift=4*110/6]cypress.east) --node [above]{IFCLK} ([yshift=4*110/6]master.west);
+			\draw[<->]	([yshift=3*110/6]cypress.east) --node [above]{FD[15:0]} ([yshift=3*110/6]master.west);
+			\draw[<-]	([yshift=2*110/6]cypress.east) --node [above]{FIFOADR[1:0]} ([yshift=2*110/6]master.west);
+			\draw[->]	([yshift=1*110/6]cypress.east) --node [above]{EP2\_EMPTY} ([yshift=1*110/6]master.west);
+			\draw[->]	([yshift=0*110/6]cypress.east) --node [above]{EP8\_FULL} ([yshift=0*110/6]master.west);
+			\draw[<-]	([yshift=-1*110/6]cypress.east) --node [above]{SLOE} ([yshift=-1*110/6]master.west);
+			\draw[<-]	([yshift=-2*110/6]cypress.east) --node [above]{SLWR} ([yshift=-2*110/6]master.west);
+			\draw[<-]	([yshift=-3*110/6]cypress.east) --node [above]{SLRD} ([yshift=-3*110/6]master.west);
+			\draw[<-]	([yshift=-4*110/6]cypress.east) --node [above]{PKTEND} ([yshift=-4*110/6]master.west);
+			
+			\draw[<-] (leer) -- node[above]{SLWR} (master.east |- leer);
+			\draw[<-] ([yshift=-1*80/7]leer.east) -- node[above]{EMPTY}([yshift=-1*80/7]fifo.west |- leer);
+			\draw[->] ([yshift=1*80/7]leer.east) -- node[above]{RD\_EN}([yshift=1*80/7]fifo.west |- leer);
+			
+			\draw[<-] (escribir) -- node[above]{SLRD} (master.east |- escribir);
+			\draw[<-] ([yshift=-1*80/7]escribir.east) -- node[above]{FULL}([yshift=-1*80/7]fifo.west |- escribir);
+			\draw[->] ([yshift=1*80/7]escribir.east) -- node[above]{WR\_EN}([yshift=1*80/7]fifo.west |- escribir);			
+			
+			\draw[<-]	([yshift=1*70/6]fifo.west) --node [above]{DIN[15:0]} ([yshift=1*70/6]master.east);
+			\draw[->]	([yshift=-1*70/6]fifo.west) --node [above]{DOUT[15:0]} ([yshift=-1*70/6]master.east);
+			
+			\node[node distance=.4] (fpga) [above=of leer] {FPGA};
+		\end{scope}
+		\begin{scope}[on background layer]
+			\node[rectangle,rounded corners,dashed,fit=(master)(leer)(fpga)(fifo)(escribir),draw=black]{};
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

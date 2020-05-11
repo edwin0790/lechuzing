@@ -1,0 +1,174 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgf}
+\usetikzlibrary{positioning,circuits.logic.mux,circuits.logic.US,shapes.gates.logic}
+
+\begin{document}
+	
+	\begin{tikzpicture}[circuit logic US, node distance=1,shape border uses incircle]
+		\begin{scope}
+			\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg4){};
+			\node[buffer gate] (ifcfg5) [right=of ifcfg4] {};
+			\node[not gate]	(a)		[left=of ifcfg4.input 2]	{};
+			\node[node distance=2](aux a)	[left=of ifcfg4.input 1]	{};
+			\node[] (aux 1) [left=of aux a] {};
+			\node[mux, inputs={nn},info={[text width=10]center:0\\1}] (ifcfg6) [left=of aux 1]{};
+			\node[mux, inputs={nn},info={[text width=10]center:1\\0},point left,node distance=4] (ifcfg7) [below=of ifcfg6]{};
+			\node[mux,inputs={nn},info={[text width=10]center:0\\1},node distance=2,point left] (ifcfg4bis) [right=of ifcfg7.input 1]{};
+			\node[not gate,node distance=1.7] (b) [right=of ifcfg4bis.input 1,point left] {};
+			\node[node distance=3] (aux b) [right=of ifcfg4bis.input 2] {};
+			\node[buffer gate,point left] (c)	[right=of aux b]	{};
+			
+			\node[]	(sel4)	[below=of ifcfg4]	{IFCFG.4};
+		%	\node[node distance=1.5] (sel4bis) [above=of ifcfg4bis] {IFCFG.4};
+			\node[]	(sel5)	[above=of ifcfg5]	{IFCFG.5};
+			\node[] (sel6)	[below=of ifcfg6]	{IFCFG.6};
+			\node[node distance=1.5]	(sel7)	[above=of ifcfg7]	{IFCFG.7};
+			\node[] (aux 2) [right=of ifcfg5]		{};
+			\node[node distance=1.5] (aux 3)  [below=of aux 2] {};
+			\node[align=center] (output) [right=of aux 3] {Pin\\IFCLK};
+			\node[] (freq1)	[left=of ifcfg6.input 1]	{30 MHz};
+			\node[]	(freq2) [left=of ifcfg6.input 2]	{48 MHz};
+			\node[align=center] (clkin) [left=of ifcfg7]	{Entrada\\IFCLK\\Interna};
+			
+			\draw (ifcfg4) to (ifcfg5);
+			\draw (aux a.base) to (ifcfg4.input 1);
+			\draw (aux a.base) |- (a.input);
+			\draw (ifcfg6) to (aux a.base);
+			\draw (aux 1.base) |- (ifcfg7.input 2);
+			\draw (ifcfg4bis) to (ifcfg7.input 1);
+			\draw (c) to (ifcfg4bis.input 2);
+			\draw (b) to (ifcfg4bis.input 1);
+			\draw (aux b.base) |- (b.input);
+			\draw (a) to (ifcfg4.input 2);
+			\draw (ifcfg5) to (aux 2.base);
+			\draw (aux 2.base) |- (c);
+			\draw (aux 3.base) -- (output);
+			
+			\draw (clkin) to (ifcfg7);
+			\draw (freq1) to (ifcfg6.input 1);
+			\draw (freq2) to (ifcfg6.input 2);
+			\draw (sel5) to (ifcfg5.north);
+			\draw (sel4) to (ifcfg4.select);
+			\draw (sel4) -| (ifcfg4bis.select);
+			\draw (sel6) to (ifcfg6.select);
+			\draw (sel7) to (ifcfg7.select);	
+		\end{scope}
+	\end{tikzpicture}
+	
+\end{document}
+%\documentclass[11pt]{article}
+%
+%\usepackage[a3paper]{geometry}
+%\usepackage[spanish]{babel}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usepackage{siunitx}
+%
+%\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.US}
+%
+%%\tikzstyle{style} = [definition]
+%\tikzstyle{interior}=[
+%	rectangle,
+%	rounded corners,
+%	draw=black,
+%	minimum size=40,
+%	fill=white]
+%\tikzstyle{core}=[
+%	interior]
+%\tikzstyle{perif}=[
+%	interior,
+%	minimum height=20]
+%\tikzstyle{exterior}=[
+%	rectangle,
+%	draw=black,
+%	minimum size=40]
+%\tikzstyle{contenedor}=[
+%	rectangle,
+%	draw=black]
+%\tikzstyle{buf}=[
+%	core,
+%	text width=55,
+%	align=center]
+%\tikzstyle{obuf}=[
+%	buf,
+%	node distance=.7]
+%\tikzstyle{env}=[
+%	fill=black!20]
+%\tikzstyle{simple}=[
+%	rectangle,
+%	draw=black,
+%	minimum height=220,
+%	text width=65,
+%	align=center]
+%\tikzstyle{mode text}=[midway,sloped,text width=200,align=center]
+%\tikzstyle{moore}=[
+%	rectangle,
+%	draw=black,
+%	minimum height= 30,
+%	text width=80,
+%	align=left]
+%\tikzstyle{mealy}=[rectangle,
+%	rounded corners=15,
+%	draw=black,
+%	text width=80,
+%	align=left,
+%	minimum height=40]
+%\tikzstyle{ask}=[
+%	diamond,
+%	text width=50,
+%	draw=black,
+%	align=center]
+%\tikzstyle{mux}=[
+%	trapezium,
+%	draw,
+%	shape border rotate=270,
+%	shape border uses incircle=true,
+%	text width=20,]
+%
+%\newcommand{\epg}[3]{
+%	Buffer {#1}\\
+%	[44pt]EP{#2}\\
+%	[44pt]{#3} Bytes}
+%
+%\newcommand{\ep}[3]{
+%		Buffer {#1}\\
+%		[8pt]EP{#2}\\
+%		[8pt]{#3} Bytes}
+%
+%
+%\begin{document}
+%	\begin{tikzpicture}[scale=1]
+%		\begin{scope}[transform shape,node distance=1,>=latex, circuit logic US]
+%			\node[mux]		(clkMux)					{0\\1};
+%			\node[]			(aux1)	[right=of clkMux]	{};
+%			\node[]			(aux2)	[right=of aux1]		{};
+%			\node[]			(aux3)	[right=of aux2]		{};
+%			\node[not gate]	(n1)	[below=of aux3.north]		{};
+%			\node[mux]		(outMux)[right=of aux3.south]		{0\\1};
+%			\draw (clkMux.east) -- (outMux.north west) node [xshift=10] {5};
+%%			\node[mealy]	(start)	[]	{Iniciar: Reset \\ \verb|main();|};
+%%			\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
+%%				edge[<-,thick] (start);
+%%			\node[moore]	(us1)	[below=of init]		{\verb|TD_Init();|}
+%%				edge[<-,thick]	(init);
+%%			\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
+%%				edge[<-,thick](us1);
+%%			\node[node distance=0.7]			(aux1)	[below=of EI] 	{};
+%%			\draw[<-,thick](aux1.base) to (EI);
+%%			\node[moore,node distance=.5]	(poll)	[below=of aux1]	{\verb|TD_Poll();|}
+%%				edge[<-,thick](aux1.base);
+%%			\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
+%%				edge[<-,thick](poll);
+%%			\node[moore]	(setup)	[right=of pr1]	{\verb|SetupComand();|};
+%%			\draw[->,thick] (setup) |- (aux1.base);
+%%			\node[]			(aux2)	[below=of pr1]	{};
+%%			\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
+%%			\draw[thick]	(pr1) -- node[left,near start]{No}	(aux2.base);
+%%			\node[node distance=2.5](aux3)	[left=of aux2] {};
+%%			\draw[thick]	(aux2.base) -- (aux3.base);
+%%			\draw[->,thick]	(aux3.base)	|-	(aux1.base);
+%		\end{scope}
+%	\end{tikzpicture}
+%\end{document}

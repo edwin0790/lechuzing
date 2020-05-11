@@ -1,0 +1,88 @@
+\documentclass[11pt,a4paper]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,decorations.pathreplacing,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{mode text} = [midway,sloped,text width=200]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{buf}=[core, text width=53, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,aspect=2]
+%\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
+\tikzstyle{hub}=[draw=black,anchor=west,circle]
+\tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=120,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=120,minimum height=120,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=dots,pattern color=black!25]
+\tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
+\tikzstyle{chart}=[circle,draw=black,text width=50,align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,node distance=4,>=latex,double distance=1.3]
+			\node[simple](fx2lp){Interfaz FX2LP};
+			
+			\node[simple, rounded corners,minimum size=80] (PC)[left=2 of fx2lp]{PC};
+			\draw[double,<->](PC) -- node[above]{USB} (fx2lp);
+			
+			\node[simple](mea)[right=of fx2lp]{Maquina de Estados Algorítmica};
+			
+			\draw[double,<->] ([yshift=3.5*110/4]fx2lp.east)-- node [above]{FDATA[15:0]} ([yshift=3.5*110/4]mea.west);
+			\draw[double,<->] ([yshift=2.5*110/4]fx2lp.east)-- node [above]{FADDR[1:0]} ([yshift=2.5*110/4]mea.west);
+			\draw[->] ([yshift=1.5*110/4]fx2lp.east)--node[above]{FLAG\_Vacío} ([yshift=1.5*110/4]mea.west);
+			\draw[->]([yshift=.5*110/4]fx2lp.east)--node[above]{FLAG\_Lleno}([yshift=.5*110/4]mea.west);
+			\draw[<-]([yshift=-.5*110/4]fx2lp.east)--node[above]{SLOE}([yshift=-.5*110/4]mea.west);
+			\draw[<-]([yshift=-1.5*110/4]fx2lp.east)--node[above]{SLRD}([yshift=-1.5*110/4]mea.west);
+			\draw[<-]([yshift=-2.5*110/4]fx2lp.east)--node[above]{SLWR}([yshift=-2.5*110/4]mea.west);
+			\draw[<-]([yshift=-3.5*110/4]fx2lp.east)--node[above]{PKTEND}([yshift=-3.5*110/4]mea.west);
+			
+			\node[simple,minimum size=50](clk)[right=of mea.south east,anchor=south west] {PLL};
+			\draw[<-]([]mea.east |- clk.west)--node[above]{Reloj}([]clk.west);
+%			\draw[<-]([yshift=-1*80/3]mea.north east)--node[above]{Reloj}([yshift=-1*80/3]clk.north west);
+%			\draw[<-]([yshift=-2*80/3]mea.north east)--node[above]{Reset}([yshift=-2*80/3]clk.north west);
+			\node[rounded corners,simple, minimum size=50](clkSrc)[right=1 of clk]{Fuente de reloj};
+			\draw[->](clkSrc) to (clk);
+			
+			\node[simple,minimum height=150,minimum width=50](interno)[right=of mea.north east,anchor=north west]{Memoria FIFO};
+			\draw[double,->]([yshift=-.5*150/6]mea.north east)--node[above]{Dato\_enviado[15:0]} ([yshift=-.5*150/6]interno.north west);
+			\draw[double,<-]([yshift=-1.5*150/6]mea.north east)--node[above]{Dato\_a\_enviar[15:0]}([yshift=-1.5*150/6]interno.north west);
+			\draw[<-]([yshift=-2.5*150/6]mea.north east)--node[above]{Enviar\_datos}([yshift=-2.5*150/6]interno.north west);
+			\draw[->]([yshift=-3.5*150/6]mea.north east)--node[above]{SLRD}([yshift=-3.5*150/6]interno.north west);
+			\draw[->]([yshift=-4.5*150/6]mea.north east)--node[above]{SLWR}([yshift=-4.5*150/6]interno.north west);
+			\draw[<-]([yshift=-5.5*150/6]mea.north east)--node[above]{PKTEND}([yshift=-5.5*150/6]interno.north west);
+			\draw[->] (clk) -- (interno);
+			
+		\end{scope}
+		\begin{scope}[]
+			\node[rounded corners,inner ysep=5pt,draw=black,rectangle,fit={(mea)(interno)},label=north:FPGA](fpga){};
+			\node[inner ysep=11pt, yshift= 8pt, draw=black,rectangle,fit={(fpga)(clkSrc)},label=north:Mojo](){};
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

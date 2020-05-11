@@ -1,0 +1,135 @@
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[scale=.7]
+		\begin{scope}[transform shape,node distance=3,>=latex,looseness=1.2]
+			\node[chart](inicio){En espera};
+			\node[chart](lectura)[below left=of inicio]{Leer datos};
+			\node[chart](escritura)[below right=of inicio]{Escribir datos};
+			\draw[->] (escritura.120) to [bend left](inicio.330);
+			\draw[->] (lectura.60) to [bend right](inicio.210);
+			\draw[->] (inicio.160) to [bend right] node [above,sloped] {FIFO Vacía=0} (lectura.110);
+			\draw[->] (inicio.20) to [bend left] node [above,sloped,text width=80] {FIFO Vacía=1\\Salida datos=1} (escritura.70);
+			\draw[->] (inicio.135) to [out=90,in=100,looseness=1.5] node [above,text width=80] {FIFO Vacía=1\\Salida datos=0} (inicio.45);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Diagrama conceptual de la MEA}
+	\label{fpga:mea:concepto}
+\end{figure}
+
+A modo conceptual, la maquina de estados algorítmica (MEA) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el host). En la Figura \ref{fpga:mea:concepto} se muestra que cuando la memoria FIFO de salida del host señala que no está vacía, se ejecuta la tarea de lectura de datos. Si la memoria FIFO asignada a la salida del host se encuentra vacía y está activa la salida de datos del FPGA, estos datos serán escritos en la memoria FIFO correspondiente.
+
+Se puede notar que la implementación de la MEA le otorga mayor prioridad a la operación de lectura que a la de escritura de datos. Es decir, siempre que existan datos para leer en la memoria FIFO, serán leídos, aún cuando hayan datos para ser escritos.
+Se otorga esta prioridad con el objetivo de que la comunicación sea utilizada por sensores que adquieran datos y los transmitan en forma inmediata a la PC y, a su vez, desde la PC se envíe datos que permitan configurar parámetros del sensor en particular de manera esporádica. Así, se prevé que los datos que provengan de la PC sean más distanciados en el tiempo que los de los datos que estuviesen siendo adquiridos por el sensor.
+
+Se considera que la maquina de estados, además comunicarse con la interfaz FX2LP, sea capaz de intercambiar datos con algún sistema genérico implementado en el mismo FPGA que se sintetiza la MEA. A su vez, dicho sistema debe poder indicar el momento en que se producen los datos y deben ser enviados. Como señal de sincronismo, se utilizan las producidas para leer y escribir en las memorias, con el objetivo de optimizar el diseño al mínimo de recursos utilizados.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[scale=.65]
+		\begin{scope}[transform shape,node distance=4,>=latex,double distance=1.3]
+			\node[simple](fx2lp){FX2LP FIFO};
+			\node[simple](mea)[right=of fx2lp]{Maquina de Estados Algorítmica};
+			
+			\draw[double,<->] ([yshift=3.5*110/4]fx2lp.east)-- node [above]{FDATA[15:0]} ([yshift=3.5*110/4]mea.west);
+			\draw[double,<->] ([yshift=2.5*110/4]fx2lp.east)-- node [above]{FADDR[1:0]} ([yshift=2.5*110/4]mea.west);
+			\draw[->] ([yshift=1.5*110/4]fx2lp.east)--node[above]{FLAG\_Vacío} ([yshift=1.5*110/4]mea.west);
+			\draw[->]([yshift=.5*110/4]fx2lp.east)--node[above]{FLAG\_Lleno}([yshift=.5*110/4]mea.west);
+			\draw[<-]([yshift=-.5*110/4]fx2lp.east)--node[above]{SLOE}([yshift=-.5*110/4]mea.west);
+			\draw[<-]([yshift=-1.5*110/4]fx2lp.east)--node[above]{SLRD}([yshift=-1.5*110/4]mea.west);
+			\draw[<-]([yshift=-2.5*110/4]fx2lp.east)--node[above]{SLWR}([yshift=-2.5*110/4]mea.west);
+			\draw[<-]([yshift=-3.5*110/4]fx2lp.east)--node[above]{PKTEND}([yshift=-3.5*110/4]mea.west);
+			
+			\node[simple,minimum size=80](clk)[right=of mea.north east,anchor=north west] {Fuente de reloj};
+			\draw[<-]([yshift=-1*80/3]mea.north east)--node[above]{Reloj}([yshift=-1*80/3]clk.north west);
+			\draw[<-]([yshift=-2*80/3]mea.north east)--node[above]{Reset}([yshift=-2*80/3]clk.north west);
+			
+			\node[simple,minimum height=130,minimum width=80](interno)[right=of mea.south east,anchor=south west]{Sistema\\Genérico};
+			\draw[double,->]([yshift=5*130/6]mea.south east)--node[above]{Dato\_recibido[15:0]} ([yshift=5*130/6]interno.south west);
+			\draw[double,<-]([yshift=4*130/6]mea.south east)--node[above]{Dato\_a\_enviar[15:0]}([yshift=4*130/6]interno.south west);
+			\draw[<-]([yshift=3*130/6]mea.south east)--node[above]{Enviar\_datos}([yshift=3*130/6]interno.south west);
+			\draw[->]([yshift=2*130/6]mea.south east)--node[above]{SLRD}([yshift=2*130/6]interno.south west);
+			\draw[->]([yshift=1*130/6]mea.south east)--node[above]{SLWR}([yshift=1*130/6]interno.south west);
+			
+		\end{scope}
+	\begin{scope}[]
+	\node[draw=black,rectangle,fit={(mea)(interno)},label=north:FPGA]{};
+	\end{scope}
+	\end{tikzpicture}
+	\caption{Diagrama conceptual donde se observan las variables que intervienen en la MAE}
+	\label{fpga:variables}
+\end{figure}
+
+Con todo esto, la maquina de estados deberá poseer las varibales que se observan en la Figura \ref{fpga:variables}. Como se muestra, la interfaz que se comunica con que se comunica con el controlador FX2LP posee como variables de entrada para la operación de lectura son el bus de datos {FD[15:0]} y el {FLAG\_Vacío} (FLAGB), conforme al diagrama temporal de la Figura \ref{fpga:lecfifo}. En el caso de la operación de escritura, se utiliza además el {FLAG\_Lleno} (FLAGA).
+
+La variables de salida son los puertos de dirección {FIFOADR[1:0]}, SLRD y SLOE, utilizadas en la operación de lectura, y SLWR para la escritura. Otra señal que se utiliza para la operación de escritura es PKTEND. Esta señal sirve para enviar paquetes más cortos que los esperados por la interfaz. El bus de datos FDATA[0:15] es bidireccional ya que se usa de entrada o salida en función de la operación que se efectúa.
+
+Hacia la comunicación interna del FPGA, se plantea una señal de envío de datos, Enviar\_datos, como puerto de entrada, que le permita al sistema indicar que los datos está siendo producidos. Como señales de salida, se toman SLRD y SLWR como handshake, de forma tal que el sistema conozca cuando un dato es leído y/o escrito en el controlador FX2LP. También se desdoblan los datos en dos buses diferentes, Dato\_a\_enviar[15:0] de entrada y Dato\_recibido[15:0] de salida.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[ask/.style = {diamond,text width=70,draw=black,align=center,aspect=2},
+	scale=.7]
+	\begin{scope}[transform shape,node distance=1,>=latex,]
+	\node[moore,text width=100] (inicio) [label=above right:inicio]{FIFOADR=$''$ZZ$''$\\FDATA=$''$ZZ$''$\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+	
+	\node[ask] (vacio1) [below=of inicio]{FLAG\_Vacío};
+	\draw[->] (inicio.south) -| (vacio1);
+	%			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+	%			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
+	
+	\node[moore,text width=100] (lecoe) [right=of vacio1,label=above right:dirección] {FIFOADR=$''1''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+	\draw[->] (vacio1.east) -- ($(vacio1.east)!0.5!(lecoe.west)$);
+	\draw[->]($(vacio1.east)!0.5!(lecoe.west)$) |- ($(lecoe.north)+(0,0.5)$) -- (lecoe.north);
+	
+	\node[moore,text width=100](lecrd)[below=of lecoe,label=above right:lectura]{FIFOADR=$''11''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'0'$\\SLWR=$'1'$};
+	\draw[->](lecoe) -- (lecrd);
+	
+	\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
+	\draw[->](lecrd) -- (vacio2);
+	
+	\draw[o->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
+	\draw[->](vacio2.east) -- ++(1.2,0) |- ($(inicio.north)+(0,.6)$);
+	\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+	
+	\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
+	\draw[o->](vacio1.south) --(enviar1.north);
+	
+	
+	\node[ask] (lleno1) [below=of enviar1]{FLAG\_Lleno};
+	\draw[->](enviar1) -- (lleno1);
+	
+	\node[moore,text width=100](escdir)[below=of lleno1,label=above left:dirección]{FIFOADR=$''00''$\\D\_recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+	\draw[->](lleno1) -- ($(lleno1.south)!0.5!(escdir.north)$);
+	\draw[->]($(lleno1.south)!0.5!(escdir.north)$) -- (escdir);
+	
+	
+	\node[ask](vacio3)[left=2 of vacio1]{FLAG\_Vacío};
+	\draw[->](escdir.south)--($(escdir.south)+(0,-.5)$) -| ($(vacio3.east)+(.5,0)$) |- ($(vacio3.north)+(0,.5)$)-|(vacio3.north);
+	
+	\node[ask](enviar2)[below=of vacio3]{Enviar\_datos};
+	\draw[o->](vacio3) -- (enviar2);
+	
+	\draw[o->] (enviar1.west) -- ($(enviar1.west)+(-.5,0)$);
+	\draw[->] ($(enviar1.west)-(.5,0)$) -- ($(inicio.north -| enviar1.west)+(-.5,.6)$);
+	\draw[->] ($(inicio.north -| enviar1.west)+(-.5,.6)$)--($(inicio.north)+(0,.6)$);
+	\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+	\draw[o->](lleno1.west) -| ($(enviar1.west)-(.5,0)$);
+	\draw[->](vacio3.west) -- ($(vacio3.west)+(-.9,0)$);
+	\draw[->]($(vacio3.west)+(-.9,0)$) |- ($(inicio.north -| enviar1.west)+(-.5,.6)$);
+	
+	\node[ask](lleno2)[below=of enviar2]{FLAG\_Lleno};
+	\node[moore,text width=100](escwr)[below=of lleno2,label=above left:escribir]{FIFOADR=$''00''$\\D\_Recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'0'$};
+	\draw[->](lleno2) -- (escwr);
+	\draw[o->](lleno2.west) -| ($(enviar2.west)+(-.9,0)$);
+	\draw[->](enviar2)--(lleno2);
+	\draw[o->](enviar2)--($(enviar2.west)+(-.9,0)$);
+	\draw[->]($(enviar2.west)+(-.9,0)$) -- ($(vacio3.west)+(-.9,0)$);
+	\draw[->](escwr) -- ($(escwr.south)+(0,-1)$) -| ($(escdir.east)+(.5,0)$) |- ($(lleno1.south)!0.5!(escdir.north)$);
+	\end{scope}
+	\end{tikzpicture}
+	\caption{Maquina de estados que se implementa}
+	\label{fpga:mea}
+\end{figure}
+
+A su vez, se incorpora una señal de reloj, que estará encargada de temporizar la MEA y una señal de reset, que se encargara de iniciar todos las señales a un valor conocido de referencia, previo al comienzo del ciclo de la MEA.
+Con base en los diagramas temporales y las variables anteriormente mencionadas, se diseña la maquina de estados que se observa en la Figura \ref{fpga:mea}. Se debe notar que FLAGA, FLAGB, SLOE, SLRD y SLWR son activos en bajo.

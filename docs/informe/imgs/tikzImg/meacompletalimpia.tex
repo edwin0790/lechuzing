@@ -1,0 +1,107 @@
+\documentclass[11pt,a4paper]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,decorations.pathreplacing,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{mode text} = [midway,sloped,text width=200]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{buf}=[core, text width=53, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,aspect=2]
+%\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
+\tikzstyle{hub}=[draw=black,anchor=west,circle]
+\tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=120,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=120,minimum height=120,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=dots,pattern color=black!25]
+\tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
+\tikzstyle{chart}=[circle,draw=black,text width=50,align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,node distance=1,>=latex,]
+			\node[moore,text width=100] (inicio) [label=above right:inicio]{FIFOADR=$''$ZZ$''$\\FDATA=$''$ZZ$''$\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+
+			\node[ask] (vacio1) [below=of inicio]{FLAG\_Vacío};
+			\draw[->] (inicio.south) -| (vacio1);
+%			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+%			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
+
+			\node[moore,text width=100] (lecoe) [right=of vacio1,label=above right:dirección] {FIFOADR=$''1''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+			\draw[->] (vacio1.east) -- ($(vacio1.east)!0.5!(lecoe.west)$);
+			\draw[->]($(vacio1.east)!0.5!(lecoe.west)$) |- ($(lecoe.north)+(0,0.5)$) -- (lecoe.north);
+
+			\node[moore,text width=100](lecrd)[below=of lecoe,label=above right:lectura]{FIFOADR=$'11''$\\FDATA=D\_a\_enviar\\SLOE=$'0'$\\SLRD=$'0'$\\SLWR=$'1'$};
+			\draw[->](lecoe) -- (lecrd);
+
+			\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
+			\draw[->](lecrd) -- (vacio2);
+
+			\draw[o->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
+			\draw[->](vacio2.east) -- ++(.8,0) |- ($(inicio.north)+(0,.6)$);
+			\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+
+			\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
+			\draw[o->](vacio1.south) --(enviar1.north);
+
+
+			\node[ask] (lleno1) [below=of enviar1]{FLAG\_Lleno};
+			\draw[->](enviar1) -- (lleno1);
+
+			\node[moore,text width=100](escdir)[below=of lleno1,label=above left:dirección]{FIFOADR=$''00''$\\D\_recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
+			\draw[->](lleno1) -- ($(lleno1.south)!0.5!(escdir.north)$);
+			\draw[->]($(lleno1.south)!0.5!(escdir.north)$) -- (escdir);
+
+
+			\node[ask](vacio3)[left=2 of vacio1]{FLAG\_Vacío};
+			\draw[->](escdir.south)--($(escdir.south)+(0,-.5)$) -| ($(vacio3.east)+(.5,0)$) |- ($(vacio3.north)+(0,.5)$)-|(vacio3.north);
+
+			\node[ask](enviar2)[below=of vacio3]{Enviar\_datos};
+			\draw[o->](vacio3) -- (enviar2);
+
+			\draw[o->] (enviar1.west) -- ($(enviar1.west)+(-.5,0)$);
+			\draw[->] ($(enviar1.west)-(.5,0)$) -- ($(inicio.north -| enviar1.west)+(-.5,.6)$);
+			\draw[->] ($(inicio.north -| enviar1.west)+(-.5,.6)$)--($(inicio.north)+(0,.6)$);
+			\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+			\draw[o->](lleno1.west) -| ($(enviar1.west)-(.5,0)$);
+			\draw[->](vacio3.west) -- ($(vacio3.west)+(-.5,0)$);
+			\draw[->]($(vacio3.west)+(-.5,0)$) |- ($(inicio.north -| enviar1.west)+(-.5,.6)$);
+
+			\node[ask](lleno2)[below=of enviar2]{FLAG\_Lleno};
+			\node[moore,text width=100](escwr)[below=of lleno2,label=above left:escribir]{FIFOADR=$''00''$\\D\_Recibido=FDATA\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'0'$};
+			\draw[->](lleno2) -- (escwr);
+			\draw[o->](lleno2.west) -| ($(enviar2.west)+(-.5,0)$);
+			\draw[->](enviar2)--(lleno2);
+			\draw[o->](enviar2)--($(enviar2.west)+(-.5,0)$);
+			\draw[->]($(enviar2.west)+(-.5,0)$) -- ($(vacio3.west)+(-.5,0)$);
+			\draw[->](escwr) -- ($(escwr.south)+(0,-1)$) -| ($(escdir.east)+(.5,0)$) |- ($(lleno1.south)!0.5!(escdir.north)$);
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

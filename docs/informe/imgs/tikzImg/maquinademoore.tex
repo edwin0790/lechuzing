@@ -1,0 +1,71 @@
+\documentclass[12pt,a4paper]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,decorations.pathreplacing,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{mode text} = [midway,sloped,text width=200]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{buf}=[core, text width=53, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,aspect=2]
+%\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
+\tikzstyle{hub}=[draw=black,anchor=west,circle]
+\tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=120,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=120,minimum height=120,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=dots,pattern color=black!25]
+\tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
+\tikzstyle{chart}=[circle,draw=black,text width=50,align=center]
+\tikzstyle{lineaExt} = [->,line width=5pt, >=latex, shorten <= 1]
+\tikzstyle{lineaInt} = [->,line width=3pt,white, shorten >= 4.8, >=latex, shorten <= 2]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,>=latex,node distance=1.5]
+			\node[bloque](prEs){Función Estado Próximo};
+			\node[bloque](acEs)[right=of prEs]{Estado Actual};
+			\node[bloque](sal)[right=of acEs]{Función de Salida};
+			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
+			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
+			
+			\draw[lineaExt](prEs)to(acEs);
+			\draw[lineaExt](acEs)to(sal);
+			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](prEs)to(acEs);
+			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](acEs)to(sal);
+			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
+			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
+		\end{scope}
+		\begin{scope}[]
+
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

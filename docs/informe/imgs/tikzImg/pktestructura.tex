@@ -1,0 +1,182 @@
+\documentclass{standalone}
+%\usepackage[a3paper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{calc}
+
+\usepackage{tikz,pgf}
+\usetikzlibrary{calc,arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,trees,patterns}%shapes.gates.logic}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[
+	rectangle,
+	rounded corners,
+	draw=black,
+	minimum size=40,
+	fill=white]
+\tikzstyle{core}=[
+	interior]
+\tikzstyle{perif}=[
+	interior,
+	minimum height=20]
+\tikzstyle{exterior}=[
+	rectangle,
+	draw=black,
+	minimum size=40]
+\tikzstyle{contenedor}=[
+	rectangle,
+	draw=black]
+\tikzstyle{buf}=[
+	core,
+	text width=55,
+	align=center]
+\tikzstyle{obuf}=[
+	buf,
+	node distance=.7]
+\tikzstyle{env}=[
+	fill=black!20]
+\tikzstyle{simple}=[
+	rectangle,
+	draw=black,
+	minimum height=220,
+	text width=65,
+	align=center]
+\tikzstyle{mode text}=[midway,sloped,text width=200,align=center]
+\tikzstyle{moore}=[
+	rectangle,
+	draw=black,
+	minimum height= 30,
+	text width=80,
+	align=left]
+\tikzstyle{mealy}=[rectangle,
+	rounded corners=15,
+	draw=black,
+	text width=80,
+	align=left,
+	minimum height=40]
+\tikzstyle{ask}=[
+	diamond,
+	text width=50,
+	draw=black,
+	align=center]
+\tikzstyle{bloque}=[
+	exterior,
+	align=center,
+	minimum size=60,
+	text width=60]
+
+\tikzstyle{hub}=[
+	draw=black,
+	anchor=west,
+	circle]
+
+\tikzstyle{dev}=[
+	draw=black,
+	anchor=west,
+	rectangle,
+	rounded corners,
+	text width=50,
+	align=center]
+
+\tikzstyle{pid}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=100,
+	pattern=north east lines,
+	pattern color=black!35]
+	
+\tikzstyle{dir}=[
+	draw,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=100,
+	align=center]
+	
+\tikzstyle{data}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=120,
+	minimum height=100,
+	fill=black!05]
+	
+\tikzstyle{crc}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=100,
+	pattern=dots,
+	pattern color=black!25]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+	Buffer {#1}\\
+	[8pt]EP{#2}\\
+	[8pt]{#3} Bytes}
+
+\newcounter{wavecount}
+
+\newcommand{\newwave}[1]{
+	\path (0,\value{wavecount}) node[text width=70,anchor=east,align=right]{#1} node[coordinate](t_cur){};
+	\draw (0,\value{wavecount}+.3) --++(.2,0);
+	\draw (0,\value{wavecount}-.3) --++(.2,0);
+	\path (t_cur) --++(.3,0)node[coordinate](t_cur){};
+	\addtocounter{wavecount}{-1}}
+
+\newcommand*{\bit}[2]{
+	\draw (t_cur) -- ++(0.1,.6*#1-.3) -- ++(#2-.2,0) -- ++(+.1,.3-.6*#1)
+	node[coordinate] (t_cur) {};}
+
+\newcommand*{\bitvector}[2]{
+	\draw[] (t_cur) -- ++( .1, .3) -- ++(#2-.2,0) -- ++(.1, -.3)
+	-- ++(-.1,-.3) -- ++(.2-#2,0) -- cycle;
+	\path (t_cur) -- node[align=center] {#1} ++(#2,0) node[coordinate] (t_cur) {};}
+
+\begin{document}
+	\begin{tikzpicture}[scale=1,>=latex]
+		\begin{scope}
+			\begin{scope}[transform shape,node distance=.15]
+				\node[pid]	(pidtok)	{P\\I\\D\\\ \\T\\o\\k.};
+				\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
+				\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
+				\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
+			\end{scope}
+			\begin{scope}
+				\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
+				\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+				\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
+			\end{scope}
+			\begin{scope}[transform shape,node distance=.15]
+				\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\ \\P\\I\\D};
+				\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+				\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
+			\end{scope}
+			\begin{scope}
+				\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+				\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+			\end{scope}
+			\begin{scope}[transform shape,node distance=.15]
+				\node[pid,node distance=1.3]	(hspid)	[right=of crc16]%.north east,anchor=south east]
+				{H\\S\\\ \\P\\I\\D};
+			\end{scope}
+			\begin{scope}
+				\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+				\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+			\end{scope}
+		\end{scope}
+	\end{tikzpicture}
+\end{document}

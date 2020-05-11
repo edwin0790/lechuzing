@@ -1,0 +1,36 @@
+se desarrollo una interfaz que premite conectar un desarrollo implementado en FPGA a la pc a traves de un chip desarrollado por cypres
+
+esto se motiva en el trabajo de maestria de Martin Perez, en el cual se implementó una camára comercial a fin de detectar radiación ionizante. tal como sugiere su trabajo, se espera seguir desarrollando sensores resistentes a la radiación y para ello es de fundamental importancia la FPGA.
+
+un problema que se presentó es que la baja tasa de datos disponible en la comunicación a la pc no permitía tomar más que una fotografía. esta se almacena en una memoria flash destinada especificamente y una vez en la pc se lleva a cabo el procesamiento de la misma.
+
+se plantea como solución a dicho problema la comunicación usb, que gracias a su mayor ancho de banda y sumado a la robustez en su comunicación, permite obtener imagenes en tiempo real y no requiere la utilización de una memoria intermedia. como complemento, la amplia disponibilidad de equipos que cuentan con puertos usb dotan al sistema de gran portabilidad.
+
+usb es un protocolo de topología maestro esclavo, en donde siempre el maestro es una pc y los diferentes dispositivos conectados a ellos son los esclavos. desde el punto de vista físico, usb dispone de tres componentes: un {anfitrión, presentador, servidor}%traducir host
+, distribuidores y dispositivos. la pc será siempre el {host} y cada periférico puede ser visto como un dipositivo o como un distribuidor el cual brinda conexión a otros dispoitivos. Este puede ser el caso, a modo de ejemplo, de un teclado que posea un mouse incorporado.
+desde el punto de vista lógico, el protocolo utiliza tubos para aislar cada dispositivo. cada extremo de tubo posee un flujo de datos unidireccional. es decir que, en el caso de perifericos de entrada/salida, usb interpreta que son, al menos, dos extreemos diferentes, uno de entrada y otro de salida. Cada extremo posee una dirección determinada.
+Existen tubos de dos tipos, tubos de mensaje y tubo de chorro %encontrar traducción de stream
+los tubos de mensajes se utilizan solo para transferencias de control. Cada dispositivo debe tener un extremo cero, que es el que el sistema usa solo para control. este extremo es el único que es bidireccional.
+los tubos de chorro son los que el protocolo utiliza para transmitir datos utiles al usuario. Existen tres tipos de transferencias que pueden ser realizadas a través de estos tubos: transferencias de bultos, transferencias isocrónicas y transferencias de interupción. el implementador deberá elegir cada una de ellas dependiendo de diferentes criterios, a saber: el tamaño de los paquetres a enviar, las restricicones de acceso al bus, los requerimientos de latencia, la secuencia de datos necesaria o el manejo de los errores por parte del sistema.
+
+
+para la realización del trabajo se utilizó una placa de desarrollo mojo v3, que posee un FPGA como nucleo, una placa de desarrollo ez usb-fx2lp, que contiene la interfaz USB y una placa de conexión entre ellas desarrollada durante la ejecución de este trabajo.
+
+se realizó un pequeño bloque descripto en VHDL que se implementa en el FPGA de la placa Mojo v3. Posee una maquina de estados pequeña que se encarga de leer y escribir datos en la interfaz. Ocupa una porción muy baja de recursos de FPGA.
+
+Para la configuración del puente se utilizó un framework provisto por el fabricante que realiza la mayor parte de la inicialización y posee un bloque para que el usuarió escriba lo que necesite. Dicho framework está escrito en {\micro c} que es cargado en un microcontrolador empotrado basado en 8051. Este además configura registros específicos que maneja diferentes buffers de entrada y de salida que son los que se comunican con la fpga.
+Además se encarga de enviar y recibir los datos que intercambioa con la PC.
+
+Estos datos son manejados por un módulo denominado SIE (por Serial Interfaz Engine) que se encarga de armar los paquetes que contiene un encabezado, un cuerpo y una cola que garantizan el correcto cumplimiento de la norma USB.
+
+A su vez, la configuración requiere de un archivo descriptor que es con el cual un dispositivo y la pc acuerdan el modo de funcionamiento, conforme a los recursos que dispone la pc y que puede manejar el dispositivo.
+
+la placa de interconexión fue diseñada por el usuario y fabricada en el laboratorio de electrónica del centro atómico bariloche. Resultó no ser óptima por tanto por motivos inherentes como no al alumno. en los problemas competentes al alumno se destaca como más relevante la confusión en una pista que debía ser conectada a la FPGA y resultó en un pin de salida de un microcontrolador de la placa Mojo. Este problema derivó en la no posibilidad de implementar un sistema sincrónico. esto repercute en la velocidad del sistema, la tasa máxima de datos que se pueden enviar y recibir y en la necesidad de un reloj interno que quita recursos al FPGA.
+
+el protocolo usb establece que cada punto de acceso, desde el punto  de vista lógico, es unidireccional. Esto quiere decir que para hacer un dispositivo físico que envíe y reciba datos es necesario establecer, lógicamente, dos extremos diferentes, uno que reciba datos y otro que envíe.
+
+Por esto, la interfaz actúa como distribuidor y permite que la FPGA se vea como dos dispositivos, aunque fisicamente sea uno solo. para ello posee buffers en donde almacena los datos que recibe y otros diferentes en donde almacena los datos que envía. Para nuestro propósito se utilizó un extremo de salida, es decir que recibe datos de la computadora, que funciona mediante bultos, es decir, mediante conjunto de datos; y otro extremo de entrada, es decir, datos que van hacia la PC. Este último se configuró para que transmita %TODO traducir stream
+
+%TODO leer y seguir completando la idea general.
+%TODO rediseñar la estructura para contar todo como yo lo contaría
+%TODO una vez realizado todo lo anterior, hablar con martin y plantearle el cambio en la estructura para contar las cosas como yo las contaría.  

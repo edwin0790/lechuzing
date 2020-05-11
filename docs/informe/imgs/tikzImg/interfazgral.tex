@@ -1,0 +1,97 @@
+\documentclass{standalone}
+%\usepackage[a3paper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{calc}
+
+\usepackage{tikz,pgf}
+\usetikzlibrary{calc,arrows,backgrounds,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US}%shapes.gates.logic}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[
+	rectangle,
+	rounded corners,
+	draw=black,
+	minimum size=40,
+	fill=white]
+\tikzstyle{core}=[
+	interior]
+\tikzstyle{perif}=[
+	interior,
+	minimum height=20]
+\tikzstyle{exterior}=[
+	rectangle,
+	draw=black,
+	minimum size=40]
+\tikzstyle{contenedor}=[
+	rectangle,
+	draw=black]
+\tikzstyle{buf}=[
+	core,
+	text width=55,
+	align=center]
+\tikzstyle{obuf}=[
+	buf,
+	node distance=.7]
+\tikzstyle{env}=[
+	fill=black!20]
+\tikzstyle{simple}=[
+	rectangle,
+	draw=black,
+	minimum height=220,
+	text width=65,
+	align=center]
+\tikzstyle{mode text}=[midway,sloped,text width=200,align=center]
+\tikzstyle{moore}=[
+	rectangle,
+	draw=black,
+	minimum height= 30,
+	text width=80,
+	align=left]
+\tikzstyle{mealy}=[rectangle,
+	rounded corners=15,
+	draw=black,
+	text width=80,
+	align=left,
+	minimum height=40]
+\tikzstyle{ask}=[
+	diamond,
+	text width=50,
+	draw=black,
+	align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+\begin{document}
+	\begin{tikzpicture}[scale=0.5,>=latex,node distance=3]
+		\begin{scope}[transform shape,node distance=1,text width=60,align=center]
+			\node[interior](mea)	{M\'aquina de Estados Algorítmica};
+			\node	(aux1)	[right=of mea]	{};
+			\node[interior](dev)		[right=of aux1]	{Desarrollo científico};
+			\draw[<->] (mea.east) -- node[above]{Flujo de Datos} (dev.west);
+			\node[node distance = .5]	(texto fpga) [below=of aux1] {FPGA};
+		\end{scope}
+		\begin{scope}[on background layer]
+			\node[fit=(mea)(dev)(texto fpga),rectangle,draw](fpga){};
+		\end{scope}
+		\begin{scope}[transform shape,]
+			\node[exterior,text width=70,align=center,minimum height=65] (cy)	[left=of fpga]{Controlador FX2LP};
+		\end{scope}
+
+		\begin{scope}[transform shape]
+			\draw[<->] (cy.20) to node[above]{Datos} (cy.20 -| fpga.west);
+			\draw[<->] (cy.-20) to node[above] {Control} (cy.-20 -| fpga.west);
+		\end{scope}
+	\end{tikzpicture}
+	
+\end{document}

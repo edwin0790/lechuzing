@@ -43,3 +43,7 @@
 *.xrpt
 *.xst
 *xilinxsim.ini
+
+## auxiliar miktex files
+*.nav
+*.snm

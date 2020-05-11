@@ -1,0 +1,18 @@
+%TODO Herramientas
+
+	%TODO FPGA
+Un FPGA, acrónimo de la voz inglesa Field Programmable Gate Array, es un dispositivo electronico, particularmente un chip, que sirve para sintetizar e implementar circuitos digitales de complejidad variable
+con una simplicidad dificil de lograr mediante otra técnica.
+Por poner ejemplos de esto, para sintetizar e implementar un simple contador de 4bits, uno podría diseñar e implementar una pequeña maquina de estados algoritmica en anillo e implementarla con componentes discretos
+de baja escala de integracion, utilizando al menos 4 flip-flops y alguna compuertas. Este trabajo, por mas simple que parezca, puede demorar un par de días y requerír al menos 6 circuitos integrados.
+Esto mismo se puede realizar en algunas horas, utilizando un CPLD, y en solo unos minutos describiendo nuestro circuito con un lenguaje de descripción y sintetizado e implementado en un FPGA.
+Por poner ejemplos de esto, para sintetizar e implementar un simple contador de 4bits, uno podría diseñar e implementar una pequeña maquina de estados algoritmica en anillo e implementarla con componentes discretos
+de baja escala de integracion, utilizando al menos 4 flip-flops y alguna compuertas. Este trabajo, por mas simple que parezca, puede demorar un par de días y requerír al menos 6 circuitos integrados.
+Esto mismo se puede realizar en algunas horas, utilizando un CPLD, y en solo unos minutos describiendo nuestro circuito con un lenguaje de descripción y sintetizado e implementado en un FPGA.
+Por poner ejemplos de esto, para sintetizar e implementar un simple contador de 4bits, uno podría diseñar e implementar una pequeña maquina de estados algoritmica en anillo e implementarla con componentes discretos
+de baja escala de integracion, utilizando al menos 4 flip-flops y alguna compuertas. Este trabajo, por mas simple que parezca, puede demorar un par de días y requerír al menos 6 circuitos integrados.
+Esto mismo se puede realizar en algunas horas, utilizando un CPLD, y en solo unos minutos describiendo nuestro circuito con un lenguaje de descripción y sintetizado e implementado en un FPGA.
+
+	%TODO Interface
+
+	%TODO Compiler

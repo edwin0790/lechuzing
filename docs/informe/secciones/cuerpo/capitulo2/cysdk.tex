@@ -1,0 +1,70 @@
+A través del kit de desarrollo CY3684 EZ-USB FX2LP, Cypress provee un amplio conjunto de herramientas que facilitan en gran medida la implementación del software. Estas soluciones se denominan Kit de Desarrollo de Software (SDK, acrónimo del habla inglesa, {\it Software Development Kit}). Este SDK abarca una gran cantidad de aspectos, como ser la elaboración del firmware implementado en el 8051 del controlador, el desarrollo de programas de control para PC, la conversión de archivos de programación y ejecutables que graban la información en las diferentes memorias que posee la placa de desarrollo, sea RAM o EEPROM, para cargar programas no volátiles que posteriormente serán ejecutados por el 8051. No todas las herramientas se utilizan en este trabajo, por lo que se desarrollan las más destacadas.
+
+\subsection{Framework Cypress}
+	Con la intención de dotar al desarrollador con una herramienta que le potencie la velocidad de diseño, Cypress provee una plantilla de código en lenguaje C para microcontroladores 8051.%\\
+	
+	Esta plantilla posee precargados todos los registros que posee la serie de controladores FX2LP con los mismos nombres que figuran en el manual de usuario. Además incorpora las funciones que el microcontrolador debe llevar a cabo para efectuar la comunicación USB y algunas que permiten interactuar con la placa de desarrollo CY3684. Los archivos que incorpora son:
+	
+	\begin{itemize}
+		\item fw.c: es el código fuente principal. Contiene la función main() y lo necesario para manejar la comunicación USB.
+		\item periph.c: contiene la implementación de las funciones invocadas por fw.c. Aquí se encuentran TD\_Init() y TD\_Poll(), las funciones a través de las cuales el usuario implementa el programa que necesita. También contiene todas las funciones de interrupción vectorizadas.
+		\item fx2.h: posee la definición de constantes, macros, tipos de datos y funciones prototipo de la biblioteca.
+		\item fx2regs.h: declara registros y máscaras.
+		\item dscr.a51: este archivo es el descriptor de dispositivo. Es la información que USB necesita para poder registrar el dispositivo en el host, asignarle dirección y establecer los parámetros.
+		\item ezusb.lib: biblioteca que implementa funciones provistas por el fabricante.
+		\item syncdely.h: macro de sincronismo. Algunos accesos de registro requieren un tiempo de establecimiento específico que en el código se implementa deteniendo el microcontrolador ciertos ciclos de reloj.
+		\item usbjmptb.obj: especifica las direcciones en memoria de las interrupciones vectorizadas.
+	\end{itemize}
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=.75\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,>=latex]
+				\node[mealy]	(start)	[]	{Iniciar: Reset \\ \verb|main();|};
+				\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
+				edge[<-,thick] (start);
+				\node[moore]	(us1)	[below=of init]		{\verb|TD_Init();|}
+				edge[<-,thick]	(init);
+				\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
+				edge[<-,thick](us1);
+				\node[node distance=0.7]			(aux1)	[below=of EI] 	{};
+				\draw[<-,thick](aux1.base) to (EI);
+				\node[moore,node distance=.5]	(poll)	[below=of aux1]	{\verb|TD_Poll();|}
+				edge[<-,thick](aux1.base);
+				\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
+				edge[<-,thick](poll);
+				\node[moore]	(setup)	[right=of pr1]	{\verb|SetupComand();|};
+				\draw[->,thick] (setup) |- (aux1.base);
+				\node[]			(aux2)	[below=of pr1]	{};
+				\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
+				\draw[thick]	(pr1) -- node[left,near start]{No}	(aux2.base);
+				\node[node distance=2.5](aux3)	[left=of aux2] {};
+				\draw[thick]	(aux2.base) -- (aux3.base);
+				\draw[->,thick]	(aux3.base)	|-	(aux1.base);
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama en bloques simplificado}
+		\label{diagfw}
+	\end{figure}
+	
+	La Figura \ref{diagfw} muestra una versión modificada del diagrama de flujo que sigue el código fuente provisto por Cypress. De ella se quitan funciones que no son necesarias para los objetivos del presente trabajo.%\\
+	
+	Cuando el programa es cargado al controlador, este se encarga de inicializar todas la variables de estado a su valor por defecto. También en este punto establece la comunicación con el anfitrión y le envía los descriptores provistos en el archivo \verb|dscr.a51|. Acto seguido, ejecuta la función \verb|TD_Init()|, a través de la cual el usuario programa e inicia la configuración del sistema. Luego, es necesario habilitar las interrupciones necesarias y finalmente, se invoca repetidamente la función \verb|TD_Poll()|, en donde el usuario escribe las tares que ejecutará el 8051.
+	
+	\subsection{Entorno de desarrollo y compilador}
+	Si bien Cypress no desarrolla software para escribir, compilar y depurar códigos, distribuye junto con el kit CY3684 una versión para evaluación de Keil $\mu$Vision con el compilador C51 para programar microcontroladores basados en 8051. Aún la versión limitada de este entorno, resulta suficiente para la programación del controlador USB.%\\
+	
+	Keil $\mu$Vision es un entorno de desarrollo integrado (IDE). Se entiende por IDE a un software que integra en un entorno gráfico las herramientas que permiten elaborar un programa que ejecutará un procesador, desde la escritura del algoritmo en uno o más lenguajes, su compilación, las pruebas y el depurado.%\\
+	
+	El programa utilizado posee, entre otras cosas, editor de textos con atajos de teclado, comandos que aceleran la escritura de código y resaltado de palabras claves para diferentes lenguajes de programación, navegador de archivos. También ejecuta, con solo un click, el compilador con la sintaxis correcta, y posee un depurador que, a través de un intérprete, permite ir ejecutando el código línea por línea o en bloques.%\\
+	
+	Para realizar un programa en este entorno, Cypress provee, junto con su framework, un proyecto vacío que puede ser copiado y pegado. Sin embargo, se puede realizar la configuración manual. Las instrucciones de este procedimiento se ubican en el Apéndice \ref{app:keil}.%\\
+	
+	En cuanto al compilador se refiere, el utilizado es C51. Éste es un programa que otorga un archivo hexadecimal con un código que será ejecutado por microcontroladores que estén implementados con la misma estructura que un Intel 8051, cómo lo es el microcontrolador que posee el FX2LP.
+	
+	\subsection{Cypress USB Control Center}
+	Para grabar los programas desarrollados en el microcontrolador, el SDK provee de la aplicación USB Control Center.
+%	Este software se utiliza durante este trabajo para cargar un programa compilado en el controlador FX2LP, para transmitir y recibir mensajes.%\\
+	Además de la capacidad para programar el microcontrolador, este programa posee posibilita el envío y la recepción de datos a través del puerto USB conectado con el dispositivo programado, y muestra la configuración que el mismo envió en forma de descriptores. Esta característica brinda una realimentación, aunque mínima, de la entrada y salida de datos, facilitando las pruebas sobre el sistema en desarrollo. %\\
+	En el Apéndice \ref{app:cyusb} se explica su funcionamiento y manejo.
+	

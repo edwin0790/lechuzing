@@ -1,0 +1,177 @@
+\begin{figure}[ht]
+			\centering
+	\begin{tikzpicture}[scale=1*\textwidth/\paperwidth]
+	\begin{scope}[transform shape,node distance=4,>=latex]
+	\node[simple]	(fifo)		[]	 			{FIFO's Esclavas};
+	\node[simple]	(master)	[right=of fifo]	{Maestro Externo};
+	\draw[<->,thick]	([yshift=5*110/6]fifo.east) --node [above]{IFCLK} ([yshift=5*110/6]master.west);
+	\draw[<->,thick]	([yshift=4*110/6]fifo.east) --node [above]{FD[15:0]} ([yshift=4*110/6]master.west);
+	\draw[<-,thick]	([yshift=3*110/6]fifo.east) --node [above]{FIFOADR[1:0]} ([yshift=3*110/6]master.west);
+	\draw[->,thick]	([yshift=2*110/6]fifo.east) --node [above]{FLAGA} ([yshift=2*110/6]master.west);
+	\draw[->,thick]	([yshift=1*110/6]fifo.east) --node [above]{FLAGB} ([yshift=1*110/6]master.west);
+	\draw[->,thick]	([yshift=0*110/6]fifo.east) --node [above]{FLAGC} ([yshift=0*110/6]master.west);
+	\draw[->,thick]	([yshift=-1*110/6]fifo.east) --node [above]{FLAGD} ([yshift=-1*110/6]master.west);
+	\draw[<-,thick]	([yshift=-2*110/6]fifo.east) --node [above]{SLOE} ([yshift=-2*110/6]master.west);
+	\draw[<-,thick]	([yshift=-3*110/6]fifo.east) --node [above]{SLWR} ([yshift=-3*110/6]master.west);
+	\draw[<-,thick]	([yshift=-4*110/6]fifo.east) --node [above]{SLRD} ([yshift=-4*110/6]master.west);
+	\draw[<-,thick]	([yshift=-5*110/6]fifo.east) --node [above]{PKTEND} ([yshift=-5*110/6]master.west);
+	\end{scope}				
+	\end{tikzpicture}
+	\caption{Puertos de interfaz entre las FIFO's y un maestro externo}
+	\label{fpga:interfaz}
+\end{figure}
+
+La Figura \ref{fpga:interfaz} muestra los puertos a través de los cuales se conectan el controlador FX2LP con el FPGA Spartan-IV. Como se detalla en la Sección \ref{cy:fifo}, %La función de cada uno de estos puertos está detallada en la Sección \ref{cy:fifo} del presente informe. A continuación se explica el protocolo que debe seguir el sistema para poder leer y escribir datos. Este protocolo permite comprender de una forma más acabada las señales de control que debe proveer la MEA.
+Las señales FIFOADR[1:0] se utilizan para seleccionar la memoria FIFO sobre la que se escriben o leen los datos. Cada una de estas memorias está asociada a un extremo (EP) determinado. Estos extremos poseen dirección hexadecimal 02, 04, 06 y 08 para el sistema USB comandado por el $\mu$C 8051 incorporado en el integrado FX2LP. Las memorias FIFO tienen dirección binaria $''00'', ''01'', ''10''$ y $''11''$ en los puertos FIFOADR[1:0]. Se muestra en la Tabla \ref{tab:fifoadr} las direcciones asociadas entre cada una de las memorias FIFO y los EP. Se destaca que $'0'$ y $'1'$ en cada puerto FIFOADR equivale a niveles de tensión bajo y alto, respectivamente.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{cc}
+		\hline
+		FIFOADR[1:0] & EP (USB)\\
+		\hline
+		00 & 0x02\\
+		01 & 0x04\\
+		10 & 0x06\\
+		11 & 0x08\\
+		\hline
+	\end{tabular}
+	\caption{Direcciones de selección de memoria activa}
+	\label{tab:fifoadr}
+\end{table}
+
+Los puertos que indican la ocurrencia de eventos particulares en las memorias, como que la memoria se encuentra llena, vacío o el alcance de una cantidad de datos determinada, son programables. Es decir, al momento de realizar la configuración del controlador FX2LP, el desarrollador puede seleccionar que señales estarán presentes en los puertos FLAGA, FLAGB, FLAGC y FLAGD.
+
+La configuración que se implementa en este trabajo, tal como se menciona en el Capítulo \ref{cap:cy}, dispone a la memoria FIFO 02 como puerto de entrada USB (es decir, salida desde el FPGA) y al puerto 08 como salida USB (o sea, entrada para el FPGA). A su vez, el puerto FLAGA señala que la memoria FIFO 02 está llena y el FLAGB indica que la memoria FIFO 08 está vacía.
+
+El lector puede notar que no se detalla en ninguno de los diagramas temporales presentes en este informe la señal del puerto IFCLK. Esto se debe a que por errores de diseño del alumno, no es posible implementar un funcionamiento sincrónico, quedando sin uso la señal del puerto señalado.
+
+\subsection{Lectura de datos desde la memoria FIFO}
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,text width=60]
+				\setcounter{wavecount}{0}
+				\newwave{FIFOADR[1]}
+					\bit{1}{9}
+				\newwave{FIFOADR[0]}
+					\bit{1}{9}
+				\newwave{FLAG\_Vac\'io}
+					\bit{1}{5}
+					\bit{0}{4}
+				\newwave{SLOE}
+					\bit{1}{1}
+					\bit{0}{7}
+					\bit{1}{1}
+				\newwave{SLRD}
+					\bit{1}{2}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{2}
+				\newwave{FD[15:0]}
+					\bitvector{Z}{1}
+					\bitvector{N-1}{2}
+					\bitvector{N}{2}
+					\graybitvector{No válido}{3}
+					\bitvector{Z}{1}
+			\end{scope}
+			\begin{scope}[on background layer]
+				\foreach \x in {1,2,...,9}{
+					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama temporal de la lectura de datos desde la memoria FIFO por un FPGA}
+		\label{fpga:lecfifo}
+	\end{figure}
+
+	Para efectuar operaciones de lectura en régimen asíncrono, como se muestra en la Figura \ref{fpga:lecfifo}, en primer lugar, el FPGA debe colocar en los puertos FIFOADR[1:0] la dirección de la memoria sobre la que desea efectuar esta operación. En el caso de la configuración planteada en este trabajo, $''11''$, la que corresponde al EP8. Luego, debe ser activada la señal SLOE, la cual coloca en los puertos FD[15:0] los datos almacenados en la memoria FIFO activa por FIFOADR[1:0]. El dato disponible en la salida de la memoria FIFO siempre será el más antiguo, es decir, el que se almacenó antes. En el cambio de asertiva a negativa de la señal SLRD, la memoria FIFO aumenta un contador que selecciona la dirección del próximo dato, y coloca este dato en el puerto FD[15:0].
+	
+	Una vez que todos los datos fueron leídos, es decir, que el contador de la memoria ha alcanzado un valor N de datos, iguales a los almacenados, se activa la señal {FLAG\_Vacío} (para este trabajo, FLAGB). Mientras SLOE no está activo, el puerto FD[15:0] permanece en estado de alta impedancia. En la Figura \ref{fpga:lecfifo} se puede observar también que tanto las señales {FLAG\_Vacío}, SLOE y SLRD son asertivas en $'0'$. En otras palabras,dichas señales son activas cuando tienen un bajo nivel de tensión.
+	
+\subsection{Escritura de datos en la memoria FIFO}
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,text width=60]
+				\setcounter{wavecount}{0}
+				\newwave{FIFOADR[1]}
+					\bit{0}{9}
+				\newwave{FIFOADR[0]}
+					\bit{0}{9}
+				\newwave{FLAG Lleno}
+					\bit{1}{7}
+					\bit{0}{2}
+				\newwave{SLWR}
+					\bit{1}{3}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+				\newwave{PKTEND}
+					\bit{1}{9}
+				\newwave{FD[15:0]}
+					\bitvector{N-2}{3}
+					\bitvector{N-1}{2}
+					\bitvector{N}{2}
+					\graybitvector{No leído}{2}
+			\end{scope}
+			\begin{scope}[on background layer]
+				\foreach \x in {1,2,...,9}{
+					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama temporal de la escritura de datos en la memoria FIFO desde un FPGA}
+		\label{fpga:escfifo}
+	\end{figure}
+
+	Las señales que intervienen en el proceso de escritura de datos en la memoria FIFO, se encuentran detalladas en el diagrama temporal de la Figura \ref{fpga:escfifo}. Para escribir datos en una memoria FIFO, el FPGA debe seleccionar la memoria a través de FIFOADR[1:0] en primer lugar. Para la configuración de este trabajo, esto es $''00''$, correspondiente al EP2. Luego, se coloca en el bus de datos, donde se encuentran conectados los puertos FD[15:0], el dato a escribir. Se debe tener en cuenta que SLOE debe estar no asertivo, de modo tal que el bus FD[15:0] se encuentre en modo de alta impedancia por parte del controlador FX2LP y no interfiera con la escritura.
+
+	Una vez colocado el dato en el bus, se debe activar la señal SLWR. En el flanco asertivo de SLWR, el controlador incrementa el contador que indica la dirección de memoria en donde será almacenado el dato siguiente y deja guardado el dato que leyó en los puertos del bus FD. Como se observa en el diagrama de la Figura \ref{fpga:escfifo}, SLWR es activo en bajo.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=1.4\textwidth/\paperwidth]
+			\begin{scope}[transform shape,node distance=1,text width=60]
+				\setcounter{wavecount}{0}
+				\newwave{FIFOADR[1]}
+					\bit{0}{9}
+				\newwave{FIFOADR[0]}
+					\bit{0}{9}
+				\newwave{FLAG Lleno}
+					\bit{1}{5}
+					\bit{0}{4}
+				\newwave{SLWR}
+					\bit{1}{3}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+					\bit{0}{1}
+					\bit{1}{1}
+				\newwave{PKTEND}
+					\bit{1}{3}
+					\bit{0}{1}
+					\bit{1}{5}
+				\newwave{FD[15:0]}
+					\bitvector{N-20}{3}
+					\bitvector{N-19}{2}
+					\graybitvector{No leído}{4}
+			\end{scope}
+
+			\begin{scope}[on background layer]
+				\foreach \x in {1,2,...,9}{
+					\draw[dashed,black!20] (\x.3,0) -- (\x.3,\value{wavecount}+1);}
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Diagrama temporal del funcionamiento del finalizado manual de mensajes}
+		\label{fpga:pktend}
+	\end{figure}
+
+La interfaz FX2LP espera siempre un número determinado de datos, señalizado como N en los diagramas de la Figura \ref{fpga:escfifo} y la Figura \ref{fpga:pktend}. Una vez alcanzado dicho número, el paquete queda listo para ser enviado cuando el host lo solicite. Sin embargo, puede ser enviado un número menor de datos en forma manual. Este funcionamiento es provisto a través de la señal PKTEND. Como se observa en la Figura \ref{fpga:pktend}, cuando PKTEND es asertiva (activa en bajo), la señal {FLAG\_Lleno} se activa y la memoria FIFO ignora cualquier dato que se envíe a continuación.

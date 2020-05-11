@@ -1,0 +1,40 @@
+%INTENTO 1
+%El sistema desarrollado pretende ser una implementación que transmita datos desde una PC hacia un FPGA y viceversa. Una vez configurada la interfaz y diseñada y sintetizada la maquina de estados, se posee un sistema capaz de establecer la comunicación.
+%
+%Sin embargo, aún resta verificar y validar que dicha comunicación es funcional, es decir, que efectivamente puede transmitir datos de un punto a otro y cumple con las especificaciones de velocidad.
+%
+%Durante el proceso, se encontraron varios problemas relativos tanto al desarrollo de la configuración de la interfaz como al de la maqui
+
+%INTENTO 2
+%Configurada la interfaz, desarrollada la máquina de estado y conectados los circuitos integrados a través del circuito impreso, resta probar el sistema, transfiriendo datos desde la PC hacia el FPGA y viceversa.
+%
+%Para lograr esto,fue neceasario montar el sistema emulando las condiciones esperadas de uso. Es decir, se procedió a conectar las placas de desarrollo entre sí y la interfaz con la PC. También se incorporó un sistema genérico dentro del FPGA que almacene los datos ingresados a través de la PC y que los escriba, luego, en la interfaz para su posterior recepción por el Host. Para ello, se implemento un sistema tipo eco a través de una memoria FIFO sintetizada en el FPGA.
+%
+%Además, se realizó un código en C para enviar y recibir datos en forma automática. De esta manera se pudo comprobar el desempeño del sistema desarrollado.
+%
+%A lo largo de este capítulo se desarrolla la implementación de la memoria FIFO en VHDL, se detalla el código desarrollado para las pruebas y, finalmente, se expondrán los resultados y conclusiones obtenidas durante el desarrollo del trabajo que se informa en este documento.
+
+
+% Otra vez INTENTO 3
+
+%Hasta el momento, se explicaron aspectos varios de la norma USB, se seleccionaron las herramientas a utilizar para cumplir con los objetivos del trabajo, se configuraron las distintas partes que componen el sistema y se realizó un circuito que conecte a cada una de ellas.
+
+%Con lo anterior, podría esperarse que el sistema desarrollado sea funcional. Sin embargo, esto no puede aseverarse hasta probar que la comunicación entre una PC y el FPGA es efectiva. Por lo tanto es necesario realizar una verificación del sistema.
+
+%Para ello, es necesario implementar el sistema como se espera que funcione. Es decir, se debe implementar un sistema en FPGA que pueda enviar y recibir datos desde una PC. A continuación, se desarrollará la implementación sistema de tipo eco, que recibe datos desde una PC y los transmite, luego, en el sentido inverso.
+
+%Con este propósito se explicarán los sistemas implementados dentro del FPGA, como así también el programa de computadora realizado con el fin de probar esto y se expondrán los resultados y las conclusiones del trabajo realizado.
+
+% INTENTO 4
+
+El sistema de comunicación desarrollado fue sometido a una prueba de desempeño a fin de verificar que sea capaz de enviar y recibir datos en forma efectiva y que, a su vez, cumpla con el objetivo de establecer un enlace capaz de enviar datos con \SI{480}{\mega\bit\per\second}.
+
+La prueba realizada consistió en el envío de un conjunto de datos desde una PC, que fue almacenado en el FPGA para luego ser retransmitidos hacia la PC. Esta prueba fue repetida en forma automática durante 24 horas.
+
+Para realizar la prueba fue necesario elaborar un sistema en FPGA, dotado con la capacidad de memoria necesaria para recibir los datos que luego enviará, la MEF desarrollada en el Capitulo \ref{cap:fpga} que provee lo necesario para la comunicación con el controlador FX2LP y una señal de reloj que permita sincronizar la MEF y la memoria implementada.
+
+El FPGA fue conectado con la interfaz FX2LP a través de la placa de interconexión desarrollada y explicada en el Capítulo \ref{cap:fpga} y, por su parte, la interfaz fue programada con la configuración elaborada en el Capítulo \ref{cap:cy}.
+
+Además, se realizó un programa de computadora, escrito en lenguaje C++, que permite enviar una trama de datos aleatorios hacia el dispositivo desarrollado en el presente trabajo, a través del protocolo USB.
+
+A lo largo de este Capítulo, se detallarán el sistema desarrollado en el FPGA con cada uno de sus componentes y el programa de PC elaborado, y se expondrán los resultados obtenidos de las pruebas y las conclusiones del trabajo realizado.

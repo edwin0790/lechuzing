@@ -1,0 +1,164 @@
+El Bus Serial Universal, o USB por sus siglas en inglés, es un sistema de comunicación diseñado durante los años 90 por seis fabricantes vinculados a la industria informática, Compaq, Intel, Microsoft, Hewlett-Packard, Lucent, NEC y Philips, con la idea de proveer a su negocio de un sistema que permita la conexión de PCs con teléfonos y periféricos con un formato estándar, fácil de usar y que permita la compatibilidad entre los distintos fabricantes.%\\
+
+Hasta ese momento, el gran ecosistema de periféricos, sumado a los nuevos avances y desarrollos, hacia muy compleja la interoperatividad de todos ellos. Cada uno de los fabricantes desarrollaba componentes con características diferentes entre sí, tales como fichas, niveles de tensión, velocidades, drivers, etc. Esta diversidad no solo dificultaba a los usuarios, quienes no podían estar al día con las posibilidades y dispositivos que el mercado ofrecía, sino que también complicaba a las mismas empresas productoras, porque la introducción de un nuevo producto requería de mucho soporte extra para poder compatibilizar con lo existente en forma previa.%\\
+
+Todo esto, quedó saldado con el aparición de la norma USB que, gracias a la gran cuota de mercado de sus desarrolladores, fue adoptada en forma rápida y se transformó en la especificación casi por defecto a la hora de seleccionar un protocolo para periféricos. La penetración en el mercado fue tal que hoy, más de 20 años después, es difícil encontrar PC con otro tipo de puertos, salvo que en el momento de compra se solicite de manera especial. No obstante, cualquier PC nueva disponible en el mercado debe poseer puertos USB para la conexión de, al menos, los periféricos básicos, como mouse y teclado.%\\
+
+El diseño original de la norma USB buscaba resolver tres problemáticas interrelacionadas: La conexión de teléfonos con las PC, la facilidad de uso, es decir, que el usuario solo conecte su dispositivo y pueda utilizarlo, y la expansión en la cantidad de puertos disponibles para conectar periféricos\cite{USBspec}. Para satisfacer estas tres demandas, la norma USB 2.0 estableció un conjunto de metas apuntadas a la facilidad del uso, la compatibilidad entre versiones diferentes de la misma tecnología, la robustez en el flujo de datos, y la convivencia de diferentes configuraciones temporales en único bus. Estas metas, son alcanzadas a través de una interfaz estándar, ancho de banda que soporta comunicaciones audiovisuales de calidad aceptable y un bajo costo.%\\
+
+En esta sección intenta ser un breve resumen con los aspectos más relevantes de la norma en cuanto a su composición física, su topología, los dispositivos que intervienen, la importancia de los mismos y como los datos son transmitidos desde y hacia una PC.
+
+%	Desde el punto de vista técnico, el protocolo USB es un sistema del tipo maestro-esclavo, donde el maestro, denominado {\it HOST}, debe ser necesariamente una PC (o un dispositivo con software y hardware capaces de incorporar los drivers necesarios) y cualquier periférico a ella acoplada será un esclavo\cite{USBspec}.\\
+%	
+%	Para describirlo es conveniente diferenciar tres partes. Una capa física, en donde se definen los componentes que intervienen, una capa de protocolo, en donde se define el formato, el marco en el que son enviados los paquetes, como se direccionan y como se comunican entre sí, y una parte lógica, en donde cada componente es visto solamente como un extremo y define como fluyen los datos desde un extremo hacia la PC y viceversa.\\
+%	
+%	\subsection{Capa física}
+%		
+%	\begin{figure}[!ht]
+%		\centering
+%		\begin{tikzpicture}[scale=1.2\textwidth/\paperwidth,>=latex]
+%			\begin{scope}
+%				\begin{scope}[transform shape,node distance=2,grow=right,sibling distance=80, level distance=30]
+%					\node[draw=black] (host) {\it HOST}
+%						child {node[hub] (root) {Raiz} edge from parent[level distance=70,<->]
+%							child{node[hub](hub){HUB} edge from parent [<->,sibling distance=35,level distance=50]
+%								child {node	[dev]	(out){Función} edge from parent [<-]}
+%								child {node	[dev]	(in){Función} edge from parent [->]}
+%								child {node (text) {Dispositivo compuesto} edge from parent [draw=black!0]}
+%							}
+%							child{node[dev]{Función} edge from parent [->]}
+%							child{node[dev]{Función} edge from parent [<-]}
+%						};
+%				\end{scope}
+%				\begin{scope}
+%					\node[draw=black,rounded corners, dashed, fit=(hub)(out)(in)(text)]	(comp)	{};
+%				\end{scope}
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Topología de un sistema USB}
+%		\label{fig:arqusb}
+%	\end{figure}
+%		
+%	En esta sección no se describirán los detalles de las conexiones eléctricas ni mecánicas a las que se refieren las especificaciones de la norma USB debido a dos cuestiones fundamentales. Una de ellas es que toda esta sección de la norma está resuelta ya por los fabricantes de la interfaz que se utiliza en este trabajo. A su vez, maneja todas las señales, arma y desarma los paquetes que salen hacia la PC y que llegan de ella respectivamente. Por otro lado, no es el objetivo de este trabajo adentrarse en esos detalles. Gracias a la extensión de este tipo de comunicación existen una gran cantidad de fabricantes en el mercado que fabrican cada uno de los componentes, ya sean, cables, conectores en todas sus versiones, adaptadores de un tipo de estos, su costo es despreciable con respecto a cualquier tipo de desarrollo en ese sentido y son de una muy buena calidad, es decir que todos cumplen con lo que la norma establece. Sí, se describen los dispositivos físicos y su categoría, según la norma, en función del rol que cumplen.\\
+%	
+%	La comunicación USB posee una topología maestro-esclavo. Es decir, existe un dispositivo que dirige todas las transferencias de datos y otros que responden a sus directivas. Por esto, el elemento central de cualquier comunicación USB es el {\it HOST} (director o anfitrión, por su traducción de la voz inglesa). Él es el que posee el {\it Host USB Controller}\cite{USBspec}. Esto quiere decir que tiene la capacidad de registrar los dispositivos acoplados, asignarles dirección, colocar los paquetes de salida y/o llegada en sus respectivas listas y servilos a los procesos que utilizan esta comunicación. Además, el {\it HOST} se encarga de enviar los tokens a todos los periféricos, con la dirección del dispositivo, el sentido de la comunicación, el tipo de transferencia que se espera y todas las acciones de control que el sistema requiera. En la mayoría de los casos, el {\it HOST} es una PC, auqnue también puede ser cualquier dispositivos  ``inteligente'' como un smartphone.\\
+%	
+%	En el otro extremo de la comunicación, se encuentran lo que la norma denomina {\it funciones}\cite{USBspec}. Las {\it funciones} son todos los periféricos que actúan como fuente o sumidero de información. Es decir, en caso de periféricos de entrada, serán una fuente de datos hacia el {\it HOST}. Si los periféricos son de salida, serán un sumidero de la información que proporciona la PC. Los casos de periféricos de entrada/salida, se denominan {\it dispositivos compuestos}.\\
+%		
+%	Existe también, a los fines de la norma,un elemento intermedio, denominado {\it HUB} (concentrador o distribuidor, según la traducción del inglés). Este dispositivo se encarga de conectar dos o más {\it funciones}, ya sea de entrada o salida, de recibir y enviar las direcciones y de regenerar las señales que el {\it HOST} envía y deben ser recibidas por las {\it funciones}.\\
+%	
+%	La Figura \ref{fig:arqusb} muestra la topología típica de un sistema USB. En ella, se observa el {\it HOST} como un rectángulo, las {\it funciones} como rectángulos con los bordes redondeados y los distribuidores como círculos. Se puede notar que el {\it HOST} posee un distribuidor propio llamado {\it Raiz} en el cual se conectan todos las {\it funciones} y distribuidores. Cada {\it Función}posee una única dirección. Pueden existir dispositivos que posean funciones diversas con un mismo encapsulado, como por ejemplo un auricular que tenga micrófono incorporado. Este dispositivo, tendrá un {\it HUB} que concatena dos {\it funiones} diferentes.\\
+%	
+%	\subsection{Capa lógica}
+%	Desde el punto de vista lógico, cada dispositivo es visto por el {\it HOST} como un extremo (EP, del inglés, {\it endpoint}) independiente, que posee solo un modo de comunicación, es decir, el protocolo se comunicara solo por un tipo de transferencia y en un único sentido con cada {\it EP}. En otras palabras, USB registra un periférico de entrada/salida como un {\it EP} de entrada y otro de salida en forma independiente.\\
+%	
+%	Esta independencia brinda la posibilidad de configurar cada extremo de forma diferente y obtener el ancho de banda necesario para la subida y bajada de datos, los tiempos de acceso al bus, la dirección y todo lo relacionado a los modos de comunicación conforme a los requerimientos.\\
+%	
+%	El protocolo entiende que entre le {\it HOST} y cada uno de los extremos existe un tubo (la norma en ingles habla de {\it pipes}) en donde la información es colocada y transferida. Luego, cada tubo posee la configuración establecida por el controlador del {\it HOST} y se comunica con cada {\it EP} por medio de estos tubos. A los fines del usuario, esto es lo importante, por cuanto se solicita acceso al bus y define en que buffer va a contener los datos a enviar o transmitir y el protocolo se encarga de el empaquetado, el armado de los cuadros, el acceso el bus y el posterior envío de datos.\\
+%	
+%	\subsection{Capa de protocolo}
+%	En la capa de protocolo, la especificación de la norma detalla cómo se compone un cuadro y cómo deben ser estructurados los paquetes para que sean efectivamente enviados a través del sistema. Cada mensaje que se intercambia por el bus se denomina paquete. Cada paquete puede poseer hasta cinco campos, dependiendo del tipo de paquete que sea enviado a través del sistema y de quien sea el remitente. A su vez, cada paquete comienza con una señal de sincronismo ({\it SYNC}) y un Comienzo de Paquete (SOP de {\it Start-of-Packet}), y terminan con una señal de Fin de Paquete (EOP por {\it End-of-Packet}).\\
+%	
+%	Por otra parte, los paquetes está temporalmente encapsulados en cuadros. Cada cuadro posee un Comienzo de Cuadro (SOF, {\it Start-of-Frame}) y posee una duración de \SI{1}{\milli\second}, hasta el próximo SOF. En las comunicaciones de alta velocidad, es decir, aquellas que poseen una tasa de bit de \SI{480}{\mega\bit\per\second}. Se subdivide un cuadro en 8 micro-cuadros de \SI{125}{\micro\second} cada uno.\\
+%	
+%	\subsubsection*{Campos de Paquetes}
+%	Cada paquete contiene un campo denominado identificador de paquete (PID del inglés {\it Packet Identifier}). El PID indica el tipo de paquete que se está enviando y, como consecuencia, el formato de cada uno, es decir, que campos acarrea y que control de datos utiliza.
+%	
+%	A su vez, cuando el host solicita algo al sistema, lo realiza a través del denominado campo de dirección. Este campo, se compone de dos partes, la primera es el campo de dirección de la función y el segundo es la dirección de extremo.\\
+%	
+%	Los mensajes de datos, poseen un campo dedicado de forma específica a los datos. Puede poseer un numero entero de bytes, desde \SI{0}{} a \SI{1024}{}.\\
+%	
+%	Para corroborar el envío de datos, USB utiliza verificación de redundancia cíclica (CRC o {\it Cyclic Redundancy Checks}). Los paquetes especiales y los de token poseen un verificador  CRC5, es decir, de 5 bits, cuyo polinomio generador es:
+%	
+%	\begin{center}
+%		\begin{math}
+%			G(X) = X^5 + X^2 + 1
+%		\end{math}
+%	\end{center}	
+%	
+%	Por su parte, los paquetes de datos, poseen CRC16, ya que pueden llegar a ser bastante extensos. En su caso, el polinomio generador está dado por:
+%	
+%	\begin{center}
+%		\begin{math}
+%			G(X) = X^{16} + X^{15} + X^2 + 1
+%		\end{math}
+%	\end{center}
+%	
+%	Existe un campo relativo a los cuadros temporales, que se denomina campo de número de cuadro. Este es enviado por el {\it HOST} en cada SOF y es incrementado a cada cuadro. Los micro-cuadros también poseen un número de cuadro, sin embargo, este es aumentado solamente cada 8 micro-cuadros, es decir, el número se incrementa cada \SI{1}{\milli\second} y se repite durante los 7 micro-cuadros de \SI{125}{\micro\second}, en comunicaciones de alta velocidad.\\
+%	
+%	\subsubsection*{Formato de paquetes}
+%	
+%	%TODO quedé por acá..
+%	\begin{figure}[t]
+%		\centering
+%		\begin{tikzpicture}[scale=\textwidth/\paperwidth,>=latex]
+%			\begin{scope}
+%				\begin{scope}[transform shape,node distance=.15]
+%					\node[pid]	(pidtok)	{P\\I\\D\\\ \\T\\o\\k.};
+%					\node[dir]	(adtok)	[right=of pidtok]	{D\\i\\r.};
+%					\node[dir]	(eptok)	[right=of adtok]	{E\\x\\t\\r.};
+%					\node[crc]	(crc5)	[right=of eptok]	{C\\R\\C\\5};
+%				\end{scope}
+%				\begin{scope}
+%					\node[exterior,minimum size=0,inner sep=1,fit=(adtok)(eptok)](tokad){};
+%					\node[below=.01 of tokad.south,align=center,transform shape] (texttok){Paquete\\Token};
+%					\node[exterior,inner sep=1,fit=(pidtok)(tokad)(crc5)(texttok)](pkttok){};
+%				\end{scope}
+%				\begin{scope}[transform shape,node distance=.15]
+%					\node[pid,node distance=.4]	(piddat)	[right=of crc5]{D\\a\\t\\a\\\ \\P\\I\\D};
+%					\node[data]	(data)	[right=of piddat]	{Datos\\útiles};
+%					\node[crc]	(crc16)	[right=of data]	{C\\R\\C\\1\\6};
+%				\end{scope}
+%				\begin{scope}
+%					\node[below=.01 of data.south,align=center,transform shape] (textdat){Paquete\\de Datos};
+%					\node[exterior,inner sep=2,fit=(piddat)(data)(crc16)(textdat)]{};
+%				\end{scope}
+%				\begin{scope}[transform shape,node distance=.15]
+%					\node[pid,node distance=1.5]	(hspid)	[right=of crc16]{H\\S\\\ \\P\\I\\D};
+%				\end{scope}
+%				\begin{scope}
+%					\node[below=.01 of hspid.south,align=center,transform shape] (texths){Paquete\\de Handshake};
+%					\node[exterior,inner sep=2,fit=(hspid)(texths)]{};
+%				\end{scope}
+%			\end{scope}
+%		\end{tikzpicture}
+%		\caption{Distintos tipos de paquetes USB}
+%		\label{fig:usbpkts}
+%	\end{figure}
+%	
+%	\begin{itemize}
+%		\item {\bf Paquetes Token:} A través de este tipo de paquetes el host envía las directivas a los distintos periféricos. Estas directivas pueden ser IN, cuando solicita datos de un periférico; OUT, cuando se dispone a enviar datos hacia una {\it función}; SOF, que indica el inicio de cada cuadro, para que cada función se sincronice y SETUP, cuando va a enviar un paquete de configuración a algún extremo.
+%		\item {\bf Paquete de Datos:} Este tipo de PID puede ser emitido por un dispositivo, si es que envía datos al host o bien por el mismo host cuando el flujo de datos es a la inversa.
+%		\item {\bf Paquete de {\it Handshake}:} Es enviado por el receptor del mensaje y le informa al emisor el estado de la transferencia. ACK significa que el paquete fue recibido sin errores; NAK, los datos poseen error o el emisor no puede enviar; la señal STALL quiere decir que la solicitud no es soportada o que el extremo está detenido; NYET implica que no hay respuesta aún por parte del receptor.
+%		\item {\bf Paquetes Especiales:} Son paquetes con propositos específicos. Con ellos se señalan preambulos emitidos por el {\it HOST}, se informan errores, se solicitan mensajes divididos en diferentes paquetes y se intercambia señales de ping para conocer el estado de los componentes del sistema.
+%	\end{itemize}
+%	
+%	Cada uno de los tipos de paquetes posee un formato específico, tales como se muestran en la Figura \ref{fig:usbpkts}. En ella se observa que los paquetes de token envían un PID, una dirección y un CRC5; los paquetes de datos, se componen de un PID, los datos transmitidos y un CRC16; en el caso de los paquetes de Hanshake, solo el PID indica que tipo de mensaje se envía. Los paquetes especiales no se detallan ya que el formato es muy variable, en función del paquete.\\
+%	
+%	\subsection{Flujo de datos}
+%	Como se menciono anteriormente, el host envía un toquen SOF que sirve para sincronizar los dispositivos al bus. En un sistema USB, el host provee la base de tiempo y envía cada \SI{1}{\milli\second} un SOF (Start of frame, o su traducción, inicio de cuadro) seguido de un numero de 11 bits que sirve para contar cada uno de los marcos. Además, en sistemas de alta velocidad, cada cuadro se divide en ocho microcuadros de \SI{125}{\micro\second}, que también son marcados por un SOF, sin embargo, el contador no se actualiza por cada microcuadro.\\
+%	
+%	Luego de esto, el sistema puede comenzar con la transferencia de datos. USB dispone 4 tipos de posibles transferencias, que se detallan un poco más adelante, y que pueden ser usadas conforme a los diferentes requerimientos del sistema.\\
+%	
+%	Cada transferencia de datos está compuesta por un primer paquete de token, emitido por el host, que posee el tipo de transferencia que se espera, sea de entrada, de salida, de control o especial; la dirección de la función que debe responder o recibir el mensaje enviado por el bus y los verificadores CRC5.\\
+%	
+%	Luego, el siguiente paquete posee los datos que se transfieren, precedido por un PID de datos, y verificadores CRC16. Este paquete es transmitido por el emisor de los datos. Finalmente, el receptor devuelve un paquete de {\it handshake}, indicandole al emisor si el transferencia fue efectiva o no.\\
+%	
+%	\subsubsection*{Transferencias por paquetes (Bulk transfers)}
+%		Este tipo de transferencias puede ser dispuesta para trasmitir un gran flujo de datos. No posee perdida de datos gracias a un sistema de chequeo y retransmisión de datos. El inconveniente que presenta este tipo de transferencias es que en un nivel de prioridades se presenta en el final del sistema. Es decir, el bus solo va a ser usado para transferir este tipo de datos siempre que se encuentre desocupado, o bien, se le asignará una proporción ínfima de ancho de banda para poder trasnmitir con este modo. Es comunmente usado para trasmitir datos que no son críticos en tiempo, por ejemplo para scanners e impresoras.\\
+%	
+%	\subsubsection*{Transferencias de interrupción}
+%		Este tipo de transferencias sirve para enviar y recibir paquetes de datos que requieren un buen sistema de control de errores, pero que, son más restrictivos en tiempos. El sistema siempre destinará un intervalo fijo de tiempo para transmitir los datos que estén pendientes para trasnferencias de interrupción.\\
+%	
+%	\subsubsection*{Transferencias Isocrónicas}
+%		Este tipo de transferencias está destinado a datos que son críticos en tiempo. Es usado, principalmente para enviar datos ``a chorro'', como ser el caso de {\it streaming} de audio o video, en donde los datos producidos deben ser rápidamente llevados al usuario.\\
+%	
+%		No posee un control de errores muy sofisticado, más que un simple código CRC, pero no existe mecanismo de retransmisión de datos ni handshake entre los {\it EP} y el {\it HOST}.\\
+%	
+%		Como el tiempo es el requerimiento crítico en este tipo de datos, el controlador le asigna una determinada cantidad de tiempo de bus, o en otras palabras, una determinada cuota de ancho de banda.\\
+%	
+%	\subsubsection*{Transferencias de control}
+%		Este tipo de transferencias solo las emite el host y el sistema las utiliza para configurar cada dispositivo. Debido a su criticidad, el controlador dispondra encada cuadro de una fracción de ancho de banda para las trasnmisiones de control. Es el tipo de transferencias que posee el sistema de detección de errores más sofisticado, de forma tal de asegurar la integridad de los datos de control.\\
+%	
+%		A cambio de esto, solo muy poca información puede ser trasmitida por cada cuadro, de hasta 64 bytes en sistemas de alta velocidad.\\
+

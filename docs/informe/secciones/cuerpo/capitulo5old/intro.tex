@@ -1,0 +1,34 @@
+Hasta el momento, se posee una comunicación que intercambia datos entre una PC y el controlador FX2LP de Cypress. Sin embargo, esto sólo no es suficiente, ya que el sistema debe estar dotado, además, de un dispositivo que sea emisor y receptor de los datos que el controlador intercambia con la PC. Se desprende de los objetivos de este trabajo, que el dispositivo que cumple el rol de suministrar y usar los datos con los que opera el controlador, está compuesto por un FPGA.
+
+Como se menciona en la Sección \ref{mats:fpga}, el FPGA que se utiliza en la implementación de este trabajo es un Spartan-VI de Xilinx, provisto en la placa de desarrollo Mojo v3, desarrollada por Embedded Micro. 
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.35*\textwidth/\paperwidth,>=latex,node distance=3]
+	\begin{scope}[transform shape,node distance=1.5,align=center]
+	\node[interior,text width=60](mea)	{M\'aquina de Estados Algorítmica};
+	\node	(aux1)	[right=of mea]	{};
+	\node[interior,text width=80](dev)		[right=of aux1]	{Desarrollo implementado en FPGA};
+	\draw[<->] (mea.east) -- node[above]{Flujo de Datos} (dev.west);
+	\node[node distance = .5]	(texto fpga) [below=of aux1] {FPGA};
+	\end{scope}
+	\begin{scope}[on background layer]
+	\node[fit=(mea)(dev)(texto fpga),rectangle,draw](fpga){};
+	\end{scope}
+	\begin{scope}[transform shape,]
+	\node[exterior,text width=70,align=center,minimum height=65] (cy)	[left=of fpga]{Controlador FX2LP};
+	\end{scope}
+	
+	\begin{scope}[transform shape]
+	\draw[<->] (cy.20) to node[above]{Datos} (cy.20 -| fpga.west);
+	\draw[<->] (cy.-20) to node[above] {Control} (cy.-20 -| fpga.west);
+	\end{scope}
+	
+	\end{tikzpicture}
+	\caption{Esquema conceptual del flujo de datos hasta el controlador}
+	\label{fpga:concepto}
+\end{figure}
+
+La Figura \ref{fpga:concepto} muestra un esquema en el cual se observa, como productor y consumidor de datos, un desarrollo genérico, implementado dentro del FPGA. Los datos fluyen desde el FPGA al controlador FX2LP a través de una máquina de estados algorítmica (MEA), que también provee las señales de control.
+
+A lo largo de este capítulo se explica en detalle el protocolo que debe seguir el dispositivo maestro que comanda la lectura y escritura de datos en los buffers disponibles en la memoria FIFO esclava que posee el controlador de Cypress. Luego, se desarrolla la máquina de estados que comanda ese intercambio de datos y el código escrito en VHDL que la describe para ser sintetizada en el FPGA. Finalmente se explica el desarrollo de un circuito desarrollado como interconexión entre las distintas placas de desarrollo que se utilizan en este trabajo.

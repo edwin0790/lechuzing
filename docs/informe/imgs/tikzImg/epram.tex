@@ -1,0 +1,91 @@
+\documentclass[11pt,]{standalone}
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,fit,positioning,petri,babel}
+
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=40,fill=white]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{buf}=[core, text width=55, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+%\tikzstyle{mode text} = [midway,sloped,text width=200,align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1,text width=50,align=center,>=latex,node distance=2.5,
+		interior/.style={rectangle,rounded corners,draw=black,minimum size=30, text width=20,fill=white,},
+		exterior/.style={rectangle,draw=black,minimum size=40,},
+		mode text/.style={midway,sloped,text width=140,}]
+	
+		\begin{scope}[node distance=0.4,transform shape]
+			\node[buf]	(ep2b1)	[anchor=north]		{\ep{1}{2}{512}};
+			\node[buf]	(ep2b2)	[below=of ep2b1]	{\ep{2}{2}{512}};
+			\node[obuf]	(ep4b1) [below=of ep2b2]	{\ep{1}{4}{512}};
+			\node[buf]	(ep4b2) [below=of ep4b1]	{\ep{2}{4}{512}};
+			\node[obuf]	(ep6b1)	[below=of ep4b2]	{\ep{1}{6}{512}};
+			\node[buf]	(ep6b2)	[below=of ep6b1]	{\ep{2}{6}{512}};
+			\node[obuf]	(ep8b1)	[below=of ep6b2]	{\ep{1}{8}{512}};
+			\node[buf]	(ep8b2)	[below=of ep8b1]	{\ep{2}{8}{512}};
+		\end{scope}
+		
+		\begin{scope}[node distance=0.4, xshift=90,transform shape]
+			\node[buf]	(ep2b3)	[anchor=north]		{\epg{1}{2}{1024}};
+			\node[obuf] (ep2b4)	[below=of ep2b3]	{\epg{2}{2}{1024}};
+			\node[obuf]	(ep2b5)	[below=of ep2b4]	{\epg{3}{2}{1024}};
+			\node[obuf]	(ep8b3)	[below=of ep2b5]	{\ep{1}{8}{512}};
+			\node[buf]	(ep8b4)	[below=of ep8b3]	{\ep{2}{8}{512}};
+		\end{scope}
+		
+		\begin{scope}[on background layer,
+			inner sep=6,
+			rounded corners,]
+			\node[env, fit=(ep2b1)(ep2b2)]			(ep21)	{};
+			\node[env, fit=(ep4b1)(ep4b2)]			(ep41)	{};
+			\node[env, fit=(ep6b1)(ep6b2)]			(ep61)	{};
+			\node[env, fit=(ep8b1)(ep8b2)]			(ep81)	{};
+			\node[env, fit=(ep2b3)(ep2b4)(ep2b5)]	(ep22)	{};
+			\node[env, fit=(ep8b3)(ep8b4)]			(ep82)	{};
+		\end{scope}
+
+		\begin{scope}[]
+			\node[draw=black,inner sep=10,fit=(ep21)(ep82)](marco){};
+		\end{scope}
+		\begin{scope}[]
+			\draw (marco.north) to (marco.south);
+			\node[left=of ep2b1.north east,anchor=north east](add1)	{0xF000};
+			\node[left=of ep2b1.south east,anchor=south east](add2)	{0xF1FF};
+			\node[left=of ep2b2.north east,anchor=north east](add3)	{0xF200};
+			\node[left=of ep4b1.north east,anchor=north east](add4)	{0xF400};
+			\node[left=of ep6b1.north east,anchor=north east](add5)	{0xF800};
+			\node[left=of ep8b1.north east,anchor=north east](add6)	{0xFC00};
+			\node[left=of ep8b2.south east,anchor=south east](add7)	{0xFFFF};
+			\draw[dashed] (add1.north west) to (add1.north west -| marco.east);
+			\draw[dashed] (add3.north west) to (add3.north west -| ep21.east);
+			\draw[dashed] (add4.north west) to (add4.north west -| marco.east);
+			\draw[dashed] (add5.north west) to (add5.north west -| marco.east);
+			\draw[dashed] (add6.north west) to (add6.north west -| marco.east);
+			\draw[dashed] (add7.south west) to (add7.south west -| marco.east);
+		\end{scope}
+		
+		%hacer figura buscada
+	\end{tikzpicture}
+\end{document}

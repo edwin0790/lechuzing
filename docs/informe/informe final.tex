@@ -1,27 +1,40 @@
-\documentclass[10pt,a4paper,openright]{report}
+%! TEX option=--shell-escape
+\documentclass[12pt,a4paper,openright,twoside]{report}
 
-\usepackage{listings}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{enumerate}
-\usepackage{lineno}
-\usepackage{array}
-\usepackage{booktabs}
-\usepackage[titletoc]{appendix}
-\usepackage{siunitx}
+\input{config/basica}
+\usepackage{lmodern,textcomp}
+\input{config/pagina}
+\input{config/adicionales}
+\input{config/terms}
 
 \lstset{literate=
 	{á}{{\'a}}1	{é}{{\'e}}1	{í}{{\'i}}1	{ó}{{\'o}}1	{ú}{{\'u}}1	{α}{{$\alpha$}}1	{β}{{$\beta$}}1	{γ}{{$\gamma$}}1	{ñ}{{\~n}}1
 }
+\title{Comunicación USB 2.0 para sistemas científicos implementados en FPGA}
+\author{Edwin Barragán}
 
 \begin{document}
-	\renewcommand{\tablename}{Tabla}
-	
-	\input{}
+%	\renewcommand{\tablename}{Tabla}
+	\input{secciones/intro/caratula}
+	\null
+	\input{secciones/intro/agradecimientos}
+	\tableofcontents
+	\input{secciones/cuerpo/capitulo1}
+	\input{secciones/cuerpo/capitulo2}
+	\input{secciones/cuerpo/capitulo3}
+	\input{secciones/cuerpo/capitulo4}
+%	\input{secciones/cuerpo/capitulo5}
+%	\input{secciones/cuerpo/capitulo6}
+%%
+	\bibliographystyle{ieeetr}
+%	\bibliographystyle{IEEEtran}
+	\bibliography{extras/bibliography}
+	\begin{appendices}
+		\appendix
+%		\input{secciones/extras/apendice1}%sobre projecto para configurar fx2lp
+		\input{secciones/extras/apendice2}%codigo de configuracion fx2lp
+		\input{secciones/extras/apendice3}%codigo de vhdl
+		\input{secciones/extras/apendice4}%codigo cpp
+		\input{secciones/extras/apendice5}%esquematico pcb
+	\end{appendices}
 \end{document}
