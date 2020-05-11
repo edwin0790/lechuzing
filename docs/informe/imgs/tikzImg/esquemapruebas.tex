@@ -67,7 +67,7 @@
 			\draw[<-]([]mea.east |- clk.west)--node[above]{Reloj}([]clk.west);
 %			\draw[<-]([yshift=-1*80/3]mea.north east)--node[above]{Reloj}([yshift=-1*80/3]clk.north west);
 %			\draw[<-]([yshift=-2*80/3]mea.north east)--node[above]{Reset}([yshift=-2*80/3]clk.north west);
-			\node[rounded corners,simple, minimum size=50](clkSrc)[below=1 of clk]{Fuente de reloj};
+			\node[rounded corners,simple, minimum size=50](clkSrc)[right=1 of clk]{Fuente de reloj};
 			\draw[->](clkSrc) to (clk);
 			
 			\node[simple,minimum height=150,minimum width=50](interno)[right=of mea.north east,anchor=north west]{Memoria FIFO};
@@ -77,6 +77,7 @@
 			\draw[->]([yshift=-3.5*150/6]mea.north east)--node[above]{SLRD}([yshift=-3.5*150/6]interno.north west);
 			\draw[->]([yshift=-4.5*150/6]mea.north east)--node[above]{SLWR}([yshift=-4.5*150/6]interno.north west);
 			\draw[<-]([yshift=-5.5*150/6]mea.north east)--node[above]{PKTEND}([yshift=-5.5*150/6]interno.north west);
+			\draw[->] (clk) -- (interno);
 			
 		\end{scope}
 		\begin{scope}[]

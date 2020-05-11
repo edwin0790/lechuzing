@@ -1,0 +1,128 @@
+\documentclass[11pt,a4paper]{standalone}
+%CORREGIR VHDL ORIGINAL
+
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{siunitx}
+
+\usetikzlibrary{arrows,backgrounds,decorations.pathreplacing,fit,positioning,petri,babel,shapes,circuits.logic.mux,circuits.logic.US,shapes.gates.logic,trees,patterns}
+%\tikzstyle{style} = [definition]
+\tikzstyle{interior}=[rectangle,rounded corners,draw=black,minimum size=3em, text width=20,fill=white]
+\tikzstyle{exterior} = [rectangle,draw=black,minimum size=40]
+\tikzstyle{mode text} = [midway,sloped,text width=200]
+\tikzstyle{contenedor} = [rectangle,draw=black]
+\tikzstyle{core}=[interior]
+\tikzstyle{perif} = [interior,minimum height=20]
+\tikzstyle{buf}=[core, text width=53, align=center]
+\tikzstyle{obuf} = [buf, node distance=.7]
+\tikzstyle{env} = [fill=black!20]
+\tikzstyle{simple}=[rectangle, draw=black, minimum height=220, text width=65,align=center]
+\tikzstyle{moore} = [rectangle,draw=black, minimum height= 30,text width=80,align=left]
+\tikzstyle{mealy} = [rectangle,rounded corners=12, draw=black, text width = 80,align=left,minimum height=40]
+\tikzstyle{ask} = [diamond,text width=70,draw=black,align=center,aspect=2]
+%\tikzstyle{ask} = [diamond,text width=50,draw=black,align=center,]
+\tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
+\tikzstyle{hub}=[draw=black,anchor=west,circle]
+\tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=120,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=120,minimum height=120,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=120,pattern=dots,pattern color=black!25]
+\tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
+\tikzstyle{chart}=[circle,draw=black,text width=50,align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+		Buffer {#1}\\
+		[8pt]EP{#2}\\
+		[8pt]{#3} Bytes}
+
+
+\begin{document}
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,node distance=0,>=latex,]
+			\draw[step=1] (0,0) grid (8,8);
+			\node (a11) at (0.5,7.5){0};
+			\node (a12) at (1.5,7.5){0};
+			\node (a13) at (2.5,7.5){1};
+			\node (a14) at (3.5,7.5){1};
+			\node (a15) at (4.5,7.5){0};
+			\node (a16) at (5.5,7.5){1};
+			\node (a17) at (6.5,7.5){1};
+			\node[color=red] (a18) at (7.5,7.5){0};
+
+			\node (a21) at (0.5,6.5){1};
+			\node (a22) at (1.5,6.5){1};
+			\node (a23) at (2.5,6.5){0};
+			\node (a24) at (3.5,6.5){1};
+			\node (a25) at (4.5,6.5){1};
+			\node (a26) at (5.5,6.5){0};
+			\node (a27) at (6.5,6.5){0};
+			\node[color=red] (a28) at (7.5,6.5){0};
+
+			\node (a31) at (0.5,5.5){0};
+			\node (a32) at (1.5,5.5){1};
+			\node (a33) at (2.5,5.5){0};
+			\node (a34) at (3.5,5.5){0};
+			\node (a35) at (4.5,5.5){1};
+			\node (a36) at (5.5,5.5){0};
+			\node (a37) at (6.5,5.5){0};
+			\node[color=red] (a38) at (7.5,5.5){0};
+
+			\node (a41) at (0.5,4.5){1};
+			\node (a42) at (1.5,4.5){1};
+			\node (a43) at (2.5,4.5){0};
+			\node (a44) at (3.5,4.5){0};
+			\node (a45) at (4.5,4.5){0};
+			\node (a46) at (5.5,4.5){0};
+			\node (a47) at (6.5,4.5){1};
+			\node[color=red] (a48) at (7.5,4.5){1};
+			
+			\node (a51) at (0.5,3.5){0};
+			\node (a52) at (1.5,3.5){0};
+			\node (a53) at (2.5,3.5){0};
+			\node (a54) at (3.5,3.5){0};
+			\node (a55) at (4.5,3.5){1};
+			\node (a56) at (5.5,3.5){1};
+			\node (a57) at (6.5,3.5){1};
+			\node[color=red] (a58) at (7.5,3.5){1};
+			
+			\node (a61) at (0.5,2.5){0};
+			\node (a62) at (1.5,2.5){0};
+			\node (a63) at (2.5,2.5){0};
+			\node (a64) at (3.5,2.5){1};
+			\node (a65) at (4.5,2.5){1};
+			\node (a66) at (5.5,2.5){1};
+			\node (a67) at (6.5,2.5){0};
+			\node[color=red] (a68) at (7.5,2.5){1};
+			
+			\node (a71) at (0.5,1.5){1};
+			\node (a72) at (1.5,1.5){1};
+			\node (a73) at (2.5,1.5){1};
+			\node (a74) at (3.5,1.5){1};
+			\node (a75) at (4.5,1.5){1};
+			\node (a76) at (5.5,1.5){0};
+			\node (a77) at (6.5,1.5){1};
+			\node[color=red] (a78) at (7.5,1.5){0};
+			
+			\node[color=red] (a81) at (0.5,0.5){1};
+			\node[color=red] (a82) at (1.5,0.5){0};
+			\node[color=red] (a83) at (2.5,0.5){0};
+			\node[color=red] (a84) at (3.5,0.5){0};
+			\node[color=red] (a85) at (4.5,0.5){1};
+			\node[color=red] (a86) at (5.5,0.5){1};
+			\node[color=red] (a87) at (6.5,0.5){0};
+			\node[color=red] (a88) at (7.5,0.5){1};
+ 
+		\end{scope}
+		\begin{scope}
+			\node[fit={(a18),(a28),(a38),(a48),(a58),(a68),(a78),(a88)},rounded corners,rectangle] {};
+		\end{scope}
+	\end{tikzpicture}
+\end{document}
