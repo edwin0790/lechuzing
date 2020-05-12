@@ -4,6 +4,11 @@
 *.out
 *.synctex.gz
 *.toc
+*.bbl
+*.acn
+*.blg
+*.glo
+*.ist
 
 ## axiliar ise files
 *ngo*
@@ -14,18 +19,23 @@
 *xlnx*
 *xst*
 *log
+*.bgn
 *.bld
 *.cmd
 *.csv
+*.drc
 *.exe
 *.gise
 *.lco
+*.lso
 *.map
 *.mrp
 *.ncd
 *.ngc
 *.ngd
 *.ngm
+*.ngr
+*.ut
 *.o
 *.pad
 *.par
@@ -38,11 +48,14 @@
 *.twx
 *.unroutes
 *.wdb
+*.xdl
 *.xise
 *.xpi
 *.xrpt
 *.xst
+*.xwbt
 *xilinxsim.ini
+
 
 ## auxiliar miktex files
 *.nav
