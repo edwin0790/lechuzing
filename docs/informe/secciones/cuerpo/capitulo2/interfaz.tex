@@ -26,7 +26,7 @@ Para la recepcion de datos en la PC se utilizó el programa Hercules\cite{HWGrou
 
 Una vez configurado el envío de datos a través del puerto UART, se procedió a enviar mensajes de control para poder corroborar la funcionalidad y comprobar si efectivamente el controlador efectuaba sus tareas y en que momento dejaba de hacerlo.
 
-Se pudo determinar que en la función \verb|main()|, luego de realizar la inicialización de todos los modulos, procede a la desconexión del controlador con el puerto USB, a través de una rutina que Cypress denomina ReNumertion\cite{CypressSemiconductor2014fx2lp}. Durante la reconexión ocurre algún efecto, aún no identificado, que hace que el programa se detenga cuando debe reconectarse. Este desperfecto fue solucionado con el agregado de una línea de comunicación después de el activado del reconcetado. Esto demostró ser lo suficientemente robusto ya que eliminando todas las  líneas que envían datos de monitoreo no aparació nuevamente la detención del programa, más sí, eliminando solo esa línea de código. De esta manera, el código queda de la siguiente forma en donde la línea 190 es la agregada en este trabajo:
+Se pudo determinar que en la función \verb|main()|, luego de realizar la inicialización de todos los modulos, procede a la desconexión del controlador con el puerto USB, a través de una rutina que Cypress denomina ReNumertion\cite{CypressSemiconductor2014fx2lp}. Durante el proceso de reconexión ocurre algún efecto, aún no identificado, que hace que el programa se detenga. Este desperfecto fue solucionado con al enviar un mensaje de comunicación después activar la reconexión. Esto demostró ser lo suficientemente robusto ya que eliminando todas las  líneas que envían datos de monitoreo no aparació nuevamente la detención del programa, más sí, eliminando solo esa línea de código. De esta manera, el código queda de la siguiente forma en donde la línea 190 es la agregada en este trabajo:
 
 \begin{lstlisting}[language=C,backgroundcolor=\color{gray!30},numbers=left,firstnumber=189,basicstyle=\footnotesize]
 	 USBCS &=~bmDISCON;
@@ -51,11 +51,11 @@ Los LED se encuentran conectados a través de un decodificador. Para su encendid
 Luego, con el propósito de enceder o apagar los diodos emisores de luz, es necesario declarar una variable auxiliar y asignarle los punteros declarados. Así, a través de la función \verb|TD_Poll()|, que es la función que se ejecuta en el loop infinito del controlodaro FX2LP, se colocó la el siguiente código:
 
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-void TD_Poll(void)             // Called repeatedly while the device is idle  
+void TD_Poll(void)  
 {
 	BYTE dum;
 	
-	if(EP8FIFOFLGS & bmBIT1)//ep8 fifo empty
+	if(EP8FIFOFLGS & bmBIT1)//ep8 fifo vacia
 	{
 		dum = D4ON;
 	}
@@ -64,7 +64,7 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 		dum = D4OFF;
 	}
 
-	if(EP8FIFOFLGS & bmBIT0)//ep8 fifo full
+	if(EP8FIFOFLGS & bmBIT0)//ep8 fifo llena
 	{
 		dum = D3ON;
 	}
@@ -72,7 +72,7 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 	{
 		dum = D3OFF;
 	}
-	if(EP2FIFOFLGS & bmBIT1)//ep2 fifo empty
+	if(EP2FIFOFLGS & bmBIT1)//ep2 fifo vacia
 	{
 		dum = D2ON;
 	}
@@ -84,24 +84,27 @@ void TD_Poll(void)             // Called repeatedly while the device is idle
 	\end{lstlisting}
 
 A través de los registros EPxFIFOFLGS se puede conocer el estado de cada uno. Aplicando una máscara bit a bit, se obtiene el estado de cada uno de los flags. Así, dependiendo del estado de cada uno de ellos, se enciende o se apagan las luces.
-Esta rutina resultó de mucha utilidad a la hora de realizar las diferentes pruebas, tanto del funcionamiento de la interfaz, como de la conexión entre la itnterfaz y el FPGA.
+Los LED multipropósito se encuentran numerados en la placa de desarrollo desde el LED 2 hasta el LED 5. En la programación de su funcionamiento, el LED 2 se enciende cuando el EP2 se encuentra vacío, el LED 3 indica que el EP8 está lleno y el LED 4 señala que el EP8 no contiene datos. Por su parte el LED 5 se enciende cuando el controlador establece una conexión de alta velocidad con el Host. 
+Esta rutina resultó de mucha utilidad a la hora de realizar las diferentes pruebas, tanto del funcionamiento de la interfaz, como de la conexión entre la interfaz y el FPGA.
 
 \subsection{Prueba de envío y recepcion de datos}
 	Para la verificación de la conexión entre la PC y la interfaz, a través del protocolo USB, se utilizó el programa {\it Cypress USB Control Center}, provisto por Cypress dentro del kit de desarrollo CY3684, con el cual se desarrolló este trabajo. Dicho software permite cagar el firmware desarrollado en la interfaz y, a su vez, detalla la información recibida a través de los descriptores y posibilita el envío y recepción de mensajes.
 	
-	Para corroborar que el envío de datos fue existoso, se procedió a enviar datos a través del {\it Cypress USB Control Center}. Así, en primer lugar, corroborando que el LED que indica que el EP8 se encuentra vacío se apaga, se infirió que los datos estaban llegando. A continuación, se enviaron más datos hasta lograr que el LED asociado al límite de capacidad del EP8 se encendiese. Luego, a través de un pulsador, se activa una rutina de envío de los datos guardados en el EP8 a través del puerto UART. Para ello, fue necesario realizar unos pequeños ajustes en la configuración.
+	Para corroborar que el envío de datos fue existoso, se procedió a enviar datos a través del {\it Cypress USB Control Center}. Así, en primer lugar, corroborando que el estado del LED 4, que indica que el EP8 se encuentra vacío, se infirió que los datos arribaban al controlador. A continuación, se enviaron más datos hasta lograr que el LED 3 se encendiese, señalando que el EP8 llegó al límite de su capacidad. Luego, a través de un pulsador, se activa una rutina de envío de los datos guardados en el EP8 a través del puerto UART. Para ello, fue necesario realizar unos pequeños ajustes en la configuración.
 	
-	El controlador FX2LP de Cypress permite manipular los datos de los paquetes USB. Sin embargo, la configuración por defecto, no permite realizar esta tarea. Para ello es necesario, en primer lugar, desactivar lo que Cypress llama el armado automático de paquetes y habilitar la manipulación avanzada de paquetes\cite{CypressSemiconductor2014fx2lp}.
+	El controlador FX2LP de Cypress permite manipular los datos de los paquetes USB. Sin embargo, la configuración por defecto no permite realizar esta tarea. Para ello es necesario, en primer lugar, desactivar lo que Cypress llama el armado automático de paquetes y habilitar la manipulación avanzada de paquetes\cite{CypressSemiconductor2014fx2lp}.
 	
-	A medida que los datos van ingresando al controlador FX2LP a través del puerto USB, el Motor de Interfaz Serial (MIS) los coloca en el espacio de memoria asignado y va incrementando un contador por cada byte recibido. De esta forma, la interfaz puede saber cuantos datos, efectivamente, posee almacenados. Sin embargo, cuando los datos ingresan a través de la memoria FIFO, es otro el contador incrementado. El armado automático de paquetes realiza la tarea de emparejar estos contadores, de forma tal que no se deba destinar tiempo de ejecución de $\mu$C para esta tarea.
+	A medida que los datos van ingresando al controlador FX2LP a través del puerto USB, el Motor de Interfaz Serial (MIS) los coloca en el espacio de memoria asignado y va incrementando un contador por cada byte recibido. De esta forma, la interfaz registra la cantidad de datos almacenados. Sin embargo, cuando los datos ingresan a través de la memoria FIFO, es otro el contador incrementado. El armado automático de paquetes realiza la tarea de emparejar estos contadores, de forma tal que no se deba destinar tiempo de ejecución de $\mu$C para esta tarea. 
 	
-	Para poder escribir datos en la memoria y informarle al MIS que se agregaron datos, es necesario que este armado autmático está desactivado. Esto implica que cuando lleguen datos, el controlador debe poder realizar esta operación. A su vez, por defecto los paquetes que llegan desde la PC no pueden ser modificados. Para realizar esto, es necesario hablitar el manejo mejorado de paquetes. Tanto la manipulación avanzada de paquetes como el armado automático se encuentran los dos bits menos significativos del Registro de Control de Revisión (REVCTL).
+	Si se desea agregar información en un paquete de datos, esta debe ser escrita en la memoria FIFO. Para ello, el armado automático de paquetes debe estar desactivado. Luego, al escribir datos en la memoria, el $\mu$C debe informar al MIS el agregado de datos, colocando el valor adecuado en el contador correspondiente. Se debe considerar que cuando arriban datos, el controlador también debe emparejar los contadores.
 	
-	Una vez activados ambos bits del registro REVCTL, se debe efectuar la rutina que armará los paquetes en forma ``manual''. Para este propósito, se activó una interrupción que se dispara cada vez que llegan mensajes a un EP determinado, en este caso, el EP8. Toda esta configuración se realizó en las últimas líneas de la función \verb|TV_Init()|, la cual quedó de la siguiente forma:
+	A su vez, por defecto los paquetes que llegan desde la PC no pueden ser modificados. Para realizar esto, es necesario habilitar el manejo mejorado de paquetes. Tanto la manipulación avanzada de paquetes como el armado automático se encuentran en los dos bits menos significativos del Registro de Control de Revisión (REVCTL).
 	
-	\begin{lstlisting}[language=C,backgroundcolor={gray!30}]
+	Una vez activados ambos bits del registro REVCTL, se debe efectuar la rutina que armará los paquetes en forma ``manual''. Para este propósito, se activó una interrupción que se dispara cada vez que llegan mensajes a un EP determinado, en este caso, el EP8. Toda esta configuración se realizó en las últimas líneas de la función \verb|TD_Init()|.
 	
-	\end{lstlisting}
+%	\begin{lstlisting}[language=C,backgroundcolor={gray!30}]
+%	
+%	\end{lstlisting}
 	%Uso de Interrupciones
 	%Uso de pulsasdores
 	%Sobre RevCtl 

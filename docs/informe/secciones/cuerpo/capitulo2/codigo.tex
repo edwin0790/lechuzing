@@ -164,10 +164,10 @@
 	Para el correcto funcionamiento del código que se describe a lo largo de esta sección, es necesario incorporar el encabezado que se observa a continuación.
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
-	#pragma noiv               // No generar vectores de interrupción
+	#pragma noiv			// No generar vectores de interrupción
 	#include "fx2.h"
 	#include "fx2regs.h"
-	#include "syncdly.h"            // SYNCDELAY macro
+	#include "syncdly.h"	// SYNCDELAY macro
 	#include "leds.h"
 	\end{lstlisting}
 	
@@ -391,7 +391,7 @@ FullSpeedConfigDscr:
 FullSpeedConfigDscr_End:
 	\end{lstlisting}
 
-	Finalmente, el diseñador puede escribir todos los mensajes en formato de cadena de caracteres, para una lectura más sencilla por parte del usuario. En este trabajo solo se usan dos que sirven como ejemplo pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos.
+	Finalmente, el diseñador puede escribir mensajes en formato de cadena de caracteres, para lectura del usuario. En este trabajo solo se usan dos que sirven como ejemplo pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2	

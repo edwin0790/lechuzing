@@ -39,7 +39,7 @@ void TD_Init(void)             // Called once at startup
 	SYNCDELAY;
 	EP8CFG = 0xA0; //EP8 is DIR=OUT, TYPE=BULK, SIZE=512, BUF=2x
 	SYNCDELAY;
-	EP2CFG = 0xD2;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=512, BUF=2x
+	EP2CFG = 0xDB;  // EP2 is DIR=IN, TYPE=ISOC, SIZE=1024, BUF=2x
 	SYNCDELAY;
 
 	\resetear la memoria para asegurarse de que está vacía
