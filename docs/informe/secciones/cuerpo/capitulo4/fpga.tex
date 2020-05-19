@@ -5,7 +5,7 @@
 %Hasta acá se ha desarrollado la configuración de la interfaz y la implementación de la MEF. Sin embargo, es necesario, que el sistema pueda funcionar en forma autónoma, proveerle un sistema mínimo que pueda hacer las veces de fuente y sumidero de datos. Es por esto, que se dotó al sistema con una memoria FIFO con el objetivo de implementar un eco que permita realizar una evaluación de desempeño de la comunicación desarrollada. Así, se permite enviar mensajes desde una PC y que estos sean recibidos luego.
 %
 %\subsection{Implementación de la memoria FIFO en el FPGA}
-%	La memoria FIFO sintetizada en el FPGA se obtuvo a través de la herramienta {\it Core Generator} provista por Xilinx junto con el entorno de desarrollo ISE, utilizado en este trabajo para el desarrollo\cite{XilinxInc}. La configruación seleccionada generó una memoria FIFO de 511 bytes, con puertos de entrada y salida dedicados, es decir uno de entrada y uno de salida, un bus de 16 bits de ancho. Posee señal de reconocimiento de escritura. También se dotó a la memoria generada con entradas de reloj y habilitación de bus independientes tanto para el puerto de entrada como el puerto de salida.
+%	La memoria FIFO sintetizada en el FPGA se obtuvo a través de la herramienta {\it Core Generator} provista por Xilinx junto con el entorno de desarrollo ISE, utilizado en este trabajo para el desarrollo~\cite{XilinxInc}. La configruación seleccionada generó una memoria FIFO de 511 bytes, con puertos de entrada y salida dedicados, es decir uno de entrada y uno de salida, un bus de 16 bits de ancho. Posee señal de reconocimiento de escritura. También se dotó a la memoria generada con entradas de reloj y habilitación de bus independientes tanto para el puerto de entrada como el puerto de salida.
 %	
 %	
 %INTENTO 2
@@ -182,9 +182,9 @@ Los módulos provistos por Xilinx Inc. fueron el PLL, a través del cual se obtu
 El código completo de la descripción realizada en lenguaje VHDL del sistema de pruebas, en donde se declaran e instancias los componentes que se describen en esta sección junto con la MEF desarrollada y las señales necesarias, se puede apreciar en el Apéndice \ref{ap:vhdl}.
 
 	\subsubsection{Generación de Señal de Reloj}
-		Las especificaciones de la interfaz indican que la máxima frecuencia de funcionamiento del reloj debe ser de \SI{48}{\mega\hertz}\cite{Cypress2017}. La placa de desarrollo Mojo V3, por su parte, posee un oscilador que provee al FPGA una señal de \SI{50}{\mega\hertz}. Para lograr la señal de reloj con la frecuencia adecuada, se utiliza un PLL incorporado dentro del integrado del FPGA. 
+		Las especificaciones de la interfaz indican que la máxima frecuencia de funcionamiento del reloj debe ser de \SI{48}{\mega\hertz}~\cite{Cypress2017}. La placa de desarrollo Mojo V3, por su parte, posee un oscilador que provee al FPGA una señal de \SI{50}{\mega\hertz}. Para lograr la señal de reloj con la frecuencia adecuada, se utiliza un PLL incorporado dentro del integrado del FPGA. 
 		
-		El PLL fue configurado a través de la herramienta {\it Core Generator} provista por Xilinx junto con el entorno de desarrollo ISE, utilizado en este trabajo para realizar los codigos en VHDL, las simulaciones, la síntesis y la implementación de esta última en el FPGA\cite{XilinxInc}. A través de esta herramienta, se indicó que la señal de entrada es de \SI{50}{\mega\hertz}.
+		El PLL fue configurado a través de la herramienta {\it Core Generator} provista por Xilinx junto con el entorno de desarrollo ISE, utilizado en este trabajo para realizar los codigos en VHDL, las simulaciones, la síntesis y la implementación de esta última en el FPGA~\cite{XilinxInc}. A través de esta herramienta, se indicó que la señal de entrada es de \SI{50}{\mega\hertz}.
 		
 		Se aprovechó que el PLL integrado en el FPGA Spartan 6 permite configurar hasta 4 salidas con frecuencias diferentes y se seleccionaron señales de salida con \si{50}, \si{48}, \si{40} y \SI{35}{\mega\hertz}, para tener una forma de reducir la frecuencia si se presentaban problemas de sincronismo durante la prueba del sistema. 
 		
@@ -346,7 +346,7 @@ El código completo de la descripción realizada en lenguaje VHDL del sistema de
 	
 	El archivo \textit{ufc} se generó a través de una interfaz gráfica provista por Xilinx Inc., denominada \textit{Plan Ahead}. En ella se puede cargar en una planilla la equivalencia entre los pines y los puertos, como así también los niveles de tensión lógicos necesarios.
 	
-	En la planilla se cargaron los puertos como se indican en la Tabla \ref{tab:fpga:conexion}. Con respecto a los niveles de tensión, se especificó que el estándar LVTTL, que es el especificado tanto en la placa Mojo v3\cite{Mojo}, como en el controlador FX2LP\cite{Cypress2017}. 
+	En la planilla se cargaron los puertos como se indican en la Tabla \ref{tab:fpga:conexion}. Con respecto a los niveles de tensión, se especificó que el estándar LVTTL, que es el especificado tanto en la placa Mojo v3~\cite{Mojo}, como en el controlador FX2LP~\cite{Cypress2017}. 
 	
 	También se especificó en el archivo \textit{ucf} la frecuencia de la entrada de reloj. Con esto, a la hora de generar el ruteo del FPGA, puede hacer un chequeo e informar si existe algún problema temporal en la implementación.
 	

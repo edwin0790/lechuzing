@@ -41,7 +41,7 @@
 %	\label{fpga:mef:concepto}
 %\end{figure}
 %
-%Una Máquina de Estados Finitos (MEF) es un tipo de dispositivo lógico secuencial que puede estar en uno de un conjunto finito de elementos. Tal como se observa en la Figura \ref{fpga:mef:concepto}, el estado siguiente que adoptará la MEF será función de una combinación lógica entre el estado actual y las entradas del sistema. A su vez, las salidas dependen del estado actual, configurando la denominada máquina de Moore, aunque también pueden variar en función del estado de las entradas, lo que se conoce como máquina de Mealy\cite{Wakerly1999}. Se podría decir que una máquina de Moore es una particularidad de la máquina de Mealy, en la cual las salidas no varían en función de las entradas.
+%Una Máquina de Estados Finitos (MEF) es un tipo de dispositivo lógico secuencial que puede estar en uno de un conjunto finito de elementos. Tal como se observa en la Figura \ref{fpga:mef:concepto}, el estado siguiente que adoptará la MEF será función de una combinación lógica entre el estado actual y las entradas del sistema. A su vez, las salidas dependen del estado actual, configurando la denominada máquina de Moore, aunque también pueden variar en función del estado de las entradas, lo que se conoce como máquina de Mealy~\cite{Wakerly1999}. Se podría decir que una máquina de Moore es una particularidad de la máquina de Mealy, en la cual las salidas no varían en función de las entradas.
 %
 %A modo conceptual, 
 La máquina de estados finitos (MEF) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el Host). 

@@ -77,12 +77,12 @@ En un sistema USB solo un dispositivo puede ser maestro. Este rol lo ejerce gene
 	\label{fig:top}
 \end{figure}
 
-La topología del bus, que se observa en la Figura \ref{fig:top}, posee forma de árbol, es decir, puede ser pensada como una comunicación vertical, donde en el punto más alto se encuentra el Host. Siguiendo hacia abajo, el bus puede encontrar dos tipos diferentes de dispositivos: Funciones, cuyo rol es el de proveer una utilidad al sistema, como ser la de captura de imagen, reproducción de audio o el ingreso de comandos; y Hubs (concentradores o distribuidores), que se encargan de conectar una o más funciones al sistema. La norma USB establece gradas, en donde cada Hub introduce una nueva grada que contiene a las Funciones conectadas. En otras palabras, las gradas configuran una suerte de distancia lógica entre las Funciones y el Host, separada por Hubs. Por cuestiones de restricciones temporales y tiempos de propagación en los cables, no se permiten más de 7 gradas, incluyendo al Host en la primera. Es decir, no se puede conectar más de 5 Hubs en cascada. La grada 7 sólo puede contener Funciones\cite{USBspec}.%\\
+La topología del bus, que se observa en la Figura \ref{fig:top}, posee forma de árbol, es decir, puede ser pensada como una comunicación vertical, donde en el punto más alto se encuentra el Host. Siguiendo hacia abajo, el bus puede encontrar dos tipos diferentes de dispositivos: Funciones, cuyo rol es el de proveer una utilidad al sistema, como ser la de captura de imagen, reproducción de audio o el ingreso de comandos; y Hubs (concentradores o distribuidores), que se encargan de conectar una o más funciones al sistema. La norma USB establece gradas, en donde cada Hub introduce una nueva grada que contiene a las Funciones conectadas. En otras palabras, las gradas configuran una suerte de distancia lógica entre las Funciones y el Host, separada por Hubs. Por cuestiones de restricciones temporales y tiempos de propagación en los cables, no se permiten más de 7 gradas, incluyendo al Host en la primera. Es decir, no se puede conectar más de 5 Hubs en cascada. La grada 7 sólo puede contener Funciones~\cite{USBspec}.%\\
 
 \begin{figure}[hb]
 	\centering
 	\includegraphics[width=0.28\textwidth]{usbconector}
-	\caption{Tipos de conectores USB. Los tipo A deben ser usados en el extremo del Host y los tipo B hacia los periféricos\cite{USBHardwareWiki}}
+	\caption{Tipos de conectores USB. Los tipo A deben ser usados en el extremo del Host y los tipo B hacia los periféricos~\cite{USBHardwareWiki}}
 	\label{fig:con}
 \end{figure}
 
@@ -91,7 +91,7 @@ Cada uno de estos dispositivos diferentes, se inteconectan entre sí a través d
 %TODO velociades (interconexión eléctrica)
 A nivel eléctrico, la interconexión de datos en los dispositivos se lleva a cabo a través de una codificación de inversión sin retorno a cero, es decir, el cambio de nivel de tensión representa un $'0'$ y la invariabilidad, un $'1'$. Además, la señal de datos es diferencial. Esto implica que cuando $D+$ es positivo, $D-$ debe ser negativo y viceversa.%\\
 
-Cabe destacar que, al tener una señal diferencial, la norma USB es {half-dulpex \it}, es decir, puede transmitir en los dos sentidos (desde Host hacia Funciones y viceversa), pero no puede hacerlo en simultáneo\cite{Riihonen2015}, sino que primero debe transmitir un dispositivo y, al finalizar este, el bus queda liberado para que otros dispositivos puedan transmitir.%\\
+Cabe destacar que, al tener una señal diferencial, la norma USB es {half-dulpex \it}, es decir, puede transmitir en los dos sentidos (desde Host hacia Funciones y viceversa), pero no puede hacerlo en simultáneo~\cite{Riihonen2015}, sino que primero debe transmitir un dispositivo y, al finalizar este, el bus queda liberado para que otros dispositivos puedan transmitir.%\\
 
 La velocidad de conmutación en los niveles de tensión de la señal de comunicación puede darse a diferentes valores, dando lugar a tres tipos de tasa de bit: alta velocidad ({\it High-Speed}) implica una tasa de bit de \SI{480}{\mega\bit\per\second}, máxima velocidad ({\it Full-Speed}) posee una tasa de bit de \SI{12}{\mega\bit\per\second} y baja velocidad ({\it Low-Speed}) transmite a una tasa de bit de \SI{1.5}{\mega\bit\per\second}.%\\
 

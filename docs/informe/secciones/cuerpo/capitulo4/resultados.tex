@@ -2,7 +2,7 @@ La prueba de sistema envió y recibió mensajes con datos aleatorios durante má
 
 El registro dió cuenta de que el sistema estuvo funcionando durante 87134 segundo, lo que equivale a 24 horas, 12 minutos y 14 segundos. Durante este lapso de tiempo fueron enviados 388.191.289 paquetes. Se recibió la misma cantidad de paquetes sin pérdida de información ni errores en la transmisión. 
 
-El programa de PC desarrollado genera paquetes de \SI{128}{\byte}. Se debe considerar que cada paquete contiene un encabezado y una cola que también se transmite junto a los datos. Los valores típicos de encabezado y cola para transferencias en masa, como las que emite la PC en este trabajo, es de \SI{55}{\byte} y para transferencias isócronas, que es el tipo de transferencia que llega a la PC desde la interfaz USB, este valor es de \SI{38}{\byte}\cite{USBspec}. Por tanto, por cada una de los ciclos de envío y recepción de datos, se transfirieron \SI{349}{\byte}:
+El programa de PC desarrollado genera paquetes de \SI{128}{\byte}. Se debe considerar que cada paquete contiene un encabezado y una cola que también se transmite junto a los datos. Los valores típicos de encabezado y cola para transferencias en masa, como las que emite la PC en este trabajo, es de \SI{55}{\byte} y para transferencias isócronas, que es el tipo de transferencia que llega a la PC desde la interfaz USB, este valor es de \SI{38}{\byte}~\cite{USBspec}. Por tanto, por cada una de los ciclos de envío y recepción de datos, se transfirieron \SI{349}{\byte}:
 
 \begin{center}
 	\begin{math}

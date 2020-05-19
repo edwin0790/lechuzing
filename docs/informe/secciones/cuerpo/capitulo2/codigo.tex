@@ -338,7 +338,7 @@ HighSpeedConfigDscr:
 HighSpeedConfigDscr_End:
 	\end{lstlisting}
 	
-	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
+	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB~\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
 	
 	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isócronas.
 	
