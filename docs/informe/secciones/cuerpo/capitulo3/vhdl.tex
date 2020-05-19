@@ -1,4 +1,4 @@
-Considerando las señales que se mencionaron la Sección \ref{fpga:sigs} y el diseño de la MEF cuyo diagrama de flujo se observa en la Figura \ref{fpga:mef:diag}, se procedió a describir el comportamiento del sistema en VHDL.
+Considerando las señales que se mencionaron la Sección \ref{fpga:sigs} y el diseño de la MEF cuyo diagrama de flujo se observa en la Figura \ref{fpga:mef:diag}, se procedió a describir el comportamiento del sistema en VHDL. La Figura~\ref{fpga:mef:concepto} muestra la estructura conceptual de una MEF. Se puede apreciar que una MEF se compone de tres partes: la función del próximo estado, el estado actual y la función de salida. Estas partes pueden ser descriptas en VHDL agrupadas en un mismo proceso, o bien cada una de ellas en un proceso diferente. Este trabajo fue implementado mediante un proceso para la función de próximo estado y otro para actualizar el registro del estado actual. Las funciones de salida se implementaron mediante declaraciones concurrentes.
 
 % a un sistema que cumple con las especificaciones. Sin embargo, a fin de no dejar señales provistas por la interfaz al aire, se agregan todos FLAGS que brinda el controlador FX2LP en la entidad descripta. Además, se incorporan tres constantes para modificar a criterio del desarrollador las direcciones de entrada y salida, y el ancho del bus de datos, que puede ser de 8 o 16 bits. Por defecto, se utilizan las direcciones y ancho de bus. especificados en el Capitulo \ref{cap:cy}, es decir $''11''$ y $''00''$ como puertos de entrada y salida respectivamente y 16 bits de ancho de bus.
 %
@@ -35,9 +35,31 @@ Considerando las señales que se mencionaron la Sección \ref{fpga:sigs} y el di
 %%end fx2lp_interfaz;
 %%\end{lstlisting}
 
-Como se mencionó en la Sección anterior, una MEF se compone tres partes: la función del próximo estado, el estado actual y la función de salida. Cada uno de estas partes puede ser descrita en VHDL todo junto en un mismo proceso, o bien en procesos separados. Este trabajo fue implementado mediante un proceso para la función de próximo estado y otro para actualizar el registro del estado actual. Las funciones de salida se implementaron mediante estados combinacionales.
-
 \begin{figure}[t]
+	\begin{tikzpicture}[scale=1]
+		\begin{scope}[transform shape,>=latex,node distance=1.5]
+			\node[bloque](prEs){Función Estado Próximo};
+			\node[bloque](acEs)[right=of prEs]{Estado Actual};
+			\node[bloque](sal)[right=of acEs]{Función de Salida};
+			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
+			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
+			
+			\draw[lineaExt](prEs)to(acEs);
+			\draw[lineaExt](acEs)to(sal);
+			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](prEs)to(acEs);
+			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+			\draw[lineaInt](acEs)to(sal);
+			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
+			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Estructura de una máquina de estados finitos}
+	\label{fpga:mef:concepto}
+\end{figure}
+
+
+\begin{figure}[!hb]
 	\centering
 	\begin{tikzpicture}[ask/.style = {diamond,text width=70,draw=black,align=center,aspect=2},
 	scale=.7]
@@ -105,9 +127,7 @@ Como se mencionó en la Sección anterior, una MEF se compone tres partes: la fu
 
 Se presentan a continuación la función de próximo estado y la actualización del estado actual debido a que son, a criterio del autor, los procesos más importantes del desarrollo. El código completo, en donde se realiza la declaración de la entidad, la declaración de las señales, las conexiones internas y se asignan las funciones de salida a los estados en forma concurrente, se puede encontrar en el Apéndice \ref{ap:vhdl}.
 
-La función de próximo estado, es un proceso que lee el registro \textit{estado\_actual} y las señales de entrada y, en función de su valor, asigna el estado siguiente al registro \textit{prox\_estado}.
-
-Para una mejor comprensión de la descripción de la función de próximo estado, se puede utilizar la Figura \ref{fpga:mef:simple} en donde se observa una simplificación de cada uno de los estados del diagrama en bloques de la Figura \ref{fpga:mef:diag}, en donde se quitaron las variables de salida y se incorporó en cada uno de los estados el nombre con el que se lo asigna en el código VHDL desarrollado. Además, para facilitar la lectura del desarrollo, se colocaron las dos señales de entrada \textit{FLAG\_Vacío} y \textit{FLAG\_Lleno} como activos en alto.
+La función de próximo estado, es un proceso que lee el registro \textit{estado\_actual} y las señales de entrada y, en función de su valor, asigna el estado siguiente al registro \textit{prox\_estado}. Para una mejor comprensión de la descripción de la función de próximo estado, se puede utilizar la Figura \ref{fpga:mef:simple} en donde se observa una simplificación de cada uno de los estados del diagrama en bloques de la Figura \ref{fpga:mef:diag}, en donde se quitaron las variables de salida y se incorporó en cada uno de los estados el nombre con el que se lo asigna en el código VHDL desarrollado. Además, para facilitar la lectura del desarrollo, se colocaron las dos señales de entrada \textit{FLAG\_Vacío} y \textit{FLAG\_Lleno} como activos en alto.
 %El estilo elegido para la descripción cuenta con un registro que determina el estado próximo de la MAE a través de un proceso secuencial. El valor de dicho registro, es volcado a otro que indica el estado actual de la MAE, a través de los flancos del reloj, en una secuencia diferente. Las señales de salida son implementadas en forma concurrente, de manera externa a los procesos que comanda la MEA. Las señales de entrada se encuentran incorporadas en el proceso que determina el estado próximo.
 %La MEA es descripta a través del código que se muestra a continuación:
 
@@ -239,8 +259,8 @@ end Behavioral;
 %end Behavioral
 %\end{lstlisting}
 
-La transición entre estados es un proceso consta de un reloj que hace transfiere el valor del registro de \textit{prox\_estado} al registro \textit{estado\_actual}. A este reloj, se le acoplan dos temporizadores de habilitación. Esto se debe a que se algunas señales deben respetar ciertos tiempos de establecimiento y ancho de pulso\cite{Cypress2017}. Cuando el próximo estado es \textit{esc\_dirección} se deben esperar tres ciclos de reloj y en el caso de que el próximo estado sea escritura, \textit{lec\_direccion} o lectura, se debe esperar dos ciclos de reloj.
-Esto se implementa con dos contadores diferentes, los cuales habilitan o no el cambio de estado. Esto se detalla a continuación:
+La transición entre estados es un proceso que consta de un reloj que  transfiere el valor del registro de \textit{prox\_estado} al registro \textit{estado\_actual}. A este reloj, se le acoplan dos temporizadores de habilitación. Esto se debe a que se algunas señales deben respetar ciertos tiempos de establecimiento y ancho de pulso \cite{Cypress2017}. Cuando el próximo estado es \textit{esc\_dirección} se deben esperar tres ciclos de reloj y en el caso de que el próximo estado sea escritura, \textit{lec\_direccion} o lectura, se debe esperar dos ciclos de reloj.
+Esto se implementa con dos contadores diferentes, los cuales habilitan o no el cambio de estado, lo que se detalla a continuación:
 
 \begin{lstlisting}[language=VHDL,backgroundcolor=\color{gray!30}]
 architecture Behavioral of fx2lp_interfaz is

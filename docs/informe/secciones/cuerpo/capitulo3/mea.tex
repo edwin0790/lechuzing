@@ -18,32 +18,33 @@
 
 % Intento 2
 
-\begin{figure}[t]
-	\begin{tikzpicture}[scale=1]
-		\begin{scope}[transform shape,>=latex,node distance=1.5]
-			\node[bloque](prEs){Función Estado Próximo};
-			\node[bloque](acEs)[right=of prEs]{Estado Actual};
-			\node[bloque](sal)[right=of acEs]{Función de Salida};
-			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
-			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
-			
-			\draw[lineaExt](prEs)to(acEs);
-			\draw[lineaExt](acEs)to(sal);
-			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
-			\draw[lineaInt](prEs)to(acEs);
-			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
-			\draw[lineaInt](acEs)to(sal);
-			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
-			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
-		\end{scope}
-	\end{tikzpicture}
-	\caption{Estructura de una máquina de estados finitos}
-	\label{fpga:mef:concepto}
-\end{figure}
-
-Una Máquina de Estados Finitos (MEF) es un tipo de dispositivo lógico secuencial que puede estar en uno de un conjunto finito de elementos. Tal como se observa en la Figura \ref{fpga:mef:concepto}, el estado siguiente que adoptará la MEF será función de una combinación lógica entre el estado actual y las entradas del sistema. A su vez, las salidas dependen del estado actual, configurando la denominada máquina de Moore, aunque también pueden variar en función del estado de las entradas, lo que se conoce como máquina de Mealy\cite{Wakerly1999}. Se podría decir que una máquina de Moore es una particularidad de la máquina de Mealy, en la cual las salidas no varían en función de las entradas.
-
-A modo conceptual, la máquina de estados finitos (MEF) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el host). 
+%\begin{figure}[t]
+%	\begin{tikzpicture}[scale=1]
+%		\begin{scope}[transform shape,>=latex,node distance=1.5]
+%			\node[bloque](prEs){Función Estado Próximo};
+%			\node[bloque](acEs)[right=of prEs]{Estado Actual};
+%			\node[bloque](sal)[right=of acEs]{Función de Salida};
+%			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
+%			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
+%			
+%			\draw[lineaExt](prEs)to(acEs);
+%			\draw[lineaExt](acEs)to(sal);
+%			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+%			\draw[lineaInt](prEs)to(acEs);
+%			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+%			\draw[lineaInt](acEs)to(sal);
+%			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
+%			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
+%		\end{scope}
+%	\end{tikzpicture}
+%	\caption{Estructura de una máquina de estados finitos}
+%	\label{fpga:mef:concepto}
+%\end{figure}
+%
+%Una Máquina de Estados Finitos (MEF) es un tipo de dispositivo lógico secuencial que puede estar en uno de un conjunto finito de elementos. Tal como se observa en la Figura \ref{fpga:mef:concepto}, el estado siguiente que adoptará la MEF será función de una combinación lógica entre el estado actual y las entradas del sistema. A su vez, las salidas dependen del estado actual, configurando la denominada máquina de Moore, aunque también pueden variar en función del estado de las entradas, lo que se conoce como máquina de Mealy\cite{Wakerly1999}. Se podría decir que una máquina de Moore es una particularidad de la máquina de Mealy, en la cual las salidas no varían en función de las entradas.
+%
+%A modo conceptual, 
+La máquina de estados finitos (MEF) que se implementa en este trabajo es capaz de realizar dos tareas, bien definidas: leer datos desde la memoria FIFO destinada al EP de salida (desde la PC) y escribir datos en la memoria FIFO que corresponde al EP de entrada (hacia el Host). 
 Para el diseño de cada una de la operaciones de la MEF implementada en el presente trabajo, se recurrió a la confección del diagrama de flujo para un máquina de estados algorítmica.
 
 
@@ -247,13 +248,13 @@ Para el diseño de cada una de la operaciones de la MEF implementada en el prese
 	\label{fpga:mef:diag}
 \end{figure}
 %En la Figura \ref{fpga:mea:concepto} se muestra que cuando la memoria FIFO de salida del host señala que no está vacía, se ejecuta la tarea de lectura de datos. Si la memoria FIFO asignada a la salida del host se encuentra vacía y está activa la salida de datos del FPGA, estos datos serán escritos en la memoria FIFO correspondiente.
-Como se indica en la Sección \ref{fpga:sigs}, las señales de salida de la MEF diseñada que se comunican con el controlador FX2LP son {\it FIFOADR}, {\it SLOE}, {\it SLRD}, {\it SLWR} y {\it  PKTEND}. El bus de comunicación de datos hacia el interior del FPGA, {\it dato\_recibido[15:0]} también es una salida del sistema desarrollado en este trabajo. Si bien {\it FDATA[15:0]} es un puerto de entrada y salida, se maneja también como puerto de salida, cuidando que, cuando funciona como puerto de entrada, se encuentre en alta impedancia el buffer que maneja la salida. Por su parte, los puertos de entrada son {\it FLAG\_Vacío}, {\it Enviar\_Datos} y {\it Flag\_Lleno}.
+Las señales de salida de la MEF diseñada que se comunican con el controlador FX2LP son {\it FIFOADR}, {\it SLOE}, {\it SLRD}, {\it SLWR} y {\it  PKTEND}. El bus de comunicación de datos hacia el interior del FPGA, {\it dato\_recibido[15:0]} también es una salida del sistema desarrollado en este trabajo. Si bien {\it FDATA[15:0]} es un puerto de entrada y salida, se maneja también como puerto de salida, cuidando que, cuando funciona como puerto de entrada, se encuentre en alta impedancia el buffer que maneja la salida. Por su parte, los puertos de entrada son {\it FLAG\_Vacío}, {\it Enviar\_Datos} y {\it Flag\_Lleno}.
 
-Una consideración que se hizo en la implementación de este trabajo es que la lectura de las memorias FIFO es prioritaria con respecto a su escritura. Esto se basa en que se espera que este desarrollo sirva de manera fundamental para la lectura de sensores. Dichos sensores serán configurados a través de los datos que lleguen al FPGA y, una vez configurados, deberán trasmitir los datos que adquieran del medio en que se encuentre. Se espera entonces, que la información que contienen los datos de configuración posea mayor importancia, ya que podría tener ordenes que detengan los sensores o cambien su funcionamiento. Así mismo, los datos deben ser enviados durante todo el tiempo que el sensor esté adquiriendo, por lo que se espera que los datos de entrada al FPGA sean menos probables que los datos que se envíen.
+Una consideración que se hizo en la implementación de este trabajo es que la lectura de las memorias FIFO es prioritaria con respecto a su escritura. Esto se basa en que se espera que este desarrollo sirva de manera fundamental para la lectura de sensores. Dichos sensores serán configurados a través de los datos que lleguen al FPGA y, una vez configurados, deberán trasmitir los datos que adquieran del medio en que se encuentren. Se espera entonces, que la información que contienen los datos de configuración posea mayor importancia, ya que podría tener ordenes que detengan los sensores o cambien su funcionamiento. Así mismo, los datos deben ser enviados durante todo el tiempo que el sensor esté adquiriendo, por lo que se espera que los datos de entrada al FPGA sean menos probables que los datos que se envíen.
 
 Con las consideraciones mencionadas, se confeccionó la maquina de estados algorítmica que se observa en el diagrama de flujo de la Figura \ref{fpga:mef:diag}. En un estado inicial, todos las salidas se encuentran inactivas (en alto, dado que son activas en bajo). En el caso de salidas que se conectan a un bus ({\it FIFOADR[1:0]} y {\it FDATA[15:0]}) se colocan en estado de alta impedancia. El puerto {\it dato\_recibido}, señalado en el diagrama de la Figura \ref{fpga:mef:diag} como {\it d\_recibido}, retiene su propio valor.
 
-Cuando el {\it FLAG\_Vacío} se activa, se procede a la operación de lectura. Si, en cambio, {\it FLAG\_Vacío} esta inactivo, se debe conocer si el sistema genérico indica que envía datos, a través de {\it Enviar\_datos}. Si esto ocurre, el sistema de comunicación debe corroborar que la memoria FIFO se encuentra en condiciones de recibir los datos, es decir, que no se encuentre {\it FLAG\_Lleno} activo. Si estas condiciones ocurren, se debe proceder a la operación de escritura.
+Cuando la señal {\it FLAG\_Vacío} se activa, se procede a la operación de lectura. Si, en cambio, {\it FLAG\_Vacío} esta inactivo implica que no hay datos que leer. Entonces, se debe conocer si el sistema implementado en el FPGA tiene activa la señal {\it Enviar\_datos}. Si esto ocurre, el sistema de comunicación debe corroborar que la memoria FIFO se encuentra en condiciones de recibir los datos, es decir, que no se encuentre {\it FLAG\_Lleno} activo. Así, se procede con la operación de escritura.
 
 La operación de lectura coloca la dirección de la memoria FIFO relacionada al EP de salida (desde el Host), es decir $''00''$. A su vez, se debe activar la salida de la memoria FIFO, activando la señal {\it SLOE}. El buffer de salida del bus {\it FDATA[15:0]} debe encontrarse en modo de alta impedancia, para no interferir con la lectura y un registro debe almacenar el valor que se indica en el buffer de entrada. El registro utilizado para almacenar la información leída es {\it d\_recibido}. Luego, se activa la señal {\it SLRD}, lo que incrementa el dato de la memoria FIFO. De esta manera, se puede volver a leer la señal de {\it FLAG\_Vacío} y determinar si se vuelve a implementar una operacion de lectura, o bien, se vuelve al inicio del programa.
  
