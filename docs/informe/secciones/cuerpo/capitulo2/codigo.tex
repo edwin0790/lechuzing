@@ -171,7 +171,7 @@
 	#include "leds.h"
 	\end{lstlisting}
 	
-	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través del archivo objeto {\it usbjmptb.obj}.%\\
+	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través de un archivo objeto provisto en el framework de Cypress Semiconductorm, denominado {\it usbjmptb.obj}.%\\
 	
 	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar las luces de la placa de desarrollo. Los LED fueron utilizado para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
 	
@@ -210,7 +210,7 @@
 \subsection{Descriptores USB}	
 	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
 	
-	El framework de Cypress coloca toda la información sobre los descriptores del dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al host comunicando las características del sistema desarrollado.%\\
+	El framework de Cypress coloca toda la información sobre los descriptores del dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al Host comunicando las características del sistema desarrollado.%\\
 	
 	En primer lugar, posee un encabezado en donde se establecen etiquetas que hacen más legible el código para el programador:
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
@@ -244,7 +244,7 @@ DSCR   SEGMENT   CODE PAGE
 	rseg DSCR      ;; locate the descriptor table in on-part memory.
 	\end{lstlisting}
 	
-	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress,la memoria debe contener en primer lugar el descriptor DEVICE, el cual se muestra a continuación.
+	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress, la memoria debe contener en primer lugar el descriptor DEVICE, el cual se muestra a continuación.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 DeviceDscr:
@@ -264,7 +264,7 @@ DeviceDscr:
 	db   1         ;; Número de configuraciones
 	\end{lstlisting}
 	
-	El descriptor de tamaño máximo de paquete está referido especialmente al EP0, es decir, al extremo que el host y el dispositivo utilizan para intercambiar mensajes de control.
+	El descriptor de tamaño máximo de paquete está referido especialmente al EP0, es decir, al extremo que el Host y el dispositivo utilizan para intercambiar mensajes de control.
 	
 	Se debe notar que los penúltimos tres parámetros mostrados corresponden a una descripción realizada en cadena de caracteres al final del archivo, a fin de poder mostrar un mensaje que pueda ser leído por un usuario humano.
 	
@@ -288,7 +288,7 @@ DeviceQualDscr:
 
 	Luego de esta directiva, se especifica el descriptor de tipo DEVICE\_QUALIFIER asegurando que se encontrará en una dirección par de memoria.
 	
-	Seguidamente, el protocolo indica que se debe detallar cada una de las configuraciones y las interfaces que se indican en los descriptores DEVICE y DEVICE\_QUALIFIER. En este caso, se especifican dos configuraciones: una de alta velocidad, indicada en el descriptor DEVICE y otra de velocidad completa ({\it Full-Speed}), que es especifica en el descriptor DEVICE\_QUALIFIER. Se muestran el descriptor CONFIGURATION de alta velocidad, unido al descriptor INTERFACE (línea 16 en adelante) y los descriptores ENDPOINT a partir de la línea 27, que determinan en forma completa la configuración de Alta Velocidad.
+	Seguidamente, la norma indica que se debe detallar cada una de las configuraciones y las interfaces que se indican en los descriptores DEVICE y DEVICE\_QUALIFIER. En este caso, se especifican dos configuraciones: una de alta velocidad, indicada en el descriptor DEVICE y otra de máxima velocidad ({\it Full-Speed}), que se especifica en el descriptor DEVICE\_QUALIFIER. Se expone a continuación el descriptor CONFIGURATION de alta velocidad, unido al descriptor INTERFACE (línea 16 en adelante) y los descriptores ENDPOINT (a partir de la línea 27), que determinan en forma completa la configuración de Alta Velocidad.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2
@@ -338,9 +338,9 @@ HighSpeedConfigDscr:
 HighSpeedConfigDscr_End:
 	\end{lstlisting}
 	
-	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB~\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del host. La línea 13 se informa cuánta potencia consume, lo que le brinda al host la posibilidad de establecer un control de la potencia suministrada en el bus.
+	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB~\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del Host. La línea 13 se informa cuánta potencia consume, lo que le brinda al Host la posibilidad de establecer un control de la potencia suministrada en el bus.
 	
-	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el host debe asignar ancho de banda para transferencias isócronas.
+	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el Host debe asignar ancho de banda para transferencias isócronas.
 	
 	Luego de enviar la configuración de Alta Velocidad, se informa de la misma manera los descriptores que detallan la configuración del dispositivo, cuando trabaja con Velocidad Completa, cuyo código se observa a continuación.
 	
@@ -391,7 +391,7 @@ FullSpeedConfigDscr:
 FullSpeedConfigDscr_End:
 	\end{lstlisting}
 
-	Finalmente, el diseñador puede escribir mensajes en formato de cadena de caracteres, para lectura del usuario. En este trabajo solo se usan dos que sirven como ejemplo pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos.
+	Finalmente, el diseñador puede escribir mensajes en formato de cadena de caracteres, para lectura del usuario. En este trabajo solo se usan dos que sirven como ejemplo, pero no se profundizó más en el estudio de estos mensajes debido a que no son relevantes para los objetivos de este trabajo.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2	
