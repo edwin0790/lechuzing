@@ -19,7 +19,7 @@ Los dispositivos transmiten información a través del bus con un formato partic
 		El campo de Dirección señala cuál es la Función que debe responder o recibir alguna directiva emitida por el Host. A su vez, se divide en dos subcampos: uno que indica un dispositivo y la segunda que señala el extremo específico con el cual desea comunicarse.
 
 	\item{\bf Datos:}
-		Es el campo que contiene la información útil transferida. Puede tener un largo de hasta \SI{1024}{\byte}. Cada byte enviado se ordena con el bit menos significativo (LSb del inglés {\it Less Significative bit}) primero y el bit mas significativo (MSb por sus siglas en inglés) al final.
+		Es el campo que contiene la información útil transferida. Puede tener un largo de hasta \SI{1024}{\byte}. Cada byte enviado se ordena con el bit menos significativo (LSb del inglés {\it Less Significative bit}) primero y el bit más significativo (MSb por sus siglas en inglés) al final.
 
 	\item{\bf Chequeos de redundancia cíclica:}
 		El campo de chequeo de redundancia cíclica (CRC) contiene verificadores para corroborar que no hubo pérdida de información. Dependiendo de que tipo de paquete se esté transmitiendo, el CRC puede tener 5 o 16 bits. 
