@@ -125,6 +125,8 @@ Considerando las señales que se mencionaron la Sección \ref{fpga:sigs} y el di
 	\label{fpga:mef:simple}
 \end{figure}
 
+%El desarrollo de las descripciones en VHDL, las verificaciones funcionales y la síntesis realizada a lo largo de este trabajo fueron realizados a través del entorno de desarrollo ISE provisto por Xilinx. Los códigos obtenidos, como así también los resultados arrojados por este entorno de desarrollo se plasman en el Anexo~\ref{ap:vhdl}
+
 Se presentan a continuación la función de próximo estado y la actualización del estado actual debido a que son, a criterio del autor, los procesos más importantes del desarrollo. El código completo, en donde se realiza la declaración de la entidad, la declaración de las señales, las conexiones internas y se asignan las funciones de salida a los estados en forma concurrente, se puede encontrar en el Apéndice \ref{ap:vhdl}.
 
 La función de próximo estado, es un proceso que lee el registro \textit{estado\_actual} y las señales de entrada y, en función de su valor, asigna el estado siguiente al registro \textit{prox\_estado}. Para una mejor comprensión de la descripción de la función de próximo estado, se puede utilizar la Figura \ref{fpga:mef:simple} en donde se observa una simplificación de cada uno de los estados del diagrama en bloques de la Figura \ref{fpga:mef:diag}, en donde se quitaron las variables de salida y se incorporó en cada uno de los estados el nombre con el que se lo asigna en el código VHDL desarrollado. Además, para facilitar la lectura del desarrollo, se colocaron las dos señales de entrada \textit{FLAG\_Vacío} y \textit{FLAG\_Lleno} como activos en alto.

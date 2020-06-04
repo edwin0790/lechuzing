@@ -209,4 +209,4 @@ Una vez que la MEF alcanza el estado inicial ({\it IDLE}, como se ve en la Figur
 La Figura \ref{tb:inter} muestra cómo el sistema finaliza la operación de escritura cuando un sucede al menos uno de los eventos considerados para su interrupción. Cuando se activa {\it FLAGB} mientras se ejecuta la operación de escritura, esta última es interrumpida y el sistema procede a realizar, el próximo estado, la operación de lectura. En el caso de que active la señal {\it FLAGA}, indicando que la memoria que recibe los datos que envía el FPGA alcanzó el máximo de capacidad, el proceso de escritura es detenido. En ambos casos, no es relevante el valor de la señal de envío de dato {\it SEND\_REQ}, ya que ambos eventos poseen prioridad a esta.
  
 Una vez realizada la simulación y verificación funcional de la síntesis desarrollada, se estuvo en condiciones de grabar dicha síntesis en el FPGA y se puede proceder a realizar pruebas de funcionamiento más avanzadas. 
-El código completo de la simulación, se pueden leer en el Anexo \ref{ap:vhdl}.
+El código completo de la simulación, se pueden leer en el Apéndice \ref{ap:vhdl}.

@@ -1,19 +1,44 @@
-\chapter{Códigos para implementaciónes en FPGA}
+\chapter{Códigos de la síntesis en FPGA}
 \label{ap:vhdl}
-	\section*{Código de implementación de la MEF que controla la interfaz FX2LP}
-	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,language=VHDL,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface.vhd}
-	
-	\section*{Código de validación de la MEF}
-	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/mef_tb.vhd}
-	
-	\section*{Código de síntesis del sistema de prueba}
-	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface_top.vhd}
 
-
-	\section*{Código de validación del sistema de prueba}
-	\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/top_tb.vhd}
-	
-	\section*{Archivo de restricciones de usuario}
-		Este archivo es en donde se detalla a que pin físico del FPGA se corresponde cada puerto. Este archivo fue utilizado para la implementación del sistema de pruebas.
+	El presente apéndice contiene los códigos desarrollados para la síntesis de los sistemas implementados en el FPGA Spartan 6 utilizados en este trabajo. Estos códigos fueron escritos en lenguaje VHDL, salvo por el archivo de restricciones, que posee como lenguaje XST, desarrollado por Xilinx para dicho propósito. A su vez, se exponen el resumen de síntesis, en donde constan los recursos del FPGA utilizados.
+ 	El contenido mostrado en este Apéndice contiene los códigos de los archivos:
+ 	\begin{itemize}
+		\item \textbf{\nameref{ap:vhdl:iffx2}:} Implementación de la Máquina de Estados Finitos (MEF) a través de la cual se general las señales de control que comandan la memoria FIFO del controlador FX2LP 
 		
+		\item \textbf{\nameref{ap:vhdl:meftb}:} Código utilizado para realizar la verificación funcional de la MEF
+		
+		\item \textbf{\nameref{ap:vhdl:top}:} Implementación del sistema de pruebas. En él se instancia la MEF, la configuración del PLL y la memoria FIFO generada a través de la herramienta \textit{Core Generator} de Xilinx Inc. 
+		
+		\item \textbf{\nameref{ap:vhdl:toptb}:} Código de verificación funcional del sistema de pruebas 
+
+		\item \textbf{\nameref{ap:vhdl:ucf}:} Archivo de restricciones en donde se le indica al compilador la frecuencia de la señal de entrada al sistema y la asignación de los puertos del sistema desarrollado a los pines del FPGA Spartan 6.
+
+		\item \textbf{\nameref{ap:vhdl:sum}:} Tabla en donde se indica el consumo de recursos de FPGA por parte de la síntesis realizada a través del entorno de desarrollo ISE de Xilinx Inc.
+	\end{itemize}
+
+
+	\subsection*{fx2lp\_interface.vhd}
+		\label{ap:vhdl:iffx2}
+		\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,language=VHDL,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface.vhd}
+	
+	\subsection*{mef\_tb.vhd}
+		\label{ap:vhdl:meftb}
+		\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/mef_tb.vhd}
+	
+	\subsection*{fx2lp\_interface\_top.vhd}
+		\label{ap:vhdl:top}
+		\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/fx2lp_interface_top.vhd}
+
+
+	\subsection*{top\_tb.vhd}
+		\label{ap:vhdl:toptb}
+		\lstinputlisting[language=VHDL,numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/codigos/VHDL/top_tb.vhd}
+	
+	\subsection*{fx2lp\_interface\_top.ucf}
+		\label{ap:vhdl:ucf}
 		\lstinputlisting[numbers=left,numberstyle=\tiny,stepnumber=5,firstnumber=1,basicstyle=\small,firstnumber=1]{secciones/extras/UCF/fx2lp_interface_top.ucf}
+	\pagebreak	
+	\subsection*{Sumario de síntesis}
+		\label{ap:vhdl:sum}
+		\input{secciones/extras/fx2lp_interface_top_summary}

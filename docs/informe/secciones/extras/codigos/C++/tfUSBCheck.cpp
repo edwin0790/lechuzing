@@ -1,31 +1,7 @@
 //============================================================================
 // Name        : tfUSBCheck.cpp
 // Author      : Edwin Barragan
-// Version     :
-// Copyright   : My final degree work
-// Description : Hello World in C++, Ansi-style
 //============================================================================
-
-
-//TODO	hay que hacer un script que programe el dispositivo
-//TODO	todavía no realiza comunicación alguna
-
-//Pasos a seguir según
-/*https://www.dreamincode.net/forums
- * /topic/148707-introduction-to-using-libusb-10
- * /page__p__885389__hl__USB__fromsearch__1#entry885389*/
-
-/* initialize the library by calling the function libusb_init and creating a session
- * Call the function libusb_get_device_list to get a list of connected devices. This creates an array of libusb_device containing all USB devices connected to the system.
- * Discover the one and open the device either by libusb_open or libusb_open_device_with_vid_pid(when you know vendor and product id of the device) to open the device
- * Clear the list you got from libusb_get_device_list by using libusb_free_device_list
- * Claim the interface with libusb_claim_interface (requires you to know the interface numbers of device)
- * Do desired I/O
- * Release the device by using libusb_release_interface
- * Close the device you opened before, by using libusb_close
- * Close the session by using libusb_exit*/
-
-
 
 #include "tfUSBCheck.h"
 
@@ -53,7 +29,8 @@ void USBChecker::closeChecker(void){
 	libusb_release_interface(handler, INTERFACE);
 }
 
-USBChecker::USBChecker(libusb_context* context, libusb_device* device, libusb_device_handle * hand){
+USBChecker::USBChecker(libusb_context* context, libusb_device* device
+			,libusb_device_handle * hand){
 	ctx = context;
 	dev = device;
 	handler = hand;
@@ -70,7 +47,8 @@ void USBChecker::init_myusb_device(void) throw(int){
 	ssize_t dev_idx;
 
 //inicialización del usb
-	// initialición de la biblioteca llamando a la función libusb_init. Esto crea una sesion
+	// initialición de la biblioteca llamando a la función libusb_init.
+	// Esto crea una sesion
 	is_not_ok = libusb_init(&ctx);
 	if(is_not_ok)
 	{
@@ -78,11 +56,14 @@ void USBChecker::init_myusb_device(void) throw(int){
 		cerr << "No funciona libusb" << endl;
 		throw(NO_LIBUSB);
 	}
-	libusb_set_debug(ctx, LIBUSB_LOG_LEVEL_DEBUG); 	//todos los msjs serán mostrados en el archivo
-													// registro de eventos
 
-	// Llamar a la funcion libusb_get_device_list para obtener una lista de los dispositivos conectados
+	//todos los msjs serán mostrados en el archivo de registro de eventos
+	libusb_set_debug(ctx, LIBUSB_LOG_LEVEL_DEBUG); 
+	
+	// Llamar a la funcion libusb_get_device_list para obtener una lista 
+	//	de los dispositivos conectados
 	cont = libusb_get_device_list(ctx, &list);
+
 	// Obtener los descriptores de los dispositivos
 	for(dev_idx = 0; dev_idx < cont; dev_idx++)
 	{
@@ -121,20 +102,14 @@ void USBChecker::init_myusb_device(void) throw(int){
 		throw(NO_DOI);
 	}
 
-	// Discover the one and open the device either by
-	// libusb_open or
-	// libusb_open_device_with_vid_pid(when you know vendor and product id of the device)
-	// to open the device
-	//open my device
+	// alcanzar acceso al dispositivo
 	handler = libusb_open_device_with_vid_pid(ctx, CY_VID, CY_FX2LP_PID);
 
-	// Clear the list you got from libusb_get_device_list by using libusb_free_device_list
+	// liberar la lista obtenida
 	libusb_free_device_list(list, 1);
-	//devices discovered
-	// Claim the interface with
-	//libusb_claim_interface (requires you to know the interface numbers of device)
-		//first i have to detach the device driver to the kernel.
-		//doing this automatically
+
+	// seleccionar la interfaz a utilizar.
+	// primero se debe desactivar el driver (solo en linux)
 	is_not_ok = libusb_set_auto_detach_kernel_driver(handler, 1);
 	if(is_not_ok)
 	{
@@ -149,7 +124,7 @@ void USBChecker::init_myusb_device(void) throw(int){
 }
 
 
-void /*USBChecker::*/close_myusb_device(int ignored){
+void close_myusb_device(int ignored){
 	cout << "Sali con la señal " << ignored << endl;
 	to_exit = 0;
 }
@@ -185,16 +160,6 @@ void USBChecker::dataGenerator(unsigned char* data){
 		data[row] = colParity;
 		block++;
 	}
-	//para debug
-//	out_timestamp();
-//	cout << "Generé datos aleatorios:" << endl;
-//	for(i = 0; i < MAX_OUT_DATA;i++)
-//	{
-//		if(i%16 == 15)
-//			cout << (int)data[i] << endl;
-//		else
-//			cout << (int)data[i] << '\t';
-//	}
 }
 
 void USBChecker::dataChecker(unsigned char* data,vector<err> *errores){
@@ -240,12 +205,8 @@ void USBChecker::dataChecker(unsigned char* data,vector<err> *errores){
 
 void USBChecker::sendData(unsigned char* data){
 	transfer_out = libusb_alloc_transfer(0);
-//	int esta=0;
-	libusb_fill_bulk_transfer(transfer_out,handler,OUT_EP,data,MAX_OUT_DATA,send_cb,NULL,0);
-//	if(libusb_bulk_transfer(handler,OUT_EP,data,MAX_OUT_DATA,&esta,60000))
-//		cout << "buenisimo" << endl;
-//	else
-//		cout << "malisimo" << endl;
+	libusb_fill_bulk_transfer(transfer_out,handler,OUT_EP,data,MAX_OUT_DATA
+		,send_cb,NULL,0);
 	int c = libusb_submit_transfer(transfer_out);
 	out_timestamp();
 	cout << "Mandé datos " << c << endl;
@@ -278,12 +239,14 @@ void USBChecker::send_cb(struct libusb_transfer* transfer){
 		case LIBUSB_TRANSFER_NO_DEVICE:
 			//si se desconecta el dispositivo
 			err_timestamp();
-			cerr << "El dispositivo se desconectó. Se cierra programa." << endl;
+			cerr << "El dispositivo se desconectó. Se cierra"
+				<<" el programa." << endl;
 			to_exit = 0;
 			return;
 		case LIBUSB_TRANSFER_OVERFLOW:
 			err_timestamp();
-			cerr << "Fallo por overflow. Revisar código de generacion de datos. Se cierra programa." << endl;
+			cerr << "Fallo por overflow. Revisar código de "
+				<<	"generacion de datos. Se cierra programa." << endl;
 			to_exit = 0;
 			break;
 		default:
@@ -297,9 +260,9 @@ void USBChecker::receiveData(unsigned char* data){
 	int isoPkts = 1;
 	transfer_in = libusb_alloc_transfer(isoPkts);
 	pktSize = libusb_get_max_iso_packet_size(dev,IN_EP);
-	libusb_fill_iso_transfer(transfer_in,handler,IN_EP,data,pktSize,isoPkts,receive_cb,NULL,0);
+	libusb_fill_iso_transfer(transfer_in,handler,IN_EP,data,pktSize
+		,isoPkts,receive_cb,NULL,0);
 	libusb_set_iso_packet_lengths(transfer_in,pktSize);
-//    transfer_in->flags = LIBUSB_TRANSFER_FREE_BUFFER | LIBUSB_TRANSFER_FREE_TRANSFER;
 	int c = libusb_submit_transfer(transfer_in);
 	out_timestamp();
 	cout << "Intento recibir datos " << c << endl;
@@ -314,12 +277,6 @@ void USBChecker::receive_cb(struct libusb_transfer* transfer){
 	{
 		case LIBUSB_TRANSFER_COMPLETED:
 			actual_length = transfer->actual_length;
-//			for(int i; i < 512;i++)
-//			{
-//				if(i%16 == 15)
-//					cout << transfer->buffer[i] << endl;
-//				else cout << transfer->buffer[i] << '\t';
-//			}
 			to_check = 1;
 			libusb_free_transfer(transfer);
 			break;
@@ -340,12 +297,14 @@ void USBChecker::receive_cb(struct libusb_transfer* transfer){
 		case LIBUSB_TRANSFER_NO_DEVICE:
 			//si se desconecta el dispositivo
 			err_timestamp();
-			cerr << "El dispositivo se desconectó. Se cierra programa." << endl;
+			cerr << "El dispositivo se desconectó. Se cierra "
+				<< "el programa." << endl;
 			to_exit = 0;
 			return;
 		case LIBUSB_TRANSFER_OVERFLOW:
 			err_timestamp();
-			cerr << "Fallo por overflow. Revisar código de generacion de datos. Se cierra programa." << endl;
+			cerr << "Fallo por overflow. Revisar código de generacion de "
+				<< "datos. Se cierra el programa." << endl;
 			to_exit = 0;
 			break;
 		default:
@@ -401,14 +360,15 @@ int main() {
 	sigaction(SIGSTOP, &sigIntHandler, NULL);
 	sigaction(SIGQUIT, &sigIntHandler, NULL);
 
-	freopen("errlog","a", stderr);	// redirijo el stderr a un archivo de registro de eventos
-									// la función freopen reinicia tbn cerr para que vaya al
-									// mismo archivo
+	// redirijo el stderr a un archivo de registro de eventos
+	// la función freopen reinicia tbn cerr para que vaya al
+	// mismo archivo
+	freopen("errlog","a", stderr);	
 
 	freopen("datalog","a", stdout);
 
 	USBChecker checker(ctx,dev,handler);
-	// init the device
+	// iniciar el dispositivo
 	try
 	{
 		checker.init_myusb_device();
@@ -418,33 +378,32 @@ int main() {
 		err_timestamp();
 		switch(e)
 		{
-		case NO_DOI:// 			901	//No device of interest
-			cerr << "No se encontró dispoitivo. Conecte la placa Cypress" << endl;
+		case NO_DOI: 
+			cerr << "No se encontró dispoitivo. Conecte la placa "
+				<< "Cypress" << endl;
 			break;
-		case NO_PROGR:// 		902	//No programmed Cypress devices
+		case NO_PROGR:
 			cerr << "La placa Cypress no se encuentra programada" << endl;
 			break;
-		case DRIVER_BLOCKED://	903	//Driver couldn't be detach
+		case DRIVER_BLOCKED:
 			cerr << "No se puede alcanzar control de la placa" << endl;
 			break;
-		case NO_LIBUSB: // 904 // LIBUSB is not working
+		case NO_LIBUSB:
 			cerr << "Nada que hacer. Final del programa"<< endl;
-			fclose(stderr); // libero stderr
-			fclose(stdout); // libero stdout
 			return(904);
 		}
 		to_exit = 0;
 	}
-	// init finished
-
-	while(actual_length != 0)
-	{
-		checker.receiveData(buffer_out);
-		tv.tv_sec = 0;
-		tv.tv_usec = 10000;
-		libusb_handle_events_timeout_completed(ctx,&tv,NULL);
-	}
-		to_check = 0;
+	// iniciado
+	if(to_exit)
+		while(actual_length != 0)
+		{
+			checker.receiveData(buffer_out);
+			tv.tv_sec = 0;
+			tv.tv_usec = 10000;
+			libusb_handle_events_timeout_completed(ctx,&tv,NULL);
+		}
+			to_check = 0;
 
 	//ASYNC Transfer
 	while(to_exit)
@@ -495,14 +454,16 @@ int main() {
 				{
 					if(errs.at(i).row != 0)
 					{
-						cout << "At row: " << errs.at(i).row << endl;
+						cout << "En fila: " << errs.at(i).row << endl;
 						j++;
 					}
 					else
-						cout << "In block: " << errs.at(i).block << ";cols parity found: " << errs.at(i).check << endl;
+						cout << "E bloque: " << errs.at(i).block 
+							<< ";cols parity found: " << errs.at(i).check << endl;
 					cout << endl;
 				}
-				cout << "Tasa de error = " << errs.size()/sizeof(buffer_out)*100 << endl;
+				cout << "Tasa de error = " << errs.size()/sizeof(buffer_out)
+					*100 << endl;
 			}
 			to_send = 1;
 			cout << "le dije que haga más envío de datos" << endl;
@@ -514,17 +475,15 @@ int main() {
 		libusb_handle_events_timeout_completed(ctx,&tv,NULL);
 	}
 
-	// deinit begins
-	// Release the device by using libusb_release_interface
+	// liberar recursos
 	checker.closeChecker();
-	//libusb_release_interface(handler,0);
 
-	// Close the device you opened before, by using libusb_close
-	libusb_close(handler); //cierro el dispoitivo
+	//cierro el dispoitivo
+	libusb_close(handler); 
 
-	// Close the session by using libusb_exit*/
-	libusb_exit(ctx); // desconfiguro el contexto y libero la memoria
-
+	// cierro el contexto y libero la memoria
+	libusb_exit(ctx); 
+	
 	fclose(stderr); // libero stderr
 	fclose(stdout); // libero stdout
 

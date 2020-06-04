@@ -1,32 +1,20 @@
-//-----------------------------------------------------------------------------
-//   File:      fw.c
-//   Contents:   Firmware frameworks task dispatcher and device request parser
-//            source.
-//
-// indent 3.  NO TABS!
-//
-//
-// Copyright (c) 2011, Cypress Semiconductor Corporation All rights reserved
-//-----------------------------------------------------------------------------
+#define DELAY_COUNT   0x9248*8L	// Delay for 8 sec at 24Mhz,
+								// 	4 sec at 48
+#define _IFREQ  48000			// IFCLK constant for 
+								// 	Synchronization Delay
+#define _CFREQ  48000			// CLKOUT constant for 
+								//	Synchronization Delay
+
 #include "fx2.h"
 #include "fx2regs.h"
-#include "syncdly.h"             // Define _IFREQ and _CFREQ above this #include
+#include "syncdly.h"	// Define _IFREQ and _CFREQ above this #include
 #include "FX2LPSerial.h"
 
-//-----------------------------------------------------------------------------
-// Constants
-//-----------------------------------------------------------------------------
-#define DELAY_COUNT   0x9248*8L  // Delay for 8 sec at 24Mhz, 4 sec at 48
-#define _IFREQ  48000            // IFCLK constant for Synchronization Delay
-#define _CFREQ  48000            // CLKOUT constant for Synchronization Delay
 
-//-----------------------------------------------------------------------------
-// Random Macros
-//-----------------------------------------------------------------------------
 #define   min(a,b) (((a)<(b))?(a):(b))
 #define   max(a,b) (((a)>(b))?(a):(b))
 
-  // Registers which require a synchronization delay, see section 15.14
+  // Registers which require a synchronization delay
   // FIFORESET        FIFOPINPOLAR
   // INPKTEND         OUTPKTEND
   // EPxBCH:L         REVCTL
@@ -43,16 +31,13 @@
   // Note: The pre-REVE EPxGPIFTCH/L register are affected, as well...
   //      ...these have been replaced by GPIFTC[B3:B0] registers
   
+volatile BOOL	GotSUD;
+BOOL			Rwuen;
+BOOL			Selfpwr;
+volatile BOOL	Sleep;
 
-//-----------------------------------------------------------------------------
-// Global Variables
-//-----------------------------------------------------------------------------
-volatile BOOL   GotSUD;
-BOOL      Rwuen;
-BOOL      Selfpwr;
-volatile BOOL   Sleep;                  // Sleep mode enable flag
-
-WORD   pDeviceDscr;   // Pointer to Device Descriptor; Descriptors may be moved
+WORD   pDeviceDscr;	// Pointer to Device Descriptor;
+					//	Descriptors may be moved
 WORD   pDeviceQualDscr;
 WORD   pHighSpeedConfigDscr;
 WORD   pFullSpeedConfigDscr;   
@@ -60,9 +45,6 @@ WORD   pConfigDscr;
 WORD   pOtherConfigDscr;   
 WORD   pStringDscr;   
 
-//-----------------------------------------------------------------------------
-// Prototypes
-//-----------------------------------------------------------------------------
 void SetupCommand(void);
 void TD_Init(void);
 void TD_Poll(void);
@@ -94,12 +76,9 @@ const char code  EPCS_Offset_Lookup_Table[] =
    5     // EP8IN
 };
 
-// macro for generating the address of an endpoint's control and status register (EPnCS)
+// macro for generating the address of an endpoint's control
+//	and status register (EPnCS)
 #define epcs(EP) (EPCS_Offset_Lookup_Table[(EP & 0x7E) | (EP > 128)] + 0xE6A1)
-
-//-----------------------------------------------------------------------------
-// Code
-//-----------------------------------------------------------------------------
 
 // Task dispatcher
 void main(void)
@@ -112,27 +91,28 @@ void main(void)
    WORD   ExtDescrAddr;
 
    // Initialize Global States
-   Sleep = FALSE;               // Disable sleep mode
-   Rwuen = FALSE;               // Disable remote wakeup
-   Selfpwr = FALSE;            // Disable self powered
-   GotSUD = FALSE;               // Clear "Got setup data" flag
+   Sleep = FALSE;	// Disable sleep mode
+   Rwuen = FALSE;	// Disable remote wakeup
+   Selfpwr = FALSE;	// Disable self powered
+   GotSUD = FALSE;	// Clear "Got setup data" flag
 
    // Initialize user device
    TD_Init();
 	
 	 FX2LPSerial_XmitString("Initializated\n\n");
-   // The following section of code is used to relocate the descriptor table. 
-   // Since the SUDPTRH and SUDPTRL are assigned the address of the descriptor 
-   // table, the descriptor table must be located in on-part memory.
+   // The following section of code is used to relocate the descriptor
+   //	table. 
+   // Since the SUDPTRH and SUDPTRL are assigned the address of the  
+   // 	descriptor table, the descriptor table must be located in on-part 
+   //	memory.
    // The 4K demo tools locate all code sections in external memory.
-   // The descriptor table is relocated by the frameworks ONLY if it is found 
-   // to be located in external memory.
+   // The descriptor table is relocated by the frameworks ONLY if it  
+   // 	is found to be located in external memory.
    pDeviceDscr = (WORD)&DeviceDscr;
    pDeviceQualDscr = (WORD)&DeviceQualDscr;
    pHighSpeedConfigDscr = (WORD)&HighSpeedConfigDscr;
    pFullSpeedConfigDscr = (WORD)&FullSpeedConfigDscr;
    pStringDscr = (WORD)&StringDscr;
-
 
 	FX2LPSerial_XmitString("DeviceDscr:0x");
 	FX2LPSerial_XmitHex4(pDeviceDscr);
@@ -163,14 +143,14 @@ void main(void)
    // What is INT2 is for USB & INT4 is for the Slave FIFOs
    INTSETUP |= (bmAV2EN | bmAV4EN);     // Enable INT 2 & 4 autovectoring
 
-   // I don't think we care about Setup PIDs only the Setup data; commented out
-   // bmSUTOK but we want bmSUDAV.
-   USBIE |= bmSUDAV | bmSUTOK | bmSUSP | bmURES | bmHSGRANT;   // Enable selected interrupts
+   // Enable selected interrupts
+   USBIE |= bmSUDAV | bmSUTOK | bmSUSP | bmURES | bmHSGRANT;
    
-   // Global interrupt enable. Controls masking of all interrupts except USB wakeup
-   // (resume). EA = 0 disables all interrupts except USB wakeup. When EA = 1, interrupts are
-   // enabled or masked by their individual enable bits.
-   EA = 1;                  // Enable 8051 interrupts
+   // Global interrupt enable. Controls masking of all interrupts except
+   // USB wakeup (resume). EA = 0 disables all interrupts except USB wakeup.
+   // When EA = 1, interrupts are enabled or masked by their individual 
+   // enable bits.
+   EA = 1;	// Enable 8051 interrupts
 
 #ifndef NO_RENUM
    // Renumerate if necessary.  Do this by checking the renum bit.  If it
@@ -179,7 +159,6 @@ void main(void)
    if(!(USBCS & bmRENUM))
    {
        EZUSB_Discon(TRUE);   // renumerate
-//				FX2LPSerial_XmitString("EZUSB Renumerated");
    }
 #endif
 
@@ -188,16 +167,19 @@ void main(void)
    // is not necessary but doesn't hurt anything
    USBCS &=~bmDISCON;
 
-	 FX2LPSerial_XmitString("Reconecting...\n\n");
-   // The three LSBs of the Clock Control Register (CKCON, at SFR location 0x8E) control the stretch
-   // value; stretch values between zero and seven may be used. A stretch value of zero adds zero
-   // instruction cycles, resulting in MOVX instructions which execute in two instruction cycles.
-   CKCON = (CKCON&(~bmSTRETCH)) | FW_STRETCH_VALUE; // Set stretch to 0 (after renumeration)
+	// esta linea soluciona problemas de booteo
+	FX2LPSerial_XmitString("Reconecting...\n\n"); 
+   // The three LSBs of the Clock Control Register (CKCON, at SFR 
+   //	location 0x8E) control the stretch value; stretch values 
+   //	between zero and seven may be used. A stretch value of 
+   //	zero adds zero instruction cycles, resulting in MOVX 
+   //	instructions which execute in two instruction cycles.
+   
+   // Set stretch to 0 (after renumeration)
+   CKCON = (CKCON&(~bmSTRETCH)) | FW_STRETCH_VALUE; 
 
    // clear the Sleep flag.
    Sleep = FALSE;
-//	EZUSB_InitI2C();			// Initialize EZ-USB I2C controller
-//	FX2LPSerial_XmitString("I2C Initializated");
 	 
    // Task Dispatcher
    while(TRUE)               // Main Loop
@@ -216,20 +198,25 @@ void main(void)
       // processor will not wake up on any other interrupts.
       if (Sleep)
       {
-				//FX2LPSerial_XmitString("Suspended!");
           if(TD_Suspend())
           { 
-              Sleep = FALSE;            // Clear the "go to sleep" flag.  Do it here to prevent any race condition between wakeup and the next sleep.
+              Sleep = FALSE;            // Clear the "go to sleep" flag.  
+										//	Do it here to prevent any race
+										//	condition between wakeup and the
+										//	next sleep.
               do
               {
                     EZUSB_Susp();         // Place processor in idle mode.
               }
               while(!Rwuen && EZUSB_EXTWAKEUP());
-                // Must continue to go back into suspend if the host has disabled remote wakeup
-                // *and* the wakeup was caused by the external wakeup pin.
+                // Must continue to go back into suspend if the host has
+				//	disabled remote wakeup *and* the wakeup was caused by 
+				//	the external wakeup pin.
                 
-             // 8051 activity will resume here due to USB bus or Wakeup# pin activity.
-             EZUSB_Resume();   // If source is the Wakeup# pin, signal the host to Resume.      
+             // 8051 activity will resume here due to USB bus or Wakeup# pin 
+			 //	activity.
+             EZUSB_Resume();	// If source is the Wakeup# pin, signal the 
+								// host to Resume.      
              TD_Resume();
           }   
       }
@@ -251,37 +238,37 @@ void SetupCommand(void)
             switch(SETUPDAT[3])         
             {
                case GD_DEVICE:            // Device
-									FX2LPSerial_XmitString("Device\n\n");
+				  FX2LPSerial_XmitString("Device\n\n");
                   SUDPTRH = MSB(pDeviceDscr);
                   SUDPTRL = LSB(pDeviceDscr);
                   break;
                case GD_DEVICE_QUALIFIER:            // Device Qualifier
-									FX2LPSerial_XmitString("Device Qualifier\n\n");
+				  FX2LPSerial_XmitString("Device Qualifier\n\n");
                   SUDPTRH = MSB(pDeviceQualDscr);
                   SUDPTRL = LSB(pDeviceQualDscr);
                   break;
                case GD_CONFIGURATION:         // Configuration
-									FX2LPSerial_XmitString("Configuration\n\n");
+				  FX2LPSerial_XmitString("Configuration\n\n");
                   SUDPTRH = MSB(pConfigDscr);
                   SUDPTRL = LSB(pConfigDscr);
                   break;
                case GD_OTHER_SPEED_CONFIGURATION:  // Other Speed Configuration
-									FX2LPSerial_XmitString("Other Speed Configuration\n\n");
+				  FX2LPSerial_XmitString("Other Speed Configuration\n\n");
                   SUDPTRH = MSB(pOtherConfigDscr);
                   SUDPTRL = LSB(pOtherConfigDscr);
                   break;
                case GD_STRING:            // String
-									FX2LPSerial_XmitString("String\n\n");
+				  FX2LPSerial_XmitString("String\n\n");
                   if(dscr_ptr = (void *)EZUSB_GetStringDscr(SETUPDAT[2]))
                   {
                      SUDPTRH = MSB(dscr_ptr);
                      SUDPTRL = LSB(dscr_ptr);
                   }
                   else 
-										EZUSB_STALL_EP0();   // Stall End Point 0
+					 EZUSB_STALL_EP0();   // Stall End Point 0
                   break;
                default:            // Invalid request
-										EZUSB_STALL_EP0();      // Stall End Point 0
+				  EZUSB_STALL_EP0();      // Stall End Point 0
             }
          break;
       case SC_GET_INTERFACE:                  // *** Get Interface
@@ -351,11 +338,12 @@ void SetupCommand(void)
                   if(SETUPDAT[2] == 1)
                      Rwuen = TRUE;      // Enable Remote Wakeup
                   else if(SETUPDAT[2] == 2)
-                     // Set Feature Test Mode.  The core handles this request.  However, it is
-                     // necessary for the firmware to complete the handshake phase of the
-                     // control transfer before the chip will enter test mode.  It is also
-                     // necessary for FX2 to be physically disconnected (D+ and D-)
-                     // from the host before it will enter test mode.
+                     // Set Feature Test Mode.  The core handles this request.
+					 //	However, it is necessary for the firmware to complete 
+					 //	the handshake phase of the control transfer before the 
+					 //	chip will enter test mode.  It is also necessary for FX2 
+					 //	to be physically disconnected (D+ and D-) from the host 
+					 //	before it will enter test mode.
                      break;
                   else
                      EZUSB_STALL_EP0();   // Stall End Point 0

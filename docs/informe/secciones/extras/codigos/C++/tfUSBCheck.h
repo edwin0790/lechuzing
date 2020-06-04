@@ -11,12 +11,12 @@
 #include <ctime>
 
 //errores: 9 es error, xx es el identificador del error
-#define NO_DOI 			901	//No device of interest
-#define NO_PROGR 		902	//No programmed Cypress devices
-#define DRIVER_BLOCKED	903	//Driver couldn't be detach
-#define NO_LIBUSB		904 //LIBUSB is not working
+#define NO_DOI 			901	//Dispositivo de interes no encontrado
+#define NO_PROGR 		902	//El dispositivo no se encuentra programado
+#define DRIVER_BLOCKED	903	//El driver no pudo ser desconectado
+#define NO_LIBUSB		904 //LIBUSB no está funcionando
 
-//Cypress data
+//datos de Cypress
 #define CY_VID			0x04b4
 #define CY_FX2LP_PID	0x1003
 #define OUT_EP			(LIBUSB_ENDPOINT_OUT | 8)

@@ -84,7 +84,7 @@ void TD_Poll(void)
 	\end{lstlisting}
 
 A través de los registros EPxFIFOFLGS se puede conocer el estado de cada uno. Aplicando una máscara bit a bit, se obtiene el estado de cada uno de los \textit{FLAGS}. Así, dependiendo del estado de cada uno de ellos, se encienden o apagan las luces respectivas.
-Los LED multipropósito se encuentran numerados en la placa de desarrollo desde el LED 2 hasta el LED 5. En la programación de su funcionamiento, el LED 2 se enciende cuando el EP2 se encuentra vacío, el LED 3 encendido indica que el EP8 está lleno y el LED 4 señala que el EP8 no contiene datos. Por su parte el LED 5 se enciende cuando el controlador establece una conexión de alta velocidad con el Host. 
+Los LED multipropósito se encuentran numerados en la placa de desarrollo desde el LED 2 hasta el LED 5. En la programación de su funcionamiento, el LED 2 se enciende cuando el EP2 se encuentra vacío, el LED 3 encendido indica que el EP8 está lleno y el LED 4 señala que el EP8 no contiene datos. Por su parte el LED 5 parpadea cuando el controlador establece una conexión de alta velocidad con el Host y queda encendido siempre cuando la conexión es a toda velocidad. 
 Esta rutina resultó de mucha utilidad a la hora de realizar las diferentes pruebas, tanto del funcionamiento de la interfaz, como de la conexión entre la interfaz y el FPGA.
 
 \subsection{Prueba de envío y recepción de datos}
