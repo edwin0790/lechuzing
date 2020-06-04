@@ -1,0 +1,21 @@
+En el transcurso del trabajo reportado por este informe fue cumplido el objetivo general, el cual consistió en el desarrollo de un sistema de comunicación USB 2.0 de alta velocidad destinado al intercambio de datos entre una PC y un FPGA. El sistema desarrollado fue capaz de transmitir $1,08 \times 10^{12} \ ,bit$ sin errores ni interrupciones durante 24 horas seguidas.
+
+Además de cumplimentar con el objetivo general perseguido por este trabajo, se logró entender conceptos fundamentales del funcionamiento del USB, tal como el empaquetamiento de lo datos y el tipo de transferencias que pueden realizarse a través de él. También se logró comprender cómo debe ser descripto un dispositivo USB al ser desarrollado y cómo debe ser informado a la PC. El sistema de comunicación implementado se compone de un software de computadora, una interfaz USB y un FPGA.
+
+Se utilizó el controlador FX2LP, comercializado por la empresa Cypress Semiconductor como interfaz USB y a través de su estudio se pudo configurar dicho dispositivo, obteniendo un funcionamiento acorde a los requerimientos. El controlador FX2LP recibe transferencias en masa y transmite transferencias isócronas desde y hacia la PC respectivamente. Con el FPGA se comunica por un bus de 16 bits a través de una memoria FIFO comandada por el FPGA.
+
+Se utilizó un FPGA Spartan 6 comercializado por la empresa Xilinx para implementar, en lenguaje VHDL, una Máquina de Estados Finitos capaz de enviar y recibir datos desde la interfaz USB. Dicha máquina de estados es utilizada para comandar la memoria FIFO presente en el controlador FX2LP. Se destaca el bajo consumo de recursos programables de FPGA por parte del sistema desarrollado, dejando lugar a la implementación de aplicaciones que utilicen la comunicación desarrollada, por ejemplo el desarrollo de sensores para equipos de radiografías y neutrografías o también de detectores de partículas utilizando sensores de imagen CMOS. Además se elaboró un circuito impreso destinado a la conexión física entre el FPGA y la interfaz USB.
+
+Se desarrolló un software de computadoras que genera, envía y recibe datos hacia y desde el FPGA. Para la elaboración de este programa, se utilizó la biblioteca \verb|libusb-1.0|, que permite la comunicación de programas con dispositivos conectados a través del bus USB. Esta es una biblioteca de código abierto y que puede ser ejecutado en cualquier sistema operativo.
+
+Se implementó a su vez un sistema de pruebas compuesto de una memoria FIFO implementada en el FPGA, que recibe mensajes desde la interfaz USB y los retransmite de vuelta. Este sistema permitió testear la funcionalidad y robustez de la comunicación desarrollada.
+El sistema desarrollado fue probado y logró una conexión efectiva entre una PC y un FPGA, logrando en la prueba un intercambio de mas de $1 \times 10^{12}$ bits sin pérdida de información. La tasa de transferencia de información útil lograda por la prueba de comunicación fue de \SI{9,12}{\mega\bit\per\second}, superior a la máxima tasa posible a través del SPI de la placa Mojo o del protocolo UART.
+
+
+%Si bien la tasa de bit hace suponer que la tasa de transferencia de \SI{12,4}{\mega\bit\per\second} puede sugerir que la comunicación está ocurriendo a una tasa de bit de velocidad completa, se debe tener en cuenta dos consideraciones.
+%
+%La primera de ellas tiene que ver con el hecho de que si el puerto USB estuviese transmitiendo a velocidad completa implicaría que el sistema desarrollado ocupa todo el ancho de banda disponible, lo cual no es correcto ya que en el mismo bus se encuentra incorporado el ratón y el teclado de la PC utilizada.
+%
+%La segunda consideración que debe tenerse en cuenta es que al tener configuraciones de emisión y transmisión diferente, la prueba realizada no sea suficiente para poder calcular la máxima tasa de bit que podría alcanzar el sistema utilizando al máximo posible el ancho de banda que podría brindar el host.
+%
+%Por tanto, se concluye que 
