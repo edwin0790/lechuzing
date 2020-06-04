@@ -2,33 +2,28 @@
 
 La prueba del sistema consintió en el envío de una trama de datos desde la PC. La trama debe arribar al FPGA, atravesando la interfaz FX2LP.
 El FPGA, por su parte, almacena la trama de datos y, una vez finalizada la recepción, procede a la transmisión de la trama en el camino de regreso. 
+Se generó un programa de computadoras, escrito en lenguaje C++, con el objetivo de poder crear tramas con datos aleatorios y repetir la prueba en forma automática.
+Se transmitieron datos entre la PC y el sistema desarrollado, en forma ininterrumpida, durante 24 horas con el objetivo de probar la robustez en la comunicación y calcular la tasa de datos transmitida por el bus.
 
-Se generó un programa de computadoras, escrito en C++, con el objetivo de poder crear tramas con datos aleatorios y repetir la prueba en forma automática.
-
-La prueba fue realizada repetidamente durante 24 horas con el objetivo de probar la robustez en la comunicación y calcular la tasa de datos transmitida por el bus.
-
-Los datos fueron generados en forma aleatoria para que el ruido no sea enmascarado por una trama invariable en el bus de datos.
+Podrían existir capacidades parásitas en el circuito, a través del cual los datos son transmitidos, que disminuirían la tasa de transferencia a la que los datos podrían ser transmitidos. Por esto, los datos fueron generados en forma aleatoria logrando que las capacidades no deseadas en el circuito no sea enmascaradas por una trama invariable en el bus de datos.
 
 Para elaborar el programa que se encarga de enviar y recibir los datos se utilizó la biblioteca \verb|libusb-1.0|.
-
 En esta Sección se justificará la elección de la biblioteca \verb|libusb-1.0| y se detallará la secuencia del programa desarrollado.
-
-El código completo con la implementación del programa se encuentra en el Apéndice \ref{ap:cpp}
+El código completo con la implementación del programa se encuentra en el Apéndice \ref{ap:cpp}.
 
 \subsection{Elección de la biblioteca libusb-1.0}
-	La elaboración de un programa en lenguaje C++ que pueda controlar en forma adecuada los puerto USB de una PC es una tarea que escapa a los objetivos de este trabajo. En su lugar, se recurrió al uso de una biblioteca ya definida y bien conocida, que permita obtener acceso a los puertos USB, y con ella, poder realizar el envío y la recepción de datos necesaria para las pruebas del sistema desarrollado.
+	%La elaboración de un programa en lenguaje C++ que pueda controlar en forma adecuada los puerto USB de una PC es una tarea que escapa a los objetivos de este trabajo. 
+	Existen bibliotecas que son utilizadas para obtener acceso a diversos periféricos. Entre ellas, una solución conocida y muy documentada es la biblioteca \verb|libusb-1.0|, que permite transmitir datos por parte de una programa de computadoras escrito en lenguaje C++, a través de los puertos USB de la PC.
+%	En su lugar, se recurrió al uso de una biblioteca ya definida y bien conocida, que permita obtener acceso a los puertos USB, y con ella, poder realizar el envío y la recepción de datos necesaria para las pruebas del sistema desarrollado.
+	Se eligió esta biblioteca para la realización del programa debido a que es una biblioteca de código abierto, es decir, que sus archivos fuente pueden ser leídos, modificados y/o utilizados por cualquier persona sin la necesidad de pagar una licencia.  Otro motivo para su adopción es su característica de multiplataforma, que permite escribir códigos que funcionen en sistemas operativos tan diversos como Windows, Linux, Mac Os, Android, entre otros. Lo que no puede ser logrado con el uso de bibliotecas privativas como WinUSB.
 	
-	Se eligió la biblioteca \verb|libusb-1.0| para la realización del programa debido a que es una biblioteca de código abierto, es decir,  que sus archivos fuente pueden ser leídos, modificados y/o utilizados por cualquier persona sin la necesidad de pagar una licencia. 
-
-	Otro motivo para su adopción es su característica de multiplataforma, es decir que puede ser realizado y compilado código que funcione en sistemas operativos tan diversos como Windows, Linux, Mac Os, Android, entre otros. Lo que no puede ser logrado con el uso de bibliotecas privativas como WinUSB.
-	
-	Adicionalmente, la biblioteca \verb|libusb-1.0| no tiene un autor específico, sino que existe una gran comunidad que contribuye al crecimiento del proyecto, como así también otros proyectos que utilizan esta biblioteca. Así, existe una gran variedad de ejemplos y foros que facilitan el aprendizaje en su utilización y adaptaciones para diferentes lenguajes de programación, que se adapte a los conocimientos previos de la persona que desarrolla programas.
+	Adicionalmente, la biblioteca \verb|libusb-1.0| no tiene un autor específico, sino que existe una gran comunidad que contribuye al crecimiento del proyecto, como así también otros proyectos que utilizan esta biblioteca. Con el tiempo, se ha vuelto una biblioteca muy conocida, a través de los documentos que ha generado una gran comunidad de usuarios, existiendo manuales~\cite{libusb}, ejemplos y foros~\cite{ThePersianCoder2010} que facilitan el aprendizaje en su utilización y adaptaciones para diferentes lenguajes de programación, que se adapte a los conocimientos previos de la persona que desarrolla programas.
 
 \subsection{Programa de PC desarrollado}
-	El programa de PC desarrollado para el envío y recepción de datos desde la PC hasta el FPGA consta de tres etapas. La primera de ellos se encarga de inicializar la biblioteca, identificar que el dispositivo USB conectado se corresponda con la comunicación con el FPGA y solicitar al sistema operativo el acceso a la comunicación.
-	El segundo módulo se encarga de generar la trama de datos, enviarla hacia el FPGA y esperar su recepción. La trama de datos generados es almacenada para la tercera etapa del programa que, una vez recibida la transferencia desde el FPGA, corrobora que los datos recibidos en la PC sean iguales a los enviados.
+	El programa de PC desarrollado para el envío y recepción de datos desde la PC hasta el FPGA consta de tres módulos. El primero de ellos se encarga de inicializar la biblioteca, identificar que el dispositivo USB conectado se corresponda con la comunicación con el FPGA y solicitar al sistema operativo el acceso a la comunicación.
+	El segundo módulo se encarga de generar la trama de datos, enviarla hacia el FPGA y esperar su recepción. La trama de datos generados es almacenada para que en el tercer módulo del programa que, una vez recibida la transferencia desde el FPGA, se corrobore que los datos recibidos en la PC sean iguales a los enviados. El código completo del programa desarrollado, escrito en C++, se puede observar en el Apéndice \ref{ap:cpp}
 	
-	Durante la primera etapa del programa, se inicializa la biblioteca \verb|libusb-1.0| y se identifica el dispositivo. Para ello es necesario generar una lista con todos los dispositivos USB conectados.
+	En la primera etapa del programa, se inicializa la biblioteca \verb|libusb-1.0| y se identifica el dispositivo. Para ello es necesario generar una lista con todos los dispositivos USB conectados.
 	La lista de los dispositivos es informada por el sistema operativo a través de los identificadores contenidos en los descriptores del dispositivo. Si en la lista de dispositivos se encuentra el sistema desarrollado, se solicita acceso al sistema operativo. En caso contrario, el programa finaliza informando la situación.
 	
 	\begin{figure}
@@ -73,10 +68,8 @@ El código completo con la implementación del programa se encuentra en el Apén
 	Durante el segundo módulo del programa, se generan datos en forma aleatoria. Con el objetivo de obtener información adicional en caso de que existan errores en la información transmitida, se agregan bits de paridad par bidimensional (ver Figura \ref{test:2dimpar}), en tramas de 8x8 bits. Es decir, se genera un número aleatorio de 7 bits. Luego, se agrega un bit adicional, de forma tal que la cantidad de unos existentes en la palabra enviada sea par. Finalmente, se calcula la paridad de los bits con igual significancia en grupos de 7 números y se agrega el número resultante en el octavo lugar del grupo. Una vez generados los datos, estos son transmitidos hacia el FPGA. Los datos generados suman \SI{128}{\byte} para cada una de las transferencias realizadas.
 	
 	En la tercera etapa, el programa espera hasta la recepción del mensaje reenviado. Una vez que este arriba, se procede a corroborar que los datos recibido sean iguales a los enviados.	La función encargada de verificar los datos corrobora que los bits de paridad sean correctos y, en caso de haber un error, informa cuál fue el dato erróneo.
-	
 	Tanto los datos enviados como los recibidos son almacenados en un archivo mientras el programa es ejecutado para un análisis posterior de los resultados.
 	
-	El código completo del programa desarrollado, escrito en C++, se puede observar en el Apéndice \ref{ap:cpp}
 %La tercer parte en la que se divide el trabajo es relativa a la comunicación entre la interfaz y una PC. Ya que la interfaz se encarga en gran medida de lo relativo al empaquetamiento, codificación y decodificación y que las PC, por su parte, vienen equipadas con el hardware necesario, este trabajo debe implementar el software que comande y gestione, desde el sistema operativo el correcto acceso a los datos que se envían y reciben. Para la elaboración de software que permita el manejo de los puertos USB, se utiliza la biblioteca \verb|libusb|.%\\
 %	
 %\verb|libusb| es una biblioteca de código abierto, muy bien documentada, escrita en C, que brinda acceso genérico a dispositivos USB. Las características de diseño que persigue el equipo de desarrollo que mantiene la biblioteca es que sea multiplataforma, modo usuario y agnóstico de versión~\cite{libusb}.%\\

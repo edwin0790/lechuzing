@@ -1,12 +1,14 @@
-La prueba de sistema envió y recibió mensajes con datos aleatorios durante más de 24 horas. A través de un análisis del registro de los datos enviados y recibidos se pudo determinar con mayor precisión cuanta información fue transmitida y durante que intervalo de tiempo.
+A través de un análisis del registro de los datos enviados y recibidos se pudo determinar con mayor precisión cuanta información fue transmitida y durante que intervalo de tiempo.
 
-El registro dió cuenta de que el sistema estuvo funcionando durante 87134 segundo, lo que equivale a 24 horas, 12 minutos y 14 segundos. Durante este lapso de tiempo fueron enviados 388.191.289 paquetes. Se recibió la misma cantidad de paquetes sin pérdida de información ni errores en la transmisión. 
+El registro dió cuenta de que el sistema estuvo funcionando durante 87134 segundos.
+%, lo que equivale a 24 horas, 12 minutos y 14 segundos. 
+Durante este lapso de tiempo fueron enviados 388.191.289 paquetes. Se recibió la misma cantidad de paquetes sin pérdida de información ni errores en la transmisión. 
 
 El programa de PC desarrollado genera paquetes de \SI{128}{\byte}. Se debe considerar que cada paquete contiene un encabezado y una cola que también se transmite junto a los datos. Los valores típicos de encabezado y cola para transferencias en masa, como las que emite la PC en este trabajo, es de \SI{55}{\byte} y para transferencias isócronas, que es el tipo de transferencia que llega a la PC desde la interfaz USB, este valor es de \SI{38}{\byte}~\cite{USBspec}. Por tanto, por cada una de los ciclos de envío y recepción de datos, se transfirieron \SI{349}{\byte}:
 
 \begin{center}
 	\begin{math}
-		128 B \times 2 + 55 B + 38 B = 349 B 
+		2 \cdot 128\,B + 55\,B + 38\,B = 349\,B 
 	\end{math}
 \end{center}
 
@@ -14,7 +16,7 @@ Multiplicando el valor de datos transmitidos, por la cantidad de veces que la op
 
 \begin{center}
 	\begin{math}
-		388x10^3 \times 349 B = 135,5 \times 10^6 B
+		388\times 10^3 \cdot 349\,B = 135,5\times 10^6\,B
 	\end{math}
 \end{center}
 
@@ -22,22 +24,43 @@ Cada Byte contiene 8 bits, por lo que al efectuar la operación de conversión s
 
 \begin{center}
 	\begin{math}
-		135,5 \times 10^5 B \times 8 bit/B = 1,08 \times 10^12 bit
+		135,5\times 10^6\,B \cdot 8\,\frac{\displaystyle bit}{\displaystyle B} = 1,08\times 10^{12}\,bit
 	\end{math}
 \end{center}
 
-Finalmente, la tasa de bit se obtiene al dividir los bits transmitidos por la cantidad de tiempo total empleada en la prueba. Lo que arroja:
+Finalmente, se puede calcular la tasa de bit, al dividir los bits transmitidos por la cantidad de tiempo total empleada en la prueba. 
 
 \begin{center}
 	\begin{math}
-		\frac{\displaystyle 1,08 \times 10^{12} bit}{\displaystyle 87,1 \times 10^3 s}= 12,4 \times 10^6 bit/s
+		\frac{\displaystyle 1,08\times 10^{12}\,bit}{\displaystyle 87,1 \times 10^3\,s}= 12,4 \times 10^6\,\frac{\displaystyle bit}{\displaystyle s}
 	\end{math}
 \end{center}
 
-Por tanto, la tasa de bit lograda en la transmisión USB fue de \SI{12.4}{\mega\bit\per\second}. 
+La tasa de información útil intercambiada (sin contar encabezados y cola de la comunicación) se calcula multiplicando los \SI{128}{\byte} de cada intercambio por la cantidad de paquetes, dividida en el tiempo que duró la prueba:
 
-La tasa de transmisión podría parecer insuficiente a los efectos de trabajo. Incluso se puede suponer que la tasa de transmisión es más similar a un sistema USB de velocidad completa que a uno de alta velocidad.
+\begin{center}
+	\begin{math}
+		\frac{\displaystyle 2 \cdot 128 \, B \cdot 388 \times 10^3}{\displaystyle 87,1 \times 10^3\,s}\, = \, 1,14\times 10^3\,\frac{\displaystyle B}{\displaystyle s}
+	\end{math}
+\end{center}
 
-Sin embargo, se considera que si el sistema USB de la PC en donde se realizó la prueba funcionase a velocidad completa, significaría que el total del ancho de banda estuvo dedicado al sistema. No obstante, el bus USB tenia conectado también un ratón y un teclado, y ambos funcionaron con normalidad durante toda la prueba, por lo que no puede decirse que el sistema USB estuviese dedicado al dispositivo desarrollado en forma exclusiva. Esto quiere decir que el sistema efectivamente funcionaba en modo de alta velocidad, aunque dedicaba un ancho de banda muy bajo a la comunicación entre la PC y el dispositivo desarrollado en este trabajo.
+El ancho de banda obtenida en esta prueba otorga \SI{12,4}{\mega\bit\per\second}. Sin embargo, la tasa de bit real empleada en la comunicación podría ser mayor debido a que la prueba estaba usando dos EP con diferentes características, lo que limita el desempeño de la transmisión isócrona al de transferencias en masa y de las demoras propias de la prueba del sistema elaborado en la transferencia de los datos, considerando que se debe esperar recibir el paquete enviado antes de hacer un nuevo envío. No obstante, se constató que el LED D5 de la placa de desarrollo de Cypress destellaba durante la prueba, dando cuenta de que el sistema de comunicación USB funcionaba a alta velocidad (\SI{480}{\mega\bit\per\second}).
 
-Se podría explicar el bajo rendimiento a que el programa de pruebas se detiene a la espera del paquete entrante cuando este es solicitado. Esto hace que, si bien la prueba desarrollada sirve para testear la confiabilidad del sistema, logrando una tasa de errores de bit baja (se recibieron más de 10$^{12}$ \SI{}{\bit\per\second} sin errores), no es la óptima para probar el ancho de banda máximo posible. Sin embargo, dicha prueba escapa al tiempo disponible para seguir profundizando las pruebas de este trabajo.
+Aún en condiciones desfavorables de medida, la tasa de información útil obtenida en las pruebas fue de \SI{1,14}{\mega\byte\per\second}, lo que es equivalente a \SI{9,12}{\mega\bit\per\second}, la cual es superior a los \SI{8}{\mega\bit\per\second}, máxima tasa alcanzable a través del sistema SPI de la placa Mojo~\cite{Atmel2016} y a los \SI{5}{\mega\bit\per\second} que otorgan los mejores dispositivos que emplean el sistema UART~\cite{TexasInstrument2013}, ampliamente utilizado en la comunicación de desarrollos.
+%Finalmente, la tasa de bit se obtiene al dividir los bits transmitidos por la cantidad de tiempo total empleada en la prueba. Lo que arroja:
+%
+%\begin{center}
+%	\begin{math}
+%		\frac{\displaystyle 1,08\times 10^{12}\,bit}{\displaystyle 87,1 \times 10^3\,s}= 12,4 \times 10^6\,\frac{\displaystyle bit}{\displaystyle s}
+%	\end{math}
+%\end{center}
+%
+%Por tanto, la tasa de bit lograda en la transmisión USB fue de \SI{12.4}{\mega\bit\per\second}. 
+%
+%La tasa de bit alcanzada es notablemente mayor que la que se puede llegar a obtener transmitiendo por UART o por 
+%
+%La tasa de transmisión podría parecer insuficiente a los efectos de trabajo. Incluso se puede suponer que la tasa de transmisión es más similar a un sistema USB de velocidad completa que a uno de alta velocidad.
+%
+%Sin embargo, se considera que si el sistema USB de la PC en donde se realizó la prueba funcionase a velocidad completa, significaría que el total del ancho de banda estuvo dedicado al sistema. No obstante, el bus USB tenia conectado también un ratón y un teclado, y ambos funcionaron con normalidad durante toda la prueba, por lo que no puede decirse que el sistema USB estuviese dedicado al dispositivo desarrollado en forma exclusiva. Esto quiere decir que el sistema efectivamente funcionaba en modo de alta velocidad, aunque dedicaba un ancho de banda muy bajo a la comunicación entre la PC y el dispositivo desarrollado en este trabajo.
+%
+%Se podría explicar el bajo rendimiento a que el programa de pruebas se detiene a la espera del paquete entrante cuando este es solicitado. Esto hace que, si bien la prueba desarrollada sirve para testear la confiabilidad del sistema, logrando una tasa de errores de bit baja (se recibieron más de 10$^{12}$ \SI{}{\bit\per\second} sin errores), no es la óptima para probar el ancho de banda máximo posible. Sin embargo, dicha prueba escapa al tiempo disponible para seguir profundizando las pruebas de este trabajo.

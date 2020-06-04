@@ -27,14 +27,6 @@
 
 % INTENTO 4
 
-El sistema de comunicación desarrollado fue sometido a una prueba de desempeño a fin de verificar que sea capaz de enviar y recibir datos en forma efectiva y que, a su vez, cumpla con el objetivo de establecer un enlace capaz de enviar datos con \SI{480}{\mega\bit\per\second}.
+El sistema de comunicación desarrollado fue sometido a una prueba de desempeño a fin de verificar que sea capaz de enviar y recibir datos en forma efectiva y que, a su vez, cumpla con el objetivo de establecer un enlace capaz de enviar datos a una tasa de \SI{480}{\mega\bit\per\second}. La prueba realizada consistió en el envío de un conjunto de datos desde una PC, que fue almacenado en el FPGA para luego ser retransmitidos hacia la PC y fue repetida en forma automática durante 24 horas. Para efectuar dicha prueba, se elaboró un sistema en FPGA, dotado con la capacidad de memoria necesaria para recibir los datos que luego enviará, la MEF presentada en el Capítulo~\ref{cap:fpga} que provee lo necesario para la comunicación con el controlador FX2LP y una señal de reloj que permite sincronizar la MEF y la memoria implementada.
 
-La prueba realizada consistió en el envío de un conjunto de datos desde una PC, que fue almacenado en el FPGA para luego ser retransmitidos hacia la PC. Esta prueba fue repetida en forma automática durante 24 horas.
-
-Para realizar la prueba fue necesario elaborar un sistema en FPGA, dotado con la capacidad de memoria necesaria para recibir los datos que luego enviará, la MEF desarrollada en el Capitulo \ref{cap:fpga} que provee lo necesario para la comunicación con el controlador FX2LP y una señal de reloj que permita sincronizar la MEF y la memoria implementada.
-
-El FPGA fue conectado con la interfaz FX2LP a través de la placa de interconexión desarrollada y explicada en el Capítulo \ref{cap:fpga} y, por su parte, la interfaz fue programada con la configuración elaborada en el Capítulo \ref{cap:cy}.
-
-Además, se realizó un programa de computadora, escrito en lenguaje C++, que permite enviar una trama de datos aleatorios hacia el dispositivo desarrollado en el presente trabajo, a través del protocolo USB.
-
-A lo largo de este Capítulo, se detallarán el sistema desarrollado en el FPGA con cada uno de sus componentes y el programa de PC elaborado, y se expondrán los resultados obtenidos de las pruebas y las conclusiones del trabajo realizado.
+Además, se realizó un programa de computadora, escrito en lenguaje C++, que permite enviar una trama de datos aleatorios hacia el dispositivo desarrollado en el presente trabajo, a través del protocolo USB. A lo largo de este Capítulo, se describirán los componentes utilizados para realizar las pruebas de desempeño del sistema de comunicación desarrollado y se expondrán los resultados obtenidos.
