@@ -18,43 +18,81 @@ Previo a realizar pruebas del sistema en su totalidad, se debe conectar cada una
 
 El cirucito impreso desarrollado determina en forma definitiva los puertos que se conectan entre la placa de desarrollo de la interfaz y la del FPGA. En la Tabla \ref{tab:fpga:conexion} se puede observar la correspondencia de cada una de las señales de interés del controlador FX2LP con los puertos del FPGA Spartan 6.
 
-\begin{table}[ht]
-	\centering
-\begin{tabular}{|c|c|}
+%\begin{table}[ht]
+%	\centering
+%	\begin{tabular}{|lr| |lr|}
+%		\hline
+%		\textbf{FX2LP} & \textbf{Spartan 6}&\textbf{FX2LP} & \textbf{Spartan 6} \\
+%		\hline
+\begin{longtable}{|lr| |lr|}
 	\hline
-	\textbf{FX2LP} & \textbf{Spartan 6}\\
+	\textbf{FX2LP} & \textbf{Spartan 6}&\textbf{FX2LP} & \textbf{Spartan 6} \\
 	\hline
-	FD15 & P50\\
-	FD14 & P51\\
-	FD13 & P40\\
-	FD12 & P41\\
-	FD11 & P34\\
-	FD10 & P35\\
-	FD9 & P32\\
-	FD8 & P33\\
-	FD7 & P29\\
-	FD6 & P30\\
-	FD5 & P26\\
-	FD4 & P27\\
-	FD3 & P23\\
-	FD2 & P24\\
-	FD1 & P21\\
-	FD0 & P22\\
-	SLWR & P17\\
-	SLRD & P16\\
-	SLOE & P6\\
-	FLAGA & P12\\
-	FLAGB & P14\\
-	FLAGC & P15\\
-	FLAGD & P11\\
-	PKTEND & P10\\
-	FIFOADR1 & P9\\
-	FIFOADR0 & P8\\
+	\endhead
 	\hline
-\end{tabular}
-	\caption{Correspondecia entre las señales del controlador FX2LP y el FPGA Spartan 6 fijada por el PCB.}
+	\caption{Correspondencia entre las señales del controlador FX2LP y el FPGA Spartan 6 fijada por el PCB.}%
 	\label{tab:fpga:conexion}
-\end{table}
+	\endlastfoot
+	\hline
+	\endfoot
+	FD15 & P50 &FD2 & P24\\
+	FD14 & P51 &FD1 & P21\\
+	FD13 & P40 &FD0 & P22\\
+	FD12 & P41 &SLWR & P17\\
+	FD11 & P34 &SLRD & P16\\
+	FD10 & P35 &SLOE & P6\\
+	FD9 & P32 &FLAGA & P12\\
+	FD8 & P33 &FLAGB & P14\\
+	FD7 & P29 &FLAGC & P15\\
+	FD6 & P30 &FLAGD & P11\\
+	FD5 & P26 &PKTEND & P10\\
+	FD4 & P27 &FIFOADR1 & P9\\
+	FD3 & P23 &FIFOADR0 & P8\\
+\end{longtable}
+%		\hline
+%	\end{tabular}
+%	\caption{Correspondencia entre las señales del controlador FX2LP y el FPGA Spartan 6 fijada por el PCB.}%
+%	\label{tab:fpga:conexion}
+%\end{table}
+
+%	\begin{longtable}{|c|c|}
+%	\hline
+%	\textbf{FX2LP} & \textbf{Spartan 6}\\
+%	\hline
+%	\endhead
+%	\hline
+%	\caption{Correspondencia entre las señales del controlador FX2LP y el FPGA Spartan 6 fijada por el PCB.}%
+%	\label{tab:fpga:conexion}
+%	\endlastfoot
+%	\hline
+%	\endfoot
+%	FD15 & P50\\
+%	FD14 & P51\\
+%	FD13 & P40\\
+%	FD12 & P41\\
+%	FD11 & P34\\
+%	FD10 & P35\\
+%	FD9 & P32\\
+%	FD8 & P33\\
+%	FD7 & P29\\
+%	FD6 & P30\\
+%	FD5 & P26\\
+%	FD4 & P27\\
+%	FD3 & P23\\
+%	FD2 & P24\\
+%	FD1 & P21\\
+%	FD0 & P22\\
+%	SLWR & P17\\
+%	SLRD & P16\\
+%	SLOE & P6\\
+%	FLAGA & P12\\
+%	FLAGB & P14\\
+%	FLAGC & P15\\
+%	FLAGD & P11\\
+%	PKTEND & P10\\
+%	FIFOADR1 & P9\\
+%	FIFOADR0 & P8\\
+%	\end{longtable}
 
 %\begin{figure}[ht]
 %	\centering
