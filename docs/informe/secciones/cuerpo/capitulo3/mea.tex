@@ -182,10 +182,10 @@ Para el diseño de cada una de la operaciones de la MEF implementada en el prese
 %
 %	La interfaz FX2LP espera siempre un número determinado de datos, señalizado como N en los diagramas de la Figura \ref{fpga:escfifo} y la Figura \ref{fpga:pktend}. Una vez alcanzado dicho número, el paquete queda listo para ser enviado cuando el host lo solicite. Sin embargo, puede ser enviado un número menor de datos en forma manual. Este funcionamiento es provisto a través de la señal PKTEND. Como se observa en la Figura \ref{fpga:pktend}, cuando PKTEND es asertiva (activa en bajo), la señal {FLAG\_Lleno} se activa y la memoria FIFO ignora cualquier dato que se envíe a continuación.
 
-\begin{figure}[t]
+\begin{figure}[b]
 	\centering
 	\begin{tikzpicture}[ask/.style = {diamond,text width=70,draw=black,align=center,aspect=2},
-	scale=.7]
+	scale=.65]
 		\begin{scope}[transform shape,node distance=(1 and 2),>=latex,]
 			\node[moore,text width=110] (inicio) [label=above right:inicio]{FIFOADR=$''$ZZ$''$\\FDATA=$''$ZZ$''$\\d\_recibido=d\_recibido\\SLOE=$'1'$\\SLRD=$'1'$\\SLWR=$'1'$};
 		
@@ -244,7 +244,7 @@ Para el diseño de cada una de la operaciones de la MEF implementada en el prese
 				\draw[->](escwr) -- ($(escwr.south)+(0,-1)$) -| ($(escdir.east)+(.5,0)$) |- ($(lleno1.south)!0.5!(escdir.north)$);
 		\end{scope}
 	\end{tikzpicture}
-	\caption{Diagrama de flujo de la máquina de estados desarrollada}
+	\caption{Diagrama de flujo de la máquina de estados finitos desarrollada}
 	\label{fpga:mef:diag}
 \end{figure}
 %En la Figura \ref{fpga:mea:concepto} se muestra que cuando la memoria FIFO de salida del host señala que no está vacía, se ejecuta la tarea de lectura de datos. Si la memoria FIFO asignada a la salida del host se encuentra vacía y está activa la salida de datos del FPGA, estos datos serán escritos en la memoria FIFO correspondiente.

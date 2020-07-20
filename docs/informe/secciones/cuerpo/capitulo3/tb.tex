@@ -1,4 +1,4 @@
-La verificación funcional es una rutina de control que sirve para corroborar que lo descripto en lenguaje de alto nivel (VHDL en este trabajo), se corresponde con el funcionamiento que se esperaba antes de realizar la descripción. Para efectuar la verificación, se describe el comportamiento esperado de las señales que de entrada al circuito desarrollado, se simula el sistema y se corrobora que las salidas y se comporten conforme a lo esperado.
+La verificación funcional es una rutina de control que sirve para corroborar que lo descripto en lenguaje de alto nivel (VHDL en este trabajo), se corresponde con el funcionamiento que se esperaba antes de realizar la descripción. Para efectuar la verificación, se describe el comportamiento esperado de las señales que de entrada al circuito desarrollado, se simula el sistema y se corrobora que las salidas se comporten conforme a lo esperado.
 
 Para efectuar la verificación funcional de la máquina de estados desarrollada, se describió en VHDL un ciclo típico de entrada de datos desde la interfaz y se realizó un chequeo de las salidas, tanto hacia el sistema exterior (el controlador FX2LP), como hacia el interior (los módulos implementados en el FPGA). También se simuló la entrada de datos desde el FPGA, generando la rutina de salida de datos hacia la interfaz.
 
@@ -176,7 +176,7 @@ Además, se observó que también se debe detener el envío de datos cuando la m
 %   end process;
 %\end{lstlisting}
 
-\begin{figure}[t]
+\begin{figure}[b]
 	\centering
 	\includegraphics[width=\textwidth]{mef_tb_lect_marcas}
 	\caption{Diagrama temporal de la operación de lectura entregado por el simulador}
@@ -190,23 +190,23 @@ Una vez que es desactivada la señal {\it FLAGB}, el bus de dirección apunta a 
 También se comprueba que el estado actual en cada uno de los momentos es el adecuado. Además, se observa que, aunque se coloquen datos en el bus de salida interno {\it DATA\_TO\_TX[15:0]} y se active la señal de envío
 {\it SEND\_REQ}, el bus de datos que se comunica con la interfaz {\it FDATA[15:0]} permanece con los datos externos.
 
+Una vez que la MEF alcanza el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de allí, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encuentra en el bus de envío de datos {\it DATA\_TO\_TX}.
+
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{mef_tb_escr_marcas}
-	\caption{Diagrama temporal de la operacion de escritura entregado por el simulador}
+	\caption{Diagrama temporal de la operación de escritura entregado por el simulador}
 	\label{tb:escr}
-\end{figure}
-
-Una vez que la MEF alcanza el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de allí, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encuentra en el bus de envío de datos {\it DATA\_TO\_TX}.
-
-\begin{figure}[hb]
-	\centering
-	\includegraphics[width=\textwidth]{mef_tb_full}
-	\caption{Diagrama temporal que muestra las interrupciones de la operación de escritura}
-	\label{tb:inter}
 \end{figure}
 
 La Figura \ref{tb:inter} muestra cómo el sistema finaliza la operación de escritura cuando un sucede al menos uno de los eventos considerados para su interrupción. Cuando se activa {\it FLAGB} mientras se ejecuta la operación de escritura, esta última es interrumpida y el sistema procede a realizar, el próximo estado, la operación de lectura. En el caso de que active la señal {\it FLAGA}, indicando que la memoria que recibe los datos que envía el FPGA alcanzó el máximo de capacidad, el proceso de escritura es detenido. En ambos casos, no es relevante el valor de la señal de envío de dato {\it SEND\_REQ}, ya que ambos eventos poseen prioridad a esta.
  
 Una vez realizada la simulación y verificación funcional de la síntesis desarrollada, se estuvo en condiciones de grabar dicha síntesis en el FPGA y se puede proceder a realizar pruebas de funcionamiento más avanzadas. 
 El código completo de la simulación, se pueden leer en el Apéndice \ref{ap:vhdl}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{mef_tb_full}
+	\caption{Diagrama temporal que muestra las interrupciones de la operación de escritura}
+	\label{tb:inter}
+\end{figure}

@@ -34,7 +34,9 @@ G.~Binnig and H.~Rohrer, ``{Scanning tunneling microscopy},'' {\em Surface
 
 \bibitem{Turchetta2019}
 R.~Turchetta, K.~R. Spring, and M.~W. Davidson, ``{Digital Imaging in Optical
-  Microscopy - Introduction to CMOS Image Sensors},'' (accessed in July 2019).
+  Microscopy - Introduction to CMOS Image Sensors}.''
+  https://www.olympus-lifescience.com/en/microscope-resource/primer/digitalimaging/cmosimagesensors/.
+\newblock (Acceso: 10/07/2019).
 
 \bibitem{Mendis1994}
 S.~Mendis, S.~Kemeny, and E.~Fossum, ``{CMOS active pixel image sensor},'' {\em
@@ -147,27 +149,70 @@ Compaq, Hewlett-Packard, Intel, Lucent, Microsoft, NEC, and Philips, {\em
 \newblock 2000.
 
 \bibitem{USBHardwareWiki}
-``Usb hardware.'' \url{https://en.wikipedia.org/wiki/USB_hardware}.
-\newblock Ingreso: 8 de agosto del 2019.
+``Usb hardware.'' {https://en.wikipedia.org/wiki/USB{{\_}}hardware}.
+\newblock Acceso: 08/08/2019.
 
 \bibitem{Riihonen2015}
 T.~Riihonen, {\em {Desing and analysis of duplexing Modes and Forwarding
   Protocols for OFDM(A) Relay Links}}.
 \newblock PhD thesis, 2015.
 
+\bibitem{CypressSemiconductor2014fx2lp}
+{Cypress Semiconductor}, ``{EZ-USB {\textregistered} Technical Reference
+  Manual},'' tech. rep., 2014.
+
 \bibitem{Sklar2001}
 B.~Sklar, {\em {Digital communications: fundamentals and applications}}.
 \newblock 2001.
 
-\bibitem{CypressSemiconductor2014fx2lp}
-{Cypress Semiconductor}, ``{EZ-USB {\textregistered} Technical Reference
-  Manual},'' tech. rep., 2014.
+\bibitem{HWGroup}
+{HW Group}, ``Hercules setup utility.''
+  https://www.hw-group.com/software/hercules-setup-utility.
+\newblock {Acceso: 17/03/2020}.
+
+\bibitem{Kumar2017}
+P.~Kumar, ``{AN58009 - Serial (UART) Port Debugging of EZ-USB {\textregistered}
+  FX1/FX2LP ™ Firmware Serial Debug Files},'' Tech. Rep. AN58009-rev E,
+  Cypress Semiconductor, 2017.
+
+\bibitem{CypressSemiconductor2014cy3684}
+{Cypress Semiconductor}, ``{CY3684/CY3684 EZ-USB Development Kit User Guide},''
+  tech. rep., 2014.
+
+\bibitem{Atmel2016}
+Atmel, ``{ATmega16U4/ATmega32U4 Datasheet},'' tech. rep., 2016.
 
 \bibitem{Cypress2017}
 Cypress, ``{CY7C68013A, CY7C68014A, CY7C68015A, CY7C68016A, EZ-USB(R) FX2LP(TM)
   USB Microcontroller High-Speed USB Peripheral Controller},'' 2017.
 
+\bibitem{XilinxInc}
+{Xilinx Inc.}, ``{Working with CORE Generator IP - Acceso 03/03/2020}.''
+  {https://www.xilinx.com/support/documentation/sw{\_}manuals/xilinx11/ise{\_}c{\_}using{\_}coregen{\_}ip.htm}.
+\newblock {Acceso: 03/03/2020}.
+
+\bibitem{Mojo}
+{Embedded Micro}, ``{Mojo Base Project}.''
+  {https://github.com/embmicro/mojo-base-project}.
+\newblock {Acceso: 23/04/2020}.
+
 \bibitem{libusb}
-libusb, ``libusb 1.0 https://libusb.info/ - acceso: 04/11/2019.''
+libusb, ``libusb 1.0.'' https://libusb.info/.
+\newblock Acceso: 04/11/2019.
+
+\bibitem{ThePersianCoder2010}
+{The Persian Coder}, ``{Introduction to using libusb-1.0}.''
+  https://www.dreamincode.net/forums/topic/148707-introduction-to-using-libusb-10/,
+  2010.
+\newblock Acceso 22/05/2020.
+
+\bibitem{TexasInstrument2013}
+{Texas Instrument}, ``{NS16C2552 / NS16C2752 Dual UART with 16-byte / 64-byte
+  FIFO ' s and up to 5 Mbit / s Data Rate},'' Tech. Rep. April, 2013.
+
+\bibitem{CypressSemiconductor2020}
+{Cypress Semiconductor}, ``{CY3684 EZ-USB FX2LP Development Kit}.''
+  https://www.cypress.com/documentation/development-kitsboards/cy3684-ez-usb-fx2lp-development-kit.
+\newblock Acceso: 02/06/2020.
 
 \end{thebibliography}

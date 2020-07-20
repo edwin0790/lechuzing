@@ -1,7 +1,7 @@
-\chapter{Códigos de la síntesis en FPGA}
+\chapter{Códigos de la implementación en FPGA}
 \label{ap:vhdl}
 
-	El presente apéndice contiene los códigos desarrollados para la síntesis de los sistemas implementados en el FPGA Spartan 6 utilizados en este trabajo. Estos códigos fueron escritos en lenguaje VHDL, salvo por el archivo de restricciones, que posee como lenguaje XST, desarrollado por Xilinx para dicho propósito. A su vez, se exponen el resumen de síntesis, en donde constan los recursos del FPGA utilizados.
+	El presente apéndice contiene los códigos desarrollados para la implementación de los sistemas implementados en el FPGA Spartan 6 utilizados en este trabajo. Estos códigos fueron escritos en lenguaje VHDL, salvo por el archivo de restricciones, que posee como lenguaje XST, desarrollado por Xilinx para dicho propósito. A su vez, se exponen el resumen de síntesis, en donde constan los recursos del FPGA utilizados.
  	El contenido mostrado en este Apéndice contiene los códigos de los archivos:
  	\begin{itemize}
 		\item \textbf{\nameref{ap:vhdl:iffx2}:} Implementación de la Máquina de Estados Finitos (MEF) a través de la cual se general las señales de control que comandan la memoria FIFO del controlador FX2LP 
@@ -12,7 +12,7 @@
 		
 		\item \textbf{\nameref{ap:vhdl:toptb}:} Código de verificación funcional del sistema de pruebas 
 
-		\item \textbf{\nameref{ap:vhdl:ucf}:} Archivo de restricciones en donde se le indica al compilador la frecuencia de la señal de entrada al sistema y la asignación de los puertos del sistema desarrollado a los pines del FPGA Spartan 6.
+		\item \textbf{\nameref{ap:vhdl:ucf}:} Archivo de restricciones en donde se le indica al compilador la frecuencia de la señal de entrada al sistema y la asignación de los puertos de Entrada y Salida del sistema desarrollado a los pines del FPGA Spartan 6.
 
 		\item \textbf{\nameref{ap:vhdl:sum}:} Tabla en donde se indica el consumo de recursos de FPGA por parte de la síntesis realizada a través del entorno de desarrollo ISE de Xilinx Inc.
 	\end{itemize}

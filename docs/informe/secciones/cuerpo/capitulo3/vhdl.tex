@@ -35,103 +35,106 @@ Considerando las señales que se mencionaron la Sección \ref{fpga:sigs} y el di
 %%end fx2lp_interfaz;
 %%\end{lstlisting}
 
-\begin{figure}[t]
-	\begin{tikzpicture}[scale=1]
-		\begin{scope}[transform shape,>=latex,node distance=1.5]
-			\node[bloque](prEs){Función Estado Próximo};
-			\node[bloque](acEs)[right=of prEs]{Estado Actual};
-			\node[bloque](sal)[right=of acEs]{Función de Salida};
-			\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
-			\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
-			
-			\draw[lineaExt](prEs)to(acEs);
-			\draw[lineaExt](acEs)to(sal);
-			\draw[lineaExt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
-			\draw[lineaInt](prEs)to(acEs);
-			\draw[lineaInt](acEs) -- ($(acEs)!.45!(sal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
-			\draw[lineaInt](acEs)to(sal);
-			\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
-			\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
-		\end{scope}
-	\end{tikzpicture}
-	\caption{Estructura de una máquina de estados finitos}
-	\label{fpga:mef:concepto}
-\end{figure}
+%El desarrollo de las descripciones en VHDL, las verificaciones funcionales y la síntesis realizada a lo largo de este trabajo fueron realizados a través del entorno de desarrollo ISE provisto por Xilinx. Los códigos obtenidos, como así también los resultados arrojados por este entorno de desarrollo se plasman en el Anexo~\ref{ap:vhdl}
 
+Se presentan a continuación la función de próximo estado y la actualización del estado actual debido a que son, a criterio del autor, los procesos más importantes del desarrollo. El código completo, en donde se realiza la declaración de la entidad, la declaración de las señales, las conexiones internas y se asignan las funciones de salida a los estados en forma concurrente, se puede encontrar en el Apéndice \ref{ap:vhdl}.
+
+	\begin{figure}[b]
+		\begin{tikzpicture}[scale=.95]
+			\begin{scope}[transform shape,>=latex,node distance=1.5]
+				\node[bloque](prEs){Función Estado Próximo};
+				\node[bloque](acEs)[right=of prEs]{Estado Actual};
+				\node[bloque](funSal)[right=of acEs]{Función de Salida};
+				\node[minimum height=30](ent)[left=of prEs,yshift=15,]{Entradas};
+				\draw[decoration={brace},decorate,ultra thick] (ent.north east) -- (ent.south east);
+				\node[minimum height=30](sal)[right=of funSal]{Salidas};
+				\draw[decoration={brace,mirror},decorate,ultra thick](sal.north west)--(sal.south west);
+				
+				\draw[lineaExt](prEs)to(acEs);
+				\draw[lineaExt](acEs)to(funSal);
+				\draw[lineaExt](acEs) -- ($(acEs)!.45!(funSal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+				\draw[lineaInt](prEs)to(acEs);
+				\draw[lineaInt](acEs) -- ($(acEs)!.45!(funSal)$) |- ($(prEs.south) - (0,.5)$) -| ([yshift=-15]$(prEs.west)-(1.3,0)$) |- ([yshift=-15]prEs.west);
+				\draw[lineaInt](acEs)to(funSal);
+				\draw[lineaExt,shorten <= 4](ent) -- ([yshift=15]prEs.west);
+				\draw[lineaInt,shorten <= 5.5](ent) -- ([yshift=15]prEs.west);
+				\draw[lineaExt](funSal)to(sal);
+				\draw[lineaInt](funSal)to(sal);
+			\end{scope}
+		\end{tikzpicture}
+		\caption{Estructura de una máquina de estados finitos}
+		\label{fpga:mef:concepto}
+	\end{figure}
+
+La función de próximo estado, es un proceso que lee el registro \textit{estado\_actual} y las señales de entrada y, en función de su valor, asigna el estado siguiente al registro \textit{prox\_estado}. Para una mejor comprensión de la descripción de la función de próximo estado, se puede utilizar la Figura \ref{fpga:mef:simple} en donde se observa una simplificación de cada uno de los estados del diagrama en bloques de la Figura \ref{fpga:mef:diag}, en donde se quitaron las variables de salida y se incorporó en cada uno de los estados el nombre con el que se lo asigna en el código VHDL desarrollado. Además, para facilitar la lectura del desarrollo, se colocaron las dos señales de entrada \textit{FLAG\_Vacío} y \textit{FLAG\_Lleno} como activos en alto.
+%El estilo elegido para la descripción cuenta con un registro que determina el estado próximo de la MAE a través de un proceso secuencial. El valor de dicho registro, es volcado a otro que indica el estado actual de la MAE, a través de los flancos del reloj, en una secuencia diferente. Las señales de salida son implementadas en forma concurrente, de manera externa a los procesos que comanda la MEA. Las señales de entrada se encuentran incorporadas en el proceso que determina el estado próximo.
+%La MEA es descripta a través del código que se muestra a continuación:
 
 \begin{figure}[!hb]
 	\centering
 	\begin{tikzpicture}[ask/.style = {diamond,text width=70,draw=black,align=center,aspect=2},
 	scale=.7]
-		\begin{scope}[transform shape,node distance=(1 and 2),>=latex,]
-			\node[moore,text width=80,align=center] (inicio) {Inicio};
-		
-			\node[ask] (vacio1) [below=of inicio]{FLAG\_Vacío};
-				\draw[->] (inicio.south) -| (vacio1);
-		%			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
-		%			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
-		
-			\node[moore,text width=80,align=center] (lecoe) [right=of vacio1]{lec\_direccion};
-				\draw[o->] (vacio1.east) -- ($(vacio1.east)!0.5!(lecoe.west)$);
-				\draw[->]($(vacio1.east)!0.5!(lecoe.west)$) |- ($(lecoe.north)+(0,0.5)$) -- (lecoe.north);
-		
-			\node[moore,text width=80,align=center](lecrd)[below=of lecoe]{lectura};
-				\draw[->](lecoe) -- (lecrd);
-		
-			\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
-				\draw[->](lecrd) -- (vacio2);
-				
-				\draw[->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
-				\draw[o->](vacio2.east) -- ++(1.2,0) |- ($(inicio.north)+(0,.6)$);
-				\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
-		
-			\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
-				\draw[->](vacio1.south) --(enviar1.north);
-		
-		
-			\node[ask] (lleno1) [below=of enviar1]{FLAG\_Lleno};
-				\draw[->](enviar1) -- (lleno1);
-		
-			\node[moore,text width=80,align=center](escdir)[below=of lleno1]{esc\_direccion};
-				\draw[o->](lleno1) -- ($(lleno1.south)!0.5!(escdir.north)$);
-				\draw[->]($(lleno1.south)!0.5!(escdir.north)$) -- (escdir);
-		
-		
-			\node[ask](vacio3)[left=2.2 of vacio1]{FLAG\_Vacío};
-				\draw[->](escdir.south)--($(escdir.south)+(0,-.5)$) -| ($(vacio3.east)+(.6,0)$) |- ($(vacio3.north)+(0,.5)$)-|(vacio3.north);
-		
-			\node[ask](enviar2)[below=of vacio3]{Enviar\_datos};
-				\draw[->](vacio3) -- (enviar2);
-		
-				\draw[o->] (enviar1.west) -- ($(enviar1.west)+(-.7,0)$);
-				\draw[->] ($(enviar1.west)-(.7,0)$) -- ($(inicio.north -| enviar1.west)+(-.7,.6)$);
-				\draw[->] ($(inicio.north -| enviar1.west)+(-.7,.6)$)--($(inicio.north)+(0,.6)$);
-				\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
-				\draw[->](lleno1.west) -| ($(enviar1.west)-(.7,0)$);
-				\draw[o->](vacio3.west) -- ($(vacio3.west)+(-.9,0)$);
-				\draw[->]($(vacio3.west)+(-.9,0)$) |- ($(inicio.north -| enviar1.west)+(-.7,.6)$);
-		
-			\node[ask](lleno2)[below=of enviar2]{FLAG\_Lleno};
-			\node[moore,text width=80,align=center](escwr)[below=of lleno2]{escritura};
-				\draw[o->](lleno2) -- (escwr);
-				\draw[->](lleno2.west) -| ($(enviar2.west)+(-.9,0)$);
-				\draw[->](enviar2)--(lleno2);
-				\draw[o->](enviar2)--($(enviar2.west)+(-.9,0)$);
-				\draw[->]($(enviar2.west)+(-.9,0)$) -- ($(vacio3.west)+(-.9,0)$);
-				\draw[->](escwr) -- ($(escwr.south)+(0,-1)$) -| ($(escdir.east)+(.5,0)$) |- ($(lleno1.south)!0.5!(escdir.north)$);
-		\end{scope}
+	\begin{scope}[transform shape,node distance=(1 and 2),>=latex,]
+	\node[moore,text width=80,align=center] (inicio) {Inicio};
+	
+	\node[ask] (vacio1) [below=of inicio]{FLAG\_Vacío};
+	\draw[->] (inicio.south) -| (vacio1);
+	%			\node[moore,text width=100] (lecdir) [below=of vacio1,label=above right:dirección] {FIFOADR=entrada\\SLOE=$'0'$\\SLRD=$'1'$\\SLWR=$'1'$};
+	%			\draw[o->](vacio1.east) -- ($(vacio1.east)+(1,0)$);
+	
+	\node[moore,text width=80,align=center] (lecoe) [right=of vacio1]{lec\_direccion};
+	\draw[o->] (vacio1.east) -- ($(vacio1.east)!0.5!(lecoe.west)$);
+	\draw[->]($(vacio1.east)!0.5!(lecoe.west)$) |- ($(lecoe.north)+(0,0.5)$) -- (lecoe.north);
+	
+	\node[moore,text width=80,align=center](lecrd)[below=of lecoe]{lectura};
+	\draw[->](lecoe) -- (lecrd);
+	
+	\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
+	\draw[->](lecrd) -- (vacio2);
+	
+	\draw[->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
+	\draw[o->](vacio2.east) -- ++(1.2,0) |- ($(inicio.north)+(0,.6)$);
+	\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+	
+	\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
+	\draw[->](vacio1.south) --(enviar1.north);
+	
+	
+	\node[ask] (lleno1) [below=of enviar1]{FLAG\_Lleno};
+	\draw[->](enviar1) -- (lleno1);
+	
+	\node[moore,text width=80,align=center](escdir)[below=of lleno1]{esc\_direccion};
+	\draw[o->](lleno1) -- ($(lleno1.south)!0.5!(escdir.north)$);
+	\draw[->]($(lleno1.south)!0.5!(escdir.north)$) -- (escdir);
+	
+	
+	\node[ask](vacio3)[left=2.2 of vacio1]{FLAG\_Vacío};
+	\draw[->](escdir.south)--($(escdir.south)+(0,-.5)$) -| ($(vacio3.east)+(.6,0)$) |- ($(vacio3.north)+(0,.5)$)-|(vacio3.north);
+	
+	\node[ask](enviar2)[below=of vacio3]{Enviar\_datos};
+	\draw[->](vacio3) -- (enviar2);
+	
+	\draw[o->] (enviar1.west) -- ($(enviar1.west)+(-.7,0)$);
+	\draw[->] ($(enviar1.west)-(.7,0)$) -- ($(inicio.north -| enviar1.west)+(-.7,.6)$);
+	\draw[->] ($(inicio.north -| enviar1.west)+(-.7,.6)$)--($(inicio.north)+(0,.6)$);
+	\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
+	\draw[->](lleno1.west) -| ($(enviar1.west)-(.7,0)$);
+	\draw[o->](vacio3.west) -- ($(vacio3.west)+(-.9,0)$);
+	\draw[->]($(vacio3.west)+(-.9,0)$) |- ($(inicio.north -| enviar1.west)+(-.7,.6)$);
+	
+	\node[ask](lleno2)[below=of enviar2]{FLAG\_Lleno};
+	\node[moore,text width=80,align=center](escwr)[below=of lleno2]{escritura};
+	\draw[o->](lleno2) -- (escwr);
+	\draw[->](lleno2.west) -| ($(enviar2.west)+(-.9,0)$);
+	\draw[->](enviar2)--(lleno2);
+	\draw[o->](enviar2)--($(enviar2.west)+(-.9,0)$);
+	\draw[->]($(enviar2.west)+(-.9,0)$) -- ($(vacio3.west)+(-.9,0)$);
+	\draw[->](escwr) -- ($(escwr.south)+(0,-1)$) -| ($(escdir.east)+(.5,0)$) |- ($(lleno1.south)!0.5!(escdir.north)$);
+	\end{scope}
 	\end{tikzpicture}
 	\caption{Diagrama de simplificado del flujo de la MEF}
 	\label{fpga:mef:simple}
 \end{figure}
-
-%El desarrollo de las descripciones en VHDL, las verificaciones funcionales y la síntesis realizada a lo largo de este trabajo fueron realizados a través del entorno de desarrollo ISE provisto por Xilinx. Los códigos obtenidos, como así también los resultados arrojados por este entorno de desarrollo se plasman en el Anexo~\ref{ap:vhdl}
-
-Se presentan a continuación la función de próximo estado y la actualización del estado actual debido a que son, a criterio del autor, los procesos más importantes del desarrollo. El código completo, en donde se realiza la declaración de la entidad, la declaración de las señales, las conexiones internas y se asignan las funciones de salida a los estados en forma concurrente, se puede encontrar en el Apéndice \ref{ap:vhdl}.
-
-La función de próximo estado, es un proceso que lee el registro \textit{estado\_actual} y las señales de entrada y, en función de su valor, asigna el estado siguiente al registro \textit{prox\_estado}. Para una mejor comprensión de la descripción de la función de próximo estado, se puede utilizar la Figura \ref{fpga:mef:simple} en donde se observa una simplificación de cada uno de los estados del diagrama en bloques de la Figura \ref{fpga:mef:diag}, en donde se quitaron las variables de salida y se incorporó en cada uno de los estados el nombre con el que se lo asigna en el código VHDL desarrollado. Además, para facilitar la lectura del desarrollo, se colocaron las dos señales de entrada \textit{FLAG\_Vacío} y \textit{FLAG\_Lleno} como activos en alto.
-%El estilo elegido para la descripción cuenta con un registro que determina el estado próximo de la MAE a través de un proceso secuencial. El valor de dicho registro, es volcado a otro que indica el estado actual de la MAE, a través de los flancos del reloj, en una secuencia diferente. Las señales de salida son implementadas en forma concurrente, de manera externa a los procesos que comanda la MEA. Las señales de entrada se encuentran incorporadas en el proceso que determina el estado próximo.
-%La MEA es descripta a través del código que se muestra a continuación:
 
 \begin{lstlisting}[language=VHDL,backgroundcolor=\color{gray!30}]
 architecture Behavioral of fx2lp_interfaz is

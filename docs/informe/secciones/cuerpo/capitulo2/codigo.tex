@@ -171,9 +171,9 @@
 	#include "leds.h"
 	\end{lstlisting}
 	
-	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través de un archivo objeto provisto en el framework de Cypress Semiconductorm, denominado {\it usbjmptb.obj}.%\\
+	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través de un archivo objeto provisto en el framework de Cypress Semiconductor, denominado {\it usbjmptb.obj}.%\\
 	
-	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar las luces de la placa de desarrollo. Los LED fueron utilizado para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
+	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar los LEDs de la placa de desarrollo. Los LEDs fueron utilizado para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
 	
 %	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 %	xdata volatile const BYTE D2ON	_at_ 0x8800;
