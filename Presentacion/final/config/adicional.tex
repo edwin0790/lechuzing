@@ -1,0 +1,140 @@
+\usepackage{siunitx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows,babel,backgrounds,fit,patterns,petri,positioning,shapes}
+
+\tikzset{
+	invisible/.style={opacity=0},
+	visible on/.style={alt={#1{}{invisible}}},
+	alt/.code args={<#1>#2#3}{%
+		\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+	},
+}
+
+\tikzstyle{core}=[
+	rectangle,
+	rounded corners,
+	draw=black,
+	minimum size=40]
+
+\tikzstyle{perif}=[
+	core,
+	minimum height=20]
+
+\tikzstyle{contenedor}=[
+	rectangle,
+	draw=black]
+
+\tikzstyle{exterior}=[
+	rectangle,
+	draw=black,
+	minimum size=40]
+
+\tikzstyle{bloque}=[
+	exterior,
+	align=center,
+	minimum size=60,
+	text width=60,
+	rounded corners]
+
+\tikzstyle{pid}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	pattern=north east lines,
+	pattern color=black!35]
+
+\tikzstyle{dir}=[
+	draw,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	align=center]
+
+\tikzstyle{data}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=120,
+	minimum height=110,
+	fill=black!05]
+
+\tikzstyle{crc}=[
+	draw=black,
+	align=center,
+	rectangle,
+	rounded corners,
+	minimum width=20,
+	minimum height=110,
+	pattern=dots,
+	pattern color=black!25]
+
+\tikzstyle{buf}=[
+	core,
+	text width=55,
+	align=center,
+	fill=white]
+	
+\tikzstyle{obuf}=[
+	buf,
+	node distance=.7,
+	fill=white]
+	
+\tikzstyle{env}=[
+	fill=black!20]
+
+\tikzstyle{moore}=[
+	rectangle,
+	draw=black,
+	minimum height=30,
+	text width=80,
+	align=left]
+	
+\tikzstyle{mealy}=[
+	rectangle,
+	rounded corners=6,
+	draw=black,
+	text width=80,
+	align=left,
+	minimum height=40]
+
+\tikzstyle{ask}=[
+	diamond,
+	text width=50,
+	draw=black,
+	align=center]
+	
+\tikzstyle{simple}=[
+	rectangle,
+	draw=black,
+	minimum height=220,
+	text width=65,
+	align=center]
+
+\newcommand{\epg}[3]{
+	Buffer {#1}\\
+	[44pt]EP{#2}\\
+	[44pt]{#3} Bytes}
+
+\newcommand{\ep}[3]{
+	Buffer {#1}\\
+	[8pt]EP{#2}\\
+	[8pt]{#3} Bytes}
+
+\newcommand{\newwave}[1]{
+	\path (0,\value{wavecount}) node[text width=45,anchor=east,align=right]{#1} node[coordinate](t_cur){};
+	\draw (0,\value{wavecount}+.3) --++(.2,0);
+	\draw (0,\value{wavecount}-.3) --++(.2,0);
+	\path (t_cur) --++(.3,0)node[coordinate](t_cur){};
+	\addtocounter{wavecount}{-1}}
+
+\newcommand*{\bit}[2]{
+	\draw (t_cur) -- ++(0.1,.6*#1-.3) -- ++(#2-.2,0) -- ++(+.1,.3-.6*#1)
+	node[coordinate] (t_cur) {};}
+%diagramas temporales
+

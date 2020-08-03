@@ -1,0 +1,104 @@
+
+#Created by Constraints Editor (xc6slx9-tqg144-2) - 2017/11/24
+NET "clk_in" TNM_NET = "clk_in";
+TIMESPEC TS_clk_in = PERIOD "clk_in" 50 MHz HIGH 50 %;
+
+NET "clk_in" LOC = P56;
+NET "clk_in" IOSTANDARD = LVTTL;
+NET "button" LOC = P38;
+NET "button" IOSTANDARD = LVTTL;
+
+#net "clk_out" loc = p | iostandard = lvttl;
+NET "fdata[15]" LOC = P50;
+NET "fdata[15]" IOSTANDARD = LVTTL;
+NET "fdata[14]" LOC = P51;
+NET "fdata[14]" IOSTANDARD = LVTTL;
+NET "fdata[13]" LOC = P40;
+NET "fdata[13]" IOSTANDARD = LVTTL;
+NET "fdata[12]" LOC = P41;
+NET "fdata[12]" IOSTANDARD = LVTTL;
+NET "fdata[11]" LOC = P34;
+NET "fdata[11]" IOSTANDARD = LVTTL;
+NET "fdata[10]" LOC = P35;
+NET "fdata[10]" IOSTANDARD = LVTTL;
+NET "fdata[9]" LOC = P32;
+NET "fdata[9]" IOSTANDARD = LVTTL;
+NET "fdata[8]" LOC = P33;
+NET "fdata[8]" IOSTANDARD = LVTTL;
+NET "fdata[7]" LOC = P29;
+NET "fdata[7]" IOSTANDARD = LVTTL;
+NET "fdata[6]" LOC = P30;
+NET "fdata[6]" IOSTANDARD = LVTTL;
+NET "fdata[5]" LOC = P26;
+NET "fdata[5]" IOSTANDARD = LVTTL;
+NET "fdata[4]" LOC = P27;
+NET "fdata[4]" IOSTANDARD = LVTTL;
+NET "fdata[3]" LOC = P23;
+NET "fdata[3]" IOSTANDARD = LVTTL;
+NET "fdata[2]" LOC = P24;
+NET "fdata[2]" IOSTANDARD = LVTTL;
+NET "fdata[1]" LOC = P21;
+NET "fdata[1]" IOSTANDARD = LVTTL;
+NET "fdata[0]" LOC = P22;
+NET "fdata[0]" IOSTANDARD = LVTTL;
+
+NET "faddr[1]" LOC = P9;
+NET "faddr[1]" IOSTANDARD = LVTTL;
+NET "faddr[0]" LOC = P8;
+NET "faddr[0]" IOSTANDARD = LVTTL;
+
+NET "slrd" LOC = P16;
+NET "slrd" IOSTANDARD = LVTTL;
+NET "slwr" LOC = P17;
+NET "slwr" IOSTANDARD = LVTTL;
+NET "flaga" LOC = P12;
+NET "flaga" IOSTANDARD = LVTTL;
+NET "flagb" LOC = P14;
+NET "flagb" IOSTANDARD = LVTTL;
+
+NET "flagc" LOC = P15;
+NET "flagc" IOSTANDARD = LVTTL;
+NET "flagd" LOC = P11;
+NET "flagd" IOSTANDARD = LVTTL;
+NET "sloe" LOC = P6;
+NET "sloe" IOSTANDARD = LVTTL;
+
+NET "pktend" LOC = P10;
+NET "pktend" IOSTANDARD = LVTTL;
+#NET "clk" TNM_NET = clk;
+#TIMESPEC TS_clk = PERIOD "clk" 50 MHz HIGH 50%;
+#
+#NET "clk" LOC = P56 | IOSTANDARD = LVTTL;
+#NET "rst_n" LOC = P38 | IOSTANDARD = LVTTL;
+#
+#NET "cclk" LOC = P70 | IOSTANDARD = LVTTL;
+#
+NET "led[0]" LOC = P134;
+NET "led[0]" IOSTANDARD = LVTTL;
+NET "led[1]" LOC = P133;
+NET "led[1]" IOSTANDARD = LVTTL;
+NET "led[2]" LOC = P132;
+NET "led[2]" IOSTANDARD = LVTTL;
+NET "led[3]" LOC = P131;
+NET "led[3]" IOSTANDARD = LVTTL;
+NET "led[4]" LOC = P127;
+NET "led[4]" IOSTANDARD = LVTTL;
+NET "led[5]" LOC = P126;
+NET "led[5]" IOSTANDARD = LVTTL;
+NET "led[6]" LOC = P124;
+NET "led[6]" IOSTANDARD = LVTTL;
+NET "led[7]" LOC = P123;
+NET "led[7]" IOSTANDARD = LVTTL;
+#
+#NET "spi_mosi" LOC = P44 | IOSTANDARD = LVTTL;
+#NET "spi_miso" LOC = P45 | IOSTANDARD = LVTTL;
+#NET "spi_ss" LOC = P48 | IOSTANDARD = LVTTL;
+#NET "spi_sck" LOC = P43 | IOSTANDARD = LVTTL;
+#NET "spi_channel<0>" LOC = P46 | IOSTANDARD = LVTTL;
+#NET "spi_channel<1>" LOC = P61 | IOSTANDARD = LVTTL;
+#NET "spi_channel<2>" LOC = P62 | IOSTANDARD = LVTTL;
+#NET "spi_channel<3>" LOC = P65 | IOSTANDARD = LVTTL;
+#
+#NET "avr_tx" LOC = P55 | IOSTANDARD = LVTTL;
+#NET "avr_rx" LOC = P59 | IOSTANDARD = LVTTL;
+#NET "avr_rx_busy" LOC = P39 | IOSTANDARD = LVTTL;
