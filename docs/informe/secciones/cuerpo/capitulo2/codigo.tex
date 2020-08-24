@@ -160,8 +160,8 @@
 %
 %	Así, queda completa la inicialización y el dispositivo listo para enviar y recibir datos de forma automática.
 	
-\subsection{Encabezado y declaraciones importantes}
-	Para el correcto funcionamiento del código que se describe a lo largo de esta sección, es necesario incorporar el encabezado que se observa a continuación.
+\subsection{Cabeceras y declaraciones importantes}
+	Para el correcto funcionamiento del código que se describe a lo largo de esta sección, es necesario incorporar la cabecera que se observa a continuación.
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 	#pragma noiv			// No generar vectores de interrupción
@@ -171,9 +171,9 @@
 	#include "leds.h"
 	\end{lstlisting}
 	
-	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador noiv(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través de un archivo objeto provisto en el framework de Cypress Semiconductor, denominado {\it usbjmptb.obj}.%\\
+	Las primeras 4 líneas de encabezados son provistas por Cypress, a través de su framework. En ellas, la directiva de ensamblador \texttt{noiv}(identificada con \verb|#pragma|), le indica al compilador que no debe habilitar las interrupciones vectorizadas. Estas, en cambio, serán manejadas y direccionadas a través de un archivo objeto provisto en el framework de Cypress Semiconductor, denominado {\it usbjmptb.obj}.%\\
 	
-	El encabezado {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar los LEDs de la placa de desarrollo. Los LEDs fueron utilizado para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
+	El archivo de cabecera {\it leds.h} cuyo código se muestra a continuación, sirve para encender y apagar los \acrshort{led}s de la placa de desarrollo. Los \acrshort{led}s fueron utilizados para realizar las tareas de prueba. Se explicará su funcionamiento más adelante.%Estos leds se encuentran conectados a través de un decodificador y su funcionamiento se da con la sola lectura de direcciones específicas.
 	
 %	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 %	xdata volatile const BYTE D2ON	_at_ 0x8800;
@@ -185,7 +185,7 @@
 %	xdata volatile const BYTE D5ON	_at_ 0xB800;
 %	xdata volatile const BYTE D5OFF	_at_ 0xB000;	\end{lstlisting}
 	
-	Luego, el framework define algunas variables globales que utiliza en las funciones implementadas para el manejo de las tareas relacionadas al protocolo USB. Se listan estas variables a continuación.
+	Luego, el framework define algunas variables globales que utiliza en las funciones implementadas para el manejo de las tareas relacionadas al protocolo \acrshort{usb}. Se listan estas variables a continuación.
 	
 	\begin{lstlisting}[language=C,backgroundcolor=\color{gray!30}]
 	extern BOOL   GotSUD;			// Received setup data flag
@@ -207,8 +207,8 @@
 	WORD blinkmask = 0;			// HS/FS blink rate
 	\end{lstlisting}
 	
-\subsection{Descriptores USB}	
-	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo USB le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de EPs, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
+\subsection{Descriptores \acrshort{usb}}	
+	Los descriptores son una estructura definida de datos. A través de ellos, el dispositivo \acrshort{usb} le comunica al anfitrión sus atributos, tales como velocidad de trabajo, cantidad de configuraciones e interfaces posibles, número de \acrshort{ep}s, dirección de cada uno de ellos, tamaño máximo en bytes de paquetes que puede enviar en una comunicación, entre otros.%\\
 	
 	El framework de Cypress coloca toda la información sobre los descriptores del dispositivo desarrollado en un archivo escrito en lenguaje de ensamblador, denominado {\it dscr.a51}. Este archivo contiene una plantilla en donde el desarrollador coloca la descripción de la configuración realizada en el firmware. Luego, el archivo es enviado por el dispositivo al Host comunicando las características del sistema desarrollado.%\\
 	
@@ -244,7 +244,7 @@ DSCR   SEGMENT   CODE PAGE
 	rseg DSCR      ;; locate the descriptor table in on-part memory.
 	\end{lstlisting}
 	
-	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma USB y por la implementación de Cypress, la memoria debe contener en primer lugar el descriptor DEVICE, el cual se muestra a continuación.
+	Debido a la estructura rígida del formato de los descriptores, impuesto por la norma \acrshort{usb} y por la implementación de Cypress, la memoria debe contener en primer lugar el descriptor DEVICE, el cual se muestra a continuación.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 DeviceDscr:
@@ -264,11 +264,11 @@ DeviceDscr:
 	db   1         ;; Número de configuraciones
 	\end{lstlisting}
 	
-	El descriptor de tamaño máximo de paquete está referido especialmente al EP0, es decir, al extremo que el Host y el dispositivo utilizan para intercambiar mensajes de control.
+	El descriptor de tamaño máximo de paquete está referido especialmente al \acrshort{ep}0, es decir, al \acrlong{ep} que el Host y el dispositivo utilizan para intercambiar mensajes de control.
 	
 	Se debe notar que los penúltimos tres parámetros mostrados corresponden a una descripción realizada en cadena de caracteres al final del archivo, a fin de poder mostrar un mensaje que pueda ser leído por un usuario humano.
 	
-	El último parámetro está relacionado con el número de configuraciones que posee este dispositivo. Esto determina también la cantidad de descriptores de tipo CONFIGURATION que debe tener el archivo de descripción. No obstante, antes de comenzar con los descriptores CONFIGURATION, se debe especificar el descriptor DEVICE\_QUALIFIER, el cual dá información sobre otras velocidades de operación. Este descriptor es necesario debido a que el sistema implementado cumple con la versión 2.0 de la norma USB.
+	El último parámetro está relacionado con el número de configuraciones que posee este dispositivo. Esto determina también la cantidad de descriptores de tipo CONFIGURATION que debe tener el archivo de descripción. No obstante, antes de comenzar con los descriptores CONFIGURATION, se debe especificar el descriptor DEVICE\_QUALIFIER, el cual dá información sobre otras velocidades de operación. Este descriptor es necesario debido a que el sistema implementado cumple con la versión 2.0 de la norma \acrshort{usb}.
 	
 	\begin{lstlisting}[language={[x86masm]Assembler},backgroundcolor=\color{gray!30},numbers=left]
 org (($ / 2) +1) * 2
@@ -284,7 +284,7 @@ DeviceQualDscr:
 	db   0         ;; Reservado
 	\end{lstlisting}
 	
-	La norma USB especifica que la información que poseen los descriptores debe estar alineada por palabra (dos bytes), es decir, agrupada cada dos bytes y almacenada en direcciones de memoria par. Para asegurar esta condición, se recurre a la sentencia \verb|org (($/2)+1)*2|, la que se puede leer en la primera líneas del código mostrado anteriormente. La directiva \verb|org| le ordena al ensamblador la dirección específica de memoria en la que debe colocar las instrucciones precedentes. El símbolo (\$) representa al puntero que contiene el valor de memoria de la última instrucción ensamblada. Considerando que las direcciones de memoria son enteros y que las operaciones de ensamblador truncan decimales (no los redondean), la ecuación indicada entrega, como resultado, el entero par siguiente a la dirección actual. 
+	La norma \acrshort{usb} especifica que la información que poseen los descriptores debe estar alineada por palabra (dos bytes), es decir, agrupada cada dos bytes y almacenada en direcciones de memoria par. Para asegurar esta condición, se recurre a la sentencia \verb|org (($/2)+1)*2|, la que se puede leer en la primera líneas del código mostrado anteriormente. La directiva \verb|org| le ordena al ensamblador la dirección específica de memoria en la que debe colocar las instrucciones precedentes. El símbolo (\$) representa al puntero que contiene el valor de memoria de la última instrucción ensamblada. Considerando que las direcciones de memoria son enteros y que las operaciones de ensamblador truncan decimales (no los redondean), la ecuación indicada entrega, como resultado, el entero par siguiente a la dirección actual. 
 
 	Luego de esta directiva, se especifica el descriptor de tipo DEVICE\_QUALIFIER asegurando que se encontrará en una dirección par de memoria.
 	
@@ -338,7 +338,7 @@ HighSpeedConfigDscr:
 HighSpeedConfigDscr_End:
 	\end{lstlisting}
 	
-	En la línea 12 del código anterior se debe colocar cuál es la fuente de la potencia que consume el dispositivo, es decir, de donde proviene la energía utilizada para el funcionamiento. El bit 7 debe estar siempre establecido a 1 por razones históricas de la norma USB~\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del Host. La línea 13 se informa cuánta potencia consume, lo que le brinda al Host la posibilidad de establecer un control de la potencia suministrada en el bus.
+	En la línea 12 del código anterior se debe indicar si la fuente de alimentación del dispositivo es provista por el bus o por el dispositivo mismo. Para ello, el bit 7 debe estar siempre establecido a 1 por razones históricas de la norma \acrshort{usb}~\cite{USBspec}. El bit 6 en 1 define que el dispositivo está energizado por una fuente propia. En el caso contrario, toma potencia del bus. El bit 5, por su parte, señala que el dispositivo tiene modo de baja energía y que es posible establecer el modo de funcionamiento de mayor consumo con un comando del Host. En la línea 13 se informa cuánta potencia consume, lo que le brinda al Host la posibilidad de establecer un control de la potencia suministrada en el bus.
 	
 	El último campo del descriptor ENDPOINT, correspondiente al intervalo de consulta, se utiliza para establecer cada cuanto tiempo el Host debe asignar ancho de banda para transferencias isócronas.
 	

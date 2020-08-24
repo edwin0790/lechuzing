@@ -1,6 +1,6 @@
-La verificación funcional es una rutina de control que sirve para corroborar que lo descripto en lenguaje de alto nivel (VHDL en este trabajo), se corresponde con el funcionamiento que se esperaba antes de realizar la descripción. Para efectuar la verificación, se describe el comportamiento esperado de las señales que de entrada al circuito desarrollado, se simula el sistema y se corrobora que las salidas se comporten conforme a lo esperado.
+La verificación funcional es una rutina de control que sirve para corroborar que lo descripto en lenguaje de alto nivel (\acrshort{vhdl} en este trabajo), se corresponde con el funcionamiento que se esperaba antes de realizar la descripción. Para efectuar la verificación, se describe el comportamiento esperado de las señales que de entrada al circuito desarrollado, se simula el sistema y se corrobora que las salidas se comporten conforme a lo esperado.
 
-Para efectuar la verificación funcional de la máquina de estados desarrollada, se describió en VHDL un ciclo típico de entrada de datos desde la interfaz y se realizó un chequeo de las salidas, tanto hacia el sistema exterior (el controlador FX2LP), como hacia el interior (los módulos implementados en el FPGA). También se simuló la entrada de datos desde el FPGA, generando la rutina de salida de datos hacia la interfaz.
+Para efectuar la verificación funcional de la máquina de estados desarrollada, se describió en \acrshort{vhdl} un ciclo típico de entrada de datos desde la interfaz y se realizó un chequeo de las salidas, tanto hacia el sistema exterior (el controlador FX2LP), como hacia el interior (los módulos implementados en el \acrshort{fpga}). También se simuló la entrada de datos desde el \acrshort{fpga}, generando la rutina de salida de datos hacia la interfaz.
 
 %Debido a que es una simulación y no si implementa en físco, la declaración de la entidad se deja en blanco.
 %
@@ -9,7 +9,7 @@ Para efectuar la verificación funcional de la máquina de estados desarrollada,
 %end fx2lp_tb;
 %\end{lstlisting}
 
-En la implementación de la arquitectura se declaró e instanció el componente bajo prueba, es decir, la MEF y las señales necesarias para su correcta instanciación.
+En la implementación de la arquitectura se declaró e instanció el componente bajo prueba, es decir, la \acrshort{mef} y las señales necesarias para su correcta instanciación.
 Una vez declarado e instanciado el componente bajo prueba, se generan los estímulos. De estos estímulos, las señales que emulan el reloj y el reset se establecen de forma concurrente. La señal de reloj es la que sincroniza el funcionamiento del sistema. La señal de reset es importante ya que asegura que el dispositivo inicie en el estado determinado por el diseño. 
 
 %\begin{lstlisting}[language=VHDL,backgroundcolor=\color{gray!30}]
@@ -95,16 +95,16 @@ Una vez declarado e instanciado el componente bajo prueba, se generan los estím
 %
 %\end{lstlisting}
 
-Finalmente, se implementó el proceso que contiene los estímulos, emulando el funcionamiento de la interfaz. En un primer momento, las memorias FIFO se encuentran descargadas, es decir, las señales que indican ``memoria FIFO vacía'' se encuentran activos ({\it FLAGB} y {\it FALGD} en bajo), en tanto las que señalan ``memoria FIFO llena'', se encuentran inactivos ({\it FLAGA} y {\it FLAGC} en alto).
+Finalmente, se implementó el proceso que contiene los estímulos, emulando el funcionamiento de la interfaz. En un primer momento, las memorias \acrshort{fifo} se encuentran descargadas, es decir, las señales que indican ``memoria \acrshort{fifo} vacía'' se encuentran activos ({\it FLAGB} y {\it FALGD} en bajo), en tanto las que señalan ``memoria \acrshort{fifo} llena'', se encuentran inactivos ({\it FLAGA} y {\it FLAGC} en alto).
 A su vez, el bus de datos {\it FDATA[15:0]} y el de dirección {\it FADDR[1:0]} se encuentran en estado de alta impedancia ($'$Z$'$) y las salidas {\it SLWR, SLRD} y {\it SLOE} se encuentran inactivas. Estas condiciones se mantuvieron durante 5 ciclos de reloj después de desactivada la señal \textit{reset}. Así, se corrobora que ante la ausencia de estímulos, el sistema se mantiene invariable.
 
-Luego, se simuló la operación de lectura de la memoria FIFO, con una serie de datos aleatorios. Para este propósito, se desactivó la señal {\it FLAGB}, que corresponde al EP8 vacío (la memoria FIFO de salida, desde el Host). Seguidamente, se esperó a la señal {\it SLOE}. Esta señal habilita a la interfaz a hacer uso del bus de datos {\it FDATA[15:0]}, por lo que se simularon los datos aleatorios, colocándolos en él, y luego se esperó por la respuesta del sistema, el cual debería activar la señal de lectura {\it SLRD}.
+Luego, se simuló la operación de lectura de la memoria \acrshort{fifo}, con una serie de datos aleatorios. Para este propósito, se desactivó la señal {\it FLAGB}, que corresponde al \acrshort{ep}8 vacío (la memoria \acrshort{fifo} de salida, desde el Host). Seguidamente, se esperó a la señal {\it SLOE}. Esta señal habilita a la interfaz a hacer uso del bus de datos {\it FDATA[15:0]}, por lo que se simularon los datos aleatorios, colocándolos en él, y luego se esperó por la respuesta del sistema, el cual debería activar la señal de lectura {\it SLRD}.
 
 Una vez realizada la operación de escritura se procedió a describir la operación de escritura. Para esto, se colocó un dato en el bus de envío de datos, {\it DATA\_TO\_TX} y se activó la señal de envío de datos {\it SEND\_REQ}. Una vez activada la señal {\it SLWR}, se cambió el dato a enviar.
 
-Se realizan también dos pruebas extra, en el desempeño de la máquina de estados desarrollada. En primer lugar, se observó la interrupción del proceso de escritura a través de la señalización del ingreso de datos. Es decir, se debe detener el envío de datos cuando la señal {\it FLAGB} se activa.
+Se realizan también dos pruebas extra, en el desempeño de la \acrshort{mef} desarrollada. En primer lugar, se observó la interrupción del proceso de escritura a través de la señalización del ingreso de datos. Es decir, se debe detener el envío de datos cuando la señal {\it FLAGB} se activa.
 
-Además, se observó que también se debe detener el envío de datos cuando la memoria FIFO que recibe los datos que salen de nuestro sistema se llena. Esta situación es avisada por el la interfaz a través de la señla {\it FLAGA}.
+Además, se observó que también se debe detener el envío de datos cuando la memoria \acrshort{fifo} que recibe los datos que salen de nuestro sistema se llena. Esta situación es avisada por la interfaz a través de la señal {\it FLAGA}.
 
 %Se muestra a continuación la descripción en VHDL de lo escrito anteriormente.
 %
@@ -185,12 +185,12 @@ Además, se observó que también se debe detener el envío de datos cuando la m
 
 Se puede observar en la Figura \ref{tb:lect} el diagrama temporal obtenido a partir de la simulación. Se resalta en este diagrama que luego de liberada la señal \textit{reset}, el sistema conserva todas las variables en el estado esperado mientras no existe estímulo.
 
-Una vez que es desactivada la señal {\it FLAGB}, el bus de dirección apunta a la memoria FIFO de entrada, es decir, {\it FADDR[1,0]}=$''11''$. La señal {\it SLOE} se coloca en bajo, ese decir que activa el bus de datos, {\it FDATA[15:0]} para que sea usado por la interfaz. Tal como indica la descripción realizada, se coloca un dato en el bus y este es volcado en el bus que comunica los datos que ingresan al interior del sistema, {\it RX\_DATA[15:0]}. Luego, se activa la señal {\it SLRD} en forma repetida, tal y como se espera.
+Una vez que es desactivada la señal {\it FLAGB}, el bus de dirección le otorga acceso al bus de datos a la memoria \acrshort{fifo} de entrada, es decir, {\it FADDR[1,0]}=$''11''$. La señal {\it SLOE} se coloca en bajo, ese decir que activa el bus de datos, {\it FDATA[15:0]} para que sea usado por la interfaz. Tal como indica la descripción realizada, se coloca un dato en el bus y este es volcado en el bus que comunica los datos que ingresan al interior del sistema, {\it RX\_DATA[15:0]}. Luego, se activa la señal {\it SLRD} en forma repetida, tal y como se espera.
 
 También se comprueba que el estado actual en cada uno de los momentos es el adecuado. Además, se observa que, aunque se coloquen datos en el bus de salida interno {\it DATA\_TO\_TX[15:0]} y se active la señal de envío
 {\it SEND\_REQ}, el bus de datos que se comunica con la interfaz {\it FDATA[15:0]} permanece con los datos externos.
 
-Una vez que la MEF alcanza el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de allí, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encuentra en el bus de envío de datos {\it DATA\_TO\_TX}.
+Una vez que la \acrshort{mef} alcanza el estado inicial ({\it IDLE}, como se ve en la Figura \ref{tb:escr}), procede a la escritura de datos. A partir de allí, mientras no existan datos en la memoria de entrada ({\it FLAGB} permanezca en alto), la memoria de salida no se encuentre llena ({\it FLAGA} se encuentre en alto) y sea requerido el envío de datos, el sistema procede a activar en forma sistemática los datos que encuentra en el bus de envío de datos {\it DATA\_TO\_TX}.
 
 \begin{figure}[t]
 	\centering
@@ -199,9 +199,9 @@ Una vez que la MEF alcanza el estado inicial ({\it IDLE}, como se ve en la Figur
 	\label{tb:escr}
 \end{figure}
 
-La Figura \ref{tb:inter} muestra cómo el sistema finaliza la operación de escritura cuando un sucede al menos uno de los eventos considerados para su interrupción. Cuando se activa {\it FLAGB} mientras se ejecuta la operación de escritura, esta última es interrumpida y el sistema procede a realizar, el próximo estado, la operación de lectura. En el caso de que active la señal {\it FLAGA}, indicando que la memoria que recibe los datos que envía el FPGA alcanzó el máximo de capacidad, el proceso de escritura es detenido. En ambos casos, no es relevante el valor de la señal de envío de dato {\it SEND\_REQ}, ya que ambos eventos poseen prioridad a esta.
+La Figura \ref{tb:inter} muestra cómo el sistema finaliza la operación de escritura cuando sucede al menos uno de los eventos considerados para su interrupción. Cuando se activa {\it FLAGB} mientras se ejecuta la operación de escritura, esta última es interrumpida y el sistema procede a realizar, en el próximo estado, la operación de lectura. En el caso de que se active la señal {\it FLAGA}, indicando que la memoria que recibe los datos que envía el \acrshort{fpga} alcanzó el máximo de capacidad, el proceso de escritura es detenido. En ambos casos, no es relevante el valor de la señal de envío de datos {\it SEND\_REQ}, dada la prioridad de las primeras señales sobre la última.
  
-Una vez realizada la simulación y verificación funcional de la síntesis desarrollada, se estuvo en condiciones de grabar dicha síntesis en el FPGA y se puede proceder a realizar pruebas de funcionamiento más avanzadas. 
+Una vez realizada la simulación y verificación funcional de la síntesis desarrollada, se estuvo en condiciones de grabar dicha síntesis en el \acrshort{fpga} y proceder a realizar pruebas de funcionamiento más avanzadas. 
 El código completo de la simulación, se pueden leer en el Apéndice \ref{ap:vhdl}.
 
 \begin{figure}[h]

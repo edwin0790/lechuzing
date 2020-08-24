@@ -2,11 +2,11 @@
 	\label{ap:fx2lp}
 	En el presente apéndice se detallan los códigos fuente, los cuales fueron escritos en lenguaje C para microcontroladores. Estos códigos se utilizaron para configurar la interfaz FX2LP, incluyendo los archivos:
 	\begin{itemize}
-		\item \hyperref[ap:fx2lp:ifc]{\textbf{interfaz.c:}} Funciones \verb|TD_Init()|, \verb|TD_Poll()| desarrolladas en este trabajo y funciones necesarias para el correcto funcionamiento del puerto USB, provistas por Cypress Semiconductor.
+		\item \hyperref[ap:fx2lp:ifc]{\textbf{interfaz.c:}} Funciones \verb|TD_Init()|, \verb|TD_Poll()| desarrolladas en este trabajo y funciones necesarias para el correcto funcionamiento del puerto \acrshort{usb}, provistas por Cypress Semiconductor.
 		\item \hyperref[ap:fx2lp:fwc]{\textbf{fw.c:}} Función \verb|main()| modificada por robustez.
-		\item \hyperref[ap:fx2lp:ledh]{\textbf{leds.h:}} Encabezado que contiene los registros necesarios para encender y apagar los LED multipropósito de la placa de desarrollo CY3684 EZ-USB de Cypress Semiconductor.
-		\item \hyperref[ap:fx2lp:serh]{\textbf{FX2LPSerial.h:}} Encabezado de la biblioteca utilizada para transmitir datos a través del puerto UART.
-		\item \hyperref[ap:fx2lp:serc]{\textbf{FX2LPSerial.c:}} Implementación de las funciones utilizadas para transmitir datos a través del puerto UART.
+		\item \hyperref[ap:fx2lp:ledh]{\textbf{leds.h:}} Archivo de cabecera que contiene los registros necesarios para encender y apagar los \acrshort{led} multipropósito de la placa de desarrollo CY3684 EZ-USB de Cypress Semiconductor.
+		\item \hyperref[ap:fx2lp:serh]{\textbf{FX2LPSerial.h:}} Encabezado de la biblioteca utilizada para transmitir datos a través del puerto \acrshort{uart}.
+		\item \hyperref[ap:fx2lp:serc]{\textbf{FX2LPSerial.c:}} Implementación de las funciones utilizadas para transmitir datos a través del puerto \acrshort{uart}.
 	\end{itemize}
 	
 	Además de los archivos que aquí se desarrollan, es necesario utilizar el framework provisto por Cypress~\cite{CypressSemiconductor2020}.

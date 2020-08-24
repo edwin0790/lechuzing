@@ -1,20 +1,20 @@
-\chapter{Códigos de la implementación en FPGA}
+\chapter{Archivos de código para implementación en \acrshort{fpga}}
 \label{ap:vhdl}
 
-	El presente apéndice contiene los códigos desarrollados para la implementación de los sistemas implementados en el FPGA Spartan 6 utilizados en este trabajo. Estos códigos fueron escritos en lenguaje VHDL, salvo por el archivo de restricciones, que posee como lenguaje XST, desarrollado por Xilinx para dicho propósito. A su vez, se exponen el resumen de síntesis, en donde constan los recursos del FPGA utilizados.
- 	El contenido mostrado en este Apéndice contiene los códigos de los archivos:
+	El presente apéndice contiene el código desarrollado para la implementación de los sistemas en el \acrshort{fpga} Spartan 6 utilizados en este trabajo. Este código fue escrito en lenguaje \acrshort{vhdl}, salvo por el archivo de restricciones, que posee como lenguaje XST, desarrollado por Xilinx para dicho propósito. A su vez, se expone el resumen de síntesis, en donde constan los recursos del \acrshort{fpga} utilizados.
+ 	El contenido mostrado en este Apéndice contiene el código de los archivos:
  	\begin{itemize}
-		\item \textbf{\nameref{ap:vhdl:iffx2}:} Implementación de la Máquina de Estados Finitos (MEF) a través de la cual se general las señales de control que comandan la memoria FIFO del controlador FX2LP 
+		\item \textbf{\nameref{ap:vhdl:iffx2}:} Implementación de la \acrfull{mef} a través de la cual se generan las señales de control que comandan la memoria \acrshort{fifo} del controlador FX2LP 
 		
-		\item \textbf{\nameref{ap:vhdl:meftb}:} Código utilizado para realizar la verificación funcional de la MEF
+		\item \textbf{\nameref{ap:vhdl:meftb}:} Código utilizado para realizar la verificación funcional de la \acrshort{mef}
 		
-		\item \textbf{\nameref{ap:vhdl:top}:} Implementación del sistema de pruebas. En él se instancia la MEF, la configuración del PLL y la memoria FIFO generada a través de la herramienta \textit{Core Generator} de Xilinx Inc. 
+		\item \textbf{\nameref{ap:vhdl:top}:} Implementación del sistema de pruebas. En él se instancia la \acrshort{mef}, la configuración del \acrshort{pll} y la memoria \acrshort{fifo} generada a través de la herramienta \textit{Core Generator} de Xilinx Inc. 
 		
 		\item \textbf{\nameref{ap:vhdl:toptb}:} Código de verificación funcional del sistema de pruebas 
 
-		\item \textbf{\nameref{ap:vhdl:ucf}:} Archivo de restricciones en donde se le indica al compilador la frecuencia de la señal de entrada al sistema y la asignación de los puertos de Entrada y Salida del sistema desarrollado a los pines del FPGA Spartan 6.
+		\item \textbf{\nameref{ap:vhdl:ucf}:} Archivo de restricciones en donde se le indica al compilador la frecuencia de la señal de entrada al sistema y la asignación de los puertos de Entrada y Salida del sistema desarrollado a los pines del \acrshort{fpga} Spartan 6.
 
-		\item \textbf{\nameref{ap:vhdl:sum}:} Tabla en donde se indica el consumo de recursos de FPGA por parte de la síntesis realizada a través del entorno de desarrollo ISE de Xilinx Inc.
+		\item \textbf{\nameref{ap:vhdl:sum}:} Tabla en donde se indica el consumo de recursos de \acrshort{fpga} por parte de la síntesis realizada a través del entorno de desarrollo ISE de Xilinx Inc.
 	\end{itemize}
 
 
