@@ -1,0 +1,62 @@
+correcciones presentación
+
+carátula. Logo UNSJ, logo FI, asesores del trabajo
+
+primeros slides de texto
+
+Agenda
+Objetivos
+
+Preámbulo cambiar por introduccion
+No imagen tesis Martin o texto con esa imagen
+hablar primero de que hay sensores que necesitan enviar inforrmación rapido a un usb
+
+protocolos de transferencia y selección del protocolo
+
+slide pc<->usb en los objetivos
+
+explicar mejor usb
+
+presentacion usb
+componentes
+lo que sirve para el trabajo
+
+slide 12 esta bien
+
+explicar mejor los porques de cada componente
+
+porque no se usa el usb de la placa mojo
+
+slide 13 bien
+
+slide 14 bien
+
+slide 17---> seleccion y pros para este trabajo
+
+slide 18 más dinámica
+
+slide 21 marcar cada evento. la señal flag vacio esta mal
+
+
+slide 22 marcar cada evento. Operación de lectura
+
+slide 23 igual antes
+
+slide 24 cambiar de lugar hacia antes
+
+tabla de correspondencias no sirve para presentar
+
+slide 25 antes
+
+slide 27 mejor marcada
+
+slide 28-30 marcarlo
+
+slide 31 más texto en el título
+Los datos son aleatorios
+explicar mejor.. tal vez con un diagrama de hardware
+
+slide 32 bien
+
+
+
