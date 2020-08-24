@@ -1,9 +1,16 @@
 \begin{frame}{Conclusiones}
 	\begin{itemize}
-		\item Se elaboró un sistema de comunicación USB que permite conectar una FPGA con una PC, mediante una interfaz comercial.
-		\item El sistema elaborado permite leer y escribir datos en forma robusta, es decir, sin perder datos.
-		\item El sistema elaborado alcanzó una tasa de transferencia de 12 Mbps.
-		\item Se consolidaron las técnicas y herramientas aprendidas que permiten desarrollar y depurar sistemas en VHDL, C para microcontoladores y C para computadoras.
-		\item Se desarrollaron competencias sobre las formas de prueba y validación de los sistemas implementados y sus componentes.
+		\only<1>{
+			\item Se desarrollo un sistema de comunicación USB 2.0 que permite conectar una FPGA con una PC. El enlace pudo ser operado a 480 Mbps.
+			\item El sistema elaborado permite leer y escribir datos en forma robusta, es decir, sin perder datos.
+			\item Se adquirieron y entendieron conceptos importantes de la norma USB 2.0.
+			\item Se seleccionó y se configuró el controlador FX2LP como interfaz USB.
+			\item Se seleccionó el FPGA Spartan 6 de Xilinx Inc, incorporado en la placa de desarrollo Mojo v3.
+		}
+		\only<2>{
+			\item Se desarrolló una máquina de estados finitos implementada con el FPGA que comanda la comunicación entre este dispositivo y la interfaz USB.
+			\item Se desarrolló un programa de computadoras que permite enviar y recibir datos a través del puerto USB.
+			\item Se logró transmitir información desde y hacia la PC a una tasa efectiva de 9,12 Mbps.
+		}
 	\end{itemize}
 \end{frame}

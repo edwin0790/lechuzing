@@ -13,7 +13,7 @@
 			\node[core,minimum size=60,text width=50] (uc) [above=of aux1] {8051 Mejorado};			
 			\node[perif,node distance=2.9] (pll) [left=of uc] {PLL};
 			\node	(aux2)	[right=of ram.south]{};				
-			\node[core]	(bus)	[right=of aux2,rotate=90,anchor=north west]	{Bus de datos y direcciones};
+			\node[core,text width=115]	(bus)	[right=of aux2,rotate=90,anchor=north west]	{Bus de datos y direcciones};
 			\node[perif]	(i2c)	[right=of bus.south east,anchor=north west]	{I2C};
 			\node[perif]	(gpif)	[right=of bus.south west,anchor=south west] {GPIF};
 			\node[perif,text width=40] (fifo) [below=of gpif] {4 kB FIFO};
@@ -117,6 +117,35 @@
 			\end{itemize}
 		\end{column}
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Programación de la interfaz}
+	\centering
+	\begin{tikzpicture}[scale=.75]
+		\begin{scope}[transform shape,node distance=1,>=latex]
+			\node[mealy]	(start)	[]	{Iniciar: Reset \\ \Verb|main();|};
+			\node[moore]	(init)	[below=of start]	{Inicia Variables de Estado}
+				edge[<-,thick] (start);
+			\node[moore]	(us1)	[below=of init]		{\Verb|TD\_Init();|}
+				edge[<-,thick]	(init);
+			\node[moore]	(EI)	[below=of us1]	{Habilita\\Interrupciones}
+				edge[<-,thick](us1);
+			\node[moore,]	(poll)	[right=3 of init]	{\Verb|TD\_Poll();|};
+			\node[node distance=0.7] (aux1)	[above=of poll] 	{};
+			\draw[<-,thick](poll) to (aux1.base);
+			\node[ask]		(pr1)	[below=of poll]	{Paquete de Setup}
+				edge[<-,thick](poll);
+			\node[moore]	(setup)	[right=of pr1]	{\Verb|SetupComand();|};
+			\draw[->,thick] (setup) |- (aux1.base);
+			\node[]			(aux2)	[left=of pr1]	{};
+			\draw[->,thick]	(pr1) -- node[above,near start]{Si} (setup);
+			\draw[->,thick]	(pr1) -- node[above,near start]{No}	(aux2.base);
+%			\node[node distance=2.5](aux3)	[left=of aux2] {};
+%			\draw[->,thick]	(aux2.base) -- (aux3.base);
+			\draw[->,thick]	(aux2.base)	|-	(aux1.base);
+			\draw[->,thick](EI) -- ($(EI.south) + (0,-.5)$) -| (aux2.base) ;
+		\end{scope}
+	\end{tikzpicture}
 \end{frame}
 %\begin{frame}{Cypress Software Development Kit}
 %	\begin{columns}

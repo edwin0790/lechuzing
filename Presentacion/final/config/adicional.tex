@@ -1,7 +1,12 @@
 \usepackage{siunitx}
+\usepackage{tabulary}
 \usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{fancyvrb}
+%\usepackage{longtable}
+\pgfplotsset{compat=1.3}
 \usepackage{tikz}
-\usetikzlibrary{arrows,babel,backgrounds,circuits.logic.mux,circuits.logic.US,decorations.pathreplacing,fit,patterns,petri,positioning,shapes,shapes.gates.logic,trees}
+\usetikzlibrary{arrows,babel,backgrounds,circuits.logic.US,decorations.pathreplacing,fit,patterns,petri,positioning,shapes,shapes.gates.logic,trees}
 
 \newcommand\blfootnote[1]{%
 	\begingroup
@@ -35,10 +40,10 @@
 \tikzstyle{bloque}=[exterior,align=center,minimum size=60,text width=60]
 \tikzstyle{hub}=[draw=black,anchor=west,circle]
 \tikzstyle{dev}=[draw=black,anchor=west,rectangle,rounded corners,text width=60,align=center]
-\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=75,pattern=north east lines,pattern color=black!35]
-\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=75,align=center]
-\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=80,minimum height=75,fill=black!05]
-\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=75,pattern=dots,pattern color=black!25]
+\tikzstyle{pid}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=110,pattern=north east lines,pattern color=black!35]
+\tikzstyle{dir}=[draw,rectangle,rounded corners,minimum width=20,minimum height=110,align=center]
+\tikzstyle{data}=[draw=black,align=center,rectangle,rounded corners,minimum width=80,minimum height=110,fill=black!05]
+\tikzstyle{crc}=[draw=black,align=center,rectangle,rounded corners,minimum width=20,minimum height=110,pattern=dots,pattern color=black!25]
 \tikzstyle{field}=[draw=black,rectangle,rounded corners, minimum height=30,align=center]
 \tikzstyle{chart}=[circle,draw=black,text width=50,align=center]
 \tikzstyle{lineaExt} = [->,line width=5pt, >=latex, shorten <= 1]
@@ -65,4 +70,3 @@
 	\draw (t_cur) -- ++(0.1,.6*#1-.3) -- ++(#2-.2,0) -- ++(+.1,.3-.6*#1)
 	node[coordinate] (t_cur) {};}
 %diagramas temporales
-
