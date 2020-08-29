@@ -1,62 +1,92 @@
-correcciones presentación
+# Correcciones presentación
 
-carátula. Logo UNSJ, logo FI, asesores del trabajo
+_/	carátula. Logo UNSJ, logo FI, asesores del trabajo
 
-primeros slides de texto
+_/	primeros slides de texto
 
-Agenda
-Objetivos
+_/	Agenda
+_/	Objetivos
 
-Preámbulo cambiar por introduccion
-No imagen tesis Martin o texto con esa imagen
-hablar primero de que hay sensores que necesitan enviar inforrmación rapido a un usb
+_/	Preámbulo cambiar por introduccion
+_/	No imagen tesis Martin o texto con esa imagen
+_/	hablar primero de que hay sensores que necesitan enviar inforrmación rapido a un usb
 
-protocolos de transferencia y selección del protocolo
+_/	protocolos de transferencia y selección del protocolo
 
-slide pc<->usb en los objetivos
+_/	slide pc<->usb en los objetivos
 
-explicar mejor usb
+_/	explicar mejor usb
 
-presentacion usb
-componentes
-lo que sirve para el trabajo
+_/	presentacion usb
+_/	componentes
+_/	lo que sirve para el trabajo
 
-slide 12 esta bien
+_/	slide 12 esta bien
 
-explicar mejor los porques de cada componente
+_/	explicar mejor los porques de cada componente
 
-porque no se usa el usb de la placa mojo
+_/	porque no se usa el usb de la placa mojo
 
-slide 13 bien
+_/	slide 13 bien
 
-slide 14 bien
+_/	slide 14 bien
 
-slide 17---> seleccion y pros para este trabajo
+_/	slide 17---> seleccion y pros para este trabajo
 
-slide 18 más dinámica
+_/	slide 18 más dinámica
 
-slide 21 marcar cada evento. la señal flag vacio esta mal
-
-
-slide 22 marcar cada evento. Operación de lectura
-
-slide 23 igual antes
-
-slide 24 cambiar de lugar hacia antes
-
-tabla de correspondencias no sirve para presentar
-
-slide 25 antes
-
-slide 27 mejor marcada
-
-slide 28-30 marcarlo
-
-slide 31 más texto en el título
-Los datos son aleatorios
-explicar mejor.. tal vez con un diagrama de hardware
-
-slide 32 bien
+_/	slide 21 marcar cada evento. la señal flag vacio esta mal
 
 
+_/	slide 22 marcar cada evento. Operación de lectura
+
+_/	slide 23 igual antes
+
+_/	slide 24 cambiar de lugar hacia antes
+
+_/	tabla de correspondencias no sirve para presentar
+
+_/	slide 25 antes
+
+_/	slide 27 mejor marcada
+
+_/	slide 28-30 marcarlo
+
+_/	slide 31 más texto en el título
+_/	Los datos son aleatorios
+	explicar mejor.. tal vez con un diagrama de hardware
+
+_/	slide 32 bien
+
+
+
+Segunda vuelta
+
+Objetivos antes de la agenda
+sistema científicos que genrean gran cantidad de datos
+estos sensores se utilizan para muchas cosas
+se leen utilizando fpga
+como esos sensores generan gran cantidad y es imposible procesarlos, hace falta mandarlos a una PC para su procesamiento
+lo que se busca hacer es una interfaz que permita transmitir datos desde una FPGA a una pc a alta velocidad
+entonces se desarrolla una interfaz.....
+
+Cambiar resultados 
+
+			primero motivacion
+			luego objetivos gral/
+			
+			particular
+
+
+	slide 6-8 de mas
+
+	23 luego de la 20
+	
+	incluir imagen en los testbenchs
+	
+	pagina 28 corregir título
+	
+	pagina 31 	corregir título
+	
+	conclusion: poco recurso de FPGA
 

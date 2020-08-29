@@ -15,10 +15,10 @@
 			\draw[->]([yshift=220/11*7]fx2lp.south east) --node[above]{FLAGB}([yshift=220/11*7]mea.south west);
 			\draw[->]([yshift=220/11*6]fx2lp.south east) --node[above]{FLAGC}([yshift=220/11*6]mea.south west);
 			\draw[->]([yshift=220/11*5]fx2lp.south east) --node[above]{FLAGD}([yshift=220/11*5]mea.south west);
-			\draw[->]([yshift=220/11*4]fx2lp.south east) --node[above]{SLWR}([yshift=220/11*4]mea.south west);
-			\draw[->]([yshift=220/11*3]fx2lp.south east) --node[above]{SLRD}([yshift=220/11*3]mea.south west);
-			\draw[->]([yshift=220/11*2]fx2lp.south east) --node[above]{SLOE}([yshift=220/11*2]mea.south west);
-			\draw[->]([yshift=220/11*1]fx2lp.south east) --node[above]{PKTEND}([yshift=220/11*1]mea.south west);
+			\draw[<-]([yshift=220/11*4]fx2lp.south east) --node[above]{SLWR}([yshift=220/11*4]mea.south west);
+			\draw[<-]([yshift=220/11*3]fx2lp.south east) --node[above]{SLRD}([yshift=220/11*3]mea.south west);
+			\draw[<-]([yshift=220/11*2]fx2lp.south east) --node[above]{SLOE}([yshift=220/11*2]mea.south west);
+			\draw[<-]([yshift=220/11*1]fx2lp.south east) --node[above]{PKTEND}([yshift=220/11*1]mea.south west);
 			
 			
 			\node[simple,minimum height=150,minimum width=50](interno)[right=6 of mea.north east,anchor=north west]{Memoria FIFO};
@@ -54,28 +54,57 @@
 			\node[rounded corners,inner ysep=5pt,draw=blue,dashed,rectangle,fit={(clk)(mea)(interno)},label=north:\scriptsize{FPGA}](fpga){};
 			\node[inner ysep=11pt, yshift= 8pt, draw=blue,dash dot,rectangle,fit={(puls)(fpga)(clkSrc)},label=north:\scriptsize{Mojo}](){};
 		\end{scope}
+		\begin{scope}
+			\action<2>{\node[ellipse,draw=blue,ultra thick,fit=(fx2lp)]{};}
+			\action<3>{\node[ellipse,draw=blue,ultra thick,fit=(mea)]{};}
+			\action<4>{\node[ellipse,draw=blue,ultra thick,fit=(interno)]{};}
+			\action<4>{\node[ellipse,draw=red,ultra thick,fit=(adapt)]{};}
+			\action<5>{\node[ellipse,draw=blue,ultra thick,fit=(rst)]{};}
+			\action<6>{\node[ellipse,draw=blue,ultra thick,fit=(clk)]{};}
+			\action<7>{\node[ellipse,draw=red,ultra thick,fit=(clkSrc)]{};}
+			\action<7>{\node[ellipse,draw=red,ultra thick,fit=(puls)]{};}
+			\action<8>{\node[ellipse,draw=blue,ultra thick,fit=(clkSrc)]{};}
+			\action<9>{\node[ellipse,draw=blue,ultra thick,fit=(puls)]{};}
+		\end{scope}
 	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Sistema de Pruebas}
 	\framesubtitle{Implementación en VHDL}
 	\centering
-	\includegraphics[height=.83\textheight]{fx2lp_rtl}
+	\only<1,7>{\includegraphics[height=.83\textheight]{fx2lp_rtl00}\\}
+	\only<2>{\includegraphics[height=.83\textheight]{fx2lp_rtl01}\\}
+	\only<3>{\includegraphics[height=.83\textheight]{fx2lp_rtl02}\\}
+	\only<4>{\includegraphics[height=.83\textheight]{fx2lp_rtl03}\\}
+	\only<5>{\includegraphics[height=.83\textheight]{fx2lp_rtl04}\\}
+	\only<6>{\includegraphics[height=.83\textheight]{fx2lp_rtl05}\\}
 \end{frame}
 
 \begin{frame}{Verificación Funcional}
-	\includegraphics[width=\textwidth]{sist_tb_lect}
+	\framesubtitle{Recepción de datos}
+	\only<1>{\includegraphics[width=\textwidth]{sist_tb_lect00}}
+	\only<2>{\includegraphics[width=\textwidth]{sist_tb_lect01}}
+	\only<3>{\includegraphics[width=\textwidth]{sist_tb_lect02}}
+	\only<4>{\includegraphics[width=\textwidth]{sist_tb_lect03}}
+	\only<5>{\includegraphics[width=\textwidth]{sist_tb_lect04}}
 \end{frame}
 
 \begin{frame}{Verificación Funcional}
-	\includegraphics[width=\textwidth]{sist_tb_esc}\\
-	\vfill
-	\includegraphics[width=\textwidth]{sist_tb_esc_int}
+	\framesubtitle{Transmisión de datos}
+	\only<1>{\includegraphics[width=\textwidth]{sist_tb_esc00}}
+	\only<2>{\includegraphics[width=\textwidth]{sist_tb_esc01}}
+	\only<3>{\includegraphics[width=\textwidth]{sist_tb_esc02}}
+	\only<4>{\includegraphics[width=\textwidth]{sist_tb_esc03}}
+	\only<5>{\includegraphics[width=\textwidth]{sist_tb_esc04}}
+	\only<6>{\includegraphics[width=\textwidth]{sist_tb_esc_int00}}
+	\only<7>{\includegraphics[width=\textwidth]{sist_tb_esc_int01}}
+	\only<8>{\includegraphics[width=\textwidth]{sist_tb_esc_int02}}
+	\only<9>{\includegraphics[width=\textwidth]{sist_tb_pktend00}}
+	\only<10>{\includegraphics[width=\textwidth]{sist_tb_pktend01}}
+	\only<11>{\includegraphics[width=\textwidth]{sist_tb_pktend02}}
+	\only<12>{\includegraphics[width=\textwidth]{sist_tb_pktend03}}
 \end{frame}
 
-\begin{frame}{Verificación Funcional}
-	\includegraphics[width=\textwidth]{sist_tb_pktend}
-\end{frame}
 %\begin{frame}{Test bench - Lectura de la interfaz}
 %	\only<1>{
 %		\centering

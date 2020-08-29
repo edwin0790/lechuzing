@@ -1,16 +1,53 @@
 \begin{frame}{Objetivos}
+	\begin{center}
+		\only<1>{\begin{tikzpicture}[>=latex,scale=1.2]
+				\begin{scope}[transform shape]
+					\node[bloque](pc){PC};
+					\node[bloque](adq)[right =3 of pc]{Sistema de adquisicíon basado en FPGA};
+					\draw[<->,ultra thick]([yshift=5]pc.east) -- node (data)[above]{Datos} ([yshift=5]adq.west);
+					\draw[<->,ultra thick]([yshift=-20]pc.east) -- node (ctrl)[above]{Control} ([yshift=-20]adq.west);
+				\end{scope}
+				\begin{scope}[on background layer]
+					\node[rounded rectangle,fill=blue!20,fit=(pc.east)(adq.west)(data)(ctrl)]{};
+				\end{scope}				
+			\end{tikzpicture}}
+
+		\only<2>{\begin{tikzpicture}[scale=.7,>=latex]
+				\begin{scope}
+					\begin{scope}[transform shape,node distance=2]
+						\node[bloque] (cy) {Interfaz USB};
+%						\only<3->{\node[bloque]	(cy)				{Interfaz\\\alert{Cypress FX2LP}};}
+						\node[bloque]	(fpga)	[right=of cy]{FPGA};
+%						\only<4->{\node[bloque]	(fpga)	[right=of cy]{FPGA\\\alert{Xilinx Spartan VI}};}
+						\node[bloque]	(pc) 	[left=of cy]	{PC};
+%						\only<5->{\node[bloque]	(pc) 	[left=of cy]	{PC\\\alert{libusb}};}
+						\draw[->,thick] (pc.15) -- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+						\draw[->,thick] (cy.195) -- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+						\draw[<->,thick] (cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+						\draw[->,thick]  (fpga.195) -- node (ctrl) [below] {Control} (fpga.195 -| cy.east);
+						\node[node distance=.4,text=blue] (usb text) [above=of usbd+] {USB};
+					\end{scope}
+					\begin{scope}
+						\node[rectangle,rounded corners,draw=blue,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+					\end{scope}
+				\end{scope}
+			\end{tikzpicture}}
+	\end{center}
+
+
 	\begin{itemize}
-		\item Objetivo General
-		\begin{itemize}
-			\item Realizar una comunicación entre un FPGA y una PC mediante USB 2.0
-		\end{itemize}
-		\item Objetivos Particulares
-		\begin{itemize}
-			\item Comprender el funcionamiento del kit de desarrollo CY3684 y el framework provisto por Cypress.
-			\item Configurar el chip CY7C68014A, incorporado en el kit de desarrollo anterior.
-			\item Sintetizar un circuito en VHDL que sea capaz de interactuar con las memorias FIFO de la interfaz.
-			\item Sintetizar circuitos de prueba para Test Bench.
-			\item Validar el funcionamiento.
-		\end{itemize}
+		\only<1>{\item Objetivo General
+				\begin{itemize}
+					\item Realizar una comunicación entre un FPGA y una PC mediante USB 2.0.
+				\end{itemize}}
+		\only<2>{\item Objetivos Particulares
+				\begin{itemize}
+					\item Seleccionar la interfaz USB.
+					\item Comprender el funcionamiento del kit de desarrollo CY3684 utilizado como interfaz USB y el framework provisto por Cypress.
+					\item Realizar la configuración de la interfaz USB.
+					\item Sintetizar un circuito en VHDL que sea capaz de interactuar con la interfaz USB.
+					\item Sintetizar circuitos de prueba para realizar una verificación funcional.
+					\item Validar el funcionamiento.
+				\end{itemize}}
 	\end{itemize}
 \end{frame}

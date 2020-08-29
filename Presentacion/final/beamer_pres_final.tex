@@ -5,37 +5,11 @@
 \include{./config/tema}
 \include{./config/adicional}
 \include{./config/autor}
+\include{config/titlepage}
 
 \begin{document}
 %TODO tengo 18 filminas que no deben ser consideradas
 	\titlepage
-	\begin{frame}[c]{Comunicación USB 2.0 para sistema científicos implementados en FPGA}
-		\framesubtitle{Preámbulo}
-		\centering
-		\only<1>{
-			\begin{tikzpicture}[>=latex]
-				\node[bloque](pc){PC};
-				\node[bloque](adq)[right =1.3 of pc]{Sistema de adquisicíon basado en FPGA};
-				\node[bloque](sens)[right=1.3 of adq]{Sensor para datos científicos};
-				\draw[<->,double]([yshift=10]pc.east) -- node [above]{Datos} ([yshift=10]adq.west);
-				\draw[<->,double]([yshift=-10]pc.east) -- node [above]{Control} ([yshift=-10]adq.west);				
-				\draw[<->,double]([yshift=10]adq.east) -- node [above]{Datos} ([yshift=10]sens.west);
-				\draw[<->,double]([yshift=-10]adq.east) -- node [above]{Control} ([yshift=-10]sens.west);
-			\end{tikzpicture}}
-		\only<3>{
-			\begin{tikzpicture}[>=latex,scale=1.5]
-			\begin{scope}[transform shape]
-			\node[bloque](pc){PC};
-			\node[bloque](adq)[right =3 of pc]{Sistema de adquisicíon basado en FPGA};
-			\draw[<->,ultra thick]([yshift=5]pc.east) -- node (data)[above]{Datos} ([yshift=5]adq.west);
-			\draw[<->,ultra thick]([yshift=-20]pc.east) -- node (ctrl)[above]{Control} ([yshift=-20]adq.west);
-			\end{scope}
-			\begin{scope}[on background layer]
-				\node[rounded rectangle,fill=red!30,fit=(pc.east)(adq.west)(data)(ctrl)]{};
-			\end{scope}				
-			\end{tikzpicture}}
-		\only<2>{\includegraphics[width=0.9\paperwidth]{01motivacion}}
-	\end{frame}
 	\begin{frame}{Agenda}
 		\tableofcontents[hideallsubsections]
 	\end{frame}
@@ -45,16 +19,19 @@
 	\begin{frame}{Agenda}
 		\tableofcontents[sections={3,4}]
 	\end{frame}
-	\section{Introducción}{
-%		\subsection{Motivación}
-%			\include{seccion/1intro/motivacion}
+	\section{Introducción}
+		\framesubtitle{Preámbulo}
 		\subsection{Objetivos}
 			\include{seccion/1intro/objetivo}
+		\subsection{Motivación}
+			\include{seccion/1intro/motivacion}
 		\subsection{Bus Serial Universal}
-			\include{seccion/1intro/usb}}
+			\include{seccion/1intro/usb}
 	\section{Implementación}
 		\subsection{Arquitectura del sistema}
 			\include{seccion/2implemento/arq}
+		\subsection{Selección de los componentes del sistema}
+			\include{seccion/2implemento/eleccion}
 		\subsection{Configuración de la Interfaz USB}
 			\include{seccion/2implemento/fx2lp}
 		\subsection{Desarrollo de la Máquina de Estados Finitos}
@@ -69,7 +46,7 @@
 %			\include{seccion/3prueba/cydeb}
 %		\subsection{Biblioteca de PC}
 %			\include{seccion/3prueba/libusb}
-		\subsection{Programas de prueba}
+		\subsection{Desarrollo de un programa de pruebas}
 			\include{seccion/3prueba/soft}
 	\section{Resultados y conclusiones}
 		\subsection{Pruebas y resultados}
