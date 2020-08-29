@@ -92,8 +92,8 @@ La función de próximo estado, es un proceso que lee el registro \textit{estado
 	\node[ask] (vacio2)[below=of lecrd]{FLAG\_Vacío};
 	\draw[->](lecrd) -- (vacio2);
 	
-	\draw[->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
-	\draw[o->](vacio2.east) -- ++(1.2,0) |- ($(inicio.north)+(0,.6)$);
+	\draw[o->](vacio2.west) -| ($(lecoe.west)!0.5!(vacio1.east)$);
+	\draw[->](vacio2.east) -- ++(1.2,0) |- ($(inicio.north)+(0,.6)$);
 	\draw[->] ($(inicio.north)+(0,.6)$) -- (inicio.north);
 	
 	\node[ask](enviar1)[below=of vacio1]{Enviar\_datos};
