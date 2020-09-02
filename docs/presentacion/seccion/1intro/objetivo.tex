@@ -1,0 +1,49 @@
+\begin{frame}{Objetivos}
+	\begin{center}
+		\only<1>{\begin{tikzpicture}[>=latex,scale=1.2]
+				\begin{scope}[transform shape]
+					\node[bloque](pc){PC};
+					\node[bloque](adq)[right =3 of pc]{Sistema de adquisicíon basado en FPGA};
+					\draw[<->,ultra thick]([yshift=5]pc.east) -- node (data)[above]{Datos} ([yshift=5]adq.west);
+					\draw[<->,ultra thick]([yshift=-20]pc.east) -- node (ctrl)[above]{Control} ([yshift=-20]adq.west);
+				\end{scope}
+				\begin{scope}[on background layer]
+					\node[rounded rectangle,fill=blue!20,fit=(pc.east)(adq.west)(data)(ctrl)]{};
+				\end{scope}				
+			\end{tikzpicture}}
+
+		\only<2>{\begin{tikzpicture}[scale=.7,>=latex]
+				\begin{scope}
+					\begin{scope}[transform shape,node distance=2]
+						\node[bloque] (cy) {Interfaz USB};
+						\node[bloque]	(fpga)	[right=of cy]{FPGA};
+						\node[bloque]	(pc) 	[left=of cy]	{PC};
+						\draw[->,thick] (pc.15) -- node (usbd+) [above]	{D+} (pc.15 -| cy.west);
+						\draw[->,thick] (cy.195) -- node (usbd-) [below]	{D-} (cy.195 -| pc.east);
+						\draw[<->,thick] (cy.15) -- node (data) [above] {Datos} (cy.15 -| fpga.west);
+						\draw[->,thick]  (fpga.195) -- node (ctrl) [below] {Control} (fpga.195 -| cy.east);
+						\node[node distance=.4,text=blue] (usb text) [above=of usbd+] {USB};
+					\end{scope}
+					\begin{scope}
+						\node[rectangle,rounded corners,draw=blue,dashed,fit=(usb text)(usbd+)(usbd-)(cy.south west)(pc.east)](usb){};
+					\end{scope}
+				\end{scope}
+			\end{tikzpicture}}
+	\end{center}
+
+
+	\begin{itemize}
+		\only<1>{\item Objetivo General
+				\begin{itemize}
+					\item Realizar una comunicación entre un FPGA y una PC mediante USB 2.0.
+				\end{itemize}}
+		\only<2>{\item Objetivos Particulares
+				\begin{itemize}
+					\item Seleccionar el dispositivo para realizar la interfaz USB.
+					\item Realizar la configuración de la interfaz USB.
+					\item Sintetizar un circuito en VHDL que sea capaz de interactuar con la interfaz USB, minimizando la utilización de recursos programables.
+					\item Desarrollar un sistema de pruebas.
+					\item Validar el funcionamiento.
+				\end{itemize}}
+	\end{itemize}
+\end{frame}

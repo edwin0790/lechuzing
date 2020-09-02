@@ -1,0 +1,40 @@
+\documentclass[11pt,a4paper,xcolor={table}]{beamer}
+\mode<presentation>
+
+\include{./config/base}
+\include{./config/tema}
+\include{./config/adicional}
+\include{./config/autor}
+\include{config/titlepage}
+\usepackage[table]{xcolor}
+
+\begin{document}
+	\titlepage
+		\include{seccion/1intro/motivacion}
+		\include{seccion/1intro/objetivo}
+	\begin{frame}{Agenda}
+		\tableofcontents[]
+	\end{frame}
+	\section{Introducción}
+		\subsection{Bus Serial Universal}
+			\include{seccion/1intro/usb}
+	\section{Implementación}
+		\subsection{Arquitectura del sistema}
+			\include{seccion/2implemento/arq}
+		\subsection{Selección de los componentes del sistema}
+			\include{seccion/2implemento/eleccion}
+		\subsection{Configuración de la Interfaz USB}
+			\include{seccion/2implemento/fx2lp}
+		\subsection{Desarrollo de la Máquina de Estados Finitos}
+			\include{seccion/2implemento/sintesis}
+	\section{Evaluación y validación}
+			\include{seccion/3prueba/vhdl}
+			\include{seccion/3prueba/soft}
+			\include{seccion/4fin/robusto}
+	\section{Resultados y Trabajos Futuros}
+		\include{seccion/4fin/conclusion}
+		\include{seccion/4fin/futuro}			
+			\begin{frame}{Material Adicional}
+			\end{frame}
+			\scriptsize{\input{fx2lp_interface_top_summary}}
+\end{document}

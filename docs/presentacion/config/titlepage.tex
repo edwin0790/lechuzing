@@ -1,0 +1,26 @@
+\setbeamertemplate{title page}{
+\begin{center}
+%	\parbox{.45\textwidth}{\insertinstitute}		
+	\begin{beamercolorbox}[center,sep=3mm]{title}
+		\includegraphics[width=.12\textwidth]{logo_unsj}
+		\parbox[b][.15\textheight]{.5\textwidth}{
+			\centering
+			\textbf{\inserttitle}\par
+			\carrera\vspace{2mm}}
+		\includegraphics[width=.12\textwidth]{fi}
+	\end{beamercolorbox}
+	\vfill
+	\begin{beamercolorbox}[center,sep=3mm]{subtitle}
+		\large{\insertsubtitle}
+	\end{beamercolorbox}
+	\vfill
+    \parbox{100pt}{\centering \textbf{\insertauthor}}\\
+      Autór\\
+    \vspace{3mm}
+	\parbox{.9\textwidth}{\centering \small{\textbf{\asesores}}}\\
+	\small{Asesores}\\
+	\vfill
+	\vfill
+    {\centering \footnotesize{\insertdate}}
+\end{center}
+}

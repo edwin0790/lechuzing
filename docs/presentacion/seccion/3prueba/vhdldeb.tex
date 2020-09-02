@@ -1,0 +1,48 @@
+\begin{frame}{Depuración de la interfaz en VHDL}
+	\begin{itemize}
+		\item Se utilizó un registro para elaborar un eco de a dos bytes. Permitió corroborar el correcto funcionamiento de la lectura y escritura de las memorias FIFO de la interfaz de Cypress.
+		\item Se utilizó una memoria FIFO generada con el software ``Core Generator'' de Xilinx para lograr un correcto funcionamiento de las señales de la interfaz escrita en VHDL.
+		\item Además, se utilizó un PLL como generador de reloj, ya que si bien se pensaba hacer sincrónico, por errores de diseño esto no fue posible.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Estructura interna FPGA}
+	\centering
+%	\begin{tikzpicture}[scale=.58]
+%		\begin{scope}[transform shape,node distance=5,>=latex,thick]
+%			\node[simple]	(cypress)		[]	 			{FIFO Esclava};
+%			\node[simple]	(master)	[right=of cypress]	{Maestro Externo};
+%			\node[simple,minimum size=70]	(leer)		[right=of master.north west,anchor=north west] {Leer FIFO};
+%			\node[simple,minimum size=70]	(escribir)	[right=of master.south west,anchor=south west]	{Escribir FIFO};
+%			\node[simple,node distance=8]	(fifo)		[right=of master]	{FIFO Interna (XLNX core generator)};
+%			
+%			\draw[<->]	([yshift=4*110/6]cypress.east) --node [above]{IFCLK} ([yshift=4*110/6]master.west);
+%			\draw[<->]	([yshift=3*110/6]cypress.east) --node [above]{FD[15:0]} ([yshift=3*110/6]master.west);
+%			\draw[<-]	([yshift=2*110/6]cypress.east) --node [above]{FIFOADR[1:0]} ([yshift=2*110/6]master.west);
+%			\draw[->]	([yshift=1*110/6]cypress.east) --node [above]{EP2\_EMPTY} ([yshift=1*110/6]master.west);
+%			\draw[->]	([yshift=0*110/6]cypress.east) --node [above]{EP8\_FULL} ([yshift=0*110/6]master.west);
+%			\draw[<-]	([yshift=-1*110/6]cypress.east) --node [above]{SLOE} ([yshift=-1*110/6]master.west);
+%			\draw[<-]	([yshift=-2*110/6]cypress.east) --node [above]{SLWR} ([yshift=-2*110/6]master.west);
+%			\draw[<-]	([yshift=-3*110/6]cypress.east) --node [above]{SLRD} ([yshift=-3*110/6]master.west);
+%			\draw[<-]	([yshift=-4*110/6]cypress.east) --node [above]{PKTEND} ([yshift=-4*110/6]master.west);
+%			
+%			\draw[<-] (leer) -- node[above]{SLWR} (master.east |- leer);
+%			\draw[<-] ([yshift=-1*80/7]leer.east) -- node[above]{EMPTY}([yshift=-1*80/7]fifo.west |- leer);
+%			\draw[->] ([yshift=1*80/7]leer.east) -- node[above]{RD\_EN}([yshift=1*80/7]fifo.west |- leer);
+%			
+%			\draw[<-] (escribir) -- node[above]{SLRD} (master.east |- escribir);
+%			\draw[<-] ([yshift=-1*80/7]escribir.east) -- node[above]{FULL}([yshift=-1*80/7]fifo.west |- escribir);
+%			\draw[->] ([yshift=1*80/7]escribir.east) -- node[above]{WR\_EN}([yshift=1*80/7]fifo.west |- escribir);			
+%			
+%			\draw[<-]	([yshift=1*110/6]fifo.west) --node [above]{DIN[15:0]} ([yshift=1*110/6]master.east);
+%			\draw[->]	([yshift=0*110/6]fifo.west) --node [above]{DOUT[15:0]} ([yshift=0*110/6]master.east);
+%			\draw[<-]	([yshift=-1*110/6]fifo.west) --node [above]{VALID} ([yshift=-1*110/6]master.east);
+%			
+%			\node[node distance=.4] (fpga) [above=of leer] {FPGA};
+%		\end{scope}
+%		\begin{scope}[on background layer]
+%			\node[rectangle,rounded corners,dashed,fit=(master)(leer)(fpga)(fifo)(escribir),draw=black]{};
+%		\end{scope}
+%	\end{tikzpicture}
+\end{frame}
+
