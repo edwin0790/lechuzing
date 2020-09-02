@@ -1,1 +1,0 @@
--intstyle "ise" -incremental -lib "secureip" -o "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_isim_beh.exe" -prj "/home/lechuzin/Facultad/Trabajo Final/lechuzing/Cyclon6/interface_test_bench_beh.prj" "work.interface_test_bench" 
